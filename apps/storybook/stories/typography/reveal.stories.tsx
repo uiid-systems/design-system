@@ -9,14 +9,11 @@ import {
   disabledControls,
 } from "./constants";
 
-const SAMPLE =
-  "UIID is a registry-first design system. Tokens define the design language, the registry describes it semantically, and blocks compose it into product surfaces.";
-
 const meta = {
   title: "Typography/Reveal",
   component: Reveal,
   args: {
-    children: SAMPLE,
+    children: Examples.REVEAL_SAMPLE,
     size: 1,
   },
   argTypes: {

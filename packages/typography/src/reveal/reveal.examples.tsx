@@ -1,9 +1,10 @@
 import { Reveal } from "./reveal";
 
-const SAMPLE =
-  "UIID is a registry-first design system. Tokens define the design language, the registry describes it semantically, and blocks compose it into product surfaces.";
+/** Shared with the Reveal story's playground, so the two samples can't drift. */
+export const REVEAL_SAMPLE =
+  "UIID is a modular React component library. Design tokens define the visual language, and components built on Base UI compose it into product surfaces.";
 
-export const Basic = () => <Reveal render={<p />}>{SAMPLE}</Reveal>;
+export const Basic = () => <Reveal render={<p />}>{REVEAL_SAMPLE}</Reveal>;
 
 export const SlowStagger = () => (
   <Reveal render={<p />} stagger={80} duration={700} blur={10}>
@@ -23,7 +24,7 @@ export const Styled = () => (
       emphasis="muted"
       stagger={60}
     >
-      Tokens define the language. The registry describes it. Blocks compose it.
+      Tokens define the language. Components compose it.
     </Reveal>
   </>
 );

@@ -1,97 +1,106 @@
+import { Box, Text } from "@uiid/design-system";
+import { cx } from "@uiid/design-system/utils";
+
+import styles from "./TokenVisual.module.css";
+
 interface TokenVisualProps {
   token: {
     name: string;
-    value: string;
+    /** A literal, or a `{group.token}` reference. Token JSON can hold a bare number (`400`). */
+    value: string | number;
     type: string;
   };
 }
 
+// A token reference: `{group.token}`, with a path a CSS variable name can hold.
+const TOKEN_REFERENCE = /^\{([a-z0-9.-]+)\}$/i;
+
 // Helper to convert token references to CSS variables
 // e.g., "{color.blue}" -> "var(--color-blue)"
-const toCssVariable = (value: string): string => {
-  if (value.startsWith("{") && value.endsWith("}")) {
-    const path = value.slice(1, -1).replace(/\./g, "-");
-    return `var(--${path})`;
-  }
-  return value;
+const toCssVariable = (value: string | number): string => {
+  const text = String(value);
+  const reference = TOKEN_REFERENCE.exec(text);
+  return reference ? `var(--${reference[1].replace(/\./g, "-")})` : text;
 };
+
+/*
+ * The token's value is the one thing a class cannot know, so it travels as a
+ * single custom property and the CSS module decides how to paint it.
+ */
+const tokenValueStyle = (value: string | number) =>
+  ({ "--token-value": toCssVariable(value) }) as React.CSSProperties;
 
 // Visual representation based on token type
 export const TokenVisual = ({ token }: TokenVisualProps) => {
+  const name = token.name.toLowerCase();
+
   if (token.type === "color") {
     return (
-      <div
-        style={{
-          width: "100%",
-          height: "32px",
-          backgroundColor: toCssVariable(token.value),
-          border: "1px solid #e5e5e5",
-          borderRadius: "4px",
-        }}
+      <Box
+        w={120}
+        h={32}
+        b={1}
+        className={styles.swatch}
+        style={tokenValueStyle(token.value)}
       />
     );
   }
 
   if (token.type === "dimension") {
-    if (token.name.toLowerCase().includes("radius")) {
+    if (name.includes("radius")) {
       return (
-        <div
-          style={{
-            width: "60px",
-            height: "32px",
-            backgroundColor: "#e5e5e5",
-            borderRadius: token.value,
-            border: "1px solid #ccc",
-          }}
+        <Box
+          w={60}
+          h={32}
+          b={1}
+          className={styles.radius}
+          style={tokenValueStyle(token.value)}
         />
       );
     }
-    if (
-      token.name.toLowerCase().includes("font") &&
-      token.name.toLowerCase().includes("size")
-    ) {
-      return <span style={{ fontSize: token.value, color: "#333" }}>Aa</span>;
+    if (name.includes("font") && name.includes("size")) {
+      return (
+        <Text
+          aria-hidden
+          className={styles["font-size"]}
+          style={tokenValueStyle(token.value)}
+        >
+          Aa
+        </Text>
+      );
     }
-    // For padding or other dimensions, show a box
+    // For padding or other dimensions, show a bar along the axis it names
     return (
-      <div
-        style={{
-          display: "inline-block",
-          backgroundColor: "#0066cc",
-          height: token.name.toLowerCase().includes("y") ? token.value : "8px",
-          width: token.name.toLowerCase().includes("x") ? token.value : "8px",
-        }}
+      <Box
+        className={cx(
+          styles.bar,
+          name.includes("x") && styles["bar-x"],
+          name.includes("y") && styles["bar-y"],
+        )}
+        style={tokenValueStyle(token.value)}
       />
     );
   }
 
   if (token.type === "fontWeight") {
     return (
-      <span style={{ fontWeight: token.value, color: "#333" }}>
+      <Text
+        aria-hidden
+        className={styles["font-weight"]}
+        style={tokenValueStyle(token.value)}
+      >
         Sample Text
-      </span>
+      </Text>
     );
   }
 
-  if (token.type === "number") {
+  if (token.type === "number" || token.type === "duration") {
     return (
-      <span
-        style={{ fontFamily: "monospace", color: "#666", fontSize: "0.875rem" }}
-      >
-        {token.value}
-      </span>
+      <Text family="mono" size={-1} emphasis="muted">
+        {String(token.value)}
+      </Text>
     );
   }
 
-  if (token.type === "duration") {
-    return (
-      <span
-        style={{ fontFamily: "monospace", color: "#666", fontSize: "0.875rem" }}
-      >
-        {token.value}
-      </span>
-    );
-  }
-
-  return <span style={{ color: "#999" }}>—</span>;
+  return <Text emphasis="muted">—</Text>;
 };
