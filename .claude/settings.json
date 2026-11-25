@@ -1,0 +1,14 @@
+{
+  "extraKnownMarketplaces": {
+    "uiid-skills": {
+      "source": {
+        "source": "github",
+        "repo": "uiid-systems/skills",
+        "ref": "v0.1.0"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "uiid@uiid-skills": true
+  }
+}
