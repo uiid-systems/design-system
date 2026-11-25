@@ -168,8 +168,28 @@ describe("CodeEditor", () => {
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
-  it("draws no empty header bar while the value is empty", async () => {
+  it("keeps the same bar from empty to typed, adding only the copy button", async () => {
+    const user = userEvent.setup();
     render(<CodeEditor />);
+    await act(async () => {});
+
+    const header = document.querySelector('[data-slot="code-block-header"]');
+    expect(header).toBeInTheDocument();
+    expect(header).not.toHaveAttribute("data-floating");
+    expect(header).toHaveAttribute("data-ui-bb", "1");
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+
+    await user.type(screen.getByRole("textbox"), "x");
+    expect(document.querySelector('[data-slot="code-block-header"]')).toBe(
+      header,
+    );
+    expect(
+      within(header as HTMLElement).getByRole("button", { name: "Copy code" }),
+    ).toBeInTheDocument();
+  });
+
+  it("draws no header without a filename when copying is off", async () => {
+    render(<CodeEditor defaultValue="x" copyable={false} />);
     await act(async () => {});
     expect(
       document.querySelector('[data-slot="code-block-header"]'),

@@ -14,17 +14,16 @@ import { CodeBlockWrapButton } from "./code-block-wrap-button";
 import styles from "../code-block.module.css";
 
 /**
- * The header's internal props. Kept out of the package barrel: `floatable` is
- * for CodeEditor, whose textarea cannot keep its lines clear of floating
- * buttons, so it keeps a bar whenever it shows one.
+ * The header's internal props. Kept out of the package barrel: `bar` is for
+ * CodeEditor, whose textarea cannot keep its lines clear of floating buttons,
+ * and whose bar must not appear or vanish as its value changes.
  */
 export type CodeBlockHeaderBaseProps = CodeBlockHeaderProps & {
   /**
-   * Float the buttons over the code when there is nothing else for a bar to
-   * show. Off, they sit in a bar instead.
-   * @default true
+   * Draw the bar even with nothing in it, and never float the buttons.
+   * @default false
    */
-  floatable?: boolean;
+  bar?: boolean;
 };
 
 /** The bar's own layout; a floating header has none, the CSS module places it. */
@@ -49,7 +48,7 @@ export const CodeBlockHeaderBase = ({
   fullscreenable = false,
   fullscreen,
   onFullscreenChange,
-  floatable = true,
+  bar = false,
   className,
   LanguageIconProps,
   WrapButtonProps,
@@ -68,8 +67,8 @@ export const CodeBlockHeaderBase = ({
   // none, the buttons float over the code; with no buttons either, nothing.
   const hasContent =
     !!iconLanguage || !!filename || React.Children.toArray(children).length > 0;
-  if (!hasContent && !hasActions) return null;
-  const floating = !hasContent && floatable;
+  if (!hasContent && !hasActions && !bar) return null;
+  const floating = !hasContent && !bar;
 
   return (
     <Group
@@ -125,4 +124,4 @@ export const CodeBlockHeaderBase = ({
     </Group>
   );
 };
-CodeBlockHeaderBase.displayName = "CodeBlockHeader";
+CodeBlockHeaderBase.displayName = "CodeBlockHeaderBase";
