@@ -31,7 +31,7 @@ export const CodeBlockHeader = ({
   children,
   ...props
 }: CodeBlockHeaderProps) => {
-  // Nothing to copy means no copy button, rather than a disabled one.
+  // Nothing to copy means no copy button at all.
   const showCopy = copyable && !!code;
 
   return (
