@@ -9,14 +9,11 @@ import {
   disabledControls,
 } from "./constants";
 
-const SAMPLE =
-  "UIID is a modular React component library. Design tokens define the visual language, and components built on Base UI compose it into product surfaces.";
-
 const meta = {
   title: "Typography/Reveal",
   component: Reveal,
   args: {
-    children: SAMPLE,
+    children: Examples.REVEAL_SAMPLE,
     size: 1,
   },
   argTypes: {
