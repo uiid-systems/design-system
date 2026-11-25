@@ -42,10 +42,10 @@ export const Accordion = ({
     >
       {items.map((item) => (
         <AccordionItem
+          {...ItemProps}
           key={item.value}
           value={item.value}
           disabled={item.disabled}
-          {...ItemProps}
         >
           <AccordionHeader {...HeaderProps}>
             <AccordionTrigger {...TriggerProps} icon={item.icon} size={size}>

@@ -556,4 +556,21 @@ describe("Accordion slot children", () => {
     expect(screen.getByText("First content")).toBeInTheDocument();
     expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
   });
+
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("gives each item its own value and disabled over the same keys in ItemProps", () => {
+    render(
+      <Accordion
+        items={sampleItems}
+        defaultValue={["item-1"]}
+        ItemProps={
+          { value: "shared", disabled: true } as AccordionProps["ItemProps"]
+        }
+      />,
+    );
+    expect(screen.getByText("First content")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "First" })).not.toHaveAttribute(
+      "data-disabled",
+    );
+  });
 });
