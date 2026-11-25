@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stack, Tabs } from "@uiid/design-system";
 
+import * as Examples from "../../../../packages/navigation/src/tabs/tabs.examples";
 import { MOCK_TABS } from "./tabs.mocks";
 
 const meta: Meta<typeof Tabs> = {
@@ -32,17 +33,18 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = { name: "Tabs" };
 
-export const Small: Story = {
-  name: "Small",
-  args: { size: "small" },
-};
+export const Basic: Story = { render: () => <Examples.Default /> };
 
-export const Large: Story = {
-  name: "Large",
-  args: { size: "large" },
-};
+export const DefaultValue: Story = { render: () => <Examples.DefaultValue /> };
 
-export const Ghost: Story = {
-  name: "Ghost",
-  args: { variant: "ghost" },
-};
+export const Controlled: Story = { render: () => <Examples.Controlled /> };
+
+export const Sizes: Story = { render: () => <Examples.Sizes /> };
+
+export const Ghost: Story = { render: () => <Examples.Ghost /> };
+
+export const FullWidth: Story = { render: () => <Examples.FullWidth /> };
+
+export const KeepMounted: Story = { render: () => <Examples.KeepMounted /> };
+
+export const Composed: Story = { render: () => <Examples.Composed /> };
