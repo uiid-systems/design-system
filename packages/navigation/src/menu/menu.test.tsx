@@ -1,11 +1,22 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { PencilIcon } from "@uiid/icons/pencil";
 import { StarIcon } from "@uiid/icons/star";
 import { describe, it, expect, vi } from "vitest";
 
 import { Menu } from "./menu";
 import { MOCK_ITEMS } from "./menu.mocks";
 import type { MenuProps } from "./menu.types";
+import {
+  MenuItem,
+  MenuPopup,
+  MenuPortal,
+  MenuPositioner,
+  MenuRoot,
+  MenuTrigger,
+  SubmenuRoot,
+  SubmenuTrigger,
+} from "./subcomponents";
 
 import styles from "./menu.module.css";
 
@@ -78,6 +89,155 @@ describe("Menu backdrop", () => {
       "data-slot",
       "menu-backdrop",
     );
+  });
+});
+
+/*
+ * Menu wears the surface every other popup list does: a `Card` holding
+ * `ListItem` rows, the same structure as Select's popup.
+ */
+describe("Menu surface", () => {
+  const popup = () =>
+    document.querySelector<HTMLElement>("[data-slot='menu-popup']");
+
+  it("renders the popup as a Card with each row on a ListItem", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={MOCK_ITEMS} />);
+
+    await user.click(screen.getByText("Open"));
+
+    expect(popup()).toHaveClass("palette-neutral");
+    expect(
+      popup()!.querySelector("[data-slot='card-inner-container']"),
+    ).toBeInTheDocument();
+
+    const rows = document.querySelectorAll(
+      "[data-slot='menu-item'], [data-slot='submenu-trigger']",
+    );
+    expect(rows).toHaveLength(MOCK_ITEMS.length);
+    for (const row of rows) {
+      expect(row.querySelector("[data-slot='list-item']")).toBeInTheDocument();
+    }
+  });
+
+  it("gives the popup Card the same padding and gap defaults as Select's", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={MOCK_ITEMS} />);
+
+    await user.click(screen.getByText("Open"));
+
+    expect(popup()).toHaveAttribute("data-ui-pt", "2");
+    expect(popup()).toHaveAttribute("data-ui-gap", "0");
+  });
+
+  /*
+   * Base UI merges the render element's own props over the part's, so a
+   * default written as a literal on the `Card` would beat these.
+   */
+  it("passes layout props from PopupProps to the Card", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        PopupProps={{ p: 4, gap: 1, w: null }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(popup()).toHaveAttribute("data-ui-pt", "4");
+    expect(popup()).toHaveAttribute("data-ui-pl", "4");
+    expect(popup()).toHaveAttribute("data-ui-gap", "1");
+    expect(popup()).not.toHaveAttribute("data-ui-w");
+  });
+
+  it("tints the popup Card with a palette hue", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu trigger="Open" items={MOCK_ITEMS} PopupProps={{ color: "blue" }} />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(popup()).toHaveClass("palette-blue");
+  });
+});
+
+describe("Menu parts", () => {
+  const renderParts = (children: React.ReactNode) =>
+    render(
+      <MenuRoot open>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>{children}</MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+  it("draws a MenuItem's icon and label with no children", () => {
+    renderParts(<MenuItem label="Edit" icon={PencilIcon} />);
+
+    const item = screen.getByRole("menuitem", { name: "Edit" });
+    expect(
+      item.querySelector("[data-slot='list-item-icon']"),
+    ).toBeInTheDocument();
+    expect(item.querySelector("[data-slot='list-item']")).toHaveTextContent(
+      "Edit",
+    );
+  });
+
+  it("draws a MenuItem's description under its label", () => {
+    renderParts(<MenuItem label="Edit" description="Change the name" />);
+
+    expect(screen.getByRole("menuitem")).toHaveTextContent("Change the name");
+  });
+
+  it("lets a MenuItem's children replace the row's content", () => {
+    renderParts(
+      <MenuItem label="Edit" icon={PencilIcon}>
+        <span data-testid="custom-row">Custom</span>
+      </MenuItem>,
+    );
+
+    const item = screen.getByRole("menuitem");
+    expect(screen.getByTestId("custom-row")).toBeInTheDocument();
+    expect(item.querySelector("[data-slot='list-item-icon']")).toBeNull();
+    expect(item).not.toHaveTextContent("Edit");
+  });
+
+  it("draws a SubmenuTrigger's icon, label and description", () => {
+    renderParts(
+      <SubmenuRoot>
+        <SubmenuTrigger
+          label="Share"
+          description="Send a copy"
+          icon={PencilIcon}
+        />
+      </SubmenuRoot>,
+    );
+
+    const trigger = screen.getByRole("menuitem");
+    expect(
+      trigger.querySelector("[data-slot='list-item-icon']"),
+    ).toBeInTheDocument();
+    expect(trigger).toHaveTextContent("Share");
+    expect(trigger).toHaveTextContent("Send a copy");
+  });
+
+  it("lets a SubmenuTrigger's children replace the row's content", () => {
+    renderParts(
+      <SubmenuRoot>
+        <SubmenuTrigger label="Share">
+          <span data-testid="custom-trigger">Custom</span>
+        </SubmenuTrigger>
+      </SubmenuRoot>,
+    );
+
+    expect(screen.getByTestId("custom-trigger")).toBeInTheDocument();
+    expect(screen.getByRole("menuitem")).not.toHaveTextContent("Share");
   });
 });
 
@@ -498,6 +658,22 @@ describe("Menu slot props", () => {
         ItemProps={{ children: "Other" }}
       />
     );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `label` is its content
+        ItemProps={{ label: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `icon` is its content
+        ItemProps={{ icon: StarIcon }}
+      />
+    );
   });
 
   it("rejects the submenu's children in its slots, which come from each entry", () => {
@@ -515,6 +691,22 @@ describe("Menu slot props", () => {
         items={MOCK_ITEMS}
         // @ts-expect-error -- each entry's `label` and `icon` are its content
         SubmenuTriggerProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `label` is its content
+        SubmenuTriggerProps={{ label: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `icon` is its content
+        SubmenuTriggerProps={{ icon: StarIcon }}
       />
     );
   });
@@ -569,5 +761,34 @@ describe("Menu slot precedence", () => {
     expect(screen.queryByText("Slot trigger")).not.toBeInTheDocument();
     expect(screen.queryByText("Slot popup")).not.toBeInTheDocument();
     expect(screen.queryByText("Slot item")).not.toBeInTheDocument();
+  });
+
+  it("keeps each entry's label and icon when a slot passes its own", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        ItemProps={untyped<MenuProps["ItemProps"]>({
+          label: "Slot label",
+          icon: StarIcon,
+        })}
+        SubmenuTriggerProps={untyped<MenuProps["SubmenuTriggerProps"]>({
+          label: "Slot trigger label",
+          icon: StarIcon,
+          children: "Slot trigger content",
+        })}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getByRole("menuitem", { name: "Lorem" })).toBeInTheDocument();
+    expect(screen.getByText("Lorem ipsum")).toBeInTheDocument();
+    expect(screen.queryByText("Slot label")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot trigger content")).not.toBeInTheDocument();
+    expect(
+      document.querySelector("[data-slot='list-item-icon']"),
+    ).not.toBeInTheDocument();
   });
 });

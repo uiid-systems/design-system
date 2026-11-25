@@ -11,7 +11,6 @@ import {
   SubmenuTrigger,
   MenuPositioner,
 } from "@uiid/design-system";
-import { ChevronRightIcon } from "@uiid/icons/chevron-right";
 
 import * as Examples from "../../../../packages/navigation/src/menu/menu.examples";
 import { MOCK_ITEMS } from "./menu.mocks";
@@ -40,19 +39,16 @@ const meta: Meta<typeof Menu> = {
           <MenuBackdrop />
           <MenuPositioner>
             <MenuPopup>
-              <MenuItem>Lorem</MenuItem>
-              <MenuItem>Lorem ipsum dolor sit amet</MenuItem>
+              <MenuItem label="Lorem" />
+              <MenuItem label="Lorem ipsum dolor sit amet" />
               <SubmenuRoot>
-                <SubmenuTrigger>
-                  Lorem ipsum
-                  <ChevronRightIcon size={12} />
-                </SubmenuTrigger>
+                <SubmenuTrigger label="Lorem ipsum" />
                 <MenuPortal>
                   <MenuPositioner>
                     <MenuPopup>
-                      <MenuItem>Item 3.1</MenuItem>
-                      <MenuItem>Item 3.2</MenuItem>
-                      <MenuItem>Item 3.3</MenuItem>
+                      <MenuItem label="Item 3.1" />
+                      <MenuItem label="Item 3.2" />
+                      <MenuItem label="Item 3.3" />
                     </MenuPopup>
                   </MenuPositioner>
                 </MenuPortal>

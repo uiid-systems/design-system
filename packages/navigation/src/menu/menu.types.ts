@@ -1,6 +1,9 @@
 import type { Menu as BaseMenu } from "@base-ui/react/menu";
+import type { CardContainerProps } from "@uiid/cards";
 import type { Icon } from "@uiid/icons";
 import type { GroupProps } from "@uiid/layout";
+import type { ListItemProps } from "@uiid/lists";
+import type { PaletteColor } from "@uiid/tokens";
 import type {
   WithLayoutProps,
   WithStringClassName,
@@ -30,13 +33,42 @@ export type MenuPortalProps = BaseMenu.Portal.Props;
 export type MenuBackdropProps = WithStringClassName<BaseMenu.Backdrop.Props>;
 export type MenuPositionerProps =
   WithStringClassName<BaseMenu.Positioner.Props>;
-export type MenuPopupProps = WithStringClassName<BaseMenu.Popup.Props>;
-export type MenuItemProps = WithStringClassName<BaseMenu.Item.Props>;
+/*
+ * The popup takes the layout props `Card` spreads onto its container, not its
+ * content slots (`title`, `footer`, ...): it is a surface for the rows alone.
+ */
+export type MenuPopupProps = WithLayoutProps<
+  WithStringClassName<BaseMenu.Popup.Props>,
+  CardContainerProps
+> & {
+  /**
+   * Palette hue for the popup surface, forwarded to the `Card` the popup
+   * renders as. Left undefined, `Card` falls back to its own neutral default.
+   */
+  color?: PaletteColor;
+};
+
+/*
+ * A row's content, drawn by the `ListItem` inside it. `label` is Base UI's own
+ * string prop, which also keys typeahead, so it keeps that type.
+ */
+type MenuRowContentProps = {
+  /** Secondary line, stacked under the label. */
+  description?: ListItemProps["description"];
+  /** Drawn before the label. */
+  icon?: Icon;
+  /** Draws the row in place of the `icon` / `label` / `description` block. */
+  children?: React.ReactNode;
+};
+
+export type MenuItemProps = WithStringClassName<BaseMenu.Item.Props> &
+  MenuRowContentProps;
 export type SubmenuRootProps = BaseMenu.SubmenuRoot.Props;
 export type SubmenuTriggerProps = WithLayoutProps<
   WithStringClassName<BaseMenu.SubmenuTrigger.Props>,
   GroupProps
->;
+> &
+  MenuRowContentProps;
 
 export type MenuProps = {
   trigger: MenuTriggerProps["children"];
@@ -61,9 +93,12 @@ export type MenuProps = {
   /** Reaches the root positioner. `side` and `align` are set on Menu itself. */
   PositionerProps?: Omit<MenuPositionerProps, "side" | "align" | "children">;
   /** Reaches every item. Each entry's `label` and `icon` are its content. */
-  ItemProps?: Omit<MenuItemProps, "children">;
+  ItemProps?: Omit<MenuItemProps, "label" | "icon" | "children">;
   /** Reaches every submenu root. Each entry's `items` fill its submenu. */
   SubmenuRootProps?: Omit<SubmenuRootProps, "children">;
   /** Reaches every submenu trigger. Each entry's `label` and `icon` are its content. */
-  SubmenuTriggerProps?: Omit<SubmenuTriggerProps, "children">;
+  SubmenuTriggerProps?: Omit<
+    SubmenuTriggerProps,
+    "label" | "icon" | "children"
+  >;
 } & Pick<MenuPositionerProps, "side" | "align">;
