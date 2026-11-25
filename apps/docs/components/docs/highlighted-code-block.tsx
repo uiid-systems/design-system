@@ -21,6 +21,10 @@ export async function HighlightedCodeBlock({
       language={language}
       highlightLines={highlightLines}
       html={html}
+      // The docs keep the wrap and fullscreen buttons the library used to
+      // show by default; a caller can still turn either off.
+      wrappable
+      fullscreenable
       {...props}
     />
   );
