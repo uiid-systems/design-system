@@ -7,7 +7,7 @@ Use Card when you want to:
 - Group related content behind a single surface with consistent padding and border
 - Lift the card off the page with `shadow`. Cards are flat by default; Dialog, Drawer, Popover, Tooltip and the Select and Combobox popups set it for their floating surfaces
 - Compose a header from any combination of `title`, `description`, and `action` — pass only the props you need
-- Add a flush `thumbnail` above the header (image, illustration, chart)
+- Add a flush `thumbnail` above the header (image, illustration, chart). It fills the card's width by default (`w="full"`); `ThumbnailProps={{ w: null }}` releases it
 - Place a `footer` below the body — typically a row of actions. No divider by default; opt in with `FooterProps={{ separator: true }}`. Dialog, Drawer and Popover turn it on for their footers
 - Strip the chrome for inline placements — remove the padding with `p={0}` and the border with `b={0}` (style the background directly if you need it transparent)
 - Fill the height left in its parent with `grow`: the card takes the parent's leftover space and the body takes what's left under the header, so a full-height page body (a split view, a document viewer) needs no `calc(100dvh - …)`. The parent has to bound its height. `InnerContainerProps={{ grow: false }}` keeps the body at its content height
