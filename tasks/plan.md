@@ -48,7 +48,7 @@ Sizes: S is one or two files, M is three to five.
 
 Start: UI-509 alone. Nothing runs in parallel until the checkpoint.
 
-**Checkpoint at UI-511:** the owner looks at the stories and accepts or corrects the look, and settles whether the popup is at least as wide as its trigger. After it, UI-512, UI-513, UI-514 and UI-515 can start in parallel.
+**Checkpoint at UI-511:** the owner looks at the stories and accepts or corrects the look, and settles whether the popup is at least as wide as its trigger. After it, UI-512, UI-513 and UI-514 can start in parallel.
 
 **Checkpoint at the end of milestone 1:** unit tests, browser tests, typecheck, lint and `pnpm size` pass on `main`; every success criterion in the two specs is checked.
 
@@ -66,7 +66,7 @@ Start: UI-509 alone. Nothing runs in parallel until the checkpoint.
 
 | Task   | Title                                      | Spec            | Size | Blocked by |
 | ------ | ------------------------------------------ | --------------- | ---- | ---------- |
-| UI-515 | Add MenuCheckboxItem and its indicator     | menu-choice 1–6 | M    | UI-511     |
+| UI-515 | Add MenuCheckboxItem and its indicator     | menu-choice 1–6 | M    | UI-514     |
 | UI-519 | Add MenuRadioGroup and MenuRadioItem parts | menu-choice 1–6 | S    | UI-515     |
 
 ### Milestone 4: Context menu
