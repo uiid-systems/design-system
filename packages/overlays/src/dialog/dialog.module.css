@@ -64,12 +64,11 @@
  * one Popover, Tooltip, and the form comboboxes use — Dialog has no anchor, so
  * --transform-origin falls back to `center`.
  *
- * Content taller than the viewport scrolls in the body while the header and
- * footer stay put, from the shared composes-popup-scroll-body; the popup's
- * max-height is what caps it.
+ * The popup's max-height is what caps it. An unstyled popup takes this class
+ * alone, so it adds no surface and is not a scroll container.
  */
 .dialog-popup {
-  composes: composes-popup composes-popup-scroll-body from global;
+  composes: composes-popup from global;
   width: 100%;
   max-height: 100%;
   pointer-events: auto;
@@ -82,6 +81,14 @@
     max-height: none;
     overflow-y: visible;
   }
+}
+
+/*
+ * The Card popup's content taller than the viewport scrolls in the body while
+ * the header and footer stay put, from the shared composes-popup-scroll-body.
+ */
+.dialog-popup-card {
+  composes: composes-popup-scroll-body from global;
 }
 
 .size-small {

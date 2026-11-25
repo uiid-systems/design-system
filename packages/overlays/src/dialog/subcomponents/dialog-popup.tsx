@@ -26,17 +26,18 @@ import styles from "../dialog.module.css";
  * The body scrolls on its own (dialog.module.css). While it overflows it is a
  * tab stop, so the keyboard can scroll it, and a region named by the title.
  */
-export const DialogPopup = ({
+const DialogCardPopup = ({
   size,
   title,
   description,
   action,
   footer,
   hideCloseButton,
+  unstyled: _unstyled,
   className,
   children,
   ...props
-}: DialogPopupProps) => {
+}: Extract<DialogPopupProps, { unstyled?: false }>) => {
   // Base UI's Title takes this id, so the body can name itself after it.
   const titleId = useId();
   const bodyProps = useBodyOverflow(isRenderable(title) ? titleId : undefined);
@@ -46,6 +47,7 @@ export const DialogPopup = ({
       data-slot="dialog-popup"
       className={cx(
         styles["dialog-popup"],
+        styles["dialog-popup-card"],
         dialogVariants({ size }),
         className,
       )}
@@ -77,4 +79,34 @@ export const DialogPopup = ({
     </BaseDialog.Popup>
   );
 };
+
+/**
+ * The bare popup, for content that brings its own surface: Base UI's popup
+ * element with the dialog's class, size and transition, and the children as
+ * its direct content. No Card, so no padding, slots or scrolling body. The
+ * caller names it, with `aria-label` or `aria-labelledby`.
+ */
+const DialogUnstyledPopup = ({
+  size,
+  unstyled: _unstyled,
+  className,
+  ...props
+}: Extract<DialogPopupProps, { unstyled: true }>) => (
+  <BaseDialog.Popup
+    data-slot="dialog-popup"
+    className={cx(styles["dialog-popup"], dialogVariants({ size }), className)}
+    {...props}
+  />
+);
+
+/**
+ * Two components rather than one with a branch: only the Card popup calls
+ * `useId` and `useBodyOverflow`, and a hook can't be called conditionally.
+ */
+export const DialogPopup = (props: DialogPopupProps) =>
+  props.unstyled ? (
+    <DialogUnstyledPopup {...props} />
+  ) : (
+    <DialogCardPopup {...props} />
+  );
 DialogPopup.displayName = "DialogPopup";
