@@ -1,8 +1,9 @@
 .code-block {
   /* The radius inside the border, which is the shape the block clips to. */
   --code-block-inner-radius: calc(var(--globals-border-radius) - var(--globals-border-width));
-  /* The frame takes the editor theme's background, so the bar, the code, the
-     buttons' plate and the toggle are one surface. The two tokens restate the
+  /* The frame takes the editor theme's background, so the frame, the code, the
+     floating buttons' plate and the collapsed fade are one surface. The header
+     bar and the toggle stay on the theme's surface. The two tokens restate the
      Shiki themes' backgrounds; a browser test holds them to the rendered code. */
   --code-block-surface: light-dark(var(--code-surface-light), var(--code-surface-dark));
 
@@ -256,8 +257,9 @@
   max-height: calc(var(--code-rows) * var(--code-font-size) * var(--code-line-height) + var(--code-padding));
 }
 
-/* A fade to the block's surface over that last row stands in for the padding. It sits at the visible bottom edge, so it does not move when
-   a long line scrolls sideways. */
+/* A fade to the block's surface over that last row stands in for the padding.
+   It sits at the visible bottom edge, so it does not move when a long line
+   scrolls sideways. */
 :where(.code-block-scroll)[data-collapsed]:has(~ .code-block-expand-toggle)::after {
   content: "";
   position: absolute;
