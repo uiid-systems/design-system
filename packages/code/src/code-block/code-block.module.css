@@ -166,23 +166,12 @@
   }
 }
 
-/* Fullscreen dialog. Base UI portals the backdrop and popup to the body;
-   the popup is a second `.code-block` carrying [data-fullscreen]. */
-/* On the popup layer, like a forced nested Dialog backdrop: nested in another
-   Dialog it shares that portal's stacking context and must paint over the outer
-   popup. Source order keeps it under this popup. */
-.code-block-backdrop {
-  composes: composes-backdrop from global;
-  z-index: var(--globals-z-index-popup);
-}
-
+/* Fullscreen dialog. The popup is an unstyled `size="full"` DialogPopup, a
+   second `.code-block` carrying [data-fullscreen]. The dialog viewport places
+   it and stacks it, the backdrop included, above a Dialog it opens from, and
+   `size="full"` gives it the viewport's height inside the viewport's padding. */
 .code-block[data-fullscreen] {
-  --code-block-fullscreen-inset: clamp(1rem, 4vw, 3rem);
-
-  position: fixed;
-  z-index: var(--globals-z-index-popup);
-  inset: var(--code-block-fullscreen-inset);
-  /* Fills the inset box up to 1100px, then centers in it. */
+  /* Fills the viewport's width up to 1100px, then centers in it. */
   max-width: 1100px;
   margin-inline: auto;
   display: flex;

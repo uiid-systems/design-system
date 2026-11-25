@@ -1,6 +1,6 @@
-import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Dialog } from "@uiid/overlays";
 import * as React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
@@ -673,16 +673,35 @@ describe("CodeBlock", () => {
     expect(ref.current).toBe(inlineCopy);
   });
 
+  it("renders the fullscreen view in the UIID dialog viewport", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="const x = 1;" fullscreenable />);
+
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
+    const dialog = await screen.findByRole("dialog");
+
+    const viewport = dialog.parentElement!;
+    expect(viewport).toHaveAttribute("data-slot", "dialog-viewport");
+    expect(viewport.parentElement).toHaveAttribute(
+      "data-slot",
+      "code-block-fullscreen",
+    );
+    // The popup is the frame itself, with the block's parts as its children.
+    expect(
+      dialog.querySelector('[data-slot="card-container"]'),
+    ).not.toBeInTheDocument();
+    expect(dialog.firstElementChild).toHaveAttribute(
+      "data-slot",
+      "code-block-header",
+    );
+  });
+
   it("renders the backdrop when nested in another dialog", async () => {
     const user = userEvent.setup();
     render(
-      <BaseDialog.Root open>
-        <BaseDialog.Portal>
-          <BaseDialog.Popup aria-label="Outer">
-            <CodeBlock code="const x = 1;" fullscreenable />
-          </BaseDialog.Popup>
-        </BaseDialog.Portal>
-      </BaseDialog.Root>,
+      <Dialog open title="Outer">
+        <CodeBlock code="const x = 1;" fullscreenable />
+      </Dialog>,
     );
     const outer = await screen.findByRole("dialog", { name: "Outer" });
 
@@ -694,6 +713,38 @@ describe("CodeBlock", () => {
     expect(
       document.querySelector('[data-slot="code-block-backdrop"]'),
     ).toBeInTheDocument();
+  });
+
+  it("takes focus inside another dialog and returns it to the toggle on close", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog open title="Outer">
+        <CodeBlock code="const x = 1;" fullscreenable />
+      </Dialog>,
+    );
+    const outer = await screen.findByRole("dialog", { name: "Outer" });
+    const toggle = within(outer).getByRole("button", {
+      name: /enter fullscreen/i,
+    });
+
+    await user.click(toggle);
+    const fullscreen = await screen.findByRole("dialog", {
+      name: "Code block",
+    });
+    // Focus has left the toggle, so the check below cannot pass by staying.
+    await waitFor(() => expect(fullscreen).toHaveFocus());
+    expect(toggle).not.toHaveFocus();
+
+    await user.click(
+      within(fullscreen).getByRole("button", { name: /exit fullscreen/i }),
+    );
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("dialog", { name: "Code block" }),
+      ).not.toBeInTheDocument();
+    });
+    expect(screen.getByRole("dialog", { name: "Outer" })).toBeInTheDocument();
+    await waitFor(() => expect(toggle).toHaveFocus());
   });
 
   it("closes from the exit button and returns focus to the toggle", async () => {
@@ -745,13 +796,9 @@ describe("CodeBlock", () => {
   it("closes only the fullscreen dialog on Escape inside another dialog", async () => {
     const user = userEvent.setup();
     render(
-      <BaseDialog.Root open>
-        <BaseDialog.Portal>
-          <BaseDialog.Popup aria-label="Outer">
-            <CodeBlock code="const x = 1;" fullscreenable />
-          </BaseDialog.Popup>
-        </BaseDialog.Portal>
-      </BaseDialog.Root>,
+      <Dialog open title="Outer">
+        <CodeBlock code="const x = 1;" fullscreenable />
+      </Dialog>,
     );
     const outer = await screen.findByRole("dialog", { name: "Outer" });
 

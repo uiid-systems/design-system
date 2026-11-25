@@ -1,6 +1,12 @@
 "use client";
 
-import { Dialog as BaseDialog } from "@base-ui/react/dialog";
+import {
+  DialogBackdrop,
+  DialogPopup,
+  DialogPortal,
+  DialogRoot,
+  DialogViewport,
+} from "@uiid/overlays";
 import { cx, definedProps } from "@uiid/utils";
 import * as React from "react";
 
@@ -190,30 +196,28 @@ export const CodeBlock = ({
       </div>
 
       {fullscreenable && (
-        <BaseDialog.Root
-          open={fullscreen}
-          onOpenChange={handleFullscreenChange}
-        >
-          <BaseDialog.Portal data-slot="code-block-fullscreen">
+        <DialogRoot open={fullscreen} onOpenChange={handleFullscreenChange}>
+          <DialogPortal data-slot="code-block-fullscreen">
             {/* forceRender keeps the scrim when nested in another Dialog. */}
-            <BaseDialog.Backdrop
-              forceRender
-              data-slot="code-block-backdrop"
-              className={styles["code-block-backdrop"]}
-            />
-            <BaseDialog.Popup
-              ref={popupRef}
-              data-slot="code-block"
-              data-wrap={wrap || undefined}
-              data-fullscreen
-              aria-label={filename ?? "Code block"}
-              className={cx(styles["code-block"], className)}
-              initialFocus={popupRef}
-            >
-              {renderParts(true)}
-            </BaseDialog.Popup>
-          </BaseDialog.Portal>
-        </BaseDialog.Root>
+            <DialogBackdrop forceRender data-slot="code-block-backdrop" />
+            <DialogViewport>
+              {/* Unstyled, so the popup is the block's own frame. */}
+              <DialogPopup
+                unstyled
+                size="full"
+                ref={popupRef}
+                data-slot="code-block"
+                data-wrap={wrap || undefined}
+                data-fullscreen
+                aria-label={filename ?? "Code block"}
+                className={cx(styles["code-block"], className)}
+                initialFocus={popupRef}
+              >
+                {renderParts(true)}
+              </DialogPopup>
+            </DialogViewport>
+          </DialogPortal>
+        </DialogRoot>
       )}
     </>
   );
