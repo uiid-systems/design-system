@@ -1,6 +1,8 @@
 import { render } from "@testing-library/react";
+// Types `cdp().send`, which the Playwright provider adds to vitest/browser.
+import type {} from "@vitest/browser-playwright";
 import { describe, expect, it } from "vitest";
-import { page, userEvent } from "vitest/browser";
+import { cdp, page, server, userEvent } from "vitest/browser";
 
 import { CodeBlock } from "./code-block";
 
@@ -46,15 +48,24 @@ const toPx = (length: string) => {
   return width;
 };
 
+/** A CSS colour, such as a token, resolved by a probe element. */
+const toColor = (color: string) => {
+  const probe = document.createElement("div");
+  probe.style.color = color;
+  document.body.append(probe);
+  const resolved = getComputedStyle(probe).color;
+  probe.remove();
+  return resolved;
+};
+
+const TRANSPARENT = new Set(["rgba(0, 0, 0, 0)", "transparent"]);
+
 /** The boxes of an element's rendered text, one per line fragment. */
 const textRects = (el: Element) => {
   const range = document.createRange();
   range.selectNodeContents(el);
   return [...range.getClientRects()].filter((r) => r.width > 0);
 };
-
-const intersects = (a: DOMRect, b: DOMRect) =>
-  a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
 
 /** Visible as a user sees it, opacity and visibility of ancestors included. */
 const isShown = (el: Element) =>
@@ -115,17 +126,18 @@ describe("CodeBlock expand toggle", () => {
     await expect.element(toggle).toBeInTheDocument();
     const el = toggle.element() as HTMLElement;
 
-    const muted = getComputedStyle(el).color;
-    const text = getComputedStyle(query('[data-slot="code-block"]')).color;
-    expect(muted).not.toBe(text);
+    const muted = toColor("var(--shade-muted)");
+    const foreground = toColor("var(--shade-foreground)");
+    expect(muted).not.toBe(foreground);
+    await expect.poll(() => getComputedStyle(el).color).toBe(muted);
 
     await userEvent.hover(el);
-    await expect.poll(() => getComputedStyle(el).color).not.toBe(muted);
+    await expect.poll(() => getComputedStyle(el).color).toBe(foreground);
     await userEvent.unhover(el);
     await expect.poll(() => getComputedStyle(el).color).toBe(muted);
 
     await tabTo(el);
-    await expect.poll(() => getComputedStyle(el).color).not.toBe(muted);
+    await expect.poll(() => getComputedStyle(el).color).toBe(foreground);
   });
 
   it("fades the last collapsed line, and only while collapsed", async () => {
@@ -205,6 +217,24 @@ describe("CodeBlock frame", () => {
         expect(visible, `${el.dataset.slot ?? el.tagName} ${side}`).toBe(false);
       }
     }
+
+    // One surface: the bar, the code area and the code's own <pre> are either
+    // transparent or painted in the block's colour.
+    const surface = getComputedStyle(block).backgroundColor;
+    expect(TRANSPARENT.has(surface)).toBe(false);
+    const layers = [
+      header,
+      query('[data-slot="code-block-scroll"]'),
+      query('[data-slot="code-block-content"]'),
+      block.querySelector("pre")!,
+    ];
+    for (const el of layers) {
+      const background = getComputedStyle(el).backgroundColor;
+      expect(
+        TRANSPARENT.has(background) || background === surface,
+        `${el.dataset.slot ?? el.tagName} ${background}`,
+      ).toBe(true);
+    }
   });
 });
 
@@ -263,8 +293,10 @@ describe("CodeBlock floating buttons", () => {
 
     expect(getComputedStyle(header).position).toBe("absolute");
     // Right-aligned near the corner and centred on the first line.
-    expect(box.right - rect.right).toBeGreaterThan(0);
-    expect(box.right - rect.right).toBeLessThan(16);
+    expect(box.right - rect.right).toBeCloseTo(
+      toPx("var(--code-actions-inset)"),
+      0,
+    );
     const lineCentre = firstLine.top + firstLine.height / 2;
     expect(rect.top + rect.height / 2).toBeCloseTo(lineCentre, 0);
 
@@ -310,11 +342,11 @@ describe("CodeBlock floating buttons", () => {
     const [first, second] = [
       ...document.querySelectorAll<HTMLElement>(".line"),
     ];
-    // Only the line's own bleed on the second line.
-    expect(px(getComputedStyle(second).paddingInlineEnd)).toBeCloseTo(
-      toPx("var(--spacing-unit)"),
-      1,
-    );
+    const bleed = toPx("var(--spacing-unit)");
+    // The first line reserves the buttons' space; the second has only its
+    // own bleed.
+    expect(px(getComputedStyle(first).paddingInlineEnd)).toBeGreaterThan(bleed);
+    expect(px(getComputedStyle(second).paddingInlineEnd)).toBeCloseTo(bleed, 1);
 
     // The first line's top row ends a full gap before the buttons start.
     const rows = textRects(first);
@@ -329,7 +361,7 @@ describe("CodeBlock floating buttons", () => {
     }
   });
 
-  it("keep every line clear while a collapsed block scrolls beneath them", async () => {
+  it("reserve only the first line while collapsed, since it cannot scroll", async () => {
     const code = Array.from({ length: 12 }, () => LONG_FIRST_LINE).join("\n");
     render(
       <div style={{ width: 360 }}>
@@ -346,26 +378,15 @@ describe("CodeBlock floating buttons", () => {
       .element(page.getByRole("button", { name: "Show more" }))
       .toBeInTheDocument();
 
-    const scroll = query('[data-slot="code-block-scroll"]');
-    const actions = query('[data-slot="code-block-actions"]');
-    // Scroll the second line up to where the first was, beside the buttons,
-    // however many rows the first line wraps to.
-    const lines = [...document.querySelectorAll<HTMLElement>(".line")];
-    scroll.scrollTop =
-      lines[1].getBoundingClientRect().top -
-      lines[0].getBoundingClientRect().top;
-    expect(scroll.scrollTop).toBeGreaterThan(0);
-
-    // Only lines after the first count: the first reserves its end anyway.
-    const actionsRect = actions.getBoundingClientRect();
-    const later = lines.slice(1).flatMap(textRects);
-    const beside = later.filter(
-      (r) => r.top < actionsRect.bottom && r.bottom > actionsRect.top,
+    const lines = document.querySelectorAll<HTMLElement>(".line");
+    const bleed = toPx("var(--spacing-unit)");
+    expect(px(getComputedStyle(lines[0]).paddingInlineEnd)).toBeGreaterThan(
+      bleed,
     );
-    expect(beside.length).toBeGreaterThan(0);
-    for (const r of later) {
-      expect(intersects(r, actionsRect)).toBe(false);
-    }
+    expect(px(getComputedStyle(lines[1]).paddingInlineEnd)).toBeCloseTo(
+      bleed,
+      1,
+    );
   });
 
   it("reserve only the first line when a block with rows fits them", async () => {
@@ -394,40 +415,6 @@ describe("CodeBlock floating buttons", () => {
     );
   });
 
-  it("drop the every-line reserve once a collapsed block is expanded", async () => {
-    const code = Array.from({ length: 12 }, () => LONG_FIRST_LINE).join("\n");
-    render(
-      <div style={{ width: 360 }}>
-        <CodeBlock
-          code={code}
-          html={toHtml(code)}
-          rows={4}
-          defaultWrap
-          wrappable
-        />
-      </div>,
-    );
-    const toggle = page.getByRole("button", { name: "Show more" });
-    await expect.element(toggle).toBeInTheDocument();
-
-    const second = document.querySelectorAll<HTMLElement>(".line")[1];
-    const bleed = toPx("var(--spacing-unit)");
-    expect(px(getComputedStyle(second).paddingInlineEnd)).toBeGreaterThan(
-      bleed,
-    );
-
-    await toggle.click();
-    await expect
-      .element(page.getByRole("button", { name: "Show less" }))
-      .toBeInTheDocument();
-    // Query again: the content can re-render its lines on expanding.
-    const expanded = document.querySelectorAll<HTMLElement>(".line")[1];
-    expect(px(getComputedStyle(expanded).paddingInlineEnd)).toBeCloseTo(
-      bleed,
-      1,
-    );
-  });
-
   it("reserve every line's end in the fullscreen view", async () => {
     const code = `${LONG_FIRST_LINE}\nconst second = 2;`;
     render(<CodeBlock code={code} html={toHtml(code)} fullscreenable />);
@@ -446,7 +433,124 @@ describe("CodeBlock floating buttons", () => {
   it("reserve no first-line space under a header bar", async () => {
     render(<CodeBlock code="x" html={toHtml("x")} filename="a.ts" />);
     const line = query(".line");
-    // Only the line's own quarter-unit inline padding.
-    expect(px(getComputedStyle(line).paddingInlineEnd)).toBeLessThan(8);
+    // Only the line's own bleed.
+    expect(px(getComputedStyle(line).paddingInlineEnd)).toBeCloseTo(
+      toPx("var(--spacing-unit)"),
+      1,
+    );
   });
 });
+
+describe("CodeBlock collapsed code area", () => {
+  it("clips instead of scrolling, so Show more is the way to the rest", async () => {
+    render(<CodeBlock code={LONG} html={toHtml(LONG)} rows={4} />);
+    const toggle = page.getByRole("button", { name: "Show more" });
+    await expect.element(toggle).toBeInTheDocument();
+
+    const scroll = query('[data-slot="code-block-scroll"]');
+    expect(getComputedStyle(scroll).overflowY).toBe("clip");
+    expect(scroll.scrollHeight).toBeGreaterThan(scroll.clientHeight);
+    scroll.scrollTop = 100;
+    expect(scroll.scrollTop).toBe(0);
+    await userEvent.wheel(scroll, { delta: { y: 200 } });
+    expect(scroll.scrollTop).toBe(0);
+  });
+
+  it("leaves no tab stop before the toggle when no line scrolls sideways", async () => {
+    render(
+      <CodeBlock code={LONG} html={toHtml(LONG)} rows={4} copyable={false} />,
+    );
+    const toggle = page.getByRole("button", { name: "Show more" });
+    await expect.element(toggle).toBeInTheDocument();
+
+    // The first Tab into the page lands on the toggle, the block's one control.
+    (document.activeElement as HTMLElement | null)?.blur();
+    await userEvent.tab();
+    expect(toggle.element()).toHaveFocus();
+  });
+
+  it("still scrolls a long unwrapped line sideways", async () => {
+    const code = `${LONG_FIRST_LINE.repeat(3)}\n${LONG}`;
+    render(
+      <div style={{ width: 360 }}>
+        <CodeBlock code={code} html={toHtml(code)} rows={4} />
+      </div>,
+    );
+    await expect
+      .element(page.getByRole("button", { name: "Show more" }))
+      .toBeInTheDocument();
+
+    const content = query('[data-slot="code-block-content"]');
+    expect(content.scrollWidth).toBeGreaterThan(content.clientWidth);
+    // The content is the one scroller, so it is a tab stop and the arrow keys
+    // move it sideways.
+    await tabTo(content);
+    await userEvent.keyboard("{ArrowRight}");
+    await expect.poll(() => content.scrollLeft).toBeGreaterThan(0);
+  });
+
+  it("clips nothing and shows no toggle when the code fits in its rows", async () => {
+    render(
+      <CodeBlock code="const a = 1;" html={toHtml("const a = 1;")} rows={4} />,
+    );
+    const scroll = query('[data-slot="code-block-scroll"]');
+    expect(scroll).toHaveAttribute("data-collapsed");
+    expect(scroll.scrollHeight).toBeLessThanOrEqual(scroll.clientHeight);
+    expect(
+      page.getByRole("button", { name: "Show more" }).query(),
+    ).not.toBeInTheDocument();
+  });
+});
+
+/* Emulating the media query and holding a press need Chromium's DevTools
+   protocol, so other browsers skip this. */
+describe.skipIf(server.browser !== "chromium")(
+  "CodeBlock under reduced motion",
+  () => {
+    const setReducedMotion = (value: "reduce" | "no-preference") =>
+      cdp().send("Emulation.setEmulatedMedia", {
+        features: [{ name: "prefers-reduced-motion", value }],
+      });
+
+    const mouse = async (
+      el: HTMLElement,
+      type: "mousePressed" | "mouseReleased",
+    ) => {
+      const rect = el.getBoundingClientRect();
+      await cdp().send("Input.dispatchMouseEvent", {
+        type,
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+        button: "left",
+        clickCount: 1,
+      });
+    };
+
+    it("does not scale a button on press, as it does otherwise", async () => {
+      render(<CodeBlock code="x" html={toHtml("x")} wrappable />);
+      const button = page
+        .getByRole("button", { name: "Toggle line wrap" })
+        .element() as HTMLElement;
+
+      try {
+        await setReducedMotion("no-preference");
+        await mouse(button, "mousePressed");
+        await expect
+          .poll(() => getComputedStyle(button).scale)
+          .not.toBe("none");
+        await mouse(button, "mouseReleased");
+
+        await setReducedMotion("reduce");
+        expect(matchMedia("(prefers-reduced-motion: reduce)").matches).toBe(
+          true,
+        );
+        await mouse(button, "mousePressed");
+        expect(button.matches(":active")).toBe(true);
+        expect(getComputedStyle(button).scale).toBe("none");
+        await mouse(button, "mouseReleased");
+      } finally {
+        await setReducedMotion("no-preference");
+      }
+    });
+  },
+);

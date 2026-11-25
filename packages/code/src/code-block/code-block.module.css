@@ -27,15 +27,21 @@
   border-radius: var(--globals-border-radius);
 }
 
+/* One button tall even with no buttons, so a bar keeps its height as a button
+   comes or goes, such as CodeEditor's copy button when its value empties. */
+.code-block-title {
+  min-block-size: var(--forms-size-xs-height);
+}
+
 .code-block-actions {
   gap: var(--code-actions-gap);
 }
 
 /* The floating buttons cover the end of the first line, so that line reserves
    their width. A wrapped first line breaks before them; an unwrapped one longer
-   than the block still scrolls beneath them. Where the code scrolls vertically
-   (collapsed behind the toggle, or fullscreen), any line can pass beneath the
-   buttons, so every line reserves it. */
+   than the block still scrolls beneath them. A collapsed block clips rather than
+   scrolls, so only fullscreen scrolls vertically; there any line can pass
+   beneath the buttons, so every line reserves it. */
 .code-block:has(> :where(.code-block-header)[data-floating]) {
   --code-block-actions-count: 1;
 }
@@ -52,10 +58,6 @@
    button and the gap after it, plus the inset, less the code padding the line
    already sits inside, plus the line's own bleed past that padding. */
 .code-block:has(> :where(.code-block-header)[data-floating]) .code-block-content :global(.line:first-child),
-.code-block:has(> :where(.code-block-header)[data-floating])
-  :where(.code-block-scroll)[data-collapsed]:has(~ .code-block-expand-toggle)
-  .code-block-content
-  :global(.line),
 :where(.code-block)[data-fullscreen]:has(> :where(.code-block-header)[data-floating]) .code-block-content :global(.line) {
   padding-inline-end: calc(
     var(--code-block-actions-count) * (var(--forms-size-xs-height) + var(--code-actions-gap)) + var(--code-actions-inset) - var(--code-padding) +
@@ -81,13 +83,13 @@
   position: relative;
 }
 
-/* `rows` writes --code-rows; collapsed, the area is that many lines tall. */
-.code-block-scroll[data-rows] {
-  overflow-y: auto;
-}
-
+/* `rows` writes --code-rows; collapsed, the area is that many lines tall. It
+   clips rather than scrolls: "Show more" is the one way to the rest, so the area
+   is no scroll container and no tab stop. Long unwrapped lines still scroll
+   sideways in the content inside it. */
 .code-block-scroll[data-collapsed] {
   max-height: calc(var(--code-rows) * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding));
+  overflow-y: clip;
 }
 
 .code-block-content {
@@ -244,20 +246,23 @@
 
 /* A fade over the last collapsed line, shown only while the toggle is there to
    reveal the rest. A mask, so it fades to whatever surface is beneath. The
-   bottom padding stays clear, hiding the next line's top peeking into it. */
+   bottom padding stays clear, hiding the next line's top peeking into it. Only
+   the mask's alpha counts, so the opaque stop is plain black. */
 :where(.code-block-scroll)[data-collapsed]:has(~ .code-block-expand-toggle) {
   mask-image: linear-gradient(
     to top,
     transparent var(--code-padding),
-    #000 calc(var(--code-padding) + var(--code-font-size) * var(--code-line-height))
+    black calc(var(--code-padding) + var(--code-font-size) * var(--code-line-height))
   );
 }
 
 /* Under reduced motion the block's buttons do not scale on press. Their colour
    changes stay, since a fade is not motion. */
 @media (prefers-reduced-motion: reduce) {
-  /* No `.code-block` ancestor, so CodeEditor's copy button is reached too; the
-     `:active` pseudo-class outranks Button's own `.button:where(:active)`. */
+  /* No `.code-block` ancestor, so CodeEditor's copy button is reached too. The
+     `:active` pseudo-class outranks Button's own `.button:where(:active)` only
+     while both modules sit in the same cascade layer, as they do in the build
+     (and unlayered, in tests); a later layer for Button would win instead. */
   .code-block-icon-button:active {
     scale: none;
   }

@@ -91,6 +91,8 @@ export const CodeEditor = ({
     [readOnly, isControlled, onValueChange, onTextareaChange],
   );
 
+  const showHeader = !!filename || copyable;
+
   return (
     <Stack
       data-slot="code-editor"
@@ -99,16 +101,18 @@ export const CodeEditor = ({
       w="full"
       {...props}
     >
-      {/* The header renders from its content, so an empty editor without a filename has none.
-          Its copy button never floats: the textarea cannot keep its lines clear of it */}
-      <CodeBlockHeaderBase
-        {...HeaderProps}
-        {...definedProps({ filename })}
-        bar
-        copyable={copyable}
-        code={value}
-        CopyButtonProps={CopyButtonProps}
-      />
+      {/* As before UI-486: a bar whenever there is a filename or copying is on, even while the
+          value is empty, so the textarea never moves as the first character is typed */}
+      {showHeader && (
+        <CodeBlockHeaderBase
+          {...HeaderProps}
+          {...definedProps({ filename })}
+          bar
+          copyable={copyable}
+          code={value}
+          CopyButtonProps={CopyButtonProps}
+        />
+      )}
 
       {/* Typography on parent so both children inherit */}
       <Layer

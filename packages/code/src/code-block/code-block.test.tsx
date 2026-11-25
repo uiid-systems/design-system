@@ -203,6 +203,17 @@ describe("CodeBlock", () => {
     ).toBeInTheDocument();
   });
 
+  it("draws the header bar for children alone", () => {
+    render(
+      <CodeBlockHeader code="x" copyable={false}>
+        <span>Preview</span>
+      </CodeBlockHeader>,
+    );
+    expect(header()).not.toHaveAttribute("data-floating");
+    expect(header()).toHaveAttribute("data-ui-bb", "1");
+    expect(within(header()!).getByText("Preview")).toBeInTheDocument();
+  });
+
   it("floats the buttons with no filename and no language", () => {
     render(<CodeBlock code="x" wrappable fullscreenable />);
     expect(header()).toHaveAttribute("data-floating");

@@ -200,14 +200,15 @@ export const FloatingFirstLine: Story = {
   ),
 };
 
-/* Collapsed, no header, wrap on: the code scrolls beneath the floating
-   buttons, so every line keeps their column clear, not just the first. */
+/* Collapsed, no header: the code clips at its rows rather than scrolling, so
+   only the first line keeps the buttons' column clear and "Show more" reveals
+   the rest. Wrapped (left); unwrapped (right), the lines still scroll sideways. */
 export const FloatingCollapsed: Story = {
   args: {
     code: sampleLongLine,
   },
   render: () => (
-    <Stack gap={4} maxw={480}>
+    <Group gap={4} evenly w="full">
       <CodeBlock
         code={Array.from({ length: 12 }, () => sampleLongLine).join("\n")}
         rows={6}
@@ -215,7 +216,13 @@ export const FloatingCollapsed: Story = {
         fullscreenable
         defaultWrap
       />
-    </Stack>
+      <CodeBlock
+        code={Array.from({ length: 12 }, () => sampleLongLine).join("\n")}
+        rows={6}
+        wrappable
+        fullscreenable
+      />
+    </Group>
   ),
 };
 
