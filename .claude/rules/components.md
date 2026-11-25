@@ -26,10 +26,10 @@ Every component exports its composition parts and their prop types, consistently
 
 ## Slot props omit owned keys
 
-A slot prop type (`RootProps`, `TriggerProps`, `PopupProps` and the like) omits the keys its component already takes at the top level, so passing one through the slot is a compile error rather than a silent conflict. Top-level props win. Class names merge; a handler composes only where the paragraph above says so. Whether the overlays keep composing `RootProps.onOpenChange` under this rule is undecided, and belongs to the task that applies the rule to overlays.
+A slot prop type (`TriggerProps`, `PopupProps` and the like) omits the keys its component already takes at the top level, so passing one through the slot is a compile error rather than a silent conflict. `RootProps` is exempt: it may stay wide, and where it does, top-level values win over it at runtime, through the spread order and `definedProps()` in the paragraph above. Class names merge; a handler composes only where that paragraph says so, which is why the overlays keep composing `RootProps.onOpenChange`.
 
 ```tsx
-// The target shape, not today's dialog.types.ts
+// A simplified dialog.types.ts
 export type DialogProps = {
   title?: React.ReactNode;
   size?: DialogSize;
@@ -48,7 +48,7 @@ If omitting the owned keys needs conditional or hard-to-read types for a compone
 
 Components whose slot types stay wide and rely on the runtime order. Add one line per component, naming the slot and why omitting its keys was not readable.
 
-None yet.
+None.
 
 ## Use UIID utilities, not the upstream libraries
 
