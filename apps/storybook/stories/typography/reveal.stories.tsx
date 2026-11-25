@@ -10,7 +10,7 @@ import {
 } from "./constants";
 
 const SAMPLE =
-  "UIID is a registry-first design system. Tokens define the design language, the registry describes it semantically, and blocks compose it into product surfaces.";
+  "UIID is a modular React component library. Design tokens define the visual language, and components built on Base UI compose it into product surfaces.";
 
 const meta = {
   title: "Typography/Reveal",

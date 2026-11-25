@@ -4,7 +4,7 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # Cards
 
-A container surface with slots for the patterns cards almost always need: a header (title, description, action), a thumbnail above it, and a divided footer beneath.
+A container surface with slots for the patterns cards almost always need: a header (title, description, action), a thumbnail above it, and a footer beneath.
 
 ## Which one do I reach for?
 
@@ -14,6 +14,7 @@ A container surface with slots for the patterns cards almost always need: a head
 ## Shared conventions
 
 - The header renders when at least one of `title`, `description`, or `action` is set. The action sits in the top-right corner, and title and description text wrap beneath it once they clear it.
-- The `footer` slot is preceded by a `Separator` automatically.
-- Style variants (`inverted`, `trimmed`, `ghost`, `transparent`) compose with everything else — they only change the surface, not the slot layout.
-- Every slot has a matching `*Props` escape hatch (`TitleProps`, `FooterProps`, etc.) for the rare case the slot prop isn't enough.
+- The `footer` slot has no divider by default. Pass `FooterProps={{ separator: true }}` to draw a `Separator` above it.
+- `color` takes a palette hue for the surface (`"neutral"` by default), and `shadow` lifts the card off the page.
+- `variant` changes the surface treatment: `"ghost"` drops the background, border and shadow, and `"shell"` makes the card a page's main content area, full width with page-heading type and no border.
+- Every slot has a matching `*Props` escape hatch (`HeaderProps`, `TitleProps`, `DescriptionProps`, `ActionProps`, `ThumbnailProps`, `FooterProps`, `InnerContainerProps`) for the rare case the slot prop isn't enough.
