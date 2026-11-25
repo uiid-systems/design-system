@@ -21,7 +21,6 @@ export const Tabs = ({
   keepMounted,
   size,
   variant,
-  fullwidth,
   RootProps,
   ListProps,
   TabProps,
@@ -52,12 +51,7 @@ export const Tabs = ({
         onValueChange,
       })}
     >
-      <TabsList
-        {...ListProps}
-        size={size}
-        variant={variant}
-        fullwidth={fullwidth}
-      >
+      <TabsList {...ListProps} size={size} variant={variant}>
         {items.map((item) => (
           <TabsTab {...TabProps} key={item.value} value={item.value}>
             {item.label}

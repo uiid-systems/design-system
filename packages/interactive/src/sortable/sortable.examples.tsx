@@ -17,7 +17,7 @@ import {
 type Item = { id: string; title: string };
 
 const Row = ({ title, grip }: { title: string; grip: React.ReactNode }) => (
-  <Group gap={3} ay="center" p={3} b={1} fullwidth>
+  <Group gap={3} ay="center" p={3} b={1} w="full">
     {grip}
     <Text>{title}</Text>
   </Group>

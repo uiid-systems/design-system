@@ -15,14 +15,14 @@ export const AccordionRoot = ({
   variant,
   gap = 0,
   p = 0,
-  fullwidth = true,
+  w = "full",
   ...props
 }: AccordionRootProps) => {
   return (
     <BaseAccordion.Root
       data-slot="accordion-root"
       data-variant={variant}
-      render={<Card gap={gap} p={p} fullwidth={fullwidth} />}
+      render={<Card gap={gap} p={p} w={w} />}
       className={cx(
         styles["accordion-root"],
         accordionRootVariants({ variant }),

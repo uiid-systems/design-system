@@ -127,7 +127,7 @@ export const Layout = () => {
   const [layout, setLayout] = useState<Record<string, number>>({});
 
   return (
-    <Stack gap={2} fullwidth>
+    <Stack gap={2} w="full">
       <Frame>
         <Resizable orientation="horizontal" onLayoutChanged={setLayout}>
           <ResizablePanel id="left" defaultSize="50%">

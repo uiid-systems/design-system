@@ -5,18 +5,12 @@ import type { ProgressHeaderProps } from "../progress.types";
 export const ProgressHeader = ({
   gap = 2,
   ay = "center",
-  fullwidth = true,
+  w = "full",
   children,
   ...props
 }: ProgressHeaderProps) => {
   return (
-    <Group
-      data-slot="progress-header"
-      gap={gap}
-      ay={ay}
-      fullwidth={fullwidth}
-      {...props}
-    >
+    <Group data-slot="progress-header" gap={gap} ay={ay} w={w} {...props}>
       {children}
     </Group>
   );

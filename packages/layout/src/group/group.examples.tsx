@@ -26,7 +26,7 @@ export const Centered = () => (
 );
 
 export const Evenly = () => (
-  <Group gap={GAP} evenly fullwidth>
+  <Group gap={GAP} evenly w="full">
     <ExampleBox bg="tomato" />
     <ExampleBox bg="gold" />
     <ExampleBox bg="dodgerblue" />
@@ -34,7 +34,7 @@ export const Evenly = () => (
 );
 
 export const Proportional = () => (
-  <Group gap={GAP} fullwidth>
+  <Group gap={GAP} w="full">
     <ExampleBox bg="tomato" flex={1}>
       1
     </ExampleBox>

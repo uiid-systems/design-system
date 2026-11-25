@@ -210,6 +210,30 @@ describe("Card", () => {
     expect(body(container)).not.toHaveAttribute("data-ui-grow");
   });
 
+  it("fills the thumbnail's width with w, which ThumbnailProps can override", () => {
+    const thumbnail = (container: HTMLElement) =>
+      container.querySelector('[data-slot="card-thumbnail"]');
+    const { container, rerender } = render(
+      <Card thumbnail={<img alt="" />}>Body</Card>,
+    );
+    expect(thumbnail(container)).toHaveAttribute("data-ui-w", "full");
+    expect(thumbnail(container)).not.toHaveAttribute("data-ui-fullwidth");
+
+    rerender(
+      <Card thumbnail={<img alt="" />} ThumbnailProps={{ w: 200 }}>
+        Body
+      </Card>,
+    );
+    expect(thumbnail(container)).toHaveAttribute("data-ui-w", "200");
+
+    rerender(
+      <Card thumbnail={<img alt="" />} ThumbnailProps={{ w: null }}>
+        Body
+      </Card>,
+    );
+    expect(thumbnail(container)).not.toHaveAttribute("data-ui-w");
+  });
+
   it("renders the footer slot", () => {
     render(<Card title="Title" footer={<span>Footer content</span>} />);
 

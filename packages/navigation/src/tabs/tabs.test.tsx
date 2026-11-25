@@ -434,13 +434,22 @@ describe("Tabs", () => {
         ListProps={{ variant: "ghost" }}
       />
     );
-    void (
-      <Tabs
-        items={MOCK_ITEMS}
-        // @ts-expect-error -- `fullwidth` is set on Tabs itself
-        ListProps={{ fullwidth: true }}
-      />
-    );
+  });
+
+  it("takes no top-level fullwidth prop", () => {
+    // @ts-expect-error -- stretch the list with `ListProps={{ w: "full" }}`
+    void (<Tabs items={MOCK_ITEMS} fullwidth />);
+  });
+
+  it("stretches the list with w from ListProps, and leaves it unset by default", () => {
+    const list = () =>
+      document.querySelector<HTMLElement>("[data-slot='tabs-list']");
+    const { rerender } = render(<Tabs items={MOCK_ITEMS} />);
+    expect(list()).not.toHaveAttribute("data-ui-w");
+
+    rerender(<Tabs items={MOCK_ITEMS} ListProps={{ w: "full" }} />);
+    expect(list()).toHaveAttribute("data-ui-w", "full");
+    expect(list()).not.toHaveAttribute("data-ui-fullwidth");
   });
 
   it("rejects the list's children in ListProps, which Tabs renders from items", () => {
@@ -461,17 +470,31 @@ describe("Tabs", () => {
 
   it("forwards layout props from PanelProps to the panel Stack", () => {
     render(
-      <Tabs
-        items={MOCK_ITEMS}
-        PanelProps={{ gap: 3, ax: "start", fullwidth: false }}
-      />,
+      <Tabs items={MOCK_ITEMS} PanelProps={{ gap: 3, ax: "start", w: 300 }} />,
     );
     const panel = document.querySelector<HTMLElement>(
       "[data-slot='tabs-panel']",
     );
     expect(panel).toHaveAttribute("data-ui-gap", "3");
     expect(panel).toHaveAttribute("data-ui-ay", "start");
+    expect(panel).toHaveAttribute("data-ui-w", "300");
+  });
+
+  it("fills the panel's width with w by default", () => {
+    render(<Tabs items={MOCK_ITEMS} />);
+    const panel = document.querySelector<HTMLElement>(
+      "[data-slot='tabs-panel']",
+    );
+    expect(panel).toHaveAttribute("data-ui-w", "full");
     expect(panel).not.toHaveAttribute("data-ui-fullwidth");
+  });
+
+  it("releases the panel's default fill with w={null}", () => {
+    render(<Tabs items={MOCK_ITEMS} PanelProps={{ w: null }} />);
+    const panel = document.querySelector<HTMLElement>(
+      "[data-slot='tabs-panel']",
+    );
+    expect(panel).not.toHaveAttribute("data-ui-w");
   });
 
   it("leaves the panel's cross axis to Stack's stretch default", () => {

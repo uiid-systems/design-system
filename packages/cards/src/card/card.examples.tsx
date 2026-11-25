@@ -83,7 +83,7 @@ export const Footer = () => (
     title="Notification preferences"
     description="Choose how and when you'd like to be notified."
     footer={
-      <Group gap={2} ax="end" fullwidth>
+      <Group gap={2} ax="end" w="full">
         <Button size="small" variant="subtle">
           Cancel
         </Button>

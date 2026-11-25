@@ -15,7 +15,7 @@ export const ExampleBox = ({ bg, ...props }: ExampleBoxProps) => (
 );
 
 export const Stretched = () => (
-  <Stack gap={2} fullwidth>
+  <Stack gap={2} w="full">
     <ExampleBox bg="tomato" />
     <ExampleBox bg="gold" />
     <ExampleBox bg="dodgerblue" />
@@ -23,7 +23,7 @@ export const Stretched = () => (
 );
 
 export const Centered = () => (
-  <Stack ax="center" ay="center" gap={2} h={240} fullwidth>
+  <Stack ax="center" ay="center" gap={2} h={240} w="full">
     <ExampleBox bg="tomato" w={120} />
     <ExampleBox bg="gold" w={120} />
     <ExampleBox bg="dodgerblue" w={120} />

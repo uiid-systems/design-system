@@ -52,14 +52,20 @@ export const sizingPropKeys = keysOf(sizingProps);
 export type SizingKeyword = "full" | "screen";
 
 export type SizingProps = {
-  /** Width, in px or a {@link SizingKeyword} */
-  w?: number | SizingKeyword;
+  /**
+   * Width, in px or a {@link SizingKeyword}. `null` writes no width, which
+   * releases a component's default `w`; `undefined` keeps the default.
+   */
+  w?: number | SizingKeyword | null;
   /** Minimum width, in px or a {@link SizingKeyword} */
   minw?: number | SizingKeyword;
   /** Maximum width, in px or a {@link SizingKeyword} */
   maxw?: number | SizingKeyword;
-  /** Height, in px or a {@link SizingKeyword} */
-  h?: number | SizingKeyword;
+  /**
+   * Height, in px or a {@link SizingKeyword}. `null` writes no height, which
+   * releases a component's default `h`; `undefined` keeps the default.
+   */
+  h?: number | SizingKeyword | null;
   /** Minimum height, in px or a {@link SizingKeyword} */
   minh?: number | SizingKeyword;
   /** Maximum height, in px or a {@link SizingKeyword} */

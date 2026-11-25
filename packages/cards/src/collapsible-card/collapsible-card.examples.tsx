@@ -30,7 +30,7 @@ export const FullHeader = () => (
     description="The header and footer stay in view while the body collapses."
     action={<Button size="xsmall">Action</Button>}
     footer={
-      <Group gap={2} ax="end" fullwidth>
+      <Group gap={2} ax="end" w="full">
         <Button size="small" variant="subtle">
           Cancel
         </Button>
@@ -53,7 +53,7 @@ export const ClickableHeader = () => {
   return (
     <Stack gap={3} maxw={420}>
       <CollapsibleCard
-        fullwidth
+        w="full"
         clickableHeader
         title="Click anywhere in the header"
         description="The title, this description and the empty space all toggle the card. The button keeps its own click."
@@ -67,7 +67,7 @@ export const ClickableHeader = () => {
         {BODY}
       </CollapsibleCard>
       <CollapsibleCard
-        fullwidth
+        w="full"
         clickableHeader
         disabled
         title="Disabled"
@@ -92,7 +92,7 @@ export const Controlled = () => {
         {open ? "Collapse" : "Expand"} from outside
       </Button>
       <CollapsibleCard
-        fullwidth
+        w="full"
         title="Controlled"
         open={open}
         onOpenChange={setOpen}

@@ -11,15 +11,15 @@ import { progressVariants } from "../progress.variants";
 import styles from "../progress.module.css";
 
 /*
- * `gap` is destructured into the `Stack` rather than written on it as a
+ * `gap` and `w` are destructured into the `Stack` rather than written on it as a
  * literal: Base UI merges `render` props over the part's own, so a literal
- * there would silently beat a caller's `gap`.
+ * there would silently beat a caller's `gap` or `w`.
  */
 export const ProgressRoot = ({
   size,
   color,
   gap = 2,
-  fullwidth = true,
+  w = "full",
   children,
   className,
   ...props
@@ -33,7 +33,7 @@ export const ProgressRoot = ({
         paletteClassName(color, styles["color"]),
         className,
       )}
-      render={<Stack gap={gap} fullwidth={fullwidth} />}
+      render={<Stack gap={gap} w={w} />}
       {...props}
     >
       {children}

@@ -9,7 +9,7 @@ import styles from "../tabs.module.css";
 export const TabsPanel = ({
   ax,
   ay = "center",
-  fullwidth = true,
+  w = "full",
   className,
   children,
   ...props
@@ -17,7 +17,7 @@ export const TabsPanel = ({
   return (
     <BaseTabs.Panel
       data-slot="tabs-panel"
-      render={<Stack ax={ax} ay={ay} fullwidth={fullwidth} />}
+      render={<Stack ax={ax} ay={ay} w={w} />}
       className={cx(styles["tabs-panel"], className)}
       tabIndex={-1}
       {...props}

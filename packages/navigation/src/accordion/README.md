@@ -60,7 +60,7 @@ import { Accordion } from "@uiid/navigation";
 
 ## Layout
 
-`AccordionRoot` renders a [`Card`](../../../cards/src/card/README.md) and each `AccordionItem` a `Stack`, so `RootProps` and `ItemProps` take their layout props (`gap`, `p`, `ax`, `ay`, `fullwidth`, ...) alongside Base UI's. When a top-level prop and `RootProps` set the same key, the top-level prop wins. The root is flush (`gap={0}`, `p={0}`) and fills its container, and `fullwidth={false}` releases it. Each item stretches its header and panel across the root (`ax="stretch"`).
+`AccordionRoot` renders a [`Card`](../../../cards/src/card/README.md) and each `AccordionItem` a `Stack`, so `RootProps` and `ItemProps` take their layout props (`gap`, `p`, `ax`, `ay`, `w`, ...) alongside Base UI's. When a top-level prop and `RootProps` set the same key, the top-level prop wins. The root is flush (`gap={0}`, `p={0}`) and fills its container (`w="full"`); pass another `w` through `RootProps` to size it, or `w: null` to release the fill. Each item fills the root (`w="full"`, released the same way through `ItemProps`) and stretches its header and panel across the root (`ax="stretch"`).
 
 The items sit inside the Card's inner container, so a `gap` on the root spaces the Card's own regions — title, body, footer — rather than the items. Space the items with `InnerContainerProps`: `RootProps={{ InnerContainerProps: { gap: 2 } }}`.
 

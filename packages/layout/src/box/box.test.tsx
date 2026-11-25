@@ -64,15 +64,15 @@ describe("Box", () => {
 
   it("writes a bare data attribute for a toggle that is on", () => {
     render(
-      <Box fullwidth wrap evenly={false} data-testid="box">
+      <Box grow wrap evenly={false} data-testid="box">
         x
       </Box>,
     );
     const box = screen.getByTestId("box");
-    expect(box).toHaveAttribute("data-ui-fullwidth", "");
+    expect(box).toHaveAttribute("data-ui-grow", "");
     expect(box).toHaveAttribute("data-ui-wrap", "");
     expect(box).not.toHaveAttribute("data-ui-evenly");
-    expect(box).not.toHaveAttribute("fullwidth");
+    expect(box).not.toHaveAttribute("grow");
     expect(box).not.toHaveAttribute("wrap");
   });
 
@@ -86,6 +86,20 @@ describe("Box", () => {
     expect(box).toHaveAttribute("data-ui-w", "full");
     expect(box).toHaveAttribute("data-ui-maxh", "screen");
     expect(box).toHaveAttribute("data-ui-minw", "120");
+  });
+
+  it("writes no width or height for w={null} and h={null}", () => {
+    render(
+      <Box w={null} h={null} data-testid="box">
+        x
+      </Box>,
+    );
+    const box = screen.getByTestId("box");
+    expect(box).not.toHaveAttribute("data-ui-w");
+    expect(box).not.toHaveAttribute("data-ui-h");
+    expect(box.style.getPropertyValue("--props-w")).toBe("");
+    expect(box.style.getPropertyValue("--props-h")).toBe("");
+    expect(box).not.toHaveAttribute("w");
   });
 
   it("grows to fill its flex parent with grow", () => {
