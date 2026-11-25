@@ -1056,6 +1056,21 @@ describe("AutocompleteInput FieldProps", () => {
     expect(screen.getByText("Top")).toBeInTheDocument();
     expect(screen.queryByText("Slot")).not.toBeInTheDocument();
   });
+
+  it("lets the part's own w win over one in FieldProps", () => {
+    const { container } = render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput
+          w={200}
+          FieldProps={{ w: "full" } as AutocompleteInputProps["FieldProps"]}
+        />
+      </AutocompleteRoot>,
+    );
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-ui-w",
+      "200",
+    );
+  });
 });
 
 describe("Autocomplete ListProps", () => {

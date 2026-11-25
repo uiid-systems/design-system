@@ -7,6 +7,7 @@ import { describe, it, expect, vi } from "vitest";
 
 import { matchesComposition } from "../shared/matches-composition";
 import { Textarea } from "./textarea";
+import type { TextareaProps } from "./textarea.types";
 
 import inputStyles from "../input/input.module.css";
 import styles from "./textarea.module.css";
@@ -871,7 +872,10 @@ describe("Textarea FieldProps", () => {
   /* The cast stands in for untyped code, which the slot type cannot stop. */
   it("lets a top-level w win over one in the slot", () => {
     const { container } = render(
-      <Textarea w={200} FieldProps={{ w: "full" } as never} />,
+      <Textarea
+        w={200}
+        FieldProps={{ w: "full" } as TextareaProps["FieldProps"]}
+      />,
     );
     expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
       "data-ui-w",

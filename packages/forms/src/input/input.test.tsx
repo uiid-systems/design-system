@@ -1219,7 +1219,7 @@ describe("Input FieldProps", () => {
   /* The cast stands in for untyped code, which the slot type cannot stop. */
   it("lets a top-level w win over one in the slot", () => {
     const { container } = render(
-      <Input w={200} FieldProps={{ w: "full" } as never} />,
+      <Input w={200} FieldProps={{ w: "full" } as InputProps["FieldProps"]} />,
     );
     expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
       "data-ui-w",
