@@ -1,6 +1,7 @@
-// The start of a `<code>` tag in any case, not of a longer name like `<codex>`.
+// The start of a `<code>` or `</code>` tag in any case, not of a longer name
+// like `<codex>`. The close is global so a search can walk to the last one.
 const CODE_OPEN = /<code(?=[\s/>])/i;
-const CODE_CLOSE = "</code";
+const CODE_CLOSE = /<\/code(?=[\s>])/gi;
 
 /**
  * Returns the markup inside the `<code>` element of Shiki's HTML, whatever
@@ -8,8 +9,11 @@ const CODE_CLOSE = "</code";
  * HTML holds no complete `<code>…</code>`, so the caller can render its plain
  * children instead.
  *
- * Shiki escapes `<` in the highlighted text, so the last `</code` closes the
- * element the first `<code` opened.
+ * Assumes Shiki-shaped input: one `<code>` element, with `<` escaped in the
+ * highlighted text, so the last `</code>` closes the element the first
+ * `<code>` opened. With several code elements it spans from the first open to
+ * the last close. It does not sanitize: the markup it returns is rendered as
+ * HTML, so it must come from a trusted highlighter.
  */
 export function extractCodeContent(html: string): string | null {
   const open = CODE_OPEN.exec(html);
@@ -30,7 +34,10 @@ export function extractCodeContent(html: string): string | null {
   }
   if (i >= html.length) return null;
 
+  // Search the original string, not a lowercased copy: lowercasing can change
+  // its length and so every index after the change.
   const start = i + 1;
-  const end = html.toLowerCase().lastIndexOf(CODE_CLOSE);
+  let end = -1;
+  for (const close of html.matchAll(CODE_CLOSE)) end = close.index;
   return end < start ? null : html.slice(start, end);
 }

@@ -105,6 +105,24 @@ describe("CodeInline", () => {
     expect(root()?.innerHTML).toBe("const x = 1;");
   });
 
+  it("renders the children while highlighting is pending", () => {
+    vi.mocked(useHighlight).mockReturnValueOnce({
+      html: "",
+      loading: true,
+      error: null,
+    });
+    render(<CodeInline language="typescript">const x = 1;</CodeInline>);
+    expect(root()?.innerHTML).toBe("const x = 1;");
+  });
+
+  it("does not accept dangerouslySetInnerHTML", () => {
+    render(
+      // @ts-expect-error CodeInline owns its inner HTML; pass `html` instead.
+      <CodeInline dangerouslySetInnerHTML={{ __html: "<i>x</i>" }} />,
+    );
+    expect(root()).toBeInTheDocument();
+  });
+
   // ============================================
   // PRE-RENDERED HTML
   // ============================================
