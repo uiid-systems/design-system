@@ -148,9 +148,9 @@ describe("CodeBlock expand toggle", () => {
     const scroll = query('[data-slot="code-block-scroll"]');
     const fade = () => getComputedStyle(scroll, "::after");
     expect(fade().backgroundImage).toContain("linear-gradient");
-    // The fade covers the lower half of the last row.
+    // The fade covers the last row.
     const row = toPx("calc(var(--code-font-size) * var(--code-line-height))");
-    expect(px(fade().height)).toBeCloseTo(row / 2, 1);
+    expect(px(fade().height)).toBeCloseTo(row, 1);
 
     // The collapsed area ends on the last row's bottom edge: its rows plus the
     // top padding, with the toggle directly beneath and no padding band.

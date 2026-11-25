@@ -256,15 +256,14 @@
   max-height: calc(var(--code-rows) * var(--code-font-size) * var(--code-line-height) + var(--code-padding));
 }
 
-/* A fade to the block's surface over the lower half of that last row stands in
-   for the padding. It sits at the visible bottom edge, so it does not move when
+/* A fade to the block's surface over that last row stands in for the padding. It sits at the visible bottom edge, so it does not move when
    a long line scrolls sideways. */
 :where(.code-block-scroll)[data-collapsed]:has(~ .code-block-expand-toggle)::after {
   content: "";
   position: absolute;
   inset-inline: 0;
   inset-block-end: 0;
-  block-size: calc(var(--code-font-size) * var(--code-line-height) / 2);
+  block-size: calc(var(--code-font-size) * var(--code-line-height));
   background-image: linear-gradient(to top, var(--code-block-surface), transparent);
   pointer-events: none;
 }
