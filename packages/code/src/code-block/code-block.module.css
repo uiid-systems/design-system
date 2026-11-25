@@ -160,26 +160,3 @@
   color: light-dark(var(--color-red-700), var(--color-red-400));
   padding: var(--code-padding);
 }
-
-.code-block-expand-toggle {
-  appearance: none;
-  width: 100%;
-  border: none;
-  border-top: var(--globals-border-width) solid var(--globals-border-color);
-  background-color: var(--shade-surface);
-  color: var(--shade-muted);
-  font-family: inherit;
-  font-size: var(--code-font-size);
-  padding: 0.5rem;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--shade-foreground);
-    background-color: var(--shade-halftone);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--shade-foreground);
-    outline-offset: -2px;
-  }
-}

@@ -18,6 +18,23 @@ export type CodeBlockFullscreenButtonProps = Omit<
   "icon" | "text"
 >;
 
+export type CodeBlockExpandToggleProps = Omit<ButtonProps, "children"> & {
+  /** Whether the block is expanded, which picks the label and `aria-expanded` */
+  expanded?: boolean;
+  /** Fires with the state the toggle asks for when it is pressed */
+  onExpandedChange?: (expanded: boolean) => void;
+  /**
+   * The toggle's text while the block is collapsed
+   * @default "Show more"
+   */
+  expandLabel?: React.ReactNode;
+  /**
+   * The toggle's text while the block is expanded
+   * @default "Show less"
+   */
+  collapseLabel?: React.ReactNode;
+};
+
 export type CodeBlockHeaderProps = GroupProps & {
   /** Filename to display */
   filename?: string;

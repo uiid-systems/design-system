@@ -13,7 +13,11 @@ import {
 } from "../code.constants";
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import type { CodeBlockProps } from "./code-block.types";
-import { CodeBlockHeader, CodeBlockContent } from "./subcomponents";
+import {
+  CodeBlockHeader,
+  CodeBlockContent,
+  CodeBlockExpandToggle,
+} from "./subcomponents";
 
 import styles from "./code-block.module.css";
 
@@ -176,15 +180,12 @@ export const CodeBlock = ({
         {renderParts(false)}
 
         {showToggle && (
-          <button
-            type="button"
-            data-slot="code-block-expand-toggle"
-            className={styles["code-block-expand-toggle"]}
-            onClick={() => setExpanded((v) => !v)}
-            aria-expanded={expanded}
-          >
-            {expanded ? collapseLabel : expandLabel}
-          </button>
+          <CodeBlockExpandToggle
+            expanded={expanded}
+            onExpandedChange={setExpanded}
+            expandLabel={expandLabel}
+            collapseLabel={collapseLabel}
+          />
         )}
       </div>
 

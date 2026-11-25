@@ -9,6 +9,7 @@ import type { CodeBlockProps } from "./code-block.types";
 import {
   CodeBlockContent,
   CodeBlockCopyButton,
+  CodeBlockExpandToggle,
   CodeBlockFullscreenButton,
   CodeBlockHeader,
   CodeBlockWrapButton,
@@ -820,6 +821,70 @@ describe("CodeBlock parts composed by hand", () => {
     expect(
       screen.getByRole("button", { name: "Exit fullscreen" }),
     ).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("names the expand toggle part by its expanded state", () => {
+    const { rerender } = render(<CodeBlockExpandToggle />);
+
+    expect(screen.getByRole("button", { name: "Show more" })).toHaveAttribute(
+      "aria-expanded",
+      "false",
+    );
+
+    rerender(<CodeBlockExpandToggle expanded />);
+    expect(screen.getByRole("button", { name: "Show less" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+  });
+
+  it("labels the expand toggle part with expandLabel and collapseLabel", () => {
+    const { rerender } = render(
+      <CodeBlockExpandToggle expandLabel="More" collapseLabel="Less" />,
+    );
+    expect(screen.getByRole("button", { name: "More" })).toBeInTheDocument();
+
+    rerender(
+      <CodeBlockExpandToggle
+        expanded
+        expandLabel="More"
+        collapseLabel="Less"
+      />,
+    );
+    expect(screen.getByRole("button", { name: "Less" })).toBeInTheDocument();
+  });
+
+  it("asks for the opposite state when the expand toggle part is pressed", async () => {
+    const user = userEvent.setup();
+    const onExpandedChange = vi.fn();
+    const { rerender } = render(
+      <CodeBlockExpandToggle onExpandedChange={onExpandedChange} />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Show more" }));
+    expect(onExpandedChange).toHaveBeenLastCalledWith(true);
+
+    rerender(
+      <CodeBlockExpandToggle expanded onExpandedChange={onExpandedChange} />,
+    );
+    await user.click(screen.getByRole("button", { name: "Show less" }));
+    expect(onExpandedChange).toHaveBeenLastCalledWith(false);
+  });
+
+  it("runs the expand toggle part's onClick, and skips the change when prevented", async () => {
+    const user = userEvent.setup();
+    const onExpandedChange = vi.fn();
+    const onClick = vi.fn((event: React.MouseEvent) => event.preventDefault());
+    render(
+      <CodeBlockExpandToggle
+        onClick={onClick}
+        onExpandedChange={onExpandedChange}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Show more" }));
+    expect(onClick).toHaveBeenCalledOnce();
+    expect(onExpandedChange).not.toHaveBeenCalled();
   });
 
   it("renders a header part with its filename, language icon and buttons", () => {
