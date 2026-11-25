@@ -252,6 +252,20 @@ describe("List", () => {
       );
     });
 
+    /* The label names the row. An icon of the caller's own that carries a
+       `<title>` must not add its text to that name. */
+    it("hides the icon from assistive tech", () => {
+      const TitledIcon = (props: React.SVGProps<SVGSVGElement>) => (
+        <svg {...props}>
+          <title>Star</title>
+        </svg>
+      );
+      render(<ListItem label="Feature" icon={TitledIcon} />);
+      expect(
+        document.querySelector('[data-slot="list-item-icon"]'),
+      ).toHaveAttribute("aria-hidden", "true");
+    });
+
     it("leaves the icon's colour to CSS rather than the element", () => {
       render(<ListItem label="Feature" icon={StarIcon} />);
       expect(

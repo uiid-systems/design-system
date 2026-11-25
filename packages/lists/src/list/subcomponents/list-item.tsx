@@ -36,6 +36,7 @@ export const ListItem = ({
               data-slot="list-item-icon"
               className={styles["list-item-icon"]}
               size={ICON_SIZE_LARGE}
+              aria-hidden
             />
           )}
           <ListTextBlock
