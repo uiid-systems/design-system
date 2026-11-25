@@ -89,6 +89,42 @@ describe("CodeBlock fullscreen view", () => {
     );
   });
 
+  it("still fits a short screen, with the exit button in reach and the code scrolling", async () => {
+    // Under 30rem tall the dialog drops its inset to 0.75rem and lets its
+    // viewport scroll; the view should still fit, so nothing scrolls away.
+    await page.viewport(375, 250);
+    render(
+      <CodeBlock
+        code={LONG}
+        html={toHtml(LONG)}
+        filename="a.ts"
+        fullscreenable
+      />,
+    );
+    const popup = await openFullscreen();
+    const viewport = popup.parentElement!;
+    const inset = toPx("0.75rem");
+    const content = popup.querySelector<HTMLElement>(
+      '[data-slot="code-block-content"]',
+    )!;
+    const exit = page.getByRole("button", { name: "Exit fullscreen" });
+
+    expect(popup.offsetTop).toBeCloseTo(inset, 0);
+    expect(popup.offsetHeight).toBeCloseTo(
+      viewport.clientHeight - 2 * inset,
+      0,
+    );
+    expect(viewport.scrollHeight).toBe(viewport.clientHeight);
+    expect(content.scrollHeight).toBeGreaterThan(content.clientHeight);
+
+    const exitBox = (exit.element() as HTMLElement).getBoundingClientRect();
+    expect(exitBox.top).toBeGreaterThanOrEqual(0);
+    expect(exitBox.bottom).toBeLessThanOrEqual(viewport.clientHeight);
+
+    await userEvent.click(exit.element());
+    await expect.element(page.getByRole("dialog")).not.toBeInTheDocument();
+  });
+
   it("scrolls the code in the block's own scroll area, under a fixed header", async () => {
     render(
       <CodeBlock
