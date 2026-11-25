@@ -1,5 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Group, Stack, Text, CodeBlock } from "@uiid/design-system";
+import {
+  Button,
+  CodeBlock,
+  Dialog,
+  Group,
+  Stack,
+  Text,
+} from "@uiid/design-system";
 
 const meta = {
   title: "Code/Code Block",
@@ -326,6 +333,26 @@ export const Fullscreen: Story = {
     filename: "long-file.ts",
     fullscreenable: true,
   },
+};
+
+/** Opened from inside a Dialog, the fullscreen view stacks above it and closes back to it. */
+export const FullscreenInDialog: Story = {
+  args: {
+    code: sampleLong,
+    language: "typescript",
+    filename: "long-file.ts",
+    fullscreenable: true,
+    rows: 8,
+  },
+  render: (args) => (
+    <Dialog
+      title="Generated config"
+      size="large"
+      trigger={<Button>Open dialog</Button>}
+    >
+      <CodeBlock {...args} />
+    </Dialog>
+  ),
 };
 
 export const NoHeaderActions: Story = {
