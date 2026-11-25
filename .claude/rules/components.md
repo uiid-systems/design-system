@@ -26,7 +26,7 @@ Every component exports its composition parts and their prop types, consistently
 
 ## Slot props omit owned keys
 
-A slot prop type (`TriggerProps`, `PopupProps` and the like) omits the keys its component already takes at the top level, so passing one through the slot is a compile error rather than a silent conflict. `RootProps` is exempt and stays wide: top-level values win over it at runtime, through the spread order and `definedProps()` in the paragraph above. Class names merge; a handler composes only where that paragraph says so, which is why the overlays keep composing `RootProps.onOpenChange`.
+A slot prop type (`TriggerProps`, `PopupProps` and the like) omits the keys its component already takes at the top level, so passing one through the slot is a compile error rather than a silent conflict. `RootProps` is exempt: it may stay wide, and where it does, top-level values win over it at runtime, through the spread order and `definedProps()` in the paragraph above. Class names merge; a handler composes only where that paragraph says so, which is why the overlays keep composing `RootProps.onOpenChange`.
 
 ```tsx
 // A simplified dialog.types.ts
