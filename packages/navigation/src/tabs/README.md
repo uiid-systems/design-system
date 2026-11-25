@@ -1,6 +1,6 @@
 # Tabs
 
-> Accessible tab interface built on [Base UI Tabs](https://base-ui.com/react/components/tabs) with animated indicator and panel transitions.
+> Accessible tab interface built on [Base UI Tabs](https://base-ui.com/react/components/tabs) with an animated indicator and panel transitions.
 
 ## Quick Reference
 
@@ -21,10 +21,12 @@ import { Tabs } from "@uiid/navigation";
 // Controlled
 <Tabs items={items} value={activeTab} onValueChange={setActiveTab} />
 
-// Alignment
-<Tabs items={items} align="start" />   // Left-aligned (default)
-<Tabs items={items} align="center" />  // Center-aligned
-<Tabs items={items} align="end" />     // Right-aligned
+// Size and surface
+<Tabs items={items} size="small" />
+<Tabs items={items} variant="ghost" />
+
+// Stretch the list across the root
+<Tabs items={items} ListProps={{ w: "full" }} />
 
 // Keep panels mounted
 <Tabs items={items} keepMounted />
@@ -32,19 +34,21 @@ import { Tabs } from "@uiid/navigation";
 
 ## Props
 
-| Prop             | Type                                                     | Default            | Description                                                                                         |
-| ---------------- | -------------------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------- |
-| `items`          | `TabsItemData[]`                                         | —                  | Array of tab items (required)                                                                       |
-| `defaultValue`   | `string`                                                 | First item's value | Initially selected tab                                                                              |
-| `value`          | `string`                                                 | —                  | Controlled selected tab                                                                             |
-| `onValueChange`  | `(value: string, details: object) => void`               | —                  | Callback when tab changes                                                                           |
-| `align`          | `"start" \| "center" \| "end"`                           | `"start"`          | Horizontal alignment of tabs                                                                        |
-| `keepMounted`    | `boolean`                                                | `false`            | Keep inactive panels in DOM                                                                         |
-| `RootProps`      | `TabsRootProps`                                          | —                  | Props for root element                                                                              |
-| `ListProps`      | `Omit<TabsListProps, "size" \| "variant" \| "children">` | —                  | Props for tab list; set `size` and `variant` at the top level, and stretch the list with `w="full"` |
-| `TabProps`       | `Omit<TabsTabProps, "value">`                            | —                  | Props for every tab; each item keeps its own `value`                                                |
-| `IndicatorProps` | `TabsIndicatorProps`                                     | —                  | Props for indicator                                                                                 |
-| `PanelProps`     | `Omit<TabsPanelProps, "value" \| "keepMounted">`         | —                  | Props for every panel; set `keepMounted` at the top level                                           |
+| Prop             | Type                                                     | Default            | Description                                                       |
+| ---------------- | -------------------------------------------------------- | ------------------ | ----------------------------------------------------------------- |
+| `items`          | `TabsItemData[]`                                         | —                  | Array of tab items (required)                                     |
+| `defaultValue`   | `string \| null`                                         | First item's value | Initially selected tab                                            |
+| `value`          | `string \| null`                                         | —                  | Controlled selected tab                                           |
+| `onValueChange`  | `(value, eventDetails) => void`                          | —                  | Callback when the selected tab changes                            |
+| `size`           | `"xsmall" \| "small" \| "medium" \| "large"`             | `"medium"`         | Tab height and padding, matching the form-control rows            |
+| `variant`        | `"ghost"`                                                | —                  | Filled by default; `ghost` drops the list background and border   |
+| `keepMounted`    | `boolean`                                                | `false`            | Keep inactive panels in the DOM                                   |
+| `RootProps`      | `TabsRootProps`                                          | —                  | Props for the root                                                |
+| `ListProps`      | `Omit<TabsListProps, "size" \| "variant" \| "children">` | —                  | Props for the tab list; set `size` and `variant` at the top level |
+| `TabProps`       | `Omit<TabsTabProps, "value">`                            | —                  | Props for every tab; each item keeps its own `value`              |
+| `IndicatorProps` | `TabsIndicatorProps`                                     | —                  | Props for the indicator                                           |
+| `PanelProps`     | `Omit<TabsPanelProps, "value" \| "keepMounted">`         | —                  | Props for every panel; set `keepMounted` at the top level         |
+| `ContainerProps` | `LayerProps`                                             | —                  | Props for the `Layer` that wraps the panels                       |
 
 `defaultValue` falls back to the first item's value only when it is `undefined`, and there is no default when `items` is empty. Pass `defaultValue={null}` for no active tab. When a top-level prop and `RootProps` set the same key, the top-level prop wins. A `RootProps.defaultValue` still counts before the first-item fallback. The default is read once, on mount: when `items` starts empty and loads later, the first tab is selected and `onValueChange` fires once with the reason `"initial"`.
 
@@ -60,20 +64,24 @@ import { Tabs } from "@uiid/navigation";
 
 | Slot             | Element                      |
 | ---------------- | ---------------------------- |
+| `tabs-root`      | Root                         |
 | `tabs-list`      | Tab button container         |
 | `tabs-tab`       | Individual tab button        |
 | `tabs-indicator` | Animated selection indicator |
+| `tabs-container` | `Layer` wrapping the panels  |
 | `tabs-panel`     | Content panel                |
+
+`tabs-list` also carries `data-size` and, for the ghost surface, `data-variant="ghost"`.
 
 ## Architecture
 
 ```
-┌─ TabsRoot ─────────────────────────────┐
+┌─ TabsRoot (Stack) ─────────────────────┐
 │ ┌─ TabsList (Group) ─────────────────┐ │
 │ │ [Tab 1] [Tab 2] [Tab 3]            │ │
 │ │ ════════ (TabsIndicator)           │ │
 │ └────────────────────────────────────┘ │
-│ ┌─ Layer ────────────────────────────┐ │
+│ ┌─ Layer (tabs-container) ───────────┐ │
 │ │ ┌─ TabsPanel (Stack) ────────────┐ │ │
 │ │ │ Panel content renders here     │ │ │
 │ │ └────────────────────────────────┘ │ │
@@ -89,7 +97,7 @@ A `render` of your own replaces the primitive, so layout props passed beside it 
 
 ## Subcomponents
 
-For advanced customization, you can use the individual subcomponents:
+For advanced customization, you can use the individual subcomponents. `size` and `variant` go on `TabsList`:
 
 ```tsx
 import {
@@ -101,7 +109,7 @@ import {
 } from "@uiid/navigation";
 
 <TabsRoot defaultValue="tab-1">
-  <TabsList>
+  <TabsList size="small">
     <TabsTab value="tab-1">Tab 1</TabsTab>
     <TabsTab value="tab-2">Tab 2</TabsTab>
     <TabsIndicator />
@@ -120,12 +128,10 @@ import {
 
 ## Styling
 
-The indicator animates between tabs using CSS transforms. Customize via tokens:
+The indicator slides between tabs by animating its `left` and `width`. The tab height and padding come from the `size` tier, which reads the form-control size tokens (`--forms-size-{xs,sm,md,lg}-height` and `-padding-x`). The component tokens are:
 
-| Token                       | Default              | Description            |
-| --------------------------- | -------------------- | ---------------------- |
-| `--tabs-tab-height`         | `3rem`               | Tab button height      |
-| `--tabs-tab-color-default`  | `--shade-muted`      | Inactive tab color     |
-| `--tabs-tab-color-active`   | `--shade-foreground` | Active/hover tab color |
-| `--tabs-indicator-height`   | `50%`                | Indicator height       |
-| `--tabs-indicator-color-bg` | `--shade-foreground` | Indicator background   |
+| Token                      | Default  | Description                                                             |
+| -------------------------- | -------- | ----------------------------------------------------------------------- |
+| `--tabs-tab-height`        | `2.5rem` | Tab list height; each `size` tier sets it from the matching forms token |
+| `--tabs-tab-padding-x`     | —        | Inline padding of each tab; set by the `size` tier                      |
+| `--tabs-panel-translate-y` | `2%`     | Vertical offset a hidden panel slides from                              |

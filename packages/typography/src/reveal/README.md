@@ -54,4 +54,4 @@ To replay the animation, remount with a `key`:
 
 - `stagger` and `duration` apply to words as they mount. Changing either later only affects words added after the change; words already on screen keep their timing.
 - Reveal wraps with `text-wrap: wrap`, not `Text`'s `pretty`. `pretty` and `balance` re-break lines as words arrive and move words already shown, so Reveal has no `balance` prop. It always wraps, so it has no `nowrap` or `truncate` prop either.
-- `children` must be a string. To reveal formatted text, render it as markdown with [`Markdown`](../../../markdown/src/markdown/README.md)'s `reveal`. For animating between two different strings (morphing), or animated numbers, see the `Typography/Prototypes` stories in Storybook.
+- `children` must be a string. To reveal formatted text, render it as markdown with [`Markdown`](../../../markdown/src/markdown/README.md)'s `reveal`. For animated numbers, use [`Number`](../number/README.md).
