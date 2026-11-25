@@ -37,9 +37,11 @@ export type TabsProps = {
   RootProps?: TabsRootProps;
   /** Reaches the list. `size` and `variant` are set on Tabs itself, and the tabs come from `items`. */
   ListProps?: Omit<TabsListProps, "size" | "variant" | "children">;
-  TabProps?: Omit<TabsTabProps, "value">;
+  /** Reaches every tab. Each item sets its tab's `value` and content. */
+  TabProps?: Omit<TabsTabProps, "value" | "children">;
   IndicatorProps?: TabsIndicatorProps;
-  PanelProps?: Omit<TabsPanelProps, "value" | "keepMounted">;
+  /** Reaches every panel. Each item sets its panel's `value` and content; `keepMounted` is set on Tabs itself. */
+  PanelProps?: Omit<TabsPanelProps, "value" | "keepMounted" | "children">;
   ContainerProps?: LayerProps;
 } & Pick<TabsRootProps, "defaultValue" | "onValueChange" | "value"> &
   Pick<TabsPanelProps, "keepMounted"> &

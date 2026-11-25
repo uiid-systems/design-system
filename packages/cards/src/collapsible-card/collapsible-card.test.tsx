@@ -258,3 +258,34 @@ describe("CollapsibleCard", () => {
     expect(cardFor("Details")).toHaveAttribute("data-ui-w", "full");
   });
 });
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("CollapsibleCard slot props", () => {
+  it("rejects the children the card fills in its thumbnail, footer and body", () => {
+    void (
+      <CollapsibleCard
+        title="Details"
+        thumbnail="Thumb"
+        // @ts-expect-error -- `thumbnail` is the thumbnail's content
+        ThumbnailProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <CollapsibleCard
+        title="Details"
+        footer="Footer"
+        // @ts-expect-error -- `footer` is the footer's content
+        FooterProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <CollapsibleCard
+        title="Details"
+        // @ts-expect-error -- the card's `children` are the body's content
+        InnerContainerProps={{ children: "Other" }}
+      >
+        Body
+      </CollapsibleCard>
+    );
+  });
+});

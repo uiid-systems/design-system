@@ -5,6 +5,7 @@ import { describe, it, expect, vi } from "vitest";
 import { RadioGroup } from "../radio-group/radio-group";
 import { RadioGroupRoot } from "../radio-group/subcomponents";
 import { Radio } from "./radio";
+import type { RadioProps } from "./radio.types";
 
 import checkboxStyles from "../checkbox/checkbox.module.css";
 import fieldStyles from "../field/field.module.css";
@@ -300,5 +301,59 @@ describe("Radio FieldProps className", () => {
     expect(row).not.toHaveClass(checkboxStyles["checkbox-label"]);
     expect(row).not.toHaveClass(checkboxStyles["toggle-bordered"]);
     expect(row).not.toHaveClass(checkboxStyles["toggle-reversed"]);
+  });
+});
+
+describe("Radio FieldProps", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects FieldProps the control owns", () => {
+    // @ts-expect-error -- `label` is set on Radio itself
+    void (<Radio value="a" FieldProps={{ label: "Other" }} />);
+    // @ts-expect-error -- `description` is set on Radio itself
+    void (<Radio value="a" FieldProps={{ description: "Other" }} />);
+    // @ts-expect-error -- `size` is set on Radio itself
+    void (<Radio value="a" FieldProps={{ size: "small" }} />);
+    // @ts-expect-error -- the row's content is Radio's own control
+    void (<Radio value="a" FieldProps={{ children: "Other" }} />);
+  });
+
+  it("keeps a slot label when the top level leaves it unset", () => {
+    render(
+      <RadioGroupRoot>
+        <Radio
+          value="a"
+          FieldProps={untyped<RadioProps["FieldProps"]>({ label: "Slot" })}
+        />
+      </RadioGroupRoot>,
+    );
+    expect(screen.getByRole("radio", { name: "Slot" })).toBeInTheDocument();
+  });
+
+  it("lets the top-level values win over the same keys in FieldProps", () => {
+    const { container } = render(
+      <RadioGroupRoot>
+        <Radio
+          value="a"
+          label="Top"
+          description="Top help"
+          size="large"
+          FieldProps={untyped<RadioProps["FieldProps"]>({
+            label: "Slot",
+            description: "Slot help",
+            size: "small",
+          })}
+        />
+      </RadioGroupRoot>,
+    );
+    const row = container.querySelector("[data-slot='field-row']");
+
+    expect(screen.getByText("Top")).toBeInTheDocument();
+    expect(screen.getByText("Top help")).toBeInTheDocument();
+    expect(screen.queryByText(/Slot/)).not.toBeInTheDocument();
+    expect(row?.className).toContain("row-size-large");
   });
 });

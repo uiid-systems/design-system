@@ -5,7 +5,7 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Form } from "../form/form";
 import { Checkbox } from "./checkbox";
-import type { CheckboxIndicatorProps } from "./checkbox.types";
+import type { CheckboxIndicatorProps, CheckboxProps } from "./checkbox.types";
 
 import fieldStyles from "../field/field.module.css";
 import styles from "./checkbox.module.css";
@@ -395,5 +395,77 @@ describe("Checkbox IndicatorProps", () => {
   it("rejects IndicatorProps the control owns", () => {
     // @ts-expect-error -- `indeterminate` is set on Checkbox itself
     void (<Checkbox IndicatorProps={{ indeterminate: true }} />);
+  });
+});
+
+describe("Checkbox FieldProps", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects FieldProps the control owns", () => {
+    // @ts-expect-error -- `label` is set on Checkbox itself
+    void (<Checkbox FieldProps={{ label: "Other" }} />);
+    // @ts-expect-error -- `description` is set on Checkbox itself
+    void (<Checkbox FieldProps={{ description: "Other" }} />);
+    // @ts-expect-error -- `size` is set on Checkbox itself
+    void (<Checkbox FieldProps={{ size: "small" }} />);
+    // @ts-expect-error -- `reversed` is set on Checkbox itself
+    void (<Checkbox FieldProps={{ reversed: true }} />);
+    // @ts-expect-error -- `bordered` is set on Checkbox itself
+    void (<Checkbox FieldProps={{ bordered: true }} />);
+    // @ts-expect-error -- the row's content is Checkbox's own control
+    void (<Checkbox FieldProps={{ children: "Other" }} />);
+    void (
+      <Checkbox
+        label="Terms"
+        // @ts-expect-error -- `label` is the label's content
+        FieldProps={{ LabelProps: { children: "Other" } }}
+      />
+    );
+    void (
+      <Checkbox
+        description="Help"
+        // @ts-expect-error -- `description` is the description's content
+        FieldProps={{ DescriptionProps: { children: "Other" } }}
+      />
+    );
+  });
+
+  it("keeps a slot label when the top level leaves it unset", () => {
+    render(
+      <Checkbox
+        FieldProps={untyped<CheckboxProps["FieldProps"]>({ label: "Slot" })}
+      />,
+    );
+    expect(screen.getByRole("checkbox", { name: "Slot" })).toBeInTheDocument();
+  });
+
+  it("lets the top-level values win over the same keys in FieldProps", () => {
+    const { container } = render(
+      <Checkbox
+        label="Top"
+        description="Top help"
+        size="large"
+        reversed={false}
+        bordered={false}
+        FieldProps={untyped<CheckboxProps["FieldProps"]>({
+          label: "Slot",
+          description: "Slot help",
+          size: "small",
+          reversed: true,
+          bordered: true,
+        })}
+      />,
+    );
+    const row = container.querySelector("[data-slot='field-row']");
+
+    expect(screen.getByText("Top")).toBeInTheDocument();
+    expect(screen.getByText("Top help")).toBeInTheDocument();
+    expect(screen.queryByText(/Slot/)).not.toBeInTheDocument();
+    expect(row?.className).toContain("row-size-large");
+    expect(row).not.toHaveClass(styles["toggle-reversed"]);
+    expect(row).not.toHaveClass(styles["toggle-bordered"]);
   });
 });

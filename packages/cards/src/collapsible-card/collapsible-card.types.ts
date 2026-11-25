@@ -23,8 +23,11 @@ export type CollapsibleCardProps = Omit<
     title: React.ReactNode;
     /** Presentation only; the title's content always comes from `title`. */
     TitleProps?: Omit<CardTitleProps, "children">;
-    /** The body is the collapsible panel, so its `render` target is fixed. */
-    InnerContainerProps?: Omit<InnerContainerProps, "render">;
+    /**
+     * The body is the collapsible panel, so its `render` target is fixed, and
+     * its content is the card's `children`.
+     */
+    InnerContainerProps?: Omit<InnerContainerProps, "render" | "children">;
     /**
      * Hide the body while closed instead of unmounting it, so its state (a
      * form's inputs, say) survives collapsing.

@@ -142,8 +142,8 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
     CodeBlockWrapButtonProps,
     "pressed" | "defaultPressed" | "onPressedChange"
   >;
-  /** Props for the copy button. Its `onCopy` runs before the top-level `onCopy`. */
-  CopyButtonProps?: Omit<CodeBlockCopyButtonProps, "code">;
+  /** Props for the copy button. `code` and `onCopy` are set on CodeBlock itself. */
+  CopyButtonProps?: Omit<CodeBlockCopyButtonProps, "code" | "onCopy">;
   /** Props for the fullscreen button */
   FullscreenButtonProps?: Omit<
     CodeBlockFullscreenButtonProps,

@@ -49,19 +49,25 @@ export const NumberField = ({
     >
       <NumberFieldRoot {...rootProps}>
         {/*
-         * The group and the input spread their slot first and NumberField's
+         * The group, the steppers and the input spread their slot first and NumberField's
          * own values after, so a top-level value wins and an unset one leaves
          * the slot's alone.
          */}
         <NumberFieldGroup {...GroupProps} {...definedProps({ size, color })}>
-          <NumberFieldDecrement disabled={disabled} {...DecrementProps} />
+          <NumberFieldDecrement
+            {...DecrementProps}
+            {...definedProps({ disabled })}
+          />
 
           <NumberFieldInput
             {...InputProps}
             {...definedProps({ size, color, placeholder, required })}
           />
 
-          <NumberFieldIncrement disabled={disabled} {...IncrementProps} />
+          <NumberFieldIncrement
+            {...IncrementProps}
+            {...definedProps({ disabled })}
+          />
         </NumberFieldGroup>
       </NumberFieldRoot>
     </Field>

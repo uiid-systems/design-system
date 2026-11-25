@@ -7,6 +7,7 @@ import { Checkbox } from "../checkbox/checkbox";
 import { Form } from "../form/form";
 import { InputControl } from "../input/subcomponents";
 import { Field } from "./field";
+import type { FieldProps, FieldRowProps } from "./field.types";
 import {
   FieldRoot,
   FieldLabel,
@@ -1244,5 +1245,85 @@ describe("Field RootProps precedence", () => {
       </Field>,
     );
     expect(root(container)).toHaveAttribute("data-disabled");
+  });
+});
+
+describe("Field and FieldRow slot props", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  /* Type-level: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects the children Field fills in its label and description", () => {
+    void (
+      <Field
+        label="Email"
+        // @ts-expect-error -- `label` is the label's content
+        LabelProps={{ children: "Other" }}
+      >
+        <FieldControl />
+      </Field>
+    );
+    void (
+      <Field
+        description="Help"
+        // @ts-expect-error -- `description` is the description's content
+        DescriptionProps={{ children: "Other" }}
+      >
+        <FieldControl />
+      </Field>
+    );
+  });
+
+  it("keeps Field's label and description over slot children", () => {
+    render(
+      <Field
+        label="Email"
+        description="Help"
+        LabelProps={untyped<FieldProps["LabelProps"]>({ children: "Slot" })}
+        DescriptionProps={untyped<FieldProps["DescriptionProps"]>({
+          children: "Slot",
+        })}
+      >
+        <FieldControl />
+      </Field>,
+    );
+    expect(screen.getByText("Email")).toBeInTheDocument();
+    expect(screen.getByText("Help")).toBeInTheDocument();
+    expect(screen.queryByText("Slot")).not.toBeInTheDocument();
+  });
+
+  /* Type-level: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects the children FieldRow fills in its label and description", () => {
+    void (
+      <FieldRow
+        label="Terms"
+        // @ts-expect-error -- `label` is the label's content
+        LabelProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <FieldRow
+        description="Help"
+        // @ts-expect-error -- `description` is the description's content
+        DescriptionProps={{ children: "Other" }}
+      />
+    );
+  });
+
+  it("keeps FieldRow's label and description over slot children", () => {
+    render(
+      <FieldRow
+        label="Terms"
+        description="Help"
+        LabelProps={untyped<FieldRowProps["LabelProps"]>({ children: "Slot" })}
+        DescriptionProps={untyped<FieldRowProps["DescriptionProps"]>({
+          children: "Slot",
+        })}
+      />,
+    );
+    expect(screen.getByText("Terms")).toBeInTheDocument();
+    expect(screen.getByText("Help")).toBeInTheDocument();
+    expect(screen.queryByText("Slot")).not.toBeInTheDocument();
   });
 });

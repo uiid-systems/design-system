@@ -3,12 +3,7 @@ import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
 import type { VariantProps, WithStringClassName } from "@uiid/utils";
 
-import type {
-  FieldProps,
-  FieldLabelProps,
-  FieldDescriptionProps,
-  FieldErrorProps,
-} from "../field/field.types";
+import type { FieldProps, FieldRowProps } from "../field/field.types";
 import type { checkboxVariants } from "./checkbox.variants";
 
 export type CheckboxVariants = VariantProps<typeof checkboxVariants>;
@@ -22,12 +17,10 @@ export type CheckboxColor = PaletteColor;
 export type CheckboxFieldProps = GroupProps &
   Pick<CheckboxVariants, "size"> &
   Pick<FieldProps, "label" | "description"> &
+  Pick<FieldRowProps, "LabelProps" | "DescriptionProps" | "ErrorProps"> &
   React.PropsWithChildren<{
     reversed?: boolean;
     bordered?: boolean;
-    LabelProps?: FieldLabelProps;
-    DescriptionProps?: FieldDescriptionProps;
-    ErrorProps?: FieldErrorProps;
   }>;
 
 export type CheckboxRootProps = WithStringClassName<BaseCheckbox.Root.Props> &
@@ -49,7 +42,11 @@ export type CheckboxIndicatorProps =
 export type CheckboxProps = CheckboxRootProps &
   Pick<CheckboxFieldProps, "reversed" | "bordered" | "label" | "description"> &
   Pick<CheckboxIndicatorProps, "indeterminate"> & {
-    FieldProps?: CheckboxFieldProps;
+    /** Reaches the row. The keys Checkbox hands to the row itself, and the control it holds, are left out. */
+    FieldProps?: Omit<
+      CheckboxFieldProps,
+      "label" | "description" | "size" | "reversed" | "bordered" | "children"
+    >;
     /** Reaches the indicator. `indeterminate` is set on Checkbox itself. */
     IndicatorProps?: Omit<CheckboxIndicatorProps, "indeterminate">;
   };

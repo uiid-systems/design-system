@@ -28,6 +28,10 @@ export type RadioIndicatorProps =
 
 export type RadioProps = RadioRootProps &
   Pick<FieldRowProps, "label" | "description"> & {
-    FieldProps?: Omit<FieldRowProps, "frameClassName">;
+    /** Reaches the row. The keys Radio hands to the row itself, and the control it holds, are left out. */
+    FieldProps?: Omit<
+      FieldRowProps,
+      "frameClassName" | "label" | "description" | "size" | "children"
+    >;
     IndicatorProps?: RadioIndicatorProps;
   };

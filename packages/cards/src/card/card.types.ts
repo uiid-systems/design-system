@@ -42,7 +42,10 @@ export type CardProps = Omit<StackProps, "title" | "color"> & {
   TitleProps?: CardTitleProps;
   DescriptionProps?: CardDescriptionProps;
   ActionProps?: CardActionProps;
-  FooterProps?: CardFooterProps;
-  ThumbnailProps?: CardThumbnailProps;
-  InnerContainerProps?: InnerContainerProps;
+  /** Reaches the footer. Its content is `footer`. */
+  FooterProps?: Omit<CardFooterProps, "children">;
+  /** Reaches the thumbnail. Its content is `thumbnail`. */
+  ThumbnailProps?: Omit<CardThumbnailProps, "children">;
+  /** Reaches the body. Its content is Card's `children`. */
+  InnerContainerProps?: Omit<InnerContainerProps, "children">;
 };

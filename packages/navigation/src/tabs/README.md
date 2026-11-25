@@ -34,21 +34,21 @@ import { Tabs } from "@uiid/navigation";
 
 ## Props
 
-| Prop             | Type                                                     | Default            | Description                                                       |
-| ---------------- | -------------------------------------------------------- | ------------------ | ----------------------------------------------------------------- |
-| `items`          | `TabsItemData[]`                                         | —                  | Array of tab items (required)                                     |
-| `defaultValue`   | `string \| null`                                         | First item's value | Initially selected tab                                            |
-| `value`          | `string \| null`                                         | —                  | Controlled selected tab                                           |
-| `onValueChange`  | `(value, eventDetails) => void`                          | —                  | Callback when the selected tab changes                            |
-| `size`           | `"xsmall" \| "small" \| "medium" \| "large"`             | `"medium"`         | Tab height and padding, matching the form-control rows            |
-| `variant`        | `"ghost"`                                                | —                  | Filled by default; `ghost` drops the list background and border   |
-| `keepMounted`    | `boolean`                                                | `false`            | Keep inactive panels in the DOM                                   |
-| `RootProps`      | `TabsRootProps`                                          | —                  | Props for the root                                                |
-| `ListProps`      | `Omit<TabsListProps, "size" \| "variant" \| "children">` | —                  | Props for the tab list; set `size` and `variant` at the top level |
-| `TabProps`       | `Omit<TabsTabProps, "value">`                            | —                  | Props for every tab; each item keeps its own `value`              |
-| `IndicatorProps` | `TabsIndicatorProps`                                     | —                  | Props for the indicator                                           |
-| `PanelProps`     | `Omit<TabsPanelProps, "value" \| "keepMounted">`         | —                  | Props for every panel; set `keepMounted` at the top level         |
-| `ContainerProps` | `LayerProps`                                             | —                  | Props for the `Layer` that wraps the panels                       |
+| Prop             | Type                                                           | Default            | Description                                                                                                   |
+| ---------------- | -------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `items`          | `TabsItemData[]`                                               | —                  | Array of tab items (required)                                                                                 |
+| `defaultValue`   | `string \| null`                                               | First item's value | Initially selected tab                                                                                        |
+| `value`          | `string \| null`                                               | —                  | Controlled selected tab                                                                                       |
+| `onValueChange`  | `(value, eventDetails) => void`                                | —                  | Callback when the selected tab changes                                                                        |
+| `size`           | `"xsmall" \| "small" \| "medium" \| "large"`                   | `"medium"`         | Tab height and padding, matching the form-control rows                                                        |
+| `variant`        | `"ghost"`                                                      | —                  | Filled by default; `ghost` drops the list background and border                                               |
+| `keepMounted`    | `boolean`                                                      | `false`            | Keep inactive panels in the DOM                                                                               |
+| `RootProps`      | `TabsRootProps`                                                | —                  | Props for the root                                                                                            |
+| `ListProps`      | `Omit<TabsListProps, "size" \| "variant" \| "children">`       | —                  | Props for the tab list; set `size` and `variant` at the top level                                             |
+| `TabProps`       | `Omit<TabsTabProps, "value" \| "children">`                    | —                  | Props for every tab; each item keeps its own `value` and label                                                |
+| `IndicatorProps` | `TabsIndicatorProps`                                           | —                  | Props for the indicator                                                                                       |
+| `PanelProps`     | `Omit<TabsPanelProps, "value" \| "keepMounted" \| "children">` | —                  | Props for every panel; each item keeps its own `value` and content, and `keepMounted` is set at the top level |
+| `ContainerProps` | `LayerProps`                                                   | —                  | Props for the `Layer` that wraps the panels                                                                   |
 
 `defaultValue` falls back to the first item's value only when it is `undefined`, and there is no default when `items` is empty. Pass `defaultValue={null}` for no active tab. When a top-level prop and `RootProps` set the same key, the top-level prop wins. A `RootProps.defaultValue` still counts before the first-item fallback. The default is read once, on mount: when `items` starts empty and loads later, the first tab is selected and `onValueChange` fires once with the reason `"initial"`.
 

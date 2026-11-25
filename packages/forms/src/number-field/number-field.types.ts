@@ -101,8 +101,10 @@ export type NumberFieldProps = {
    */
   color?: NumberFieldColor;
   RootProps?: NumberFieldRootProps;
-  DecrementProps?: NumberFieldDecrementProps;
-  IncrementProps?: NumberFieldIncrementProps;
+  /** Reaches the decrement button. `disabled` is set on NumberField itself. */
+  DecrementProps?: Omit<NumberFieldDecrementProps, "disabled">;
+  /** Reaches the increment button. `disabled` is set on NumberField itself. */
+  IncrementProps?: Omit<NumberFieldIncrementProps, "disabled">;
   /** Reaches the group. `size`, `color` and the controls inside are set by NumberField itself. */
   GroupProps?: Omit<NumberFieldGroupProps, "size" | "color" | "children">;
   /** Reaches the Field around the control. The keys NumberField hands to Field itself are left out. */

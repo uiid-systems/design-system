@@ -4,6 +4,7 @@ import { PALETTE_HUES, paletteColorStyles } from "@uiid/tokens";
 
 import { Card } from "./card";
 import { CARD_DEFAULT_COLOR } from "./card.constants";
+import type { CardProps } from "./card.types";
 
 import styles from "./card.module.css";
 
@@ -515,5 +516,61 @@ describe("Card slot props", () => {
         ContainerProps={{ p: 2 }}
       />
     );
+  });
+
+  it("rejects the children Card fills in its thumbnail, footer and body", () => {
+    void (
+      <Card
+        thumbnail="Thumb"
+        // @ts-expect-error -- `thumbnail` is the thumbnail's content
+        ThumbnailProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <Card
+        footer="Footer"
+        // @ts-expect-error -- `footer` is the footer's content
+        FooterProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <Card
+        // @ts-expect-error -- Card's `children` are the body's content
+        InnerContainerProps={{ children: "Other" }}
+      >
+        Body
+      </Card>
+    );
+  });
+});
+
+describe("Card slot children", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  it("keeps the top-level thumbnail, footer and body over slot children", () => {
+    render(
+      <Card
+        thumbnail="Thumb"
+        footer="Footer"
+        ThumbnailProps={untyped<CardProps["ThumbnailProps"]>({
+          children: "Slot thumbnail",
+        })}
+        FooterProps={untyped<CardProps["FooterProps"]>({
+          children: "Slot footer",
+        })}
+        InnerContainerProps={untyped<CardProps["InnerContainerProps"]>({
+          children: "Slot body",
+        })}
+      >
+        Body
+      </Card>,
+    );
+
+    expect(screen.getByText("Thumb")).toBeInTheDocument();
+    expect(screen.getByText("Footer")).toBeInTheDocument();
+    expect(screen.getByText("Body")).toBeInTheDocument();
+    expect(screen.queryByText(/Slot/)).not.toBeInTheDocument();
   });
 });

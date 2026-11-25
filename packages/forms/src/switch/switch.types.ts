@@ -4,11 +4,7 @@ import type { PaletteColor } from "@uiid/tokens";
 import type { VariantProps, WithStringClassName } from "@uiid/utils";
 
 import type { CheckboxVariants } from "../checkbox/checkbox.types";
-import type {
-  FieldDescriptionProps,
-  FieldLabelProps,
-  FieldProps,
-} from "../field/field.types";
+import type { FieldProps, FieldRowProps } from "../field/field.types";
 import type { switchVariants } from "./switch.variants";
 
 /**
@@ -44,14 +40,16 @@ export type SwitchThumbProps = WithStringClassName<Switch.Thumb.Props>;
 
 export type SwitchFieldProps = GroupProps &
   Pick<SwitchVariants, "reversed" | "bordered" | "size"> &
-  Pick<FieldProps, "label" | "description"> & {
-    LabelProps?: FieldLabelProps;
-    DescriptionProps?: FieldDescriptionProps;
-  };
+  Pick<FieldProps, "label" | "description"> &
+  Pick<FieldRowProps, "LabelProps" | "DescriptionProps">;
 
 export type SwitchProps = SwitchRootProps & {
   RootProps?: SwitchRootProps;
   ThumbProps?: SwitchThumbProps;
-  FieldProps?: SwitchFieldProps;
+  /** Reaches the row. The keys Switch hands to the row itself, and the control it holds, are left out. */
+  FieldProps?: Omit<
+    SwitchFieldProps,
+    "label" | "description" | "size" | "reversed" | "bordered" | "children"
+  >;
 } & Pick<FieldProps, "label" | "description" | "disabled"> &
   Pick<SwitchFieldProps, "reversed" | "bordered" | "size">;

@@ -62,7 +62,8 @@ export type DrawerProps = React.PropsWithChildren<{
     | "hideCloseButton"
     | "children"
   >;
-  ContentProps?: DrawerContentProps;
+  /** Reaches the content wrapper. Its content is Drawer's `children`. */
+  ContentProps?: Omit<DrawerContentProps, "children">;
 }> &
   Pick<
     DrawerRootProps,

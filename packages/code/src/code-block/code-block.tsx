@@ -63,20 +63,6 @@ export const CodeBlock = ({
     [onFullscreenChange],
   );
 
-  // Both handlers run after a successful copy: the slot's first, then the
-  // top-level one, which still runs if the first throws. The slot's error is
-  // logged here; the top-level one's reaches the copy button, which logs it,
-  // so each error is reported once.
-  const slotOnCopy = CopyButtonProps?.onCopy;
-  const handleCopy = (copied: string) => {
-    try {
-      slotOnCopy?.(copied);
-    } catch (err) {
-      console.error("onCopy threw:", err);
-    }
-    onCopy?.(copied);
-  };
-
   const { html, error } = useHighlight(code, language, {
     highlightLines,
     enabled: !prerenderedHtml,
@@ -145,7 +131,7 @@ export const CodeBlock = ({
           onFullscreenChange={handleFullscreenChange}
           LanguageIconProps={slot(LanguageIconProps)}
           WrapButtonProps={slot(WrapButtonProps)}
-          CopyButtonProps={{ ...slot(CopyButtonProps), onCopy: handleCopy }}
+          CopyButtonProps={{ ...slot(CopyButtonProps), onCopy }}
           FullscreenButtonProps={slot(FullscreenButtonProps)}
         />
 
