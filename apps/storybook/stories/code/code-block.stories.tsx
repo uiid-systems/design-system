@@ -152,7 +152,7 @@ export const EachButton: Story = {
           <Text size={-1} emphasis="muted">
             {label}
           </Text>
-          <Group gap={4} evenly w="full">
+          <Group gap={4} evenly w="full" ay="start">
             <CodeBlock
               code={sampleBash}
               language="bash"
@@ -173,7 +173,7 @@ export const AllButtons: Story = {
     code: sampleTypeScript,
   },
   render: () => (
-    <Group gap={4} evenly w="full">
+    <Group gap={4} evenly w="full" ay="start">
       <CodeBlock
         code={sampleTypeScript}
         language="tsx"
@@ -193,7 +193,7 @@ export const FloatingFirstLine: Story = {
     code: sampleLongLine,
   },
   render: () => (
-    <Group gap={4} evenly w="full">
+    <Group gap={4} evenly w="full" ay="start">
       <CodeBlock
         code={`${sampleLongLine}\n${sampleLongLine}`}
         wrappable
@@ -217,7 +217,7 @@ export const FloatingCollapsed: Story = {
     code: sampleLongLine,
   },
   render: () => (
-    <Group gap={4} evenly w="full">
+    <Group gap={4} evenly w="full" ay="start">
       <CodeBlock
         code={Array.from({ length: 12 }, () => sampleLongLine).join("\n")}
         rows={6}
@@ -259,7 +259,7 @@ export const Themes: Story = {
     code: sampleTypeScript,
   },
   render: () => (
-    <Group gap={4} evenly w="full">
+    <Group gap={4} evenly w="full" ay="start">
       {(["light", "dark"] as const).map((theme) => (
         <Stack key={theme} data-theme={theme} gap={4} p={4} w="full">
           <CodeBlock
