@@ -1372,6 +1372,23 @@ describe("Drawer slot precedence", () => {
     ).toBeInTheDocument();
     expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
   });
+
+  it("renders children, not ContentProps.children, as the body", () => {
+    render(
+      <Drawer
+        open
+        title="Settings"
+        ContentProps={untyped<DrawerProps["ContentProps"]>({
+          children: "Slot content",
+        })}
+      >
+        Drawer content
+      </Drawer>,
+    );
+
+    expect(screen.getByText("Drawer content")).toBeInTheDocument();
+    expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
+  });
 });
 
 /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
@@ -1414,6 +1431,17 @@ describe("Drawer slot props", () => {
         // @ts-expect-error -- the trigger's content is `trigger`
         TriggerProps={{ children: "Other" }}
       />
+    );
+  });
+
+  it("rejects the key Drawer owns in ContentProps", () => {
+    void (
+      <Drawer
+        // @ts-expect-error -- the content's children are Drawer's `children`
+        ContentProps={{ children: "Other" }}
+      >
+        Body
+      </Drawer>
     );
   });
 });
