@@ -83,7 +83,7 @@ import { Tabs } from "@uiid/navigation";
 
 ## Layout
 
-`TabsRoot` and `TabsPanel` render a `Stack` and `TabsList` a `Group`, so `RootProps`, `PanelProps`, and `ListProps` take their layout props (`gap`, `p`, `ax`, `ay`, `w`, ...) alongside Base UI's. The list keeps its content width unless `ListProps={{ w: "full" }}` stretches it. The list spaces its tabs `gap={4}` apart and centres them on the cross axis (`ay="center"`); each panel fills the width (`w="full"`), stretches its content across it, and centres it vertically (`ay="center"`). Pass any of them to change it.
+`TabsRoot` and `TabsPanel` render a `Stack` and `TabsList` a `Group`, so `RootProps`, `PanelProps`, and `ListProps` take their layout props (`gap`, `p`, `ax`, `ay`, `w`, ...) alongside Base UI's. The list keeps its content width unless `ListProps={{ w: "full" }}` stretches it. The list spaces its tabs `gap={4}` apart and centres them on the cross axis (`ay="center"`); each panel fills the width (`w="full"`, released with `PanelProps={{ w: null }}`), stretches its content across it, and centres it vertically (`ay="center"`). Pass any of them to change it.
 
 A `render` of your own replaces the primitive, so layout props passed beside it reach your element as plain attributes: `<TabsRoot render={<section />} gap={4}>` renders `<section gap="4">`.
 

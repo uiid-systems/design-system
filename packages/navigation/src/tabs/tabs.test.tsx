@@ -489,6 +489,14 @@ describe("Tabs", () => {
     expect(panel).not.toHaveAttribute("data-ui-fullwidth");
   });
 
+  it("releases the panel's default fill with w={null}", () => {
+    render(<Tabs items={MOCK_ITEMS} PanelProps={{ w: null }} />);
+    const panel = document.querySelector<HTMLElement>(
+      "[data-slot='tabs-panel']",
+    );
+    expect(panel).not.toHaveAttribute("data-ui-w");
+  });
+
   it("leaves the panel's cross axis to Stack's stretch default", () => {
     render(<Tabs items={MOCK_ITEMS} />);
     const panel = document.querySelector<HTMLElement>(

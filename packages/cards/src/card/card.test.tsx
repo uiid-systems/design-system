@@ -225,6 +225,13 @@ describe("Card", () => {
       </Card>,
     );
     expect(thumbnail(container)).toHaveAttribute("data-ui-w", "200");
+
+    rerender(
+      <Card thumbnail={<img alt="" />} ThumbnailProps={{ w: null }}>
+        Body
+      </Card>,
+    );
+    expect(thumbnail(container)).not.toHaveAttribute("data-ui-w");
   });
 
   it("renders the footer slot", () => {

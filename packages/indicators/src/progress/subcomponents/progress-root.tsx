@@ -13,7 +13,7 @@ import styles from "../progress.module.css";
 /*
  * `gap` and `w` are destructured into the `Stack` rather than written on it as a
  * literal: Base UI merges `render` props over the part's own, so a literal
- * there would silently beat a caller's.
+ * there would silently beat a caller's `gap` or `w`.
  */
 export const ProgressRoot = ({
   size,

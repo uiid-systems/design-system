@@ -88,6 +88,20 @@ describe("Box", () => {
     expect(box).toHaveAttribute("data-ui-minw", "120");
   });
 
+  it("writes no width or height for w={null} and h={null}", () => {
+    render(
+      <Box w={null} h={null} data-testid="box">
+        x
+      </Box>,
+    );
+    const box = screen.getByTestId("box");
+    expect(box).not.toHaveAttribute("data-ui-w");
+    expect(box).not.toHaveAttribute("data-ui-h");
+    expect(box.style.getPropertyValue("--props-w")).toBe("");
+    expect(box.style.getPropertyValue("--props-h")).toBe("");
+    expect(box).not.toHaveAttribute("w");
+  });
+
   it("grows to fill its flex parent with grow", () => {
     const { rerender } = render(<Box data-testid="box">x</Box>);
     expect(screen.getByTestId("box")).not.toHaveAttribute("data-ui-grow");

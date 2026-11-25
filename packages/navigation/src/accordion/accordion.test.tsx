@@ -323,6 +323,7 @@ describe("Accordion", () => {
     const items = () =>
       document.querySelectorAll<HTMLElement>("[data-slot='accordion-item']");
     const { rerender } = render(<Accordion items={sampleItems} />);
+    expect(items()).toHaveLength(sampleItems.length);
     items().forEach((item) => {
       expect(item).toHaveAttribute("data-ui-w", "full");
       expect(item).not.toHaveAttribute("data-ui-fullwidth");
@@ -330,6 +331,22 @@ describe("Accordion", () => {
 
     rerender(<Accordion items={sampleItems} ItemProps={{ w: 240 }} />);
     items().forEach((item) => expect(item).toHaveAttribute("data-ui-w", "240"));
+  });
+
+  it("releases the root's and items' default fill with w={null}", () => {
+    render(
+      <Accordion
+        items={sampleItems}
+        RootProps={{ w: null }}
+        ItemProps={{ w: null }}
+      />,
+    );
+    expect(root()).not.toHaveAttribute("data-ui-w");
+    const items = document.querySelectorAll<HTMLElement>(
+      "[data-slot='accordion-item']",
+    );
+    expect(items).toHaveLength(sampleItems.length);
+    items.forEach((item) => expect(item).not.toHaveAttribute("data-ui-w"));
   });
 
   it("takes no top-level fullwidth prop", () => {

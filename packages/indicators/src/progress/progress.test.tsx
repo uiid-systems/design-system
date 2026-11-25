@@ -375,6 +375,17 @@ describe("Progress layout props", () => {
     }
   });
 
+  it("releases the root's and header's default fill with w={null}", () => {
+    const { container, rerender } = render(<Progress value={40} w={null} />);
+    expect(part(container, "progress")).not.toHaveAttribute("data-ui-w");
+
+    rerender(<Progress value={40} RootProps={{ w: null }} />);
+    expect(part(container, "progress")).not.toHaveAttribute("data-ui-w");
+
+    rerender(<Progress value={40} label="Upload" HeaderProps={{ w: null }} />);
+    expect(part(container, "progress-header")).not.toHaveAttribute("data-ui-w");
+  });
+
   it("lets a caller's gap and w reach the root", () => {
     const { container } = render(<Progress value={40} gap={4} w={200} />);
     const root = part(container, "progress");
