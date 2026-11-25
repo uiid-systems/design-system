@@ -32,7 +32,7 @@ Generation was abandoned rather than fixed, for two reasons worth not rediscover
 - The old `generateColorScale` accepted a `baseL` and never used it, pinning every `500` to `L=0.58`. All seven hues then failed to contain their own anchor — `yellow #e8b700` generated as `#a17200`.
 - The old converter clipped each channel independently, which shifts hue (`purple-50` read pink). The current ramps were produced once, offline, with **gamut mapping** instead: chroma is reduced until the colour fits sRGB while holding lightness and hue.
 
-There is no colour maths in the ramps. Each hue's palette values are plain `var()` references to a primitive, picked per scheme with `light-dark()`. The one derived value is `--palette-tint-hover`, a `color-mix()` of `--shade-foreground` into `--palette-tint`; the header of `src/palette.css` says why.
+There is no colour maths in the ramps. Each hue's palette values are plain `var()` references to a primitive, picked per scheme with `light-dark()`, except `.palette-neutral`'s light `--palette-tint`, which is the literal `#ffffff`. The one derived value is `--palette-tint-hover`, a `color-mix()` of `--shade-foreground` into `--palette-tint`; the header of `src/palette.css` says why.
 
 ## Theming
 

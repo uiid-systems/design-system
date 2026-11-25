@@ -21,7 +21,7 @@ The popup inverts its surface — foreground background, background text — whi
 
 ## Composition
 
-The parts are exported for layouts the simple component can't express: `TooltipProvider`, `TooltipRoot`, `TooltipTrigger`, `TooltipPortal`, `TooltipPositioner` and `TooltipPopup`, each taking the same props as its slot. `TooltipPositioner` carries the `sideOffset` (8) and `collisionPadding` (16) defaults, and `TooltipPopup` the inverted surface and the `-1` `Text`.
+The parts are exported for layouts the simple component can't express: `TooltipProvider`, `TooltipRoot`, `TooltipTrigger`, `TooltipPortal`, `TooltipPositioner` and `TooltipPopup`, each taking its slot's props plus the keys that slot leaves out: `TooltipTrigger` also takes `children` and `delay`, and `TooltipPopup` takes `children`. `TooltipPositioner` carries the `sideOffset` (8) and `collisionPadding` (16) defaults, and `TooltipPopup` the inverted surface and the `-1` `Text`.
 
 ## Gotchas
 

@@ -36,13 +36,13 @@ import { Accordion } from "@uiid/navigation";
 | Prop            | Type                                                          | Default    | Description                                                          |
 | --------------- | ------------------------------------------------------------- | ---------- | -------------------------------------------------------------------- |
 | `items`         | `AccordionItemData[]`                                         | —          | Array of accordion items                                             |
-| `defaultValue`  | `string[]`                                                    | —          | Initially expanded items                                             |
-| `value`         | `string[]`                                                    | —          | Controlled expanded items                                            |
+| `defaultValue`  | `AccordionValue` (an array of item values)                    | —          | Initially expanded items                                             |
+| `value`         | `AccordionValue` (an array of item values)                    | —          | Controlled expanded items                                            |
 | `onValueChange` | `(value, eventDetails) => void`                               | —          | Callback when expanded items change                                  |
 | `multiple`      | `boolean`                                                     | `false`    | Whether several items can be open at the same time                   |
 | `disabled`      | `boolean`                                                     | `false`    | Disables all accordion items                                         |
 | `orientation`   | `"vertical" \| "horizontal"`                                  | —          | Passed to Base UI, which deprecates it; it no longer changes focus   |
-| `size`          | `"small" \| "medium" \| "large"`                              | `"medium"` | Trigger text, padding and icon size, and the panel padding to match  |
+| `size`          | `"small" \| "medium" \| "large"`                              | `"medium"` | Trigger padding and icon size, and the panel padding to match        |
 | `variant`       | `"ghost"`                                                     | —          | Filled by default; `ghost` drops the card surface and the item rules |
 | `RootProps`     | `AccordionRootProps`                                          | —          | Props for the root                                                   |
 | `ItemProps`     | `Omit<AccordionItemProps, "value" \| "disabled">`             | —          | Props for every item; each item keeps its own `value` and `disabled` |
@@ -110,18 +110,24 @@ A `render` of your own replaces the primitive, so layout props passed beside it 
 
 ## Styling
 
-| Token                                   | Default                                      | Description                                           |
-| --------------------------------------- | -------------------------------------------- | ----------------------------------------------------- |
-| `--accordion-trigger-padding-x`         | `--globals-padding-x`                        | Trigger inline padding before a size applies          |
-| `--accordion-trigger-padding-y`         | `--globals-padding-y`                        | Trigger block padding before a size applies           |
-| `--accordion-panel-padding-x`           | `--globals-padding-x`                        | Content inline padding; each size resets it           |
-| `--accordion-panel-padding-y`           | `1.5rem`                                     | Content block padding; each size resets it            |
-| `--accordion-size-{sm,md,lg}-font-size` | `--forms-size-{sm,md,lg}-font-size`          | Trigger text size per size                            |
-| `--accordion-size-{sm,md,lg}-padding-x` | `--forms-size-{sm,md,lg}-padding-x`          | Trigger and content inline padding per size           |
-| `--accordion-size-{sm,md,lg}-padding-y` | `0.5rem`, `0.75rem`, `1rem`                  | Trigger block padding per size; content uses twice it |
-| `--accordion-size-{sm,md,lg}-icon-size` | `0.875rem`, `--globals-icon-size`, `1.25rem` | Trigger icon height per size                          |
+Every trigger and panel carries a size tier, `medium` when `size` is unset, and the tier tokens are the ones that take effect:
 
-The panel animates its height from Base UI's `--accordion-panel-height`.
+| Token                                   | Default                                      | Description                                                                                                               |
+| --------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `--accordion-size-{sm,md,lg}-padding-x` | `--forms-size-{sm,md,lg}-padding-x`          | Trigger and content inline padding per size                                                                               |
+| `--accordion-size-{sm,md,lg}-padding-y` | `0.5rem`, `0.75rem`, `1rem`                  | Trigger block padding per size; content uses twice it                                                                     |
+| `--accordion-size-{sm,md,lg}-icon-size` | `0.875rem`, `--globals-icon-size`, `1.25rem` | Trigger icon and chevron height per size                                                                                  |
+| `--accordion-size-{sm,md,lg}-font-size` | `--forms-size-{sm,md,lg}-font-size`          | Set on the trigger button, but the label does not follow it: the label is a size `0` `Text`, which sets its own font size |
+
+These tokens are declared but always overridden, so changing them has no visible effect:
+
+| Token                           | Default               | Why it has no effect                                                                           |
+| ------------------------------- | --------------------- | ---------------------------------------------------------------------------------------------- |
+| `--accordion-trigger-padding-x` | `--globals-padding-x` | The trigger's size tier sets `padding-inline` directly from `--accordion-size-*-padding-x`     |
+| `--accordion-trigger-padding-y` | `--globals-padding-y` | The trigger's size tier sets `padding-block` directly from `--accordion-size-*-padding-y`      |
+| `--accordion-panel-padding-x`   | `--globals-padding-x` | The panel's size tier redefines it from `--accordion-size-*-padding-x`                         |
+| `--accordion-panel-padding-y`   | `1.5rem`              | The panel's size tier redefines it as twice `--accordion-size-*-padding-y`                     |
+| `--accordion-panel-height`      | `2rem`                | Base UI sets its own `--accordion-panel-height` on the panel, which the height animation reads |
 
 ## Accessibility
 
