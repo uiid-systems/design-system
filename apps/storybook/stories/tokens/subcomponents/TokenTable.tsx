@@ -1,116 +1,62 @@
+import { Stack, Table, Text } from "@uiid/design-system";
+
 import { TokenVisual } from "./TokenVisual";
 
-export interface TokenRow {
+// A type alias rather than an interface: Table's items must be indexable.
+export type TokenRow = {
   name: string;
-  value: string;
+  value: string | number;
   tokenName: string;
   type: string;
-}
+};
 
 interface TokenTableProps {
   tokens: TokenRow[];
 }
 
+const COLUMNS = ["name", "value", "tokenName", "visual"];
+
+const HEADERS: Record<string, string> = {
+  name: "Name",
+  value: "Value",
+  tokenName: "Token",
+  visual: "Visual",
+};
+
+const formatCell = (value: unknown, column: string, token: TokenRow) => {
+  switch (column) {
+    case "name":
+      return <Text weight="medium">{token.name}</Text>;
+    case "value":
+      return (
+        <Text family="mono" size={-1}>
+          {String(token.value)}
+        </Text>
+      );
+    case "tokenName":
+      return (
+        <Text family="mono" size={-1} emphasis="muted">
+          {token.tokenName}
+        </Text>
+      );
+    case "visual":
+      return <TokenVisual token={token} />;
+    default:
+      return String(value ?? "");
+  }
+};
+
 export const TokenTable = ({ tokens }: TokenTableProps) => {
   return (
-    <table
-      style={{
-        width: "100%",
-        borderCollapse: "collapse",
-        fontSize: "0.875rem",
-        fontFamily: "system-ui, sans-serif",
-        marginBottom: "3rem",
-      }}
-    >
-      <thead>
-        <tr style={{ borderBottom: "2px solid #e5e5e5" }}>
-          <th
-            style={{
-              textAlign: "left",
-              padding: "0.75rem 1rem",
-              fontWeight: "600",
-              color: "#666",
-            }}
-          >
-            Name
-          </th>
-          <th
-            style={{
-              textAlign: "left",
-              padding: "0.75rem 1rem",
-              fontWeight: "600",
-              color: "#666",
-            }}
-          >
-            Value
-          </th>
-          <th
-            style={{
-              textAlign: "left",
-              padding: "0.75rem 1rem",
-              fontWeight: "600",
-              color: "#666",
-            }}
-          >
-            Token
-          </th>
-          <th
-            style={{
-              textAlign: "left",
-              padding: "0.75rem 1rem",
-              fontWeight: "600",
-              color: "#666",
-              width: "150px",
-            }}
-          >
-            Visual
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {tokens.map((token, idx) => (
-          <tr
-            key={idx}
-            style={{
-              borderBottom: "1px solid #f0f0f0",
-              backgroundColor: idx % 2 === 0 ? "#ffffff" : "#fafafa",
-            }}
-          >
-            <td
-              style={{
-                padding: "0.5rem 1rem",
-                fontWeight: "500",
-                color: "#333",
-              }}
-            >
-              {token.name}
-            </td>
-            <td
-              style={{
-                padding: "0.5rem 1rem",
-                fontFamily: "monospace",
-                color: "#0066cc",
-                fontSize: "0.8125rem",
-              }}
-            >
-              {token.value}
-            </td>
-            <td
-              style={{
-                padding: "0.5rem 1rem",
-                fontFamily: "monospace",
-                color: "#666",
-                fontSize: "0.8125rem",
-              }}
-            >
-              {token.tokenName}
-            </td>
-            <td style={{ padding: "0.5rem 1rem" }}>
-              <TokenVisual token={token} />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Stack mb={12}>
+      <Table
+        items={tokens}
+        columns={COLUMNS}
+        formatHeader={(column) => HEADERS[String(column)]}
+        formatCell={formatCell}
+        striped
+        bordered
+      />
+    </Stack>
   );
 };

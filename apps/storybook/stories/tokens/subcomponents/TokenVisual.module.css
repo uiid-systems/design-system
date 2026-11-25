@@ -1,0 +1,41 @@
+/*
+ * Every visual paints the token's own value, which TokenVisual publishes as
+ * --token-value. Everything else reads theme tokens, so the swatches follow
+ * light and dark.
+ */
+
+.swatch {
+  background-color: var(--token-value);
+  border-style: solid;
+  border-color: var(--globals-border-color);
+  border-radius: 4px;
+}
+
+.radius {
+  background-color: var(--shade-muted);
+  border-style: solid;
+  border-color: var(--globals-border-color);
+  border-radius: var(--token-value);
+}
+
+.bar {
+  background-color: var(--shade-foreground);
+  inline-size: 8px;
+  block-size: 8px;
+}
+
+.bar-x {
+  inline-size: var(--token-value);
+}
+
+.bar-y {
+  block-size: var(--token-value);
+}
+
+.font-size {
+  font-size: var(--token-value);
+}
+
+.font-weight {
+  font-weight: var(--token-value);
+}
