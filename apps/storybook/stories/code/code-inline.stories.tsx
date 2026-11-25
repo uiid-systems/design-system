@@ -117,7 +117,7 @@ export const LongSnippetNarrowColumn: Story = {
     children: "npm install",
   },
   render: () => (
-    <Stack gap={4} maxw={240}>
+    <Stack gap={4} maxw={320}>
       <Text render={<p />}>
         Run <CodeInline>{LONG_COMMAND}</CodeInline> to test the stories.
       </Text>

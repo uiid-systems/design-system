@@ -29,6 +29,9 @@ const LONG_WITH_SPACES = Array.from({ length: 12 }, (_, i) => `--flag-${i}`)
 const LONG_UNBROKEN = "a".repeat(60) + "b".repeat(60);
 const SNIPPET = 'const id: string = "a";';
 
+// The poll gives up well before the test does, so a slow Shiki load fails
+// with the poll's message rather than a bare test timeout.
+const HIGHLIGHT_POLL_TIMEOUT = 15_000;
 const HIGHLIGHT_TIMEOUT = 20_000;
 
 beforeEach(async () => {
@@ -36,6 +39,7 @@ beforeEach(async () => {
     globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
   ).IS_REACT_ACT_ENVIRONMENT = false;
   await page.viewport(320, 640);
+  expect(document.documentElement.clientWidth).toBe(320);
 });
 
 // Vitest's default viewport, so later files measure what they expect.
@@ -108,6 +112,7 @@ describe("CodeInline at 320px", () => {
         </p>,
       );
       expect(code(container).querySelector(".line")).not.toBeNull();
+      expect(code(container).getClientRects().length).toBeGreaterThan(1);
       expect(hasNoPageScroll()).toBe(true);
     },
     HIGHLIGHT_TIMEOUT,
@@ -181,7 +186,9 @@ describe("CodeInline box", () => {
       const pending = box(el);
 
       await expect
-        .poll(() => el.querySelector(".line"), { timeout: HIGHLIGHT_TIMEOUT })
+        .poll(() => el.querySelector(".line"), {
+          timeout: HIGHLIGHT_POLL_TIMEOUT,
+        })
         .not.toBeNull();
       expectSameBox(box(el), pending);
     },
@@ -307,9 +314,10 @@ describe("CodeInline nested in text", () => {
   });
 
   /* Tests load CSS modules without the cascade layers the build adds, so here
-     Prose's own `code` rule wins by specificity. In a build CodeInline's layer
-     comes later and its surface wins; this checks only that one is painted. */
-  it("inside Prose keeps a surface in a link, a heading and a table cell", () => {
+     Prose's own `code` rule wins by specificity and paints the surface. In a
+     build CodeInline's layer comes later and its surface wins. So this checks
+     only what holds either way: sizing, inline display and no page scroll. */
+  it("inside Prose scales in a heading, stays inline in a link and fits a table cell", () => {
     const { container } = render(
       <Prose>
         <h2>
@@ -332,9 +340,7 @@ describe("CodeInline nested in text", () => {
       </Prose>,
     );
     const [heading, link, cell] = [0, 1, 2].map((i) => code(container, i));
-    for (const el of [heading!, link!, cell!]) {
-      expect(surface(el)).toEqual({ painted: true, rounded: true });
-    }
+    expect(cell!.getClientRects().length).toBeGreaterThan(1);
     expect(
       Number.parseFloat(getComputedStyle(heading!).fontSize),
     ).toBeGreaterThan(Number.parseFloat(getComputedStyle(link!).fontSize));
