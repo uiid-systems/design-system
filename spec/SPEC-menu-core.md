@@ -18,7 +18,7 @@ The `items` array behaves correctly at any depth, every element Menu renders can
 
 1. An entry with `items` opens a submenu at any depth. Rendering is one recursive function shared by the root popup and every submenu.
 2. `ItemProps`, `SubmenuRootProps` and `SubmenuTriggerProps` reach every level, as they reach the first level today.
-3. New slots `SubmenuPositionerProps` and `SubmenuPopupProps` reach every submenu's positioner and popup. `PortalProps` reaches the root portal. Each slot type omits the keys Menu owns, with a `@ts-expect-error` test per key.
+3. New slots `SubmenuPositionerProps` and `SubmenuPopupProps` reach every submenu's positioner and popup. `PortalProps` reaches the root portal and every submenu's portal. Each slot type omits the keys Menu owns, with a `@ts-expect-error` test per key.
 4. An entry's `disabled` wins over the slot's, and its `onClick` runs after `ItemProps.onClick`, at every depth. This is today's rule, kept.
 5. Duplicate `value`s among siblings are the caller's error; Menu keys by `value` and documents that it must be unique per level.
 6. Keyboard behavior is asserted in tests: Enter, Space and ArrowDown open from the trigger; arrows move the highlight and skip nothing that is enabled; ArrowRight opens a submenu and ArrowLeft closes it; typing a letter moves to the matching row; Escape closes and returns focus to the trigger; choosing an item closes the menu.
