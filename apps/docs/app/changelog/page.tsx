@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function ChangelogPage() {
   return (
-    <Stack data-slot="changelog-page" pb={32} fullwidth>
+    <Stack data-slot="changelog-page" pb={32} w="full">
       <Markdown file="CHANGELOG.md" />
     </Stack>
   );

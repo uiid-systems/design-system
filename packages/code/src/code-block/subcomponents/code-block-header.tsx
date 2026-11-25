@@ -41,7 +41,7 @@ export const CodeBlockHeader = ({
       py={2}
       px={4}
       bb={1}
-      fullwidth
+      w="full"
       {...props}
     >
       <Group ay="center" gap={2}>

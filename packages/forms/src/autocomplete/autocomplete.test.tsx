@@ -486,14 +486,14 @@ describe("Autocomplete input group", () => {
   it("rejects InputGroupProps the input owns", () => {
     // @ts-expect-error -- `size` is set on Autocomplete itself
     void (<Autocomplete InputGroupProps={{ size: "small" }} />);
-    // @ts-expect-error -- `fullwidth` is set on Autocomplete itself
-    void (<Autocomplete InputGroupProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- `w` is set on Autocomplete itself
+    void (<Autocomplete InputGroupProps={{ w: null }} />);
     // @ts-expect-error -- the input part renders the group's row itself
     void (<Autocomplete InputGroupProps={{ children: "Other" }} />);
     // @ts-expect-error -- `size` is set on AutocompleteInput itself
     void (<AutocompleteInput InputGroupProps={{ size: "small" }} />);
-    // @ts-expect-error -- `fullwidth` is set on AutocompleteInput itself
-    void (<AutocompleteInput InputGroupProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- `w` is set on AutocompleteInput itself
+    void (<AutocompleteInput InputGroupProps={{ w: null }} />);
     // @ts-expect-error -- AutocompleteInput renders the group's row itself
     void (<AutocompleteInput InputGroupProps={{ children: "Other" }} />);
   });
@@ -787,9 +787,9 @@ describe("Autocomplete generics", () => {
   });
 });
 
-/* Matches Select: `variant` and `fullwidth` shape the control surface. The
+/* Matches Select: `variant` and `w` shape the control surface. The
    control spans its row unless told otherwise, as it always has. */
-describe("Autocomplete variant and fullwidth", () => {
+describe("Autocomplete variant and w", () => {
   const items = ["apple", "banana", "cherry"];
   const field = () =>
     screen.getByRole("combobox").closest("[data-slot='field-root']");
@@ -799,19 +799,17 @@ describe("Autocomplete variant and fullwidth", () => {
 
   it("spans its row by default", () => {
     render(<Autocomplete items={items} after="kg" />);
-    expect(field()).toHaveAttribute("data-ui-fullwidth");
+    expect(field()).toHaveAttribute("data-ui-w", "full");
     expect(group()).toHaveAttribute("data-ui-w", "full");
-    expect(wrapper()).toHaveClass(inputStyles["toggle-fullwidth"]);
+    expect(wrapper()).toHaveAttribute("data-ui-w", "full");
   });
 
-  it("sizes to its content with fullwidth={false}", () => {
-    render(<Autocomplete items={items} after="kg" fullwidth={false} />);
-    expect(field()).not.toHaveAttribute("data-ui-fullwidth");
+  it("sizes to its content with w={null}", () => {
+    render(<Autocomplete items={items} after="kg" w={null} />);
+    expect(field()).not.toHaveAttribute("data-ui-w");
     expect(group()).not.toHaveAttribute("data-ui-w");
-    expect(wrapper()).not.toHaveClass(inputStyles["toggle-fullwidth"]);
-    expect(screen.getByRole("combobox")).not.toHaveClass(
-      inputStyles["toggle-fullwidth"],
-    );
+    expect(wrapper()).not.toHaveAttribute("data-ui-w");
+    expect(screen.getByRole("combobox")).not.toHaveAttribute("data-ui-w");
   });
 
   it("paints the ghost variant on the slotted wrapper", () => {
@@ -819,15 +817,25 @@ describe("Autocomplete variant and fullwidth", () => {
     expect(wrapper()).toHaveClass(inputStyles["variant-ghost"]);
   });
 
+  it("fills a bare input part itself by default", () => {
+    render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput />
+      </AutocompleteRoot>,
+    );
+    expect(screen.getByRole("combobox")).toHaveAttribute("data-ui-w", "full");
+    expect(wrapper()).not.toHaveAttribute("data-ui-w");
+  });
+
   it("paints the ghost variant on a bare input part", () => {
     render(
       <AutocompleteRoot items={items}>
-        <AutocompleteInput variant="ghost" fullwidth={false} />
+        <AutocompleteInput variant="ghost" w={null} />
       </AutocompleteRoot>,
     );
     const input = screen.getByRole("combobox");
     expect(input).toHaveClass(inputStyles["variant-ghost"]);
-    expect(input).not.toHaveClass(inputStyles["toggle-fullwidth"]);
+    expect(input).not.toHaveAttribute("data-ui-w");
   });
 });
 
@@ -958,8 +966,8 @@ describe("Autocomplete InputProps", () => {
     void (<Autocomplete InputProps={{ size: "small" }} />);
     // @ts-expect-error -- `variant` is set on Autocomplete itself
     void (<Autocomplete InputProps={{ variant: "ghost" }} />);
-    // @ts-expect-error -- `fullwidth` is set on Autocomplete itself
-    void (<Autocomplete InputProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- `w` is set on Autocomplete itself
+    void (<Autocomplete InputProps={{ w: null }} />);
     // @ts-expect-error -- `color` is set on Autocomplete itself
     void (<Autocomplete InputProps={{ color: "blue" }} />);
     // @ts-expect-error -- `disabled` is set on Autocomplete itself
@@ -1047,6 +1055,21 @@ describe("AutocompleteInput FieldProps", () => {
     );
     expect(screen.getByText("Top")).toBeInTheDocument();
     expect(screen.queryByText("Slot")).not.toBeInTheDocument();
+  });
+
+  it("lets the part's own w win over one in FieldProps", () => {
+    const { container } = render(
+      <AutocompleteRoot items={items}>
+        <AutocompleteInput
+          w={200}
+          FieldProps={{ w: "full" } as AutocompleteInputProps["FieldProps"]}
+        />
+      </AutocompleteRoot>,
+    );
+    expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
+      "data-ui-w",
+      "200",
+    );
   });
 });
 

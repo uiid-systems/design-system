@@ -4,7 +4,7 @@ import { Combobox as BaseInputGroup } from "@base-ui/react/combobox";
 import type { Combobox as BaseInputGroupTypes } from "@base-ui/react/combobox";
 import { Box, Group } from "@uiid/layout";
 import type { GroupProps } from "@uiid/layout";
-import { cx, type WithStringClassName } from "@uiid/utils";
+import { cx, type SizingProps, type WithStringClassName } from "@uiid/utils";
 
 import type { InputVariants } from "../../input/input.types";
 import { inputGroupVariants } from "./input-group.variants";
@@ -29,12 +29,13 @@ type WithSlot<T> = T & {
 export const InputGroupRoot = ({
   slot,
   size,
-  fullwidth = true,
+  w = "full",
   className,
   children,
   ...props
 }: WithSlot<WithStringClassName<BaseInputGroupTypes.InputGroup.Props>> &
-  Pick<InputVariants, "size" | "fullwidth">) => {
+  Pick<InputVariants, "size"> &
+  Pick<SizingProps, "w">) => {
   return (
     <BaseInputGroup.InputGroup
       data-slot={slot}
@@ -42,11 +43,11 @@ export const InputGroupRoot = ({
        * The group wraps the input wrapper directly, so it takes that wrapper's
        * place in whatever lays it out: a Field's column, or the parent's flow
        * when a bare Field is `display: contents`. Spanning the row keeps the
-       * wrapper's `fullwidth`; without it, a group in a flex row
+       * wrapper's `w="full"`; without it, a group in a flex row
        * (`ComboboxChips`) shrinks to the input's width, and the popup with it.
-       * `fullwidth={false}` lets the group shrink with a control that does.
+       * `w={null}` lets the group shrink with a control that does.
        */
-      render={<Box w={fullwidth ? "full" : undefined} />}
+      render={<Box w={w} />}
       className={cx(
         styles["input-group-root"],
         inputGroupVariants({ size }),

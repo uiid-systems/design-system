@@ -11,7 +11,7 @@ import styles from "../slider.module.css";
 export const SliderControl = ({
   ay = "center",
   px = 3,
-  fullwidth = true,
+  w = "full",
   children,
   className,
   ...props
@@ -19,7 +19,7 @@ export const SliderControl = ({
   return (
     <BaseSlider.Control
       data-slot="slider-control"
-      render={<Group ay={ay} px={px} fullwidth={fullwidth} />}
+      render={<Group ay={ay} px={px} w={w} />}
       className={cx(styles["slider-control"], className)}
       {...props}
     >

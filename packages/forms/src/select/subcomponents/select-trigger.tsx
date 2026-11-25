@@ -14,7 +14,7 @@ import styles from "../select.module.css";
 export const SelectTrigger = ({
   size,
   variant,
-  fullwidth,
+  w,
   color,
   before,
   after,
@@ -40,13 +40,14 @@ export const SelectTrigger = ({
           ay="center"
           ax={hasSlots ? "normal" : "space-between"}
           gap={hasSlots ? 0 : 4}
+          w={w}
         />
       }
       className={cx(
         hasSlots && styles["select-trigger-slots"],
         inputStyles["input"],
         inputStyles["input-edge"],
-        inputVariants({ size, variant, fullwidth }),
+        inputVariants({ size, variant }),
         inputColorClassName(color),
         className,
       )}

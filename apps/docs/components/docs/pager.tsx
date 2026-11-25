@@ -29,7 +29,7 @@ export const Pager = () => {
   const next = pages[index + 1];
 
   return (
-    <Group data-slot="pager" gap={4} evenly fullwidth pb={32} pt={8} bt={1}>
+    <Group data-slot="pager" gap={4} evenly w="full" pb={32} pt={8} bt={1}>
       {prev ? (
         <Card
           render={<Link href={prev.value} />}
@@ -48,7 +48,7 @@ export const Pager = () => {
         <Card
           render={<Link href={next.value} />}
           title={
-            <Group render={<span />} gap={2} ax="end" ay="center" fullwidth>
+            <Group render={<span />} gap={2} ax="end" ay="center" w="full">
               {next.label}
               <ArrowRightIcon size={16} />
             </Group>

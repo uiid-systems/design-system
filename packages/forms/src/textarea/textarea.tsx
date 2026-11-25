@@ -1,7 +1,7 @@
 "use client";
 
 import { paletteClassName } from "@uiid/tokens";
-import { cx, definedProps } from "@uiid/utils";
+import { cx, definedProps, prepareComponentProps } from "@uiid/utils";
 
 import { Field } from "../field/field";
 import { FieldControl } from "../field/subcomponents";
@@ -21,7 +21,7 @@ export const Textarea = ({
   name,
   size,
   resize,
-  fullwidth,
+  w,
   variant,
   color,
   rows = TEXTAREA_DEFAULT_ROWS,
@@ -43,9 +43,16 @@ export const Textarea = ({
      padding, and its resize. */
   const hasSlots = hasInputSlots({ before, after });
 
+  /* `w` sizes the field root and whichever element wears the surface: the
+     wrapper with a slot, the bare `<textarea>` without one. */
+  const textareaProps = prepareComponentProps({
+    componentName: "textarea",
+    styleProps: ["w"],
+    props: { ...props, w: hasSlots ? undefined : w },
+  });
+
   return (
     <Field
-      w={fullwidth ? "full" : undefined}
       {...FieldProps}
       {...definedProps({
         name,
@@ -55,6 +62,7 @@ export const Textarea = ({
         required,
         disabled,
         size,
+        w,
       })}
     >
       <InputWrapper
@@ -62,7 +70,7 @@ export const Textarea = ({
         before={before}
         after={after}
         size={size}
-        fullwidth={fullwidth}
+        w={w}
         variant={variant}
         color={color}
         disabled={disabled}
@@ -89,12 +97,12 @@ export const Textarea = ({
               ? cx(styles["textarea-inner"], textareaVariants({ size, resize }))
               : cx(
                   styles["textarea"],
-                  textareaVariants({ size, resize, fullwidth, variant }),
+                  textareaVariants({ size, resize, variant }),
                   paletteClassName(color, styles["color"]),
                 ),
             className,
           )}
-          render={<textarea ref={ref} rows={rows} {...props} />}
+          render={<textarea ref={ref} rows={rows} {...textareaProps} />}
         />
       </InputWrapper>
     </Field>

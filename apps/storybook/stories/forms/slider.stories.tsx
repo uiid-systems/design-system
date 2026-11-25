@@ -72,7 +72,6 @@ const meta = {
       table: { category: "Options" },
     },
 
-    fullwidth: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
 
     onValueChange: { table: { category: "Events" } },

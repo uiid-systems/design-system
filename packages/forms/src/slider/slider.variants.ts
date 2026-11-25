@@ -12,7 +12,7 @@ import styles from "./slider.module.css";
  *
  * This is still Slider's own variant definition. `SliderVariants` used to alias
  * `InputVariants` wholesale while `SliderRootProps` picked only `ghost` and
- * `fullwidth` from it, so `size` reached the class list solely through
+ * a width toggle from it, so `size` reached the class list solely through
  * `inputVariants`' own `defaultVariants` — every slider rendered at the medium
  * tier with no way to ask for another one. Declaring the axis here makes that
  * behavior explicit and gives the tier a prop.
@@ -23,8 +23,6 @@ import styles from "./slider.module.css";
  */
 export const sliderVariants = cva({
   variants: {
-    /** Stretch the control to the width of its container */
-    fullwidth: { true: inputStyles["toggle-fullwidth"] },
     /** Surface treatment — filled by default, `ghost` drops the resting surface */
     variant: {
       ghost: inputStyles["variant-ghost"],

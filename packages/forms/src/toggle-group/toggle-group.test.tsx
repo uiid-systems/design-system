@@ -338,28 +338,26 @@ describe("ToggleGroup orientation", () => {
   });
 });
 
-describe("ToggleGroup fullwidth", () => {
+describe("ToggleGroup w", () => {
   it.each(["horizontal", "vertical"] as const)(
-    "stretches a %s panel with the shared fullwidth composition",
+    'stretches a %s panel with w="full"',
     (orientation) => {
-      const { container } = renderGroup({ fullwidth: true, orientation });
+      const { container } = renderGroup({ w: "full", orientation });
       const panel = container.firstElementChild;
       expect(panel).toHaveAttribute("data-orientation", orientation);
-      expect(panel?.className).toMatch(/composes-fullwidth/);
+      expect(panel).toHaveAttribute("data-ui-w", "full");
     },
   );
 
   it("shrink-wraps its toggles by default", () => {
     const { container } = renderGroup();
-    expect(container.firstElementChild?.className).not.toMatch(
-      /composes-fullwidth/,
-    );
+    expect(container.firstElementChild).not.toHaveAttribute("data-ui-w");
   });
 
   it("stretches the panel, not the toggles inside it", () => {
-    renderGroup({ fullwidth: true });
+    renderGroup({ w: "full" });
     for (const toggle of screen.getAllByRole("button")) {
-      expect(toggle.className).not.toMatch(/composes-fullwidth/);
+      expect(toggle).not.toHaveAttribute("data-ui-w");
     }
   });
 });
@@ -436,26 +434,26 @@ describe("ToggleGroup root", () => {
     );
   });
 
-  it("keeps the panel and variant classes alongside a consumer className", () => {
-    const { container } = renderGroup({ className: "custom", fullwidth: true });
+  it("keeps the panel class and w alongside a consumer className", () => {
+    const { container } = renderGroup({ className: "custom", w: "full" });
     const panel = container.firstElementChild;
 
     expect(panel).toHaveClass("custom");
     expect(panel).toHaveClass(styles["toggle-group-panel"]);
-    expect(panel?.className).toMatch(/composes-fullwidth/);
+    expect(panel).toHaveAttribute("data-ui-w", "full");
   });
 
   it("marks a disabled root with data-disabled alongside a consumer className", () => {
     const { container } = renderGroup({
       className: "custom",
       disabled: true,
-      fullwidth: true,
+      w: "full",
     });
     const panel = container.firstElementChild;
 
     expect(panel).toHaveClass("custom", styles["toggle-group-panel"]);
     expect(panel).toHaveAttribute("data-disabled");
-    expect(panel?.className).toMatch(/composes-fullwidth/);
+    expect(panel).toHaveAttribute("data-ui-w", "full");
   });
 
   /* happy-dom has no layout, so every measured rect is zero. What this can

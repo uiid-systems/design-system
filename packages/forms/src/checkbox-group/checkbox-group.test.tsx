@@ -367,7 +367,7 @@ describe("CheckboxGroup size", () => {
   });
 });
 
-describe("CheckboxGroup fullwidth", () => {
+describe("CheckboxGroup w", () => {
   const items = [
     { value: "a", label: "Option A" },
     { value: "b", label: "Option B" },
@@ -380,48 +380,58 @@ describe("CheckboxGroup fullwidth", () => {
     "stretches a %s group across its container",
     (orientation) => {
       const { container } = render(
-        <CheckboxGroup items={items} orientation={orientation} fullwidth />,
+        <CheckboxGroup items={items} orientation={orientation} w="full" />,
       );
 
-      expect(root(container)).toHaveAttribute("data-ui-fullwidth");
+      expect(root(container)).toHaveAttribute("data-ui-w", "full");
     },
   );
 
   it("shares a horizontal group's width evenly between its rows", () => {
     const { container } = render(
-      <CheckboxGroup items={items} orientation="horizontal" fullwidth />,
+      <CheckboxGroup items={items} orientation="horizontal" w="full" />,
     );
 
     expect(root(container)?.className).toMatch(/field-rows-evenly/);
   });
 
+  it("keeps a horizontal group's rows at their own width at a set w", () => {
+    const { container } = render(
+      <CheckboxGroup items={items} orientation="horizontal" w={300} />,
+    );
+
+    expect(root(container)).toHaveAttribute("data-ui-w", "300");
+    expect(root(container)?.className).not.toMatch(/field-rows-evenly/);
+  });
+
   it("stretches each row of a vertical group across it", () => {
-    const { container } = render(<CheckboxGroup items={items} fullwidth />);
+    const { container } = render(<CheckboxGroup items={items} w="full" />);
 
     expect(root(container)).toHaveStyle({ alignItems: "stretch" });
     expect(root(container)).not.toHaveAttribute("data-ui-ay");
   });
 
   /*
-   * A labelled field is an `inline-flex` Stack, so without its own `fullwidth`
+   * A labelled field is an `inline-flex` Stack, so without its own `w`
    * the stretched group inside it could only fill the width of the label.
    */
   it("stretches the field around a labelled group", () => {
     const { container } = render(
-      <CheckboxGroup items={items} label="Pick some" fullwidth />,
+      <CheckboxGroup items={items} label="Pick some" w="full" />,
     );
 
     expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
-      "data-ui-fullwidth",
+      "data-ui-w",
+      "full",
     );
   });
 
-  it("leaves the group sized by its rows without fullwidth", () => {
+  it("leaves the group sized by its rows without w", () => {
     const { container } = render(
       <CheckboxGroup items={items} orientation="horizontal" />,
     );
 
-    expect(root(container)).not.toHaveAttribute("data-ui-fullwidth");
+    expect(root(container)).not.toHaveAttribute("data-ui-w");
     expect(root(container)?.className).not.toMatch(/field-rows-evenly/);
   });
 });
@@ -473,11 +483,11 @@ describe("CheckboxGroup layout props", () => {
 describe("CheckboxGroup FieldProps", () => {
   it("reaches the field around it", () => {
     const { container } = render(
-      <CheckboxGroup FieldProps={{ className: "outer", w: "full" }} />,
+      <CheckboxGroup FieldProps={{ className: "outer", mt: 2 }} />,
     );
     const field = container.querySelector("[data-slot='field-root']");
     expect(field).toHaveClass("outer");
-    expect(field).toHaveAttribute("data-ui-w", "full");
+    expect(field).toHaveAttribute("data-ui-mt", "2");
   });
 
   /* The cast stands in for untyped code, which the slot type cannot stop. */
@@ -517,8 +527,8 @@ describe("CheckboxGroup FieldProps", () => {
     );
     void (
       <CheckboxGroup
-        // @ts-expect-error -- `fullwidth` is set on CheckboxGroup itself
-        FieldProps={{ fullwidth: true }}
+        // @ts-expect-error -- `w` is set on CheckboxGroup itself
+        FieldProps={{ w: "full" }}
       />
     );
     void (

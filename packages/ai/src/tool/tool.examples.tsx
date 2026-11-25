@@ -61,7 +61,7 @@ export const Basic = ({ part = SEARCH, ...props }: Partial<ToolProps>) => (
 );
 
 export const States = () => (
-  <Stack gap={3} fullwidth>
+  <Stack gap={3} w="full">
     {Object.values(PARTS).map((part) => (
       <Tool key={part.state} part={part} />
     ))}

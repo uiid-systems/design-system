@@ -67,18 +67,18 @@ export const Vertical = () => (
 );
 
 /*
- * `fullwidth` stretches the group across its container. A horizontal group
+ * `w="full"` stretches the group across its container. A horizontal group
  * shares that width evenly — the labels differ in length but the toggles do
  * not — and a vertical one stretches each toggle across it.
  */
 export const Fullwidth = () => (
-  <Stack gap={4} fullwidth>
-    <ToggleGroup fullwidth defaultValue={["monthly"]}>
+  <Stack gap={4} w="full">
+    <ToggleGroup w="full" defaultValue={["monthly"]}>
       <Toggle value="monthly">Monthly</Toggle>
       <Toggle value="yearly">Yearly</Toggle>
       <Toggle value="lifetime">Lifetime</Toggle>
     </ToggleGroup>
-    <ToggleGroup fullwidth defaultValue={["system"]}>
+    <ToggleGroup w="full" defaultValue={["system"]}>
       <Toggle value="light" aria-label="Light theme">
         <SunIcon />
       </Toggle>
@@ -89,7 +89,7 @@ export const Fullwidth = () => (
         <MonitorSmartphoneIcon />
       </Toggle>
     </ToggleGroup>
-    <ToggleGroup fullwidth orientation="vertical" defaultValue={["left"]}>
+    <ToggleGroup w="full" orientation="vertical" defaultValue={["left"]}>
       <Toggle value="left">Left</Toggle>
       <Toggle value="center">Center</Toggle>
       <Toggle value="right">Right</Toggle>

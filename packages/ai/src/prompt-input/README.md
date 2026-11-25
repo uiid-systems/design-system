@@ -46,7 +46,7 @@ All [`Textarea`](../../../forms/src/textarea/README.md) props except `before`, `
 | `header`   | `ReactNode`                                        | —         | Row above the text, inside the surface                                                                                                      |
 | `tools`    | `ReactNode`                                        | —         | Buttons at the start of the footer row, before the send button                                                                              |
 
-Defaults that differ from Textarea: `placeholder` is "Ask anything", the textarea is named "Message" unless you pass `label` or your own `aria-label`, `rows` is `1`, and `fullwidth` is on. `className` goes to the root `<form>`; `ref` goes to the `<textarea>`.
+Defaults that differ from Textarea: `placeholder` is "Ask anything", the textarea is named "Message" unless you pass `label` or your own `aria-label`, `rows` is `1`, and `w="full"` is set. `className` goes to the root `<form>`; `ref` goes to the `<textarea>`.
 
 ## Parts
 

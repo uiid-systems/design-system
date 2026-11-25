@@ -252,4 +252,9 @@ describe("CollapsibleCard", () => {
         .closest('[data-slot="card-inner-container"]'),
     ).toHaveClass("inner");
   });
+
+  it("writes w on the card root", () => {
+    render(<CollapsibleCard title="Details" w="full" />);
+    expect(cardFor("Details")).toHaveAttribute("data-ui-w", "full");
+  });
 });

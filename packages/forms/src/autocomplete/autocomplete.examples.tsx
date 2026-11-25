@@ -131,7 +131,7 @@ export const Uncontrolled = () => (
 /* One label over several controls. */
 export const Grouped = () => (
   <Field label="Fruit basket" description={DESCRIPTION}>
-    <Group gap={2} evenly fullwidth>
+    <Group gap={2} evenly w="full">
       <Autocomplete items={MOCK_AUTOCOMPLETE_ITEMS} placeholder="First" />
       <Autocomplete items={MOCK_AUTOCOMPLETE_ITEMS} placeholder="Second" />
     </Group>

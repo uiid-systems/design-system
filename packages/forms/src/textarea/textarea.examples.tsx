@@ -71,7 +71,7 @@ export const BeforeAfterSlots = () => (
     placeholder="Ask anything"
     rows={3}
     resize="none"
-    fullwidth
+    w="full"
     before={
       <Group gap={1}>
         <Button size="xsmall" variant="subtle" shape="pill">
@@ -85,7 +85,7 @@ export const BeforeAfterSlots = () => (
       </Group>
     }
     after={
-      <Group ax="space-between" ay="center" fullwidth>
+      <Group ax="space-between" ay="center" w="full">
         <Group gap={1}>
           <Button
             size="xsmall"
@@ -142,9 +142,9 @@ export const Ghost = () => (
 );
 
 export const Fullwidth = () => (
-  <Stack gap={4} fullwidth>
-    <Textarea fullwidth placeholder="Fullwidth" rows={2} />
-    <Textarea placeholder="Not fullwidth" rows={2} />
+  <Stack gap={4} w="full">
+    <Textarea w="full" placeholder="Fullwidth" rows={2} />
+    <Textarea placeholder="Not full width" rows={2} />
   </Stack>
 );
 

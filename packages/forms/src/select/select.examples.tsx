@@ -187,8 +187,8 @@ export const Multiple = () => (
 export const Ghost = () => <Select variant="ghost" items={MOCK_SELECT_ITEMS} />;
 
 export const Fullwidth = () => (
-  <Stack gap={4} fullwidth>
-    <Select fullwidth items={MOCK_SELECT_ITEMS} />
+  <Stack gap={4} w="full">
+    <Select w="full" items={MOCK_SELECT_ITEMS} />
     <Select items={MOCK_SELECT_ITEMS} />
   </Stack>
 );
@@ -196,9 +196,9 @@ export const Fullwidth = () => (
 /* The trigger never grows past its container — a long value truncates instead. */
 export const TruncatedValue = () => (
   <Stack gap={4} maxw={280}>
-    <Select fullwidth items={LONG_ITEMS} defaultValue="long" />
+    <Select w="full" items={LONG_ITEMS} defaultValue="long" />
     <Select
-      fullwidth
+      w="full"
       before={<SearchIcon />}
       items={LONG_ITEMS}
       defaultValue="long"
@@ -297,9 +297,9 @@ export const TriggerText = () => (
 /* One label over several controls. */
 export const Grouped = () => (
   <Field label="Type pairing" description={DESCRIPTION}>
-    <Group gap={2} evenly fullwidth>
-      <Select name="heading" fullwidth items={MOCK_SELECT_ITEMS} />
-      <Select name="body" fullwidth items={MOCK_SELECT_ITEMS} />
+    <Group gap={2} evenly w="full">
+      <Select name="heading" w="full" items={MOCK_SELECT_ITEMS} />
+      <Select name="body" w="full" items={MOCK_SELECT_ITEMS} />
     </Group>
   </Field>
 );

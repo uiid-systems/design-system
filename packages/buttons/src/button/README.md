@@ -11,7 +11,7 @@ Use Button when you want to:
 - Reshape the footprint with `shape`: `pill` (rounded), `square` (1:1, no padding), `circle` (round, 1:1) — an icon-only `square` or `circle` button takes its accessible name from a string `tooltip`, unless `aria-label` or `aria-labelledby` is already set on the Button or its `render` element
 - Show a spinner with `loading` without the button changing size
 - Wrap the trigger in a Tooltip via `tooltip` — no manual composition. The tooltip itself is visual only, so on a text button the visible text stays the accessible name, and a string `tooltip` becomes its `aria-description` so screen readers hear it without hover
-- Stretch to the container with `fullwidth`
+- Stretch to the container with `w="full"`, or set a width in px with `w`
 - Render as a different element via the `render` prop
 
 Additional props are forwarded to the underlying Base UI Button, or straight to the `render` element when it is a link.
@@ -47,7 +47,7 @@ In tests, assert `toBeDisabledForUser()` (registered in `packages/config/vitest.
 - A plain Button is `type="button"`, so inside a `<form>` it doesn't submit. Pass `type="submit"` for the one that should.
 - `loading` doesn't disable the button: clicks still fire, so guard the handler or pass `disabled` too. While loading, the label is hidden from assistive tech and the button is announced as "Loading".
 - A `tooltip` opens after 300ms. A Base UI `Tooltip.Provider`'s `delay` doesn't apply to Button tooltips, since the button sets 300ms on its own trigger; a Provider only gives the instant hand-off, so the next tooltip in the row opens at once after the first.
-- With a `tooltip`, the Button sits inside an inline-block wrapper, so `fullwidth` and flex-item props size it within that wrapper rather than the surrounding row.
+- With a `tooltip`, the Button sits inside an inline-block wrapper, so `w` and flex-item props size it within that wrapper rather than the surrounding row.
 - Color comes from `color`, never a background or border class. One palette hue sets the background, foreground, border and hover together.
 - Geometry comes from `size` and `shape`. `square` and `circle` zero the inline padding and force a 1:1 ratio, and `h-*`, `px-*` or `min-w-*` classes fight the size step.
 - On a colored surface, give a ghost button that surface's `color`. A colored ghost hovers one shade deeper than its palette's tint; an uncolored one hovers the neutral `--shade-accent`, which reads as grey on a red card.

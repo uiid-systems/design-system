@@ -10,8 +10,6 @@ import styles from "./input.module.css";
  */
 export const inputVariants = cva({
   variants: {
-    /** Stretch to fill the container width */
-    fullwidth: { true: styles["toggle-fullwidth"] },
     /** Surface treatment — filled by default, `ghost` drops the resting surface */
     variant: {
       ghost: styles["variant-ghost"],
@@ -37,7 +35,6 @@ export const inputVariants = cva({
  */
 export const inputWrapperVariants = cva({
   variants: {
-    fullwidth: { true: styles["toggle-fullwidth"] },
     variant: {
       ghost: styles["variant-ghost"],
     },

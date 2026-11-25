@@ -1,6 +1,10 @@
 import type { Input } from "@base-ui/react/input";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps, WithStringClassName } from "@uiid/utils";
+import type {
+  SizingProps,
+  VariantProps,
+  WithStringClassName,
+} from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { FieldSlotProps } from "../shared/field-slot.types";
@@ -31,7 +35,8 @@ export type InputWrapperProps = {
    * pointer.
    */
   disabled?: boolean;
-} & InputWrapperVariants;
+} & InputWrapperVariants &
+  Pick<SizingProps, "w">;
 
 /**
  * A self-contained mask for `Input`. It carries its own engine and wires it to
@@ -98,15 +103,16 @@ export type InputControlProps = Omit<
    */
   mask?: InputMask<unknown>;
   ref?: React.Ref<HTMLInputElement>;
-} & InputVariants;
+} & InputVariants &
+  Pick<SizingProps, "w">;
 
 export type InputProps = Omit<InputControlProps, "inner"> & {
   before?: React.ReactNode;
   after?: React.ReactNode;
   /**
    * Reaches the Field around the control. Input owns `label`, `description`,
-   * `action`, `name`, `required`, `disabled`, `size` and `children` and hands
+   * `action`, `name`, `required`, `disabled`, `size`, `w` and `children` and hands
    * them to Field itself, so they are not accepted here a second time.
    */
-  FieldProps?: FieldSlotProps<"name" | "required" | "disabled" | "size">;
+  FieldProps?: FieldSlotProps<"name" | "required" | "disabled" | "size" | "w">;
 } & Pick<FieldProps, "label" | "description" | "action">;

@@ -9,7 +9,7 @@ Use Textarea when you want to:
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — this sets the type scale, padding, and a `min-height` rather than a fixed height, so `rows` and the resize handle still grow it
 - Constrain the drag handle with `resize` (`vertical` by default, `none`, `horizontal`, `both`)
 - Put a row of chips above the text or a row of tools and a submit button below it with `before` and `after` — both sit inside the field surface, so they share its edge, focus ring, and tint
-- Soften the surface with `variant="ghost"` or fill the container with `fullwidth`
+- Soften the surface with `variant="ghost"` or fill the container with `w="full"`
 - Tint the surface with a palette `color` (`red`, `blue`, …) — the same treatment Input wears, so a tinted pair cannot drift apart
 - Mark it `required`, `disabled`, or `readOnly`
 
@@ -21,7 +21,7 @@ Native `<textarea>` props (`name`, `value`, `defaultValue`, `onChange`, `onBlur`
 
 Validity comes from the surrounding [`Form`](../form/README.md) or [`Field`](../field/README.md) — give it a `name` and a `Form` publishes the matching entry of its `errors` map onto it. Reach the field around it through `FieldProps`, which is where `validate` and `validationMode` live. The error replaces the `description` while it shows. An error owned somewhere else arrives the same way: `FieldProps={{ invalid: true, ErrorProps: { match: true, children: message } }}` turns the textarea red and shows the message in the description's place.
 
-`before` and `after` are the same slots Input has, stacked instead of placed beside the control. With either set, the surface moves to an [`InputWrapper`](../input/README.md) in its vertical orientation, which takes `fullwidth`, `variant`, and `color`; the textarea keeps `size` and `resize`, and `ref`, `className`, `rows`, and the native props still land on the `<textarea>`. With neither slot set, nothing changes, and a slot coming or going keeps the textarea mounted with its focus and text.
+`before` and `after` are the same slots Input has, stacked instead of placed beside the control. With either set, the surface moves to an [`InputWrapper`](../input/README.md) in its vertical orientation, which takes `w`, `variant`, and `color`; the textarea keeps `size` and `resize`, and `ref`, `className`, `rows`, and the native props still land on the `<textarea>`. With neither slot set, nothing changes, and a slot coming or going keeps the textarea mounted with its focus and text.
 
 The wrapper reads disabled and invalid off the textarea and nothing deeper, so a disabled Send button or an invalid input in a slot leaves the field alone. A `Button` or other control in a slot takes its own press, and slot controls keep their DOM order: a control in `before` precedes the textarea in tab order, one in `after` follows it. Pressing plain text, an icon, or empty space in a slot row focuses the textarea, the same as Input. While the textarea is `disabled`, the slots are `inert`, so their buttons leave the tab order with it.
 

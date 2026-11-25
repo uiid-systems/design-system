@@ -26,7 +26,7 @@ export const CodeBlockContent = ({
     "data-line-numbers": showLineNumbers || undefined,
     "data-wrap": wrap || undefined,
     ax: "stretch" as const,
-    fullwidth: true,
+    w: "full" as const,
   };
 
   // Highlighted (shiki) path — preferred when html is available.

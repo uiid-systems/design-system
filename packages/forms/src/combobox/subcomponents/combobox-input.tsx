@@ -1,7 +1,7 @@
 "use client";
 
 import { Combobox as BaseCombobox } from "@base-ui/react/combobox";
-import { cx, definedProps } from "@uiid/utils";
+import { cx, definedProps, prepareComponentProps } from "@uiid/utils";
 
 import { Field } from "../../field/field";
 import { inputControlClassName } from "../../input/input.styles";
@@ -20,7 +20,7 @@ export const ComboboxInput = ({
   after,
   size,
   variant,
-  fullwidth = true,
+  w = "full",
   color,
   disabled,
   required,
@@ -45,10 +45,8 @@ export const ComboboxInput = ({
     /*
      * `FieldProps` spreads first and the part's own values after, so they win
      * and an unset one leaves the slot's alone; `required` is resolved above.
-     * `fullwidth` is a default the slot may still change, as `w` is on Input.
      */
     <Field
-      fullwidth={fullwidth}
       {...FieldProps}
       {...definedProps({
         name,
@@ -58,6 +56,7 @@ export const ComboboxInput = ({
         disabled,
         required: fieldRequired,
         size,
+        w,
       })}
     >
       {/*
@@ -66,10 +65,7 @@ export const ComboboxInput = ({
        * label, description and error stay outside it, which also keeps them
        * out of the group's press handler and its `role="group"`.
        */}
-      <ComboboxInputGroup
-        {...InputGroupProps}
-        {...definedProps({ size, fullwidth })}
-      >
+      <ComboboxInputGroup {...InputGroupProps} {...definedProps({ size, w })}>
         {/*
          * The hue goes to whichever element wears the surface. Combobox's
          * monolith always renders an `after`, so the wrapper carries it there; a
@@ -81,7 +77,7 @@ export const ComboboxInput = ({
           after={after}
           size={size}
           variant={variant}
-          fullwidth={fullwidth}
+          w={w}
           color={color}
           disabled={disabled}
         >
@@ -92,13 +88,11 @@ export const ComboboxInput = ({
            * than `InputControl` keeps it from being named and submitted twice.
            */}
           <BaseCombobox.Input
-            data-slot="combobox-input"
             render={<input />}
             className={cx(
               inputControlClassName({
                 inner: hasSlots,
                 size,
-                fullwidth,
                 variant,
                 color,
               }),
@@ -107,7 +101,12 @@ export const ComboboxInput = ({
             placeholder={placeholder}
             disabled={disabled}
             required={required}
-            {...props}
+            {...prepareComponentProps({
+              componentName: "combobox-input",
+              styleProps: ["w"],
+              // With a slot the wrapper takes the width and the input fills it.
+              props: { ...props, w: hasSlots ? undefined : w },
+            })}
           />
         </InputWrapper>
       </ComboboxInputGroup>

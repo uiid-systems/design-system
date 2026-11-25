@@ -150,7 +150,7 @@ const ToolBody = ({
 
 export const Tool = ({
   part,
-  fullwidth = true,
+  w = "full",
   ax = "stretch",
   b = 1,
   labels,
@@ -174,7 +174,7 @@ export const Tool = ({
     <CollapsibleRoot
       data-slot="tool"
       data-state={part.state}
-      fullwidth={fullwidth}
+      w={w}
       ax={ax}
       b={b}
       className={cx(styles["tool"], className)}
@@ -182,7 +182,7 @@ export const Tool = ({
     >
       <CollapsibleTrigger
         data-slot="tool-trigger"
-        fullwidth
+        w="full"
         ax="space-between"
         p={3}
         className={styles["trigger"]}

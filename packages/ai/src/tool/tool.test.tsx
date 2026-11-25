@@ -55,7 +55,7 @@ describe("Tool", () => {
 
     const root = getRoot()!;
     expect(root).toHaveAttribute("data-state", "output-available");
-    expect(root).toHaveAttribute("data-ui-fullwidth");
+    expect(root).toHaveAttribute("data-ui-w", "full");
     expect(root).toHaveAttribute("data-ui-b", "1");
     // Stretch, so a wide input scrolls inside the panel instead of widening it.
     expect(root).toHaveAttribute("data-ui-ay", "stretch");

@@ -116,12 +116,6 @@
     }
   }
 
-  .composes-fullwidth {
-    width: 100%;
-    width: -webkit-fill-available;
-    width: -moz-available;
-  }
-
   .composes-popup {
     transform-origin: var(--transform-origin, center);
     transition: opacity var(--globals-transition-duration) var(--globals-transition-easing);

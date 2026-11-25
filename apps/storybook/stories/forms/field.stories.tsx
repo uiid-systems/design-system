@@ -30,7 +30,6 @@ const meta = {
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
     invalid: { control: "boolean", table: { category: "Toggles" } },
-    fullwidth: { control: "boolean", table: { category: "Toggles" } },
 
     RootProps: { control: "object", table: { category: "Subcomponents" } },
     LabelProps: { control: "object", table: { category: "Subcomponents" } },

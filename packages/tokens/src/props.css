@@ -419,12 +419,6 @@
     flex-wrap: wrap;
   }
 
-  [data-ui-fullwidth] {
-    width: 100%;
-    width: -webkit-fill-available;
-    width: -moz-available;
-  }
-
   [data-ui-grow] {
     flex: 1;
     min-width: 0;

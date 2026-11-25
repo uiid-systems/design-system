@@ -891,12 +891,12 @@ describe("FieldRoot layout props", () => {
    */
   it("forwards layout props to the root Stack", () => {
     const { container } = render(
-      <FieldRoot ax="start" fullwidth>
+      <FieldRoot ax="start" w="full">
         <FieldLabel>Email</FieldLabel>
       </FieldRoot>,
     );
     expect(root(container)).toHaveAttribute("data-ui-ay", "start");
-    expect(root(container)).toHaveAttribute("data-ui-fullwidth", "");
+    expect(root(container)).toHaveAttribute("data-ui-w", "full");
   });
 });
 

@@ -32,7 +32,7 @@ export type ComboboxInputProps = Omit<
 > &
   Pick<
     InputProps,
-    "FieldProps" | "before" | "after" | "size" | "variant" | "fullwidth"
+    "FieldProps" | "before" | "after" | "size" | "variant" | "w"
   > &
   Pick<FieldProps, "label" | "description" | "action"> & {
     /**
@@ -44,7 +44,7 @@ export type ComboboxInputProps = Omit<
     /**
      * Props for the input group the part renders around its control row. The
      * group wraps the row alone, not the label, description or error, since
-     * Base UI positions the popup against it. `size`, `fullwidth` and the row
+     * Base UI positions the popup against it. `size`, `w` and the row
      * itself are set by the part.
      */
     InputGroupProps?: ComboboxInputGroupSlotProps;
@@ -81,14 +81,14 @@ export type ComboboxItemProps<Value = string> = Omit<
 export type ComboboxEmptyProps = WithStringClassName<BaseCombobox.Empty.Props>;
 export type ComboboxInputGroupProps =
   WithStringClassName<BaseCombobox.InputGroup.Props> &
-    Pick<InputProps, "size" | "fullwidth">;
+    Pick<InputProps, "size" | "w">;
 /**
  * The `InputGroupProps` slot on the input part and the monolith. The part sets
- * `size`, `fullwidth` and the control row on the group itself.
+ * `size`, `w` and the control row on the group itself.
  */
 type ComboboxInputGroupSlotProps = Omit<
   ComboboxInputGroupProps,
-  "size" | "fullwidth" | "children"
+  "size" | "w" | "children"
 >;
 export type ComboboxTriggerProps =
   WithStringClassName<BaseCombobox.Trigger.Props>;
@@ -132,13 +132,13 @@ export type ComboboxProps<
     | "after"
     | "size"
     | "variant"
-    | "fullwidth"
+    | "w"
     | "color"
     | "disabled"
     | "onFocus"
     | "onBlur"
   >;
-  /** Reaches the input group. `size` and `fullwidth` are set on Combobox itself. */
+  /** Reaches the input group. `size` and `w` are set on Combobox itself. */
   InputGroupProps?: ComboboxInputGroupSlotProps;
   PortalProps?: ComboboxPortalProps;
   PositionerProps?: ComboboxPositionerProps;
@@ -164,6 +164,6 @@ export type ComboboxProps<
     | "after"
     | "size"
     | "variant"
-    | "fullwidth"
+    | "w"
   > &
   Pick<FieldProps, "label" | "description" | "action">;

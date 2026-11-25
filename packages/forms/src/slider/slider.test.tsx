@@ -297,11 +297,18 @@ describe("Slider layout props", () => {
   });
 
   it("forwards layout props from ControlProps to the control Group", () => {
-    const { container } = render(
-      <Slider ControlProps={{ px: 5, fullwidth: false }} />,
-    );
+    const { container } = render(<Slider ControlProps={{ px: 5, w: null }} />);
     expect(control(container)).toHaveAttribute("data-ui-px", "5");
-    expect(control(container)).not.toHaveAttribute("data-ui-fullwidth");
+    expect(control(container)).not.toHaveAttribute("data-ui-w");
+  });
+
+  it("fills the control with w by default, and the root only when asked", () => {
+    const { container, rerender } = render(<Slider />);
+    expect(control(container)).toHaveAttribute("data-ui-w", "full");
+    expect(root(container)).not.toHaveAttribute("data-ui-w");
+
+    rerender(<Slider w="full" />);
+    expect(root(container)).toHaveAttribute("data-ui-w", "full");
   });
 });
 

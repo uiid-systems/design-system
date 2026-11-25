@@ -44,7 +44,6 @@ const meta = {
       table: { category: "Variants" },
     },
 
-    fullwidth: { control: "boolean", table: { category: "Toggles" } },
     required: { control: "boolean", table: { category: "Toggles" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
     readOnly: { control: "boolean", table: { category: "Toggles" } },

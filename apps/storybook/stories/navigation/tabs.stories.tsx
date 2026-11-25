@@ -21,7 +21,7 @@ const meta: Meta<typeof Tabs> = {
     },
   },
   render: (args) => (
-    <Stack fullwidth gap={4}>
+    <Stack w="full" gap={4}>
       <Tabs {...args} />
     </Stack>
   ),

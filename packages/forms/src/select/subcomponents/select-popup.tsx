@@ -19,13 +19,13 @@ export const SelectPopup = ({
   color,
   p,
   gap,
-  fullwidth,
+  w,
   ...props
 }: SelectPopupProps) => {
   return (
     <BaseSelect.Popup
       data-slot="select-popup"
-      render={popupLayerCard({ color, p, gap, fullwidth })}
+      render={popupLayerCard({ color, p, gap, w })}
       className={cx(popupLayerPopupClassName, className)}
       {...props}
     >

@@ -42,7 +42,6 @@ export const inputColorClassName = (color?: InputColor) =>
 export const inputControlClassName = ({
   inner,
   size,
-  fullwidth,
   variant,
   color,
   className,
@@ -52,7 +51,7 @@ export const inputControlClassName = ({
       ? styles["input-inner"]
       : cx(
           styles["input"],
-          inputVariants({ size, fullwidth, variant }),
+          inputVariants({ size, variant }),
           inputColorClassName(color),
         ),
     className,

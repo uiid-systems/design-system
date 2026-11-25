@@ -100,7 +100,7 @@ const Actions = ({
   onReset: () => void;
   submitLabel: string;
 }) => (
-  <Group gap={2} ax="end" fullwidth mt={4}>
+  <Group gap={2} ax="end" w="full" mt={4}>
     <Button type="button" variant="ghost" onClick={onReset}>
       Reset
     </Button>

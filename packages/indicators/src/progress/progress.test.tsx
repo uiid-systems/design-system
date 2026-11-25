@@ -366,12 +366,11 @@ describe("Progress header row", () => {
 });
 
 describe("Progress layout props", () => {
-  it("fills the width of the root and header with w, not the fullwidth toggle", () => {
+  it("fills the width of the root and header with w", () => {
     const { container } = render(<Progress value={40} label="Upload" />);
     for (const slot of ["progress", "progress-header"]) {
       const element = part(container, slot);
       expect(element).toHaveAttribute("data-ui-w", "full");
-      expect(element).not.toHaveAttribute("data-ui-fullwidth");
     }
   });
 

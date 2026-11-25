@@ -170,7 +170,7 @@ export const Multiple = () => (
 /* One label over several controls. */
 export const Grouped = () => (
   <Field label="Fruit basket" description={DESCRIPTION}>
-    <Group gap={2} evenly fullwidth>
+    <Group gap={2} evenly w="full">
       <Combobox items={MOCK_COMBOBOX_ITEMS} placeholder="First" />
       <Combobox items={MOCK_COMBOBOX_ITEMS} placeholder="Second" />
     </Group>

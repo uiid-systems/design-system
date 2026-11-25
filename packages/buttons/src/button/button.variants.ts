@@ -10,8 +10,6 @@ export const buttonVariants = cva({
       square: styles["shape-square"],
       circle: styles["shape-circle"],
     },
-    /** Stretch to fill the container width */
-    fullwidth: { true: styles["fullwidth"] },
     /** Surface treatment — filled by default, `subtle` low-contrast fill, `ghost` transparent */
     variant: {
       subtle: styles["variant-subtle"],

@@ -217,7 +217,8 @@ describe("CodeEditor", () => {
 
     rerender(<CodeEditor defaultValue="const x = 1;" rows={0} />);
     expect(layer).not.toHaveAttribute("data-rows");
-    expect(layer.getAttribute("style")).toBeFalsy();
+    // `w="full"` still writes its own `--props-w`; no row count is left behind.
+    expect(layer.style.getPropertyValue("--code-rows")).toBe("");
   });
 
   // ============================================

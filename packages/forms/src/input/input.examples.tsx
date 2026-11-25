@@ -103,9 +103,9 @@ export const Ghost = () => (
 );
 
 export const Fullwidth = () => (
-  <Stack gap={4} fullwidth>
-    <Input fullwidth placeholder="Fullwidth" />
-    <Input placeholder="Not fullwidth" />
+  <Stack gap={4} w="full">
+    <Input w="full" placeholder="Fullwidth" />
+    <Input placeholder="Not full width" />
   </Stack>
 );
 
@@ -246,7 +246,7 @@ export const MaskedRegister = () => {
  */
 export const Grouped = () => (
   <Field label="Full name" description="As it appears on your ID.">
-    <Group gap={2} evenly fullwidth>
+    <Group gap={2} evenly w="full">
       <Input name="first-name" placeholder="First" />
       <Input name="last-name" placeholder="Last" />
     </Group>

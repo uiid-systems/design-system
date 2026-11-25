@@ -49,6 +49,57 @@ describe("Button", () => {
     },
   );
 
+  describe("w", () => {
+    it("writes data-ui-w on the button and adds no class", () => {
+      const { rerender } = render(<Button>x</Button>);
+      const plainClassName = screen.getByRole("button").className;
+
+      rerender(<Button w="full">x</Button>);
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("data-ui-w", "full");
+      expect(button.className).toBe(plainClassName);
+    });
+
+    it("writes a numeric width and its var, keeping the caller's style", () => {
+      render(
+        <Button w={200} style={{ opacity: 0.5 }}>
+          x
+        </Button>,
+      );
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("data-ui-w", "200");
+      expect(button.style.getPropertyValue("--props-w")).toBe("200");
+      expect(button).toHaveStyle({ opacity: "0.5" });
+    });
+
+    it("writes no width by default or with w={null}", () => {
+      const { rerender } = render(<Button>x</Button>);
+      expect(screen.getByRole("button")).not.toHaveAttribute("data-ui-w");
+
+      rerender(<Button w={null}>x</Button>);
+      expect(screen.getByRole("button")).not.toHaveAttribute("data-ui-w");
+    });
+
+    it("sizes the button, not the tooltip wrapper", () => {
+      const { container } = render(
+        <Button w="full" tooltip="Help">
+          x
+        </Button>,
+      );
+      expect(screen.getByRole("button")).toHaveAttribute("data-ui-w", "full");
+      expect(container.querySelectorAll("[data-ui-w]")).toHaveLength(1);
+    });
+
+    it("writes data-ui-w on a link", () => {
+      render(
+        <Button w="full" render={<a href="/next" />}>
+          Next
+        </Button>,
+      );
+      expect(screen.getByRole("link")).toHaveAttribute("data-ui-w", "full");
+    });
+  });
+
   // Driven off the palette itself, so a new hue is covered automatically.
   it.each(PALETTE_HUES)("applies the palette surface for color=%s", (color) => {
     render(<Button color={color}>x</Button>);

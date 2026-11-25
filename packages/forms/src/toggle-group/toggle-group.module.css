@@ -19,13 +19,10 @@
    * block-level — left alone it stretches to fill any parent that does not
    * constrain it, which is what made it span the full width in the stories.
    *
-   * Gated rather than declared outright so `fullwidth` can opt out: this rule
-   * sits in uiid.components, above the uiid.compositions width that
-   * `.toggle-fullwidth` composes, and would otherwise always win.
+   * A `w` prop overrides it: style props resolve in uiid.props, which sits
+   * above uiid.components.
    */
-  &:not(.toggle-fullwidth) {
-    width: fit-content;
-  }
+  width: fit-content;
 
   &[data-orientation="vertical"] {
     height: auto;
@@ -71,15 +68,6 @@
 }
 .size-large {
   composes: composes-size-large from global;
-}
-
-/*
- * Injected onto the panel by `toggleGroupVariants`. The width is the shared
- * composition; how the toggles fill it depends on the axis, and is resolved in
- * `.toggle-group-button` below.
- */
-.toggle-fullwidth {
-  composes: composes-fullwidth from global;
 }
 
 .toggle-group-indicator {
@@ -171,21 +159,21 @@
   }
 
   /*
-   * A horizontal `fullwidth` group splits its width evenly. Growing from a zero
+   * A horizontal `w="full"` group splits its width evenly. Growing from a zero
    * basis rather than from each label's own width is what makes the toggles
    * equal, instead of padding unequal labels by the same amount; the flex
    * item's automatic `min-width` still keeps a long label from being clipped.
    */
-  .toggle-fullwidth:not([data-orientation="vertical"]) & {
+  .toggle-group-panel[data-ui-w="full"]:not([data-orientation="vertical"]) & {
     flex: 1 1 0;
   }
 
   /*
    * A vertical group already stretches every toggle across the panel, so
-   * `fullwidth` only has to release the icon-only square — at the container's
+   * `w="full"` only has to release the icon-only square — at the container's
    * width, `aspect-ratio: 1` would make each toggle as tall as the group is wide.
    */
-  .toggle-fullwidth[data-orientation="vertical"] &:has(svg:only-child) {
+  .toggle-group-panel[data-ui-w="full"][data-orientation="vertical"] &:has(svg:only-child) {
     aspect-ratio: auto;
   }
 

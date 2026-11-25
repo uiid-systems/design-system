@@ -54,10 +54,6 @@
   composes: composes-size-large from global;
 }
 
-.toggle-fullwidth {
-  composes: composes-fullwidth from global;
-}
-
 .variant-ghost {
   composes: composes-field-surface-ghost from global;
 }

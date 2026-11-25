@@ -98,7 +98,7 @@ export const Reasoning = ({
           <Text>{label}</Text>
         )}
       </CollapsibleTrigger>
-      <CollapsiblePanel data-slot="reasoning-panel" fullwidth instant={false}>
+      <CollapsiblePanel data-slot="reasoning-panel" w="full" instant={false}>
         <Markdown streaming={streaming}>{children}</Markdown>
       </CollapsiblePanel>
     </CollapsibleRoot>

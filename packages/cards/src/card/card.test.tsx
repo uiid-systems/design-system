@@ -217,7 +217,6 @@ describe("Card", () => {
       <Card thumbnail={<img alt="" />}>Body</Card>,
     );
     expect(thumbnail(container)).toHaveAttribute("data-ui-w", "full");
-    expect(thumbnail(container)).not.toHaveAttribute("data-ui-fullwidth");
 
     rerender(
       <Card thumbnail={<img alt="" />} ThumbnailProps={{ w: 200 }}>

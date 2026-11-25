@@ -313,9 +313,10 @@ describe("PromptInput", () => {
       expect(textarea).toHaveAttribute("placeholder", "Ask anything");
       expect(textarea).toHaveAttribute("rows", "1");
       expect(textarea.className).toContain("resize-none");
-      expect(
-        form.querySelector('[data-slot="input-wrapper"]')!.className,
-      ).toContain("fullwidth");
+      expect(form.querySelector('[data-slot="input-wrapper"]')).toHaveAttribute(
+        "data-ui-w",
+        "full",
+      );
     });
 
     it("lets a caller override the label and placeholder", () => {

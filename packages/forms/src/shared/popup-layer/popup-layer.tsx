@@ -82,7 +82,7 @@ export const PopupLayerPopup = ({
   color,
   p,
   gap,
-  fullwidth,
+  w,
   children,
   ...props
 }: WithSlot<
@@ -95,7 +95,7 @@ export const PopupLayerPopup = ({
   return (
     <BasePopupLayer.Popup
       data-slot={slot}
-      render={popupLayerCard({ color, p, gap, fullwidth })}
+      render={popupLayerCard({ color, p, gap, w })}
       className={cx(popupLayerPopupClassName, className)}
       {...props}
     >

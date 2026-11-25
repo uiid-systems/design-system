@@ -533,9 +533,9 @@ describe("Input className", () => {
 });
 
 /* Field reads `disabled` off its root, not the control, so the label and
-   description only dim when Input hands it up. `fullwidth` reaches the root
-   as `w="full"` so the field stretches with the control it holds. */
-describe("Input hands disabled and fullwidth to Field", () => {
+   description only dim when Input hands it up. `w` reaches the root as well
+   as the control, so the field stretches with the control it holds. */
+describe("Input hands disabled and w to Field", () => {
   it("dims the label and description with a disabled input", () => {
     render(<Input label="Email" description="Work address" disabled />);
     expect(screen.getByText("Email")).toHaveAttribute("data-disabled");
@@ -550,18 +550,31 @@ describe("Input hands disabled and fullwidth to Field", () => {
     );
   });
 
-  it("stretches the field root with fullwidth", () => {
-    const { container } = render(<Input fullwidth />);
+  it('stretches the field root and the bare input with w="full"', () => {
+    const { container } = render(<Input w="full" />);
     expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
       "data-ui-w",
       "full",
     );
+    expect(screen.getByRole("textbox")).toHaveAttribute("data-ui-w", "full");
   });
 
-  it("leaves the field root at its own width without fullwidth", () => {
+  it("puts w on the wrapper, not the inner input, with a slot", () => {
+    const { container } = render(<Input w={240} before="$" />);
+    expect(
+      container.querySelector("[data-slot='input-wrapper']"),
+    ).toHaveAttribute("data-ui-w", "240");
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("data-ui-w");
+  });
+
+  it("leaves the field root and input at their own width without w", () => {
     const { container } = render(<Input />);
     expect(
       container.querySelector("[data-slot='field-root']"),
+    ).not.toHaveAttribute("data-ui-w");
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("data-ui-w");
+    expect(
+      container.querySelector("[data-slot='input-wrapper']"),
     ).not.toHaveAttribute("data-ui-w");
   });
 });
@@ -1196,19 +1209,23 @@ describe("Input mask", () => {
 describe("Input FieldProps", () => {
   it("reaches the field around it", () => {
     const { container } = render(
-      <Input FieldProps={{ className: "outer", w: "full" }} />,
+      <Input FieldProps={{ className: "outer", mt: 2 }} />,
     );
     const field = container.querySelector("[data-slot='field-root']");
     expect(field).toHaveClass("outer");
-    expect(field).toHaveAttribute("data-ui-w", "full");
+    expect(field).toHaveAttribute("data-ui-mt", "2");
   });
 
-  it("lets a FieldProps w beat the width fullwidth sets", () => {
-    const { container } = render(<Input fullwidth FieldProps={{ w: 320 }} />);
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets a top-level w win over one in the slot", () => {
+    const { container } = render(
+      <Input w={200} FieldProps={{ w: "full" } as InputProps["FieldProps"]} />,
+    );
     expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
       "data-ui-w",
-      "320",
+      "200",
     );
+    expect(screen.getByRole("textbox")).toHaveAttribute("data-ui-w", "200");
   });
 
   /* The cast stands in for untyped code, which the slot type cannot stop. */
@@ -1225,6 +1242,12 @@ describe("Input FieldProps", () => {
 
   /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
   it("rejects FieldProps the control owns", () => {
+    void (
+      <Input
+        // @ts-expect-error -- `w` is set on Input itself
+        FieldProps={{ w: "full" }}
+      />
+    );
     void (
       <Input
         // @ts-expect-error -- `label` is set on Input itself

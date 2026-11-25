@@ -9,7 +9,7 @@ Use Combobox when you want to:
 - Put an icon or a hint inside the control with `before` and `after`
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — the tier reaches the input, so it lines up with a sibling [`Input`](../input/README.md)
 - Tint it with a palette `color` (`red`, `blue`, …) — the hue paints the input and the popup together
-- Soften the surface with `variant="ghost"`, or pass `fullwidth={false}` to let it size to its content rather than span its row, as it does by default
+- Soften the surface with `variant="ghost"`, or pass `w={null}` to let it size to its content rather than span its row, as it does by default
 - Mark it `required`, `disabled`, or `readOnly`
 
 Leave `value` unset and the combobox runs itself; pass `value` and `onValueChange` to drive it yourself. Give it a `name` and a surrounding [`Form`](../form/README.md) publishes the matching entry of its `errors` map onto it.
@@ -20,7 +20,7 @@ For multiple selection, compose the parts: `ComboboxChips` replaces the plain in
 
 When you compose the parts, `required` goes in two places: on `ComboboxRoot` to make the control required, and on `ComboboxInput` to show the label's required marker. Neither does the other's job, since `ComboboxRoot` alone leaves the label unmarked. `ComboboxInput`'s `required` also puts the native `required` attribute on the query text input, and in multiple-select mode that input is empty whenever nothing is being typed, so the form fails validation even when values are selected.
 
-The popup renders a [`Card`](../../../cards/src/card/README.md) and `ComboboxChips` a `Group`. `PopupProps` takes the layout props `Card` spreads onto its container (`p`, `fullwidth`, `maxh`, ...) alongside Base UI's, though not its content slots like `title` or `footer`, and defaults to `p={2}`, `gap={0}`, and `fullwidth`. The rows sit inside the Card's inner container, so `gap`, `ax`, and `ay` on the popup don't move them. The chips take the `Group`'s layout props and default to `gap={1}` and `ay="center"`; pass any of them to change it. A `render` of your own replaces the primitive, so layout props passed beside it reach your element as plain attributes.
+The popup renders a [`Card`](../../../cards/src/card/README.md) and `ComboboxChips` a `Group`. `PopupProps` takes the layout props `Card` spreads onto its container (`p`, `w`, `maxh`, ...) alongside Base UI's, though not its content slots like `title` or `footer`, and defaults to `p={2}`, `gap={0}`, and `w="full"`. The rows sit inside the Card's inner container, so `gap`, `ax`, and `ay` on the popup don't move them. The chips take the `Group`'s layout props and default to `gap={1}` and `ay="center"`; pass any of them to change it. A `render` of your own replaces the primitive, so layout props passed beside it reach your element as plain attributes.
 
 Combobox and [`Autocomplete`](../autocomplete/README.md) share their popup, list, item, and empty layer. Reach for Autocomplete when the typed value stands on its own, and [`Select`](../select/README.md) when the list is short enough not to need filtering.
 
