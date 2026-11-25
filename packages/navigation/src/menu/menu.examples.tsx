@@ -1,7 +1,9 @@
 "use client";
 
 import { Button } from "@uiid/buttons";
+import { ChevronDownIcon } from "@uiid/icons/chevron-down";
 import { ChevronRightIcon } from "@uiid/icons/chevron-right";
+import { ChevronUpIcon } from "@uiid/icons/chevron-up";
 import { CopyIcon } from "@uiid/icons/copy";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { PencilIcon } from "@uiid/icons/pencil";
@@ -79,7 +81,7 @@ export const Actions = () => {
   return (
     <Stack gap={3} ax="start">
       <Menu trigger={<Button>Actions</Button>} items={items} />
-      <Text size={-1} emphasis="muted">
+      <Text size={-1} emphasis="muted" role="status">
         {last}
       </Text>
     </Stack>
@@ -123,11 +125,18 @@ export const IconTrigger = () => (
 
 /*
  * A function trigger follows the open state. Menu renders its result inside
- * its own focusable trigger, so don't return a `Button` from one.
+ * its own focusable trigger, so don't return a `Button` from one. Keep the
+ * label stable: the trigger already announces its state through
+ * `aria-expanded`, so only the decorative chevron changes.
  */
 export const FunctionTrigger = () => (
   <Menu
-    trigger={({ open }) => <Text>{open ? "Hide" : "Show"} actions</Text>}
+    trigger={({ open }) => (
+      <Group gap={1} ay="center">
+        <Text>Actions</Text>
+        {open ? <ChevronUpIcon aria-hidden /> : <ChevronDownIcon aria-hidden />}
+      </Group>
+    )}
     items={ITEMS}
   />
 );
