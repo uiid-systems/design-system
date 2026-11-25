@@ -49,28 +49,28 @@ import { Table } from "@uiid/tables";
 
 ## Props
 
-| Prop                   | Type                                                      | Default             | Description                                                                                    |
-| ---------------------- | --------------------------------------------------------- | ------------------- | ---------------------------------------------------------------------------------------------- |
-| `items`                | `T[]`                                                     | —                   | The rows. Each item is a record                                                                |
-| `columns`              | `string[]`                                                | Keys of `items[0]`  | Keys to show, in order                                                                         |
-| `formatHeader`         | `(key) => ReactNode`                                      | Sentence-cased key  | Renders a header cell from its key                                                             |
-| `formatCell`           | `(value, column, item) => ReactNode`                      | `defaultFormatCell` | Renders a body cell                                                                            |
-| `size`                 | `"xsmall" \| "small" \| "medium" \| "large"`              | `"medium"`          | Row height, font size and cell padding, matching the form-control tiers                        |
-| `striped`              | `boolean`                                                 | `false`             | Shade every even body row                                                                      |
-| `bordered`             | `boolean`                                                 | `false`             | Rule a border between body rows                                                                |
-| `highlightOnHover`     | `boolean`                                                 | `false`             | Highlight a body row under the pointer                                                         |
-| `minw`                 | `number`                                                  | —                   | Minimum width in px; a narrower container scrolls the table sideways                           |
-| `maxHeight`            | `CSSProperties["maxHeight"]`                              | —                   | Bounds the scroller's height so the body scrolls                                               |
-| `stickyHeader`         | `boolean`                                                 | `false`             | Pin the header while the body scrolls. Needs a bounded height                                  |
-| `footer`               | `ReactNode`                                               | —                   | Content of a footer row whose one cell spans every column                                      |
-| `stickyFooter`         | `boolean`                                                 | `false`             | Pin the footer while the body scrolls. Needs `footer` and a bounded height                     |
-| `selectable`           | `boolean`                                                 | `false`             | Add a checkbox column                                                                          |
-| `getRowId`             | `(item, index) => TableRowId`                             | The row index       | Stable id of a row, keying its selection and its React key. Ids must be unique                 |
-| `getRowLabel`          | `(item, index) => string`                                 | `"Select row N"`    | Accessible name of a row's checkbox                                                            |
-| `selectedRows`         | `TableRowId[]`                                            | —                   | Controlled selected row ids. Pair with `onSelectedRowsChange`                                  |
-| `defaultSelectedRows`  | `TableRowId[]`                                            | —                   | Initially selected row ids when uncontrolled                                                   |
-| `onSelectedRowsChange` | `(selectedRows: TableRowId[]) => void`                    | —                   | Called with the selected row ids whenever the selection changes                                |
-| `actions`              | `{ primary?: TableActionsProps<T>[]; secondary?: {...} }` | —                   | Per-row icon buttons (`primary`) and overflow menu (`secondary`), in a column at the row's end |
+| Prop                   | Type                                                      | Default                                                                                                  | Description                                                                                    |
+| ---------------------- | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `items`                | `T[]`                                                     | —                                                                                                        | The rows. Each item is a record                                                                |
+| `columns`              | `string[]`                                                | Keys of `items[0]`                                                                                       | Keys to show, in order                                                                         |
+| `formatHeader`         | `(key) => ReactNode`                                      | Key split into words, first letter capitalised (`createdAt` → "Created At", `first_name` → "First name") | Renders a header cell from its key                                                             |
+| `formatCell`           | `(value, column, item) => ReactNode`                      | `defaultFormatCell`                                                                                      | Renders a body cell                                                                            |
+| `size`                 | `"xsmall" \| "small" \| "medium" \| "large"`              | `"medium"`                                                                                               | Row height, font size and cell padding, matching the form-control tiers                        |
+| `striped`              | `boolean`                                                 | `false`                                                                                                  | Shade every even body row                                                                      |
+| `bordered`             | `boolean`                                                 | `false`                                                                                                  | Rule a border between body rows                                                                |
+| `highlightOnHover`     | `boolean`                                                 | `false`                                                                                                  | Highlight a body row under the pointer                                                         |
+| `minw`                 | `number`                                                  | —                                                                                                        | Minimum width in px; a narrower container scrolls the table sideways                           |
+| `maxHeight`            | `CSSProperties["maxHeight"]`                              | —                                                                                                        | Bounds the scroller's height so the body scrolls                                               |
+| `stickyHeader`         | `boolean`                                                 | `false`                                                                                                  | Pin the header while the body scrolls. Needs a bounded height                                  |
+| `footer`               | `ReactNode`                                               | —                                                                                                        | Content of a footer row whose one cell spans every column                                      |
+| `stickyFooter`         | `boolean`                                                 | `false`                                                                                                  | Pin the footer while the body scrolls. Needs `footer` and a bounded height                     |
+| `selectable`           | `boolean`                                                 | `false`                                                                                                  | Add a checkbox column                                                                          |
+| `getRowId`             | `(item, index) => TableRowId`                             | The row index                                                                                            | Stable id of a row, keying its selection and its React key. Ids must be unique                 |
+| `getRowLabel`          | `(item, index) => string`                                 | `"Select row N"`                                                                                         | Accessible name of a row's checkbox                                                            |
+| `selectedRows`         | `TableRowId[]`                                            | —                                                                                                        | Controlled selected row ids. Pair with `onSelectedRowsChange`                                  |
+| `defaultSelectedRows`  | `TableRowId[]`                                            | —                                                                                                        | Initially selected row ids when uncontrolled                                                   |
+| `onSelectedRowsChange` | `(selectedRows: TableRowId[]) => void`                    | —                                                                                                        | Called with the selected row ids whenever the selection changes                                |
+| `actions`              | `{ primary?: TableActionsProps<T>[]; secondary?: {...} }` | —                                                                                                        | Per-row icon buttons (`primary`) and overflow menu (`secondary`), in a column at the row's end |
 
 Any other prop, such as `className` or `aria-label`, reaches the `<table>` element (`TableRoot`).
 
@@ -105,7 +105,7 @@ The table is as wide as its container and scrolls inside its card. `minw` floors
 
 ## Composition
 
-Compose the parts when the data-driven form can't express the markup, such as group header rows or cells that span columns:
+Compose the parts when the data-driven form can't express the markup, such as grouped rows or cells that span columns:
 
 ```tsx
 import {
@@ -141,6 +141,8 @@ import {
   </TableRoot>
 </TableContainer>;
 ```
+
+For grouped rows, render one `TableBody` per group and start it with a header row whose `TableHead` spans the columns and has `scope="rowgroup"`, so it labels only its own group's rows.
 
 `TableRoot` takes `size`, `striped`, `bordered`, `highlightOnHover` and `minw`, and `TableContainer` takes `maxHeight`. To pin a composed header or footer, set `data-sticky` on `TableHeader` or `TableFooter`. `TableHead` and `TableCell` take `collapse`, which shrinks the column to its content, as the checkbox and action columns do.
 
@@ -207,6 +209,7 @@ Wrap the table in `TableSelectionProvider` and give it the row ids, or a `count`
 
 ## Accessibility
 
+- Name the table with `aria-label` (or `aria-labelledby`), which reaches the `<table>`, so a screen reader can tell several tables apart
 - The header checkbox is named "Select all rows" and shows a mixed state while only some rows are selected
 - Row checkboxes are named "Select row N" unless `getRowLabel` (or a composed checkbox's `label`) names them
 - The actions column's header holds a visually hidden "Row actions" label

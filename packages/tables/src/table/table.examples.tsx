@@ -42,7 +42,7 @@ export const Columns = () => (
   <Table<TableMockData>
     items={TABLE_MOCK_DATA}
     columns={["name", "status", "balance"]}
-    formatHeader={(column) => HEADERS[String(column)]}
+    formatHeader={(column) => HEADERS[column]}
   />
 );
 
@@ -83,6 +83,7 @@ export const Sizes = () => (
         size={size}
         items={TABLE_MOCK_DATA.slice(0, 2)}
         columns={["name", "email", "status"]}
+        aria-label={`Customers, ${size}`}
         footer={size}
       />
     ))}
@@ -151,14 +152,15 @@ export const Actions = () => {
           ],
         },
       }}
-      footer={last}
+      footer={<span role="status">{last}</span>}
     />
   );
 };
 
 /*
  * `maxHeight` bounds the scroller. `stickyHeader` and `stickyFooter` pin the
- * header and the `footer` row while the body scrolls under them.
+ * header, select-all checkbox included, and the `footer` row while the body
+ * scrolls under them.
  */
 export const StickyHeader = () => (
   <Table<TableMockData>
@@ -168,6 +170,8 @@ export const StickyHeader = () => (
     }))}
     getRowId={(item) => item.id}
     columns={["name", "email", "location"]}
+    selectable
+    striped
     maxHeight={240}
     stickyHeader
     stickyFooter
@@ -184,15 +188,19 @@ export const HorizontalScroll = () => (
 
 /* ---------------------------------------------------------------------------
  * Composed: build the table from its parts for markup the data-driven form
- * can't express, such as spanning cells or a row per group.
+ * can't express, such as spanning cells or grouped rows.
  * ------------------------------------------------------------------------- */
 
 const STATUSES = ["Active", "Inactive"];
 
-/* `TableContainer` is the scrolling card; `TableRoot` is the `<table>`. */
+/*
+ * `TableContainer` is the scrolling card; `TableRoot` is the `<table>`. Each
+ * group is its own `TableBody`, so its header row, `scope="rowgroup"`, labels
+ * only the rows of its group.
+ */
 export const Composed = () => (
   <TableContainer>
-    <TableRoot bordered>
+    <TableRoot bordered aria-label="Customers by status">
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
@@ -200,11 +208,9 @@ export const Composed = () => (
           <TableHead>Balance</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
-        {STATUSES.map((status) => (
-          <StatusGroup key={status} status={status} />
-        ))}
-      </TableBody>
+      {STATUSES.map((status) => (
+        <StatusGroup key={status} status={status} />
+      ))}
       <TableFooter>
         <TableRow>
           <TableCell colSpan={3}>{TABLE_MOCK_DATA.length} users</TableCell>
@@ -215,9 +221,9 @@ export const Composed = () => (
 );
 
 const StatusGroup = ({ status }: { status: string }) => (
-  <>
+  <TableBody>
     <TableRow>
-      <TableHead colSpan={3} scope="colgroup">
+      <TableHead colSpan={3} scope="rowgroup">
         {status}
       </TableHead>
     </TableRow>
@@ -228,7 +234,7 @@ const StatusGroup = ({ status }: { status: string }) => (
         <TableCell>{item.balance}</TableCell>
       </TableRow>
     ))}
-  </>
+  </TableBody>
 );
 
 /* Reads the selection from the nearest `TableSelectionProvider`. */
@@ -275,11 +281,10 @@ export const ComposedSelection = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {TABLE_MOCK_DATA.map((item, index) => (
+              {TABLE_MOCK_DATA.map((item) => (
                 <TableRow key={item.id}>
                   <TableCellCheckbox
                     rowId={item.id}
-                    index={index}
                     label={`Select ${item.name}`}
                   />
                   <TableCell>{item.name}</TableCell>
