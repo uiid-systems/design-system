@@ -74,7 +74,7 @@ describe("CodeBlock", () => {
   // ============================================
 
   it("fills the width with its header and content", () => {
-    render(<CodeBlock code="const x = 1;" />);
+    render(<CodeBlock code="const x = 1;" filename="example.ts" />);
     expect(
       document.querySelector('[data-slot="code-block-header"]'),
     ).toHaveAttribute("data-ui-w", "full");
@@ -180,6 +180,74 @@ describe("CodeBlock", () => {
     );
     expect(screen.getByText("example.ts")).toBeInTheDocument();
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  // ============================================
+  // HEADER FROM ITS CONTENT
+  // ============================================
+
+  const header = () =>
+    document.querySelector<HTMLElement>('[data-slot="code-block-header"]');
+
+  it("draws the header bar when there is a filename", () => {
+    render(<CodeBlock code="x" filename="example.ts" />);
+    expect(header()).not.toHaveAttribute("data-floating");
+    expect(header()).toHaveAttribute("data-ui-bb", "1");
+  });
+
+  it("draws the header bar for a language icon alone", () => {
+    render(<CodeBlock code="x" language="ts" />);
+    expect(header()).not.toHaveAttribute("data-floating");
+    expect(
+      within(header()!).getByRole("img", { name: "typescript" }),
+    ).toBeInTheDocument();
+  });
+
+  it("floats the buttons with no filename and no language", () => {
+    render(<CodeBlock code="x" wrappable fullscreenable />);
+    expect(header()).toHaveAttribute("data-floating");
+    expect(header()).not.toHaveAttribute("data-ui-bb");
+    expect(header()).not.toHaveAttribute("data-ui-w");
+    expect(within(header()!).getAllByRole("button")).toHaveLength(3);
+  });
+
+  it("floats the buttons for a language that has no icon", () => {
+    render(<CodeBlock code="x" language="rust" />);
+    expect(header()).toHaveAttribute("data-floating");
+    expect(within(header()!).queryByRole("img")).not.toBeInTheDocument();
+  });
+
+  it("renders no header at all with nothing to show", () => {
+    render(<CodeBlock code="x" copyable={false} />);
+    expect(header()).not.toBeInTheDocument();
+  });
+
+  it("renders no header for empty code without a filename", () => {
+    render(<CodeBlock code="" />);
+    expect(header()).not.toBeInTheDocument();
+  });
+
+  it("keeps the buttons floating in the fullscreen view", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="x" fullscreenable />);
+    await user.click(screen.getByRole("button", { name: "Enter fullscreen" }));
+
+    const dialog = await screen.findByRole("dialog");
+    const popupHeader = dialog.querySelector('[data-slot="code-block-header"]');
+    expect(popupHeader).toHaveAttribute("data-floating");
+  });
+
+  it("lets a long filename truncate while the buttons keep their size", () => {
+    render(<CodeBlock code="x" filename="a-very-long-name.ts" wrappable />);
+    const name = screen.getByText("a-very-long-name.ts");
+    expect(name).toHaveAttribute("data-ui-truncate");
+    expect(name).toHaveAttribute("title", "a-very-long-name.ts");
+    expect(
+      header()!.querySelector('[data-slot="code-block-title"]'),
+    ).toHaveAttribute("data-ui-grow");
+    expect(
+      header()!.querySelector('[data-slot="code-block-actions"]'),
+    ).toHaveAttribute("data-ui-flex", "none");
   });
 
   // ============================================

@@ -91,9 +91,6 @@ export const CodeEditor = ({
     [readOnly, isControlled, onValueChange, onTextareaChange],
   );
 
-  // Show header if filename or copyable
-  const showHeader = filename || copyable;
-
   return (
     <Stack
       data-slot="code-editor"
@@ -102,15 +99,14 @@ export const CodeEditor = ({
       w="full"
       {...props}
     >
-      {showHeader && (
-        <CodeBlockHeader
-          {...HeaderProps}
-          {...definedProps({ filename })}
-          copyable={copyable}
-          code={value}
-          CopyButtonProps={CopyButtonProps}
-        />
-      )}
+      {/* The header renders from its content, so an empty editor without a filename has none */}
+      <CodeBlockHeader
+        {...HeaderProps}
+        {...definedProps({ filename })}
+        copyable={copyable}
+        code={value}
+        CopyButtonProps={CopyButtonProps}
+      />
 
       {/* Typography on parent so both children inherit */}
       <Layer

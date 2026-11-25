@@ -1,4 +1,7 @@
 .code-block {
+  /* The radius inside the border, which is the shape the block clips to. */
+  --code-block-inner-radius: calc(var(--globals-border-radius) - var(--globals-border-width));
+
   position: relative;
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
@@ -7,8 +10,43 @@
   background-color: var(--shade-surface);
 }
 
+/* One frame: the block's border, radius and surface. Inside it the only rule is
+   the header bar's bottom border, which the bar draws with `bb={1}`. */
 .code-block-header {
   background-color: var(--shade-surface);
+}
+
+/* With no filename or icon there is no bar. The buttons float in the top-right
+   corner, centred on the first line, on a surface plate so the code never shows
+   through them. The insets keep their focus rings inside the clipped frame. */
+:where(.code-block-header)[data-floating] {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: calc(var(--code-padding) + (var(--code-font-size) * var(--code-line-height) - var(--forms-size-xs-height)) / 2);
+  inset-inline-end: var(--code-actions-inset);
+  border-radius: var(--globals-border-radius);
+}
+
+/* The floating buttons cover the end of the first line, so that line reserves
+   their width: the buttons and their gaps, plus the inset, past the code's own
+   padding. A wrapped first line breaks before them; an unwrapped one longer
+   than the block still scrolls beneath them. */
+.code-block:has(> :where(.code-block-header)[data-floating]) {
+  --code-block-actions-count: 1;
+}
+
+.code-block:has(> :where(.code-block-header)[data-floating] .code-block-actions > :nth-child(2)) {
+  --code-block-actions-count: 2;
+}
+
+.code-block:has(> :where(.code-block-header)[data-floating] .code-block-actions > :nth-child(3)) {
+  --code-block-actions-count: 3;
+}
+
+.code-block:has(> :where(.code-block-header)[data-floating]) .code-block-content :global(.line:first-child) {
+  padding-inline-end: calc(
+    var(--code-block-actions-count) * (var(--forms-size-xs-height) + var(--spacing-unit)) + var(--code-actions-inset) - var(--code-padding)
+  );
 }
 
 .code-block-language-icon {
@@ -161,9 +199,47 @@
   padding: var(--code-padding);
 }
 
+/* The expand toggle is the frame's bottom edge: full width, flush with the
+   border, its bottom corners following the frame's inner radius. It stays
+   muted until hover or focus. Button shares this layer, so the `.code-block`
+   ancestor is what lets these rules outrank its own. */
+.code-block .code-block-expand-toggle {
+  width: 100%;
+  border-radius: 0 0 var(--code-block-inner-radius) var(--code-block-inner-radius);
+  color: var(--shade-muted);
+
+  &:where(:hover, :focus-visible) {
+    color: var(--shade-foreground);
+  }
+
+  /* A full-width bar shrinking on press reads as the frame moving. */
+  &:where(:active) {
+    scale: none;
+  }
+}
+
 /* The block clips its overflow and the toggle sits flush with its edges, so
-   draw the Button's ring inside the toggle. The `.code-block` ancestor
-   outranks Button's own `.button:focus-visible`, which shares this layer. */
+   draw the Button's ring inside the toggle, where its rounded bottom corners
+   follow the same radius as the clip. */
 .code-block .code-block-expand-toggle:focus-visible {
   outline-offset: calc(-1 * var(--globals-outline-width));
+}
+
+/* A fade over the last collapsed line, shown only while the toggle is there to
+   reveal the rest. A mask, so it fades to whatever surface is beneath. The
+   bottom padding stays clear, hiding the next line's top peeking into it. */
+:where(.code-block-scroll)[data-collapsed]:has(~ .code-block-expand-toggle) {
+  mask-image: linear-gradient(
+    to top,
+    transparent var(--code-padding),
+    #000 calc(var(--code-padding) + var(--code-font-size) * var(--code-line-height))
+  );
+}
+
+/* Under reduced motion the block's buttons do not scale on press. Their colour
+   changes stay, since a fade is not motion. */
+@media (prefers-reduced-motion: reduce) {
+  .code-block .code-block-icon-button:where(:active) {
+    scale: none;
+  }
 }

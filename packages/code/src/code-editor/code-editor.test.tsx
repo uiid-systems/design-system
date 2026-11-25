@@ -168,6 +168,14 @@ describe("CodeEditor", () => {
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
+  it("draws no empty header bar while the value is empty", async () => {
+    render(<CodeEditor />);
+    await act(async () => {});
+    expect(
+      document.querySelector('[data-slot="code-block-header"]'),
+    ).not.toBeInTheDocument();
+  });
+
   it("renders the copy button once the empty editor gets a value", async () => {
     const user = userEvent.setup();
     render(<CodeEditor />);
