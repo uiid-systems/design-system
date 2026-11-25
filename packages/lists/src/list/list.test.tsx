@@ -107,8 +107,8 @@ describe("List", () => {
       expect(itemByLabel("Top")).toHaveAttribute("data-ui-w", "full");
     });
 
-    // Internal layout reads `w="full"`,
-    // so a caller's own `w` in ItemProps or GroupProps can narrow a row.
+    // Internal layout reads `w="full"`, so a caller's own `w` in ItemProps or
+    // GroupProps can narrow a row.
     it("fills the width with w", () => {
       const { container } = render(
         <List

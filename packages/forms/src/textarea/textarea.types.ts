@@ -34,11 +34,13 @@ export type TextareaProps = Omit<
   Pick<BaseField.Control.Props, "onValueChange"> & {
     /**
      * Reaches the Field around the control. Textarea owns `label`,
-     * `description`, `action`, `name`, `required`, `disabled`, `size` and
-     * `children` and hands them to Field itself, so they are not accepted
+     * `description`, `action`, `name`, `required`, `disabled`, `size`, `w`
+     * and `children` and hands them to Field itself, so they are not accepted
      * here a second time.
      */
-    FieldProps?: FieldSlotProps<"name" | "required" | "disabled" | "size">;
+    FieldProps?: FieldSlotProps<
+      "name" | "required" | "disabled" | "size" | "w"
+    >;
     ref?: React.Ref<HTMLTextAreaElement>;
     resize?: TextareaResize;
     /** Rendered above the text, inside the field surface. */

@@ -1209,19 +1209,23 @@ describe("Input mask", () => {
 describe("Input FieldProps", () => {
   it("reaches the field around it", () => {
     const { container } = render(
-      <Input FieldProps={{ className: "outer", w: "full" }} />,
+      <Input FieldProps={{ className: "outer", mt: 2 }} />,
     );
     const field = container.querySelector("[data-slot='field-root']");
     expect(field).toHaveClass("outer");
-    expect(field).toHaveAttribute("data-ui-w", "full");
+    expect(field).toHaveAttribute("data-ui-mt", "2");
   });
 
-  it("lets a FieldProps w beat the top-level w on the field root", () => {
-    const { container } = render(<Input w="full" FieldProps={{ w: 320 }} />);
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("lets a top-level w win over one in the slot", () => {
+    const { container } = render(
+      <Input w={200} FieldProps={{ w: "full" } as never} />,
+    );
     expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
       "data-ui-w",
-      "320",
+      "200",
     );
+    expect(screen.getByRole("textbox")).toHaveAttribute("data-ui-w", "200");
   });
 
   /* The cast stands in for untyped code, which the slot type cannot stop. */
@@ -1238,6 +1242,12 @@ describe("Input FieldProps", () => {
 
   /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
   it("rejects FieldProps the control owns", () => {
+    void (
+      <Input
+        // @ts-expect-error -- `w` is set on Input itself
+        FieldProps={{ w: "full" }}
+      />
+    );
     void (
       <Input
         // @ts-expect-error -- `label` is set on Input itself

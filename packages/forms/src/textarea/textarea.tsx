@@ -53,7 +53,6 @@ export const Textarea = ({
 
   return (
     <Field
-      w={w}
       {...FieldProps}
       {...definedProps({
         name,
@@ -63,6 +62,7 @@ export const Textarea = ({
         required,
         disabled,
         size,
+        w,
       })}
     >
       <InputWrapper

@@ -45,11 +45,8 @@ export const ComboboxInput = ({
     /*
      * `FieldProps` spreads first and the part's own values after, so they win
      * and an unset one leaves the slot's alone; `required` is resolved above.
-     * `w` is a default the slot may still change on the field root, as on
-     * Input.
      */
     <Field
-      w={w}
       {...FieldProps}
       {...definedProps({
         name,
@@ -59,6 +56,7 @@ export const ComboboxInput = ({
         disabled,
         required: fieldRequired,
         size,
+        w,
       })}
     >
       {/*

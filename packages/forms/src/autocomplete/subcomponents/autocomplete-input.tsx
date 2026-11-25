@@ -36,11 +36,9 @@ export const AutocompleteInput = ({
   return (
     /*
      * `FieldProps` spreads first and the part's own values after, so they win
-     * and an unset one leaves the slot's alone. `w` is a default the slot may
-     * still change on the field root, as on Input.
+     * and an unset one leaves the slot's alone.
      */
     <Field
-      w={w}
       {...FieldProps}
       {...definedProps({
         name,
@@ -50,6 +48,7 @@ export const AutocompleteInput = ({
         disabled,
         required,
         size,
+        w,
       })}
     >
       {/*

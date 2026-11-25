@@ -33,7 +33,6 @@ export const Input = ({
 
   return (
     <Field
-      w={w}
       {...FieldProps}
       {...definedProps({
         name,
@@ -43,6 +42,7 @@ export const Input = ({
         required,
         disabled,
         size,
+        w,
       })}
     >
       <InputWrapper
