@@ -1,6 +1,10 @@
-import { Stack } from "@uiid/layout";
+import { Button } from "@uiid/buttons";
+import { Group, Stack } from "@uiid/layout";
+import { useState } from "react";
 
+import { useHighlight } from "../highlighter";
 import { CodeBlock } from "./code-block";
+import { CodeBlockContent, CodeBlockHeader } from "./subcomponents";
 
 const SAMPLE = `import { useState } from "react";
 
@@ -64,6 +68,73 @@ export const HeaderActions = () => (
     <CodeBlock code={SAMPLE} filename="no-actions.tsx" copyable={false} />
   </Stack>
 );
+
+/** Wrap, expanded and fullscreen held in the caller's state and set from outside. */
+export const Controlled = () => {
+  const [wrap, setWrap] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
+
+  return (
+    <Stack gap={3}>
+      <Group gap={2}>
+        <Button size="small" variant="subtle" onClick={() => setWrap(!wrap)}>
+          {wrap ? "Unwrap lines" : "Wrap lines"}
+        </Button>
+        <Button
+          size="small"
+          variant="subtle"
+          onClick={() => setExpanded(!expanded)}
+        >
+          {expanded ? "Collapse" : "Expand"}
+        </Button>
+        <Button
+          size="small"
+          variant="subtle"
+          onClick={() => setFullscreen(true)}
+        >
+          Open fullscreen
+        </Button>
+      </Group>
+      <CodeBlock
+        code={`${LONG_LINE}\n${LONG_SAMPLE}`}
+        filename="controlled.ts"
+        rows={8}
+        wrappable
+        fullscreenable
+        wrap={wrap}
+        onWrapChange={setWrap}
+        expanded={expanded}
+        onExpandedChange={setExpanded}
+        fullscreen={fullscreen}
+        onFullscreenChange={setFullscreen}
+      />
+    </Stack>
+  );
+};
+
+/**
+ * A block built from the parts, without CodeBlock. The caller owns the wrap
+ * state and the highlighting; there is no row cap or fullscreen view.
+ */
+export const Composed = () => {
+  const [wrap, setWrap] = useState(false);
+  const { html } = useHighlight(SAMPLE, "tsx");
+
+  return (
+    <Stack w="full" b={1}>
+      <CodeBlockHeader
+        filename="counter.tsx"
+        language="tsx"
+        code={SAMPLE}
+        wrappable
+        wrap={wrap}
+        onWrapChange={setWrap}
+      />
+      <CodeBlockContent html={html || undefined} code={SAMPLE} wrap={wrap} />
+    </Stack>
+  );
+};
 
 export const Languages = () => (
   <Stack gap={4}>

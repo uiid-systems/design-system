@@ -5,6 +5,7 @@ import * as React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { CodeBlock } from "./code-block";
+import { Composed, Controlled } from "./code-block.examples";
 import type {
   CodeBlockExpandToggleProps,
   CodeBlockProps,
@@ -1470,6 +1471,46 @@ describe("CodeBlock slot props", () => {
       "aria-expanded": true,
     };
     void slot;
+  });
+});
+
+describe("CodeBlock examples", () => {
+  it("builds a block from the exported parts without CodeBlock", async () => {
+    const user = userEvent.setup();
+    render(<Composed />);
+
+    expect(
+      document.querySelector('[data-slot="code-block"]'),
+    ).not.toBeInTheDocument();
+    const header = document.querySelector<HTMLElement>(
+      '[data-slot="code-block-header"]',
+    )!;
+    expect(within(header).getByText("counter.tsx")).toBeInTheDocument();
+    expect(
+      within(header).getByRole("button", { name: "Copy code" }),
+    ).toBeInTheDocument();
+    const content = document.querySelector('[data-slot="code-block-content"]');
+    expect(content).toHaveTextContent("export function Counter()");
+    expect(content).not.toHaveAttribute("data-wrap");
+
+    await user.click(
+      within(header).getByRole("button", { name: "Toggle line wrap" }),
+    );
+    expect(content).toHaveAttribute("data-wrap", "true");
+  });
+
+  it("drives a controlled block from outside", async () => {
+    const user = userEvent.setup();
+    render(<Controlled />);
+    const content = () =>
+      document.querySelector('[data-slot="code-block-content"]');
+    expect(content()).not.toHaveAttribute("data-wrap");
+
+    await user.click(screen.getByRole("button", { name: "Wrap lines" }));
+    expect(content()).toHaveAttribute("data-wrap", "true");
+
+    await user.click(screen.getByRole("button", { name: "Open fullscreen" }));
+    expect(await screen.findByRole("dialog")).toBeInTheDocument();
   });
 });
 
