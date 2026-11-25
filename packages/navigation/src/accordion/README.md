@@ -49,7 +49,7 @@ import { Accordion } from "@uiid/navigation";
 | `HeaderProps`   | `AccordionHeaderProps`                                        | —          | Props for every header                                               |
 | `TriggerProps`  | `Omit<AccordionTriggerProps, "size" \| "icon" \| "children">` | —          | Props for every trigger; set `size` at the top level                 |
 | `PanelProps`    | `Omit<AccordionPanelProps, "size" \| "children">`             | —          | Props for every panel; set `size` at the top level                   |
-| `ContentProps`  | `AccordionContentProps`                                       | —          | Props for the `Stack` inside every panel                             |
+| `ContentProps`  | `Omit<AccordionContentProps, "children">`                     | —          | Props for the `Stack` inside every panel                             |
 
 ### AccordionItemData
 

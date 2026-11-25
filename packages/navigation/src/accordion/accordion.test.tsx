@@ -4,6 +4,7 @@ import { useState } from "react";
 import { describe, it, expect, vi } from "vitest";
 
 import { Accordion } from "./accordion";
+import type { AccordionProps } from "./accordion.types";
 import {
   AccordionRoot,
   AccordionItem,
@@ -527,5 +528,32 @@ describe("Accordion slot props", () => {
         PanelProps={{ children: "Other" }}
       />
     );
+  });
+
+  it("rejects the content's children in ContentProps, which come from each item", () => {
+    void (
+      <Accordion
+        items={sampleItems}
+        // @ts-expect-error -- each item's `content` fills its content wrapper
+        ContentProps={{ children: "Other" }}
+      />
+    );
+  });
+});
+
+describe("Accordion slot children", () => {
+  /* The cast stands in for untyped code, which the slot type cannot stop. */
+  it("fills each content wrapper from its item over ContentProps children", () => {
+    render(
+      <Accordion
+        items={sampleItems}
+        defaultValue={["item-1"]}
+        ContentProps={
+          { children: "Slot content" } as AccordionProps["ContentProps"]
+        }
+      />,
+    );
+    expect(screen.getByText("First content")).toBeInTheDocument();
+    expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
   });
 });

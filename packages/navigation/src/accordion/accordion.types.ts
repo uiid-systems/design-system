@@ -56,7 +56,8 @@ export type AccordionProps = {
   TriggerProps?: Omit<AccordionTriggerProps, "size" | "icon" | "children">;
   /** Reaches every panel. `size` is set on Accordion itself; the content comes from each item. */
   PanelProps?: Omit<AccordionPanelProps, "size" | "children">;
-  ContentProps?: AccordionContentProps;
+  /** Reaches every content wrapper inside a panel. The content comes from each item. */
+  ContentProps?: Omit<AccordionContentProps, "children">;
 } & Pick<
   AccordionRootProps,
   | "defaultValue"

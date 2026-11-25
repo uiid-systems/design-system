@@ -575,6 +575,38 @@ describe("Tabs", () => {
     expect(screen.getByText("Content 3")).toBeInTheDocument();
   });
 
+  /* Type-level: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects the children each item fills in its tab and panel", () => {
+    void (
+      <Tabs
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each item's `label` is its tab's content
+        TabProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <Tabs
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each item's `content` fills its panel
+        PanelProps={{ children: "Other" }}
+      />
+    );
+  });
+
+  /* The casts stand in for untyped code, which the slot type cannot stop. */
+  it("gives each tab and panel its item's content over slot children", () => {
+    render(
+      <Tabs
+        items={MOCK_ITEMS}
+        TabProps={{ children: "Slot tab" } as TabsProps["TabProps"]}
+        PanelProps={{ children: "Slot panel" } as TabsProps["PanelProps"]}
+      />,
+    );
+    expect(screen.getByRole("tab", { name: "Tab 1" })).toBeInTheDocument();
+    expect(screen.getByRole("tabpanel")).toHaveTextContent("Content 1");
+    expect(screen.queryByText(/Slot/)).not.toBeInTheDocument();
+  });
+
   // ============================================
   // CLASSNAME AND STATE
   // ============================================
