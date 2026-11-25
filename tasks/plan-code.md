@@ -39,7 +39,7 @@ Sizes: XS is one file, S is one or two, M is three to five.
 | ------ | -------------------------------------------------------- | ------------------------------ | ---- | -------------- |
 | UI-479 | Render CodeBlock fullscreen through UIID Dialog          | code-block 3, 4, 20            | M    | —              |
 | UI-480 | Make header buttons opt-in and absent when off           | code-block 1, 2; code-editor 1 | M    | —              |
-| UI-481 | Replace `fullwidth` with `w="full"` in `@uiid/code`      | code-block 6; code-editor 4    | XS   | —              |
+| UI-481 | Pin `w="full"` in `@uiid/code` with tests (after #710)   | code-block 6; code-editor 4    | XS   | —              |
 | UI-484 | Export the expand toggle as a UIID Button part           | code-block 5, 7                | S    | UI-480         |
 | UI-485 | Add controlled state and the missing slots to CodeBlock  | code-block 8, 9                | M    | UI-479, UI-484 |
 | UI-486 | Render the header from its content and tighten the frame | code-block 10–15               | M    | UI-480, UI-484 |

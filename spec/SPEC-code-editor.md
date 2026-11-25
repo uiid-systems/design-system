@@ -10,7 +10,6 @@ Milestone 1. Depends on `code-block`. Inherits the shared conventions in `spec/c
 
 - The header is shared with `CodeBlock`, so it inherits that module's header changes.
 - The copy button renders `disabled` when the editor is empty.
-- Layout uses the deprecated `fullwidth` toggle.
 - Nothing tests layer alignment in a real browser.
 
 ## Requirements
@@ -20,7 +19,7 @@ Milestone 1. Depends on `code-block`. Inherits the shared conventions in `spec/c
 1. `copyable` stays on by default. The copy button is not rendered when the value is empty.
 2. The header follows `code-block` requirement 11: with no filename, no bar; the copy button sits in the top-right corner.
 3. Slot types (`HeaderProps`, `CopyButtonProps`, `TextareaProps`) omit owned keys, each proven by a `// @ts-expect-error` test.
-4. `fullwidth` is replaced by `w="full"`.
+4. Layout uses `w="full"`, never the removed `fullwidth` toggle. The replacement landed repo-wide in #710; UI-481 adds the tests that pin it.
 
 ### Look and feel
 

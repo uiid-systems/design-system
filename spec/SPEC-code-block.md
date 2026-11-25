@@ -14,7 +14,6 @@ Milestone 1. Inherits the shared conventions in `spec/capability-map-code.md`.
 - The copy button renders `disabled` when `code` is empty.
 - The header bar always renders, even with nothing in it.
 - The scroll wrapper, the expand toggle and the fullscreen dialog are not reachable as parts or slots.
-- Layout uses the deprecated `fullwidth` toggle.
 
 ## Requirements
 
@@ -28,7 +27,7 @@ Milestone 1. Inherits the shared conventions in `spec/capability-map-code.md`.
 
 4. Fullscreen renders through `@uiid/overlays` `Dialog` parts. `@uiid/code` imports nothing from `@base-ui/react/dialog`.
 5. The expand toggle is a UIID `Button`, exported as `CodeBlockExpandToggle`.
-6. `fullwidth` is replaced by `w="full"` throughout the package.
+6. Layout uses `w="full"`, never the removed `fullwidth` toggle. The replacement landed repo-wide in #710; UI-481 adds the tests that pin it.
 
 ### API shape
 
