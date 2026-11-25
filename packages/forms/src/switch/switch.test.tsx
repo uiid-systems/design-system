@@ -336,6 +336,8 @@ describe("Switch FieldProps", () => {
     void (<Switch FieldProps={{ reversed: true }} />);
     // @ts-expect-error -- `bordered` is set on Switch itself
     void (<Switch FieldProps={{ bordered: true }} />);
+    // @ts-expect-error -- the row's content is Switch's own control
+    void (<Switch FieldProps={{ children: "Other" }} />);
     void (
       <Switch
         label="Dark mode"

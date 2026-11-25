@@ -670,4 +670,20 @@ describe("NumberField stepper slots", () => {
     expect(part(container, "decrement")).not.toHaveAttribute("data-disabled");
     expect(part(container, "increment")).not.toHaveAttribute("data-disabled");
   });
+
+  /* The control for the test above: a stepper's own `disabled` does mark it,
+     so the absence there comes from the order, not from an inert key. */
+  it("still disables a stepper from an untyped slot when the top level leaves disabled unset", () => {
+    const { container } = render(
+      <NumberField
+        defaultValue={7}
+        DecrementProps={
+          { disabled: true } as NumberFieldProps["DecrementProps"]
+        }
+      />,
+    );
+
+    expect(part(container, "decrement")).toHaveAttribute("data-disabled");
+    expect(part(container, "increment")).not.toHaveAttribute("data-disabled");
+  });
 });

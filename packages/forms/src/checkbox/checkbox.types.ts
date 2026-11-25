@@ -42,10 +42,10 @@ export type CheckboxIndicatorProps =
 export type CheckboxProps = CheckboxRootProps &
   Pick<CheckboxFieldProps, "reversed" | "bordered" | "label" | "description"> &
   Pick<CheckboxIndicatorProps, "indeterminate"> & {
-    /** Reaches the row. The keys Checkbox hands to the row itself are left out. */
+    /** Reaches the row. The keys Checkbox hands to the row itself, and the control it holds, are left out. */
     FieldProps?: Omit<
       CheckboxFieldProps,
-      "label" | "description" | "size" | "reversed" | "bordered"
+      "label" | "description" | "size" | "reversed" | "bordered" | "children"
     >;
     /** Reaches the indicator. `indeterminate` is set on Checkbox itself. */
     IndicatorProps?: Omit<CheckboxIndicatorProps, "indeterminate">;

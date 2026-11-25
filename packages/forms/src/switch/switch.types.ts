@@ -46,10 +46,10 @@ export type SwitchFieldProps = GroupProps &
 export type SwitchProps = SwitchRootProps & {
   RootProps?: SwitchRootProps;
   ThumbProps?: SwitchThumbProps;
-  /** Reaches the row. The keys Switch hands to the row itself are left out. */
+  /** Reaches the row. The keys Switch hands to the row itself, and the control it holds, are left out. */
   FieldProps?: Omit<
     SwitchFieldProps,
-    "label" | "description" | "size" | "reversed" | "bordered"
+    "label" | "description" | "size" | "reversed" | "bordered" | "children"
   >;
 } & Pick<FieldProps, "label" | "description" | "disabled"> &
   Pick<SwitchFieldProps, "reversed" | "bordered" | "size">;

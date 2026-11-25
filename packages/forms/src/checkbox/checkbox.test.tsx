@@ -415,6 +415,8 @@ describe("Checkbox FieldProps", () => {
     void (<Checkbox FieldProps={{ reversed: true }} />);
     // @ts-expect-error -- `bordered` is set on Checkbox itself
     void (<Checkbox FieldProps={{ bordered: true }} />);
+    // @ts-expect-error -- the row's content is Checkbox's own control
+    void (<Checkbox FieldProps={{ children: "Other" }} />);
     void (
       <Checkbox
         label="Terms"

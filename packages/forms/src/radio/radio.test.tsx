@@ -317,6 +317,8 @@ describe("Radio FieldProps", () => {
     void (<Radio value="a" FieldProps={{ description: "Other" }} />);
     // @ts-expect-error -- `size` is set on Radio itself
     void (<Radio value="a" FieldProps={{ size: "small" }} />);
+    // @ts-expect-error -- the row's content is Radio's own control
+    void (<Radio value="a" FieldProps={{ children: "Other" }} />);
   });
 
   it("lets the top-level values win over the same keys in FieldProps", () => {
