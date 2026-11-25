@@ -36,6 +36,30 @@ const tabTo = async (el: HTMLElement) => {
   expect(el.matches(":focus-visible")).toBe(true);
 };
 
+/** A CSS length, such as a token, resolved to pixels by a probe element. */
+const toPx = (length: string) => {
+  const probe = document.createElement("div");
+  probe.style.width = length;
+  document.body.append(probe);
+  const width = probe.getBoundingClientRect().width;
+  probe.remove();
+  return width;
+};
+
+/** The boxes of an element's rendered text, one per line fragment. */
+const textRects = (el: Element) => {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  return [...range.getClientRects()].filter((r) => r.width > 0);
+};
+
+const intersects = (a: DOMRect, b: DOMRect) =>
+  a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+
+/** Visible as a user sees it, opacity and visibility of ancestors included. */
+const isShown = (el: Element) =>
+  el.checkVisibility({ opacityProperty: true, visibilityProperty: true });
+
 /** The block's padding box: the region its `overflow: hidden` clips to. */
 const clipBox = (block: HTMLElement) => {
   const rect = block.getBoundingClientRect();
@@ -85,7 +109,7 @@ describe("CodeBlock expand toggle", () => {
     expect(rect.bottom).toBeCloseTo(box.bottom, 0);
   });
 
-  it("is muted until hovered", async () => {
+  it("is muted until hovered or focused", async () => {
     render(<CodeBlock code={LONG} html={toHtml(LONG)} rows={4} />);
     const toggle = page.getByRole("button", { name: "Show more" });
     await expect.element(toggle).toBeInTheDocument();
@@ -96,6 +120,11 @@ describe("CodeBlock expand toggle", () => {
     expect(muted).not.toBe(text);
 
     await userEvent.hover(el);
+    await expect.poll(() => getComputedStyle(el).color).not.toBe(muted);
+    await userEvent.unhover(el);
+    await expect.poll(() => getComputedStyle(el).color).toBe(muted);
+
+    await tabTo(el);
     await expect.poll(() => getComputedStyle(el).color).not.toBe(muted);
   });
 
@@ -146,11 +175,26 @@ describe("CodeBlock frame", () => {
     // the `bb` style prop here; in a build the props layer wins. Check the prop.
     expect(header).toHaveAttribute("data-ui-bb", "1");
 
-    // Any other border inside the frame is transparent or zero width.
+    // A border style prop measures zero here for the same reason, so no other
+    // element may carry one.
+    const borderProps = ["b", "bx", "by", "bt", "bb", "bl", "br"];
     for (const el of block.querySelectorAll<HTMLElement>("*")) {
-      if (el === header) continue;
+      for (const key of borderProps) {
+        if (el === header && key === "bb") continue;
+        expect(
+          el.hasAttribute(`data-ui-${key}`),
+          `${el.dataset.slot ?? el.tagName} data-ui-${key}`,
+        ).toBe(false);
+      }
+    }
+
+    // Any other border inside the frame is transparent or zero width, as are
+    // the header's other three sides.
+    for (const el of block.querySelectorAll<HTMLElement>("*")) {
       const style = getComputedStyle(el);
-      for (const side of ["Top", "Right", "Bottom", "Left"] as const) {
+      const sides = ["Top", "Right", "Bottom", "Left"] as const;
+      for (const side of sides) {
+        if (el === header && side === "Bottom") continue;
         const width = px(style[`border${side}Width`]);
         const color = style[`border${side}Color`];
         const visible =
@@ -189,20 +233,19 @@ describe("CodeBlock header with a long filename", () => {
     const buttons = [...header.querySelectorAll<HTMLElement>("button")];
     expect(buttons).toHaveLength(3);
 
-    const size = px(
-      getComputedStyle(document.documentElement).getPropertyValue(
-        "--forms-size-xs-height",
-      ),
-    );
-    const top = buttons[0].getBoundingClientRect().top;
+    const size = toPx("var(--forms-size-xs-height)");
+    const nameRect = name.getBoundingClientRect();
+    const nameCentre = nameRect.top + nameRect.height / 2;
     for (const button of buttons) {
       const rect = button.getBoundingClientRect();
-      // Not shrunk, not wrapped onto a second row, not clipped by the header.
+      // Not shrunk, not clipped by the header, and on the filename's row.
       expect(rect.width).toBeGreaterThanOrEqual(rect.height - 0.5);
-      expect(rect.height).toBeCloseTo(size * 16, 0);
-      expect(rect.top).toBeCloseTo(top, 0);
+      expect(rect.height).toBeCloseTo(size, 0);
+      expect(rect.top + rect.height / 2).toBeCloseTo(nameCentre, 0);
       expect(rect.right).toBeLessThanOrEqual(headerRect.right);
     }
+    // One bar tall: nothing wrapped onto a second row.
+    expect(headerRect.height).toBeLessThan(2 * size);
   });
 });
 
@@ -227,15 +270,16 @@ describe("CodeBlock floating buttons", () => {
 
     // An opaque plate in the block's own surface colour: the code never shows
     // through the icons, which keep the block's foreground contrast.
-    expect(getComputedStyle(header).backgroundColor).toBe(
-      getComputedStyle(block).backgroundColor,
-    );
+    const plate = getComputedStyle(header).backgroundColor;
+    expect(plate).not.toBe("rgba(0, 0, 0, 0)");
+    expect(plate).not.toBe("transparent");
+    expect(plate).toBe(getComputedStyle(block).backgroundColor);
 
-    // Visible without hover.
+    // Visible without hover, ancestors' opacity and visibility included.
+    expect(isShown(header)).toBe(true);
+    expect(isShown(query('[data-slot="code-block-actions"]'))).toBe(true);
     for (const button of header.querySelectorAll<HTMLElement>("button")) {
-      const style = getComputedStyle(button);
-      expect(style.visibility).toBe("visible");
-      expect(Number(style.opacity)).toBe(1);
+      expect(isShown(button)).toBe(true);
     }
   });
 
@@ -254,8 +298,8 @@ describe("CodeBlock floating buttons", () => {
     }
   });
 
-  it("reserve the first line's end, so a wrapped first line breaks before them", async () => {
-    const code = `${LONG_FIRST_LINE}\nconst second = 2;`;
+  it("reserve only the first line's end when the code cannot scroll", async () => {
+    const code = `${LONG_FIRST_LINE}\n${LONG_FIRST_LINE}`;
     render(
       <div style={{ width: 360 }}>
         <CodeBlock code={code} html={toHtml(code)} defaultWrap wrappable />
@@ -266,20 +310,71 @@ describe("CodeBlock floating buttons", () => {
     const [first, second] = [
       ...document.querySelectorAll<HTMLElement>(".line"),
     ];
-    expect(px(getComputedStyle(first).paddingInlineEnd)).toBeGreaterThan(0);
-    expect(px(getComputedStyle(second).paddingInlineEnd)).toBeLessThan(
-      px(getComputedStyle(first).paddingInlineEnd),
+    // Only the line's own bleed on the second line.
+    expect(px(getComputedStyle(second).paddingInlineEnd)).toBeCloseTo(
+      toPx("var(--spacing-unit)"),
+      1,
     );
 
-    // Every glyph of the first line's top row ends before the buttons start.
-    const range = document.createRange();
-    range.selectNodeContents(first);
-    const rows = [...range.getClientRects()];
+    // The first line's top row ends a full gap before the buttons start.
+    const rows = textRects(first);
     const topRow = Math.min(...rows.map((r) => r.top));
     const actionsLeft = actions.getBoundingClientRect().left;
+    const gap = toPx("var(--code-actions-gap)");
+    expect(gap).toBeGreaterThan(0);
     for (const r of rows.filter((r) => Math.abs(r.top - topRow) < 1)) {
-      expect(r.right).toBeLessThanOrEqual(actionsLeft);
+      expect(r.right).toBeLessThanOrEqual(actionsLeft - gap + 0.5);
     }
+  });
+
+  it("keep every line clear while a collapsed block scrolls beneath them", async () => {
+    const code = Array.from({ length: 12 }, () => LONG_FIRST_LINE).join("\n");
+    render(
+      <div style={{ width: 360 }}>
+        <CodeBlock
+          code={code}
+          html={toHtml(code)}
+          rows={4}
+          defaultWrap
+          wrappable
+        />
+      </div>,
+    );
+    await expect
+      .element(page.getByRole("button", { name: "Show more" }))
+      .toBeInTheDocument();
+
+    const scroll = query('[data-slot="code-block-scroll"]');
+    const actions = query('[data-slot="code-block-actions"]');
+    // Scroll a few lines down, so later lines sit where the buttons float.
+    scroll.scrollTop =
+      3 * toPx("calc(var(--code-font-size) * var(--code-line-height))");
+    expect(scroll.scrollTop).toBeGreaterThan(0);
+
+    const actionsRect = actions.getBoundingClientRect();
+    const rects = [...document.querySelectorAll(".line")].flatMap(textRects);
+    const beside = rects.filter(
+      (r) => r.top < actionsRect.bottom && r.bottom > actionsRect.top,
+    );
+    expect(beside.length).toBeGreaterThan(0);
+    for (const r of rects) {
+      expect(intersects(r, actionsRect)).toBe(false);
+    }
+  });
+
+  it("reserve every line's end in the fullscreen view", async () => {
+    const code = `${LONG_FIRST_LINE}\nconst second = 2;`;
+    render(<CodeBlock code={code} html={toHtml(code)} fullscreenable />);
+    await userEvent.click(
+      page.getByRole("button", { name: "Enter fullscreen" }).element(),
+    );
+    const dialog = page.getByRole("dialog");
+    await expect.element(dialog).toBeInTheDocument();
+
+    const lines = (dialog.element() as HTMLElement).querySelectorAll(".line");
+    const first = px(getComputedStyle(lines[0]).paddingInlineEnd);
+    expect(first).toBeGreaterThan(toPx("var(--spacing-unit)"));
+    expect(px(getComputedStyle(lines[1]).paddingInlineEnd)).toBe(first);
   });
 
   it("reserve no first-line space under a header bar", async () => {

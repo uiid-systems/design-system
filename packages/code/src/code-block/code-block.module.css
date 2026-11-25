@@ -27,10 +27,15 @@
   border-radius: var(--globals-border-radius);
 }
 
+.code-block-actions {
+  gap: var(--code-actions-gap);
+}
+
 /* The floating buttons cover the end of the first line, so that line reserves
-   their width: the buttons and their gaps, plus the inset, past the code's own
-   padding. A wrapped first line breaks before them; an unwrapped one longer
-   than the block still scrolls beneath them. */
+   their width. A wrapped first line breaks before them; an unwrapped one longer
+   than the block still scrolls beneath them. Where the code scrolls vertically
+   (collapsed behind the toggle, or fullscreen), any line can pass beneath the
+   buttons, so every line reserves it. */
 .code-block:has(> :where(.code-block-header)[data-floating]) {
   --code-block-actions-count: 1;
 }
@@ -43,9 +48,18 @@
   --code-block-actions-count: 3;
 }
 
-.code-block:has(> :where(.code-block-header)[data-floating]) .code-block-content :global(.line:first-child) {
+/* The reserve runs from the line box's end to one gap short of the buttons: each
+   button and the gap after it, plus the inset, less the code padding the line
+   already sits inside, plus the line's own bleed past that padding. */
+.code-block:has(> :where(.code-block-header)[data-floating]) .code-block-content :global(.line:first-child),
+.code-block:has(> :where(.code-block-header)[data-floating])
+  :where(.code-block-scroll)[data-collapsed]:has(~ .code-block-expand-toggle)
+  .code-block-content
+  :global(.line),
+:where(.code-block)[data-fullscreen]:has(> :where(.code-block-header)[data-floating]) .code-block-content :global(.line) {
   padding-inline-end: calc(
-    var(--code-block-actions-count) * (var(--forms-size-xs-height) + var(--spacing-unit)) + var(--code-actions-inset) - var(--code-padding)
+    var(--code-block-actions-count) * (var(--forms-size-xs-height) + var(--code-actions-gap)) + var(--code-actions-inset) - var(--code-padding) +
+      var(--code-block-line-bleed)
   );
 }
 
@@ -77,6 +91,9 @@
 }
 
 .code-block-content {
+  /* How far each line's box bleeds past the code padding on either side. */
+  --code-block-line-bleed: var(--spacing-unit);
+
   overflow-x: auto;
 
   /* Apply background to pre so it extends with scrollable content */
@@ -89,8 +106,8 @@
   & :global(.line) {
     display: inline-block;
     width: 100%;
-    padding-inline: 0.25rem;
-    margin-inline: -0.25rem;
+    padding-inline: var(--code-block-line-bleed);
+    margin-inline: calc(-1 * var(--code-block-line-bleed));
   }
 
   /*
@@ -239,7 +256,9 @@
 /* Under reduced motion the block's buttons do not scale on press. Their colour
    changes stay, since a fade is not motion. */
 @media (prefers-reduced-motion: reduce) {
-  .code-block .code-block-icon-button:where(:active) {
+  /* No `.code-block` ancestor, so CodeEditor's copy button is reached too; the
+     `:active` pseudo-class outranks Button's own `.button:where(:active)`. */
+  .code-block-icon-button:active {
     scale: none;
   }
 }
