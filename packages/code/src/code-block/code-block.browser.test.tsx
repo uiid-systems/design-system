@@ -323,6 +323,8 @@ describe("CodeBlock floating buttons", () => {
     const gap = toPx("var(--code-actions-gap)");
     expect(gap).toBeGreaterThan(0);
     for (const r of rows.filter((r) => Math.abs(r.top - topRow) < 1)) {
+      // The whole gap is the intended clearance, so no margin beyond it is
+      // required; the half pixel only absorbs subpixel rounding.
       expect(r.right).toBeLessThanOrEqual(actionsLeft - gap + 0.5);
     }
   });
@@ -346,20 +348,84 @@ describe("CodeBlock floating buttons", () => {
 
     const scroll = query('[data-slot="code-block-scroll"]');
     const actions = query('[data-slot="code-block-actions"]');
-    // Scroll a few lines down, so later lines sit where the buttons float.
+    // Scroll the second line up to where the first was, beside the buttons,
+    // however many rows the first line wraps to.
+    const lines = [...document.querySelectorAll<HTMLElement>(".line")];
     scroll.scrollTop =
-      3 * toPx("calc(var(--code-font-size) * var(--code-line-height))");
+      lines[1].getBoundingClientRect().top -
+      lines[0].getBoundingClientRect().top;
     expect(scroll.scrollTop).toBeGreaterThan(0);
 
+    // Only lines after the first count: the first reserves its end anyway.
     const actionsRect = actions.getBoundingClientRect();
-    const rects = [...document.querySelectorAll(".line")].flatMap(textRects);
-    const beside = rects.filter(
+    const later = lines.slice(1).flatMap(textRects);
+    const beside = later.filter(
       (r) => r.top < actionsRect.bottom && r.bottom > actionsRect.top,
     );
     expect(beside.length).toBeGreaterThan(0);
-    for (const r of rects) {
+    for (const r of later) {
       expect(intersects(r, actionsRect)).toBe(false);
     }
+  });
+
+  it("reserve only the first line when a block with rows fits them", async () => {
+    const code = `${LONG_FIRST_LINE}\n${LONG_FIRST_LINE}`;
+    render(
+      <div style={{ width: 360 }}>
+        <CodeBlock
+          code={code}
+          html={toHtml(code)}
+          rows={20}
+          defaultWrap
+          wrappable
+        />
+      </div>,
+    );
+    const scroll = query('[data-slot="code-block-scroll"]');
+    expect(scroll).toHaveAttribute("data-collapsed");
+    expect(
+      page.getByRole("button", { name: "Show more" }).query(),
+    ).not.toBeInTheDocument();
+
+    const second = document.querySelectorAll<HTMLElement>(".line")[1];
+    expect(px(getComputedStyle(second).paddingInlineEnd)).toBeCloseTo(
+      toPx("var(--spacing-unit)"),
+      1,
+    );
+  });
+
+  it("drop the every-line reserve once a collapsed block is expanded", async () => {
+    const code = Array.from({ length: 12 }, () => LONG_FIRST_LINE).join("\n");
+    render(
+      <div style={{ width: 360 }}>
+        <CodeBlock
+          code={code}
+          html={toHtml(code)}
+          rows={4}
+          defaultWrap
+          wrappable
+        />
+      </div>,
+    );
+    const toggle = page.getByRole("button", { name: "Show more" });
+    await expect.element(toggle).toBeInTheDocument();
+
+    const second = document.querySelectorAll<HTMLElement>(".line")[1];
+    const bleed = toPx("var(--spacing-unit)");
+    expect(px(getComputedStyle(second).paddingInlineEnd)).toBeGreaterThan(
+      bleed,
+    );
+
+    await toggle.click();
+    await expect
+      .element(page.getByRole("button", { name: "Show less" }))
+      .toBeInTheDocument();
+    // Query again: the content can re-render its lines on expanding.
+    const expanded = document.querySelectorAll<HTMLElement>(".line")[1];
+    expect(px(getComputedStyle(expanded).paddingInlineEnd)).toBeCloseTo(
+      bleed,
+      1,
+    );
   });
 
   it("reserve every line's end in the fullscreen view", async () => {
