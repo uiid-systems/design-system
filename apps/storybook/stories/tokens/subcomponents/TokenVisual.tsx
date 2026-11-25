@@ -12,15 +12,15 @@ interface TokenVisualProps {
   };
 }
 
+// A token reference: `{group.token}`, with a path a CSS variable name can hold.
+const TOKEN_REFERENCE = /^\{([a-z0-9.-]+)\}$/i;
+
 // Helper to convert token references to CSS variables
 // e.g., "{color.blue}" -> "var(--color-blue)"
 const toCssVariable = (value: string | number): string => {
   const text = String(value);
-  if (text.startsWith("{") && text.endsWith("}")) {
-    const path = text.slice(1, -1).replace(/\./g, "-");
-    return `var(--${path})`;
-  }
-  return text;
+  const reference = TOKEN_REFERENCE.exec(text);
+  return reference ? `var(--${reference[1].replace(/\./g, "-")})` : text;
 };
 
 /*
@@ -61,6 +61,7 @@ export const TokenVisual = ({ token }: TokenVisualProps) => {
     if (name.includes("font") && name.includes("size")) {
       return (
         <Text
+          aria-hidden
           className={styles["font-size"]}
           style={tokenValueStyle(token.value)}
         >
@@ -84,6 +85,7 @@ export const TokenVisual = ({ token }: TokenVisualProps) => {
   if (token.type === "fontWeight") {
     return (
       <Text
+        aria-hidden
         className={styles["font-weight"]}
         style={tokenValueStyle(token.value)}
       >

@@ -8,7 +8,7 @@
   background-color: var(--token-value);
   border-style: solid;
   border-color: var(--globals-border-color);
-  border-radius: 4px;
+  border-radius: var(--globals-border-radius);
 }
 
 .radius {
@@ -20,8 +20,8 @@
 
 .bar {
   background-color: var(--shade-foreground);
-  inline-size: 8px;
-  block-size: 8px;
+  inline-size: calc(2 * var(--spacing-unit));
+  block-size: calc(2 * var(--spacing-unit));
 }
 
 .bar-x {

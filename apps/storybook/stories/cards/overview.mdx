@@ -15,6 +15,6 @@ A container surface with slots for the patterns cards almost always need: a head
 
 - The header renders when at least one of `title`, `description`, or `action` is set. The action sits in the top-right corner, and title and description text wrap beneath it once they clear it.
 - The `footer` slot has no divider by default. Pass `FooterProps={{ separator: true }}` to draw a `Separator` above it.
-- `color` takes a palette hue for the surface (`"neutral"` by default), and `shadow` lifts the card off the page.
+- `color` takes a palette hue for the surface (`"neutral"` by default, except on `shell`, which stays transparent until `color` is set), and `shadow` lifts the card off the page (ignored by `ghost` and `shell`).
 - `variant` changes the surface treatment: `"ghost"` drops the background, border and shadow, and `"shell"` makes the card a page's main content area, full width with page-heading type and no border.
 - Every slot has a matching `*Props` escape hatch (`HeaderProps`, `TitleProps`, `DescriptionProps`, `ActionProps`, `ThumbnailProps`, `FooterProps`, `InnerContainerProps`) for the rare case the slot prop isn't enough.

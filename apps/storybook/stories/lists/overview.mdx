@@ -16,7 +16,7 @@ A single primitive for vertical collections — flat lists, grouped lists, and n
 - `category` and `icon` on `<List>` put a heading above the whole list.
 - `ItemProps` and `GroupProps` on `<List>` set shared defaults for every item and every group's root, nested groups included (e.g., a `className` or `gap`). An entry's own props win.
 - `ListItem` accepts `label`, `description`, and `icon` for the precomposed shape, or `children` to take full control of the item's contents. `ListLabel` and `ListDescription` rebuild that text inside custom `children`.
-- `ListGroup` accepts `category` (header text), `icon`, and `items` — a purely visual grouping with no collapsible behavior; nest groups to build trees. `ListGroupHeader` is its heading row on its own.
+- `ListGroup` accepts `category` (header text), `icon`, and `items` — a purely visual grouping with no collapsible behavior; nest groups to build trees. `ListGroupHeader` is its heading row on its own. It renders a `div`, not an `<li>`, so place it inside a `ListItem`'s children, never directly in a `List`.
 - Items render as `<li>`. For interactive items, keep the `<li>` and put the link or button inside it, as in `<ListItem><a href="/docs">Docs</a></ListItem>`. A `<ul>` or `<ol>` may only hold `<li>` children, so don't pass `render={<a />}` to a row of a plain `List`.
 
 Forms `Select`, `Combobox`, and `Autocomplete` compose `ListItem` for their dropdown rows via the Base UI render system — the `data-highlighted` and `data-selected` attributes flow through automatically.
