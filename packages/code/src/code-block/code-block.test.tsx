@@ -793,6 +793,28 @@ describe("CodeBlock", () => {
     expect(copy).toHaveAttribute("data-copied", "true");
   });
 
+  it("shares wrap between the inline block and the fullscreen view", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="const x = 1;" wrappable fullscreenable />);
+    const inline = document.querySelector('[data-slot="code-block-content"]');
+
+    await user.click(screen.getByRole("button", { name: /toggle line wrap/i }));
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
+    const dialog = await screen.findByRole("dialog");
+    const content = dialog.querySelector('[data-slot="code-block-content"]');
+    expect(content).toHaveAttribute("data-wrap", "true");
+
+    await user.click(
+      within(dialog).getByRole("button", { name: /toggle line wrap/i }),
+    );
+    await waitFor(() => expect(content).not.toHaveAttribute("data-wrap"));
+    await user.keyboard("{Escape}");
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+    expect(inline).not.toHaveAttribute("data-wrap");
+  });
+
   it("closes only the fullscreen dialog on Escape inside another dialog", async () => {
     const user = userEvent.setup();
     render(
