@@ -1,7 +1,7 @@
 "use client";
 
 import { Input as BaseInput } from "@base-ui/react/input";
-import { cx, useComposedRefs } from "@uiid/utils";
+import { cx, prepareComponentProps, useComposedRefs } from "@uiid/utils";
 import { useLayoutEffect, useRef } from "react";
 
 import { useFieldRequired } from "../../field/field-required-context";
@@ -21,7 +21,7 @@ import type { InputControlProps } from "../input.types";
  */
 export const InputControl = ({
   size,
-  fullwidth,
+  w,
   variant,
   color,
   inner,
@@ -50,17 +50,24 @@ export const InputControl = ({
     return mask.attach(element);
   }, [mask]);
 
+  /* Inside a wrapper the wrapper takes the width and the input fills it, so
+     `w` only reaches a bare input. */
+  const preparedProps = prepareComponentProps({
+    componentName: "input",
+    styleProps: ["w"],
+    props: { ...props, w: inner ? undefined : w },
+  });
+
   return (
     <BaseInput
-      data-slot="input"
       ref={composedRef}
       inputMode={inputMode ?? mask?.inputMode}
       required={required ?? fieldRequired}
       className={cx(
-        inputControlClassName({ inner, size, fullwidth, variant, color }),
+        inputControlClassName({ inner, size, variant, color }),
         className,
       )}
-      {...props}
+      {...preparedProps}
     />
   );
 };

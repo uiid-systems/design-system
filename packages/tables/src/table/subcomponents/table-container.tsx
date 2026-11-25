@@ -35,7 +35,7 @@ export const TableContainer = ({
       data-slot="table-container"
       className={cx(styles["table-container"], className)}
       p={0}
-      fullwidth
+      w="full"
       {...scrollState}
       {...props}
       /* The inner container scrolls rather than the Card, so the Card can

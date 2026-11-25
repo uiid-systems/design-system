@@ -14,6 +14,11 @@ describe("ToggleButton", () => {
     expect(button).toHaveAttribute("data-slot", "button");
   });
 
+  it("hands w to the Button it renders", () => {
+    render(<ToggleButton w="full">Toggle</ToggleButton>);
+    expect(screen.getByRole("button")).toHaveAttribute("data-ui-w", "full");
+  });
+
   it("toggles aria-pressed on click and on Enter/Space", async () => {
     const user = userEvent.setup();
     render(<ToggleButton>Toggle</ToggleButton>);

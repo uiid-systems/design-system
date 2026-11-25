@@ -1,7 +1,7 @@
 "use client";
 
 import { Autocomplete as BaseAutocomplete } from "@base-ui/react/autocomplete";
-import { cx, definedProps } from "@uiid/utils";
+import { cx, definedProps, prepareComponentProps } from "@uiid/utils";
 
 import { Field } from "../../field/field";
 import { inputControlClassName } from "../../input/input.styles";
@@ -22,7 +22,7 @@ export const AutocompleteInput = ({
   after,
   size,
   variant,
-  fullwidth = true,
+  w = "full",
   color,
   disabled,
   required,
@@ -36,11 +36,11 @@ export const AutocompleteInput = ({
   return (
     /*
      * `FieldProps` spreads first and the part's own values after, so they win
-     * and an unset one leaves the slot's alone. `fullwidth` is a default the
-     * slot may still change, as `w` is on Input.
+     * and an unset one leaves the slot's alone. `w` is a default the slot may
+     * still change on the field root, as on Input.
      */
     <Field
-      fullwidth={fullwidth}
+      w={w}
       {...FieldProps}
       {...definedProps({
         name,
@@ -60,7 +60,7 @@ export const AutocompleteInput = ({
        */}
       <AutocompleteInputGroup
         {...InputGroupProps}
-        {...definedProps({ size, fullwidth })}
+        {...definedProps({ size, w })}
       >
         {/*
          * The hue goes to whichever element wears the surface. Autocomplete
@@ -73,7 +73,7 @@ export const AutocompleteInput = ({
           after={after}
           size={size}
           variant={variant}
-          fullwidth={fullwidth}
+          w={w}
           color={color}
           disabled={disabled}
         >
@@ -84,13 +84,11 @@ export const AutocompleteInput = ({
            * to decide whether the input carries the name for submission.
            */}
           <BaseAutocomplete.Input
-            data-slot="autocomplete-input"
             render={<input />}
             className={cx(
               inputControlClassName({
                 inner: hasSlots,
                 size,
-                fullwidth,
                 variant,
                 color,
               }),
@@ -101,7 +99,12 @@ export const AutocompleteInput = ({
             required={required}
             onFocus={onFocus}
             onBlur={onBlur}
-            {...props}
+            {...prepareComponentProps({
+              componentName: "autocomplete-input",
+              styleProps: ["w"],
+              // With a slot the wrapper takes the width and the input fills it.
+              props: { ...props, w: hasSlots ? undefined : w },
+            })}
           />
         </InputWrapper>
       </AutocompleteInputGroup>

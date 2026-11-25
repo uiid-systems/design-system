@@ -163,7 +163,7 @@ describe("Reasoning", () => {
     expect(getPanel()!.querySelector("strong")).toHaveTextContent("bold");
     // Full width under a start-aligned root, so long lines wrap or scroll
     // inside the panel instead of widening it.
-    expect(getPanel()).toHaveAttribute("data-ui-fullwidth");
+    expect(getPanel()).toHaveAttribute("data-ui-w", "full");
   });
 
   it("forwards streaming to Markdown", () => {

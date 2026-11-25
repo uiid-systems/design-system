@@ -14,7 +14,7 @@ export const Input = ({
   required,
   name,
   size,
-  fullwidth,
+  w,
   variant,
   color,
   disabled,
@@ -27,12 +27,13 @@ export const Input = ({
 }: InputProps) => {
   /* With a slot, the wrapper paints the surface and takes the props that shape
      it; the input fills the wrapper. Without one, the wrapper renders as
-     `display: contents` and the input paints its own surface. */
+     `display: contents` and the input paints its own surface.
+     `w` sizes the field root and whichever of the two wears the surface. */
   const inner = hasInputSlots({ before, after });
 
   return (
     <Field
-      w={fullwidth ? "full" : undefined}
+      w={w}
       {...FieldProps}
       {...definedProps({
         name,
@@ -48,7 +49,7 @@ export const Input = ({
         before={before}
         after={after}
         size={size}
-        fullwidth={fullwidth}
+        w={w}
         variant={variant}
         color={color}
         disabled={disabled}
@@ -59,7 +60,7 @@ export const Input = ({
           disabled={disabled}
           inner={inner}
           size={size}
-          fullwidth={fullwidth}
+          w={w}
           variant={variant}
           color={color}
           className={className}

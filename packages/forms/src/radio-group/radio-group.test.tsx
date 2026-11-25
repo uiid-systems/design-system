@@ -306,7 +306,7 @@ describe("RadioGroup size", () => {
   });
 });
 
-describe("RadioGroup fullwidth", () => {
+describe("RadioGroup w", () => {
   const items = [
     { value: "a", label: "Option A" },
     { value: "b", label: "Option B" },
@@ -319,48 +319,58 @@ describe("RadioGroup fullwidth", () => {
     "stretches a %s group across its container",
     (orientation) => {
       const { container } = render(
-        <RadioGroup items={items} orientation={orientation} fullwidth />,
+        <RadioGroup items={items} orientation={orientation} w="full" />,
       );
 
-      expect(root(container)).toHaveAttribute("data-ui-fullwidth");
+      expect(root(container)).toHaveAttribute("data-ui-w", "full");
     },
   );
 
   it("shares a horizontal group's width evenly between its rows", () => {
     const { container } = render(
-      <RadioGroup items={items} orientation="horizontal" fullwidth />,
+      <RadioGroup items={items} orientation="horizontal" w="full" />,
     );
 
     expect(root(container)?.className).toMatch(/field-rows-evenly/);
   });
 
+  it("keeps a horizontal group's rows at their own width at a set w", () => {
+    const { container } = render(
+      <RadioGroup items={items} orientation="horizontal" w={300} />,
+    );
+
+    expect(root(container)).toHaveAttribute("data-ui-w", "300");
+    expect(root(container)?.className).not.toMatch(/field-rows-evenly/);
+  });
+
   it("stretches each row of a vertical group across it", () => {
-    const { container } = render(<RadioGroup items={items} fullwidth />);
+    const { container } = render(<RadioGroup items={items} w="full" />);
 
     expect(root(container)).toHaveStyle({ alignItems: "stretch" });
     expect(root(container)).not.toHaveAttribute("data-ui-ay");
   });
 
   /*
-   * A labelled field is an `inline-flex` Stack, so without its own `fullwidth`
+   * A labelled field is an `inline-flex` Stack, so without its own `w`
    * the stretched group inside it could only fill the width of the label.
    */
   it("stretches the field around a labelled group", () => {
     const { container } = render(
-      <RadioGroup items={items} label="Pick one" fullwidth />,
+      <RadioGroup items={items} label="Pick one" w="full" />,
     );
 
     expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
-      "data-ui-fullwidth",
+      "data-ui-w",
+      "full",
     );
   });
 
-  it("leaves the group sized by its rows without fullwidth", () => {
+  it("leaves the group sized by its rows without w", () => {
     const { container } = render(
       <RadioGroup items={items} orientation="horizontal" />,
     );
 
-    expect(root(container)).not.toHaveAttribute("data-ui-fullwidth");
+    expect(root(container)).not.toHaveAttribute("data-ui-w");
     expect(root(container)?.className).not.toMatch(/field-rows-evenly/);
   });
 });
@@ -412,11 +422,11 @@ describe("RadioGroup layout props", () => {
 describe("RadioGroup FieldProps", () => {
   it("reaches the field around it", () => {
     const { container } = render(
-      <RadioGroup FieldProps={{ className: "outer", w: "full" }} />,
+      <RadioGroup FieldProps={{ className: "outer", mt: 2 }} />,
     );
     const field = container.querySelector("[data-slot='field-root']");
     expect(field).toHaveClass("outer");
-    expect(field).toHaveAttribute("data-ui-w", "full");
+    expect(field).toHaveAttribute("data-ui-mt", "2");
   });
 
   /* The cast stands in for untyped code, which the slot type cannot stop. */
@@ -460,8 +470,8 @@ describe("RadioGroup FieldProps", () => {
     );
     void (
       <RadioGroup
-        // @ts-expect-error -- `fullwidth` is set on RadioGroup itself
-        FieldProps={{ fullwidth: true }}
+        // @ts-expect-error -- `w` is set on RadioGroup itself
+        FieldProps={{ w: "full" }}
       />
     );
     void (

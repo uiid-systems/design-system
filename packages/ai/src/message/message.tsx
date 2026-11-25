@@ -26,7 +26,7 @@ export const Message = ({
     ? "auto"
     : undefined,
   gap = 2,
-  fullwidth = true,
+  w = "full",
   maxw,
   className,
   ...props
@@ -41,7 +41,7 @@ export const Message = ({
     mx={mx}
     ml={ml}
     gap={gap}
-    fullwidth={fullwidth}
+    w={w}
     maxw={maxw}
     className={cx(
       styles["message"],

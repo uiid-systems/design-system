@@ -7,7 +7,7 @@ import type { CheckboxGroupRootProps } from "../checkbox-group.types";
 
 export const CheckboxGroupRoot = ({
   orientation = "vertical",
-  fullwidth,
+  w,
   gap = 2,
   children,
   ...props
@@ -15,7 +15,7 @@ export const CheckboxGroupRoot = ({
   return (
     <BaseCheckboxGroup
       data-slot="checkbox-group-root"
-      render={fieldRowsRender({ orientation, fullwidth, gap })}
+      render={fieldRowsRender({ orientation, w, gap })}
       {...props}
     >
       {children}

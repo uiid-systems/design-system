@@ -64,7 +64,6 @@ describe("Combobox", () => {
     expect(screen.getByRole("listbox")).toBeInTheDocument();
   });
 
-  // The popup list and its rows fill with `w`, not the deprecated `fullwidth`.
   it("fills the list and its rows with w", async () => {
     const user = userEvent.setup();
     render(<Combobox items={defaultItems} />);
@@ -74,10 +73,8 @@ describe("Combobox", () => {
 
     const list = screen.getByRole("listbox");
     expect(list).toHaveAttribute("data-ui-w", "full");
-    expect(list).not.toHaveAttribute("data-ui-fullwidth");
     const row = screen.getByRole("option", { name: /apple/i });
     expect(row).toHaveAttribute("data-ui-w", "full");
-    expect(row).not.toHaveAttribute("data-ui-fullwidth");
   });
 
   it("displays all items when opened", async () => {
@@ -332,7 +329,7 @@ describe("Combobox size variant", () => {
     expect(group).not.toContainElement(screen.getByText("Pick one"));
   });
 
-  /* The group stands where the `fullwidth` wrapper stood, so in a flex row
+  /* The group stands where the full-width wrapper stood, so in a flex row
      like `ComboboxChips` it must still span the row, or the input and the
      popup shrink to the input's intrinsic width. */
   it("spans the row it sits in", () => {
@@ -458,14 +455,14 @@ describe("Combobox size variant", () => {
   it("rejects InputGroupProps the input owns", () => {
     // @ts-expect-error -- `size` is set on Combobox itself
     void (<Combobox InputGroupProps={{ size: "small" }} />);
-    // @ts-expect-error -- `fullwidth` is set on Combobox itself
-    void (<Combobox InputGroupProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- `w` is set on Combobox itself
+    void (<Combobox InputGroupProps={{ w: null }} />);
     // @ts-expect-error -- the input part renders the group's row itself
     void (<Combobox InputGroupProps={{ children: "Other" }} />);
     // @ts-expect-error -- `size` is set on ComboboxInput itself
     void (<ComboboxInput InputGroupProps={{ size: "small" }} />);
-    // @ts-expect-error -- `fullwidth` is set on ComboboxInput itself
-    void (<ComboboxInput InputGroupProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- `w` is set on ComboboxInput itself
+    void (<ComboboxInput InputGroupProps={{ w: null }} />);
     // @ts-expect-error -- ComboboxInput renders the group's row itself
     void (<ComboboxInput InputGroupProps={{ children: "Other" }} />);
   });
@@ -1279,9 +1276,9 @@ describe("Combobox generics", () => {
   });
 });
 
-/* Matches Select: `variant` and `fullwidth` shape the control surface. The
+/* Matches Select: `variant` and `w` shape the control surface. The
    control spans its row unless told otherwise, as it always has. */
-describe("Combobox variant and fullwidth", () => {
+describe("Combobox variant and w", () => {
   const items = ["apple", "banana", "cherry"];
   const field = () =>
     screen.getByRole("combobox").closest("[data-slot='field-root']");
@@ -1291,19 +1288,17 @@ describe("Combobox variant and fullwidth", () => {
 
   it("spans its row by default", () => {
     render(<Combobox items={items} after="kg" />);
-    expect(field()).toHaveAttribute("data-ui-fullwidth");
+    expect(field()).toHaveAttribute("data-ui-w", "full");
     expect(group()).toHaveAttribute("data-ui-w", "full");
-    expect(wrapper()).toHaveClass(inputStyles["toggle-fullwidth"]);
+    expect(wrapper()).toHaveAttribute("data-ui-w", "full");
   });
 
-  it("sizes to its content with fullwidth={false}", () => {
-    render(<Combobox items={items} after="kg" fullwidth={false} />);
-    expect(field()).not.toHaveAttribute("data-ui-fullwidth");
+  it("sizes to its content with w={null}", () => {
+    render(<Combobox items={items} after="kg" w={null} />);
+    expect(field()).not.toHaveAttribute("data-ui-w");
     expect(group()).not.toHaveAttribute("data-ui-w");
-    expect(wrapper()).not.toHaveClass(inputStyles["toggle-fullwidth"]);
-    expect(screen.getByRole("combobox")).not.toHaveClass(
-      inputStyles["toggle-fullwidth"],
-    );
+    expect(wrapper()).not.toHaveAttribute("data-ui-w");
+    expect(screen.getByRole("combobox")).not.toHaveAttribute("data-ui-w");
   });
 
   it("paints the ghost variant on the slotted wrapper", () => {
@@ -1311,15 +1306,25 @@ describe("Combobox variant and fullwidth", () => {
     expect(wrapper()).toHaveClass(inputStyles["variant-ghost"]);
   });
 
+  it("fills a bare input part itself by default", () => {
+    render(
+      <ComboboxRoot items={items}>
+        <ComboboxInput />
+      </ComboboxRoot>,
+    );
+    expect(screen.getByRole("combobox")).toHaveAttribute("data-ui-w", "full");
+    expect(wrapper()).not.toHaveAttribute("data-ui-w");
+  });
+
   it("paints the ghost variant on a bare input part", () => {
     render(
       <ComboboxRoot items={items}>
-        <ComboboxInput variant="ghost" fullwidth={false} />
+        <ComboboxInput variant="ghost" w={null} />
       </ComboboxRoot>,
     );
     const input = screen.getByRole("combobox");
     expect(input).toHaveClass(inputStyles["variant-ghost"]);
-    expect(input).not.toHaveClass(inputStyles["toggle-fullwidth"]);
+    expect(input).not.toHaveAttribute("data-ui-w");
   });
 });
 
@@ -1471,8 +1476,8 @@ describe("Combobox InputProps", () => {
     void (<Combobox InputProps={{ size: "small" }} />);
     // @ts-expect-error -- `variant` is set on Combobox itself
     void (<Combobox InputProps={{ variant: "ghost" }} />);
-    // @ts-expect-error -- `fullwidth` is set on Combobox itself
-    void (<Combobox InputProps={{ fullwidth: false }} />);
+    // @ts-expect-error -- `w` is set on Combobox itself
+    void (<Combobox InputProps={{ w: null }} />);
     // @ts-expect-error -- `color` is set on Combobox itself
     void (<Combobox InputProps={{ color: "blue" }} />);
     // @ts-expect-error -- `disabled` is set on Combobox itself

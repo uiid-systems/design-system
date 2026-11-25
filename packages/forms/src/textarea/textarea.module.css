@@ -81,11 +81,6 @@
   resize: both;
 }
 
-/* Toggle variants */
-.toggle-fullwidth {
-  composes: composes-fullwidth from global;
-}
-
 .variant-ghost {
   composes: composes-field-surface-ghost from global;
 }

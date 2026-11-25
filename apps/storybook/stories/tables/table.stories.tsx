@@ -19,7 +19,7 @@ export const Default = {
   name: "Table",
   tags: ["new"],
   render: () => (
-    <Stack gap={4} fullwidth>
+    <Stack gap={4} w="full">
       <Table<TableMockData>
         selectable
         items={TABLE_MOCK_DATA}
@@ -41,7 +41,7 @@ export const Sizes = {
   name: "Sizes",
   tags: ["new"],
   render: () => (
-    <Stack gap={8} fullwidth>
+    <Stack gap={8} w="full">
       {(["xsmall", "small", "medium", "large"] as const).map((size) => (
         <Table<TableMockData>
           key={size}
@@ -60,7 +60,7 @@ export const StickyHeader = {
   name: "Sticky Header",
   tags: ["new"],
   render: () => (
-    <Stack gap={4} fullwidth>
+    <Stack gap={4} w="full">
       <Table<TableMockData>
         stickyHeader
         maxHeight={220}
@@ -78,7 +78,7 @@ export const StickyHeaderFooter = {
   name: "Sticky Header + Footer",
   tags: ["new"],
   render: () => (
-    <Stack gap={4} fullwidth>
+    <Stack gap={4} w="full">
       <Table<TableMockData>
         stickyHeader
         stickyFooter
@@ -100,7 +100,7 @@ export const Narrow = {
   name: "Narrow Column",
   tags: ["new"],
   render: () => (
-    <Stack gap={4} maxw={320} fullwidth>
+    <Stack gap={4} maxw={320} w="full">
       <Table<TableMockData>
         items={TABLE_MOCK_DATA}
         columns={["name", "balance"]}
@@ -117,7 +117,7 @@ export const HorizontalScroll = {
   name: "Horizontal Scroll",
   tags: ["new"],
   render: () => (
-    <Stack gap={4} maxw={560} fullwidth>
+    <Stack gap={4} maxw={560} w="full">
       <Table<TableMockData>
         minw={768}
         items={TABLE_MOCK_DATA}
@@ -133,7 +133,7 @@ export const HorizontalAndVerticalScroll = {
   name: "Horizontal + Vertical Scroll",
   tags: ["new"],
   render: () => (
-    <Stack gap={4} maxw={560} fullwidth>
+    <Stack gap={4} maxw={560} w="full">
       <Table<TableMockData>
         minw={768}
         stickyHeader
@@ -172,7 +172,7 @@ export const CellValues = {
   name: "Cell Values",
   tags: ["new"],
   render: () => (
-    <Stack gap={8} fullwidth>
+    <Stack gap={8} w="full">
       <Table items={CELL_VALUES_DATA} bordered footer="Default" />
       <Table
         items={CELL_VALUES_DATA}

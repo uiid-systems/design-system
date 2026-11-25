@@ -13,7 +13,6 @@ import styles from "../slider.module.css";
 
 export const SliderRoot = ({
   variant,
-  fullwidth,
   size,
   color,
   gap = 2,
@@ -37,7 +36,7 @@ export const SliderRoot = ({
       className={cx(
         inputStyles["input"],
         inputStyles["input-edge"],
-        sliderVariants({ variant, fullwidth, size }),
+        sliderVariants({ variant, size }),
         colorClassName,
         className,
       )}

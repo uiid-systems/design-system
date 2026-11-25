@@ -75,5 +75,5 @@ export type FieldProps = React.PropsWithChildren &
     ActionProps?: FieldActionProps;
     DescriptionProps?: FieldDescriptionProps;
   } & Pick<FieldLabelProps, "required"> &
-  Pick<FieldRootProps, "fullwidth" | "w"> &
+  Pick<FieldRootProps, "w"> &
   SpacingProps;

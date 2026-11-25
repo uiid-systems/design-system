@@ -60,7 +60,7 @@ export const InputWrapper = ({
   after,
   orientation = INPUT_DEFAULT_ORIENTATION,
   size,
-  fullwidth,
+  w,
   variant,
   color,
   disabled,
@@ -68,12 +68,14 @@ export const InputWrapper = ({
   children,
 }: InputWrapperProps) => {
   const slotted = hasInputSlots({ before, after });
+  // A bare wrapper is `display: contents`, so the control takes the width.
+  const width = slotted ? w : undefined;
 
   const wrapperClassName = slotted
     ? cx(
         styles["input-wrapper"],
         styles["input-edge"],
-        inputWrapperVariants({ size, fullwidth, variant }),
+        inputWrapperVariants({ size, variant }),
         inputColorClassName(color),
         className,
       )
@@ -110,6 +112,7 @@ export const InputWrapper = ({
     <Stack
       data-slot="input-wrapper"
       data-orientation={slotted ? "vertical" : undefined}
+      w={width}
       onMouseDown={slotted ? focusControl : undefined}
       className={wrapperClassName}
     >
@@ -120,6 +123,7 @@ export const InputWrapper = ({
       data-slot="input-wrapper"
       data-orientation={slotted ? "horizontal" : undefined}
       ay="center"
+      w={width}
       onMouseDown={slotted ? focusControl : undefined}
       className={wrapperClassName}
     >

@@ -87,7 +87,7 @@ export const PromptInput = ({
         placeholder="Ask anything"
         rows={1}
         resize="none"
-        fullwidth
+        w="full"
         label={label}
         disabled={disabled}
         value={isControlled ? value : draft}
@@ -96,7 +96,7 @@ export const PromptInput = ({
         onKeyDown={handleKeyDown}
         before={
           header && (
-            <Group data-slot="prompt-input-header" gap={1} wrap fullwidth>
+            <Group data-slot="prompt-input-header" gap={1} wrap w="full">
               {header}
             </Group>
           )
@@ -107,7 +107,7 @@ export const PromptInput = ({
             ax="space-between"
             ay="center"
             gap={2}
-            fullwidth
+            w="full"
           >
             <Group data-slot="prompt-input-tools" gap={1} wrap>
               {tools}

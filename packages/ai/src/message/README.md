@@ -42,7 +42,7 @@ All `Stack` props, plus:
 | ------ | ----------------------------------- | ------- | --------------------------------------------------- |
 | `from` | `"user" \| "assistant" \| "system"` | —       | Who sent the turn. Drives alignment and the surface |
 
-Defaults: `gap={2}`, `fullwidth`, and for a user turn `ax="end"` and `ml="auto"` (unless you pass `m` or `mx`), otherwise `ax="start"`, so what follows the content lines up with it. Since alignment and the bubble only show the author visually, the root is `role="group"` with `aria-label` set to `` `Message from ${from}` ``; pass either to replace it, such as a product name for the assistant. Renders `data-slot="message"` and `data-from` set to `from`, for styling either kind of turn.
+Defaults: `gap={2}`, `w="full"`, and for a user turn `ax="end"` and `ml="auto"` (unless you pass `m` or `mx`), otherwise `ax="start"`, so what follows the content lines up with it. Since alignment and the bubble only show the author visually, the root is `role="group"` with `aria-label` set to `` `Message from ${from}` ``; pass either to replace it, such as a product name for the assistant. Renders `data-slot="message"` and `data-from` set to `from`, for styling either kind of turn.
 
 ### MessageContent
 
@@ -79,7 +79,7 @@ import { Group } from "@uiid/layout";
 </Message>;
 ```
 
-A toolbar with metadata on the other side is the same `Group` with `ax="space-between"` and `fullwidth`.
+A toolbar with metadata on the other side is the same `Group` with `ax="space-between"` and `w="full"`.
 
 ## Notes
 

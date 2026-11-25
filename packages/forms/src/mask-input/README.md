@@ -8,7 +8,7 @@ import { MaskInput, phoneMask } from "@uiid/design-system";
 <MaskInput mask={phoneMask} label="Phone number" />;
 ```
 
-MaskInput is [`Input`](../input/README.md) with a required `mask`, and adds nothing else. `<MaskInput mask={phoneMask} />` and `<Input mask={phoneMask} />` are the same thing; MaskInput exists so a masked field reads as one at a glance. Every other prop is Input's: `label`, `description`, `before`/`after` slots, `size`, `variant`, `fullwidth`, the palette `color` tint, `FieldProps`, and the `required`/`disabled`/`readOnly` states.
+MaskInput is [`Input`](../input/README.md) with a required `mask`, and adds nothing else. `<MaskInput mask={phoneMask} />` and `<Input mask={phoneMask} />` are the same thing; MaskInput exists so a masked field reads as one at a glance. Every other prop is Input's: `label`, `description`, `before`/`after` slots, `size`, `variant`, `w`, the palette `color` tint, `FieldProps`, and the `required`/`disabled`/`readOnly` states.
 
 Use MaskInput when you want to:
 

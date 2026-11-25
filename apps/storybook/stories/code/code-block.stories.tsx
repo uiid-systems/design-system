@@ -178,7 +178,7 @@ export const Languages: Story = {
     code: sampleTypeScript,
   },
   render: () => (
-    <Stack gap={4} fullwidth>
+    <Stack gap={4} w="full">
       <CodeBlock
         code={sampleTypeScript}
         language="typescript"

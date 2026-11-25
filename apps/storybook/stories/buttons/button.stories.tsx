@@ -18,7 +18,6 @@ const meta = {
     tooltip: { control: "text", table: { category: "Content" } },
     disabled: { control: "boolean", table: { category: "Toggles" } },
     loading: { control: "boolean", table: { category: "Toggles" } },
-    fullwidth: { control: "boolean", table: { category: "Toggles" } },
     size: {
       control: "select",
       options: ["xsmall", "small", "medium", "large"],

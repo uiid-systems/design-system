@@ -185,7 +185,7 @@ export const Bare = () => (
 /* One label over several controls that each keep their own name. */
 export const Grouped = () => (
   <Field label="Full name" description="As it appears on your ID.">
-    <Group gap={2} evenly fullwidth>
+    <Group gap={2} evenly w="full">
       <Input name="first-name" placeholder="First" />
       <Input name="last-name" placeholder="Last" />
     </Group>

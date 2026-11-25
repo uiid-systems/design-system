@@ -3,7 +3,7 @@
 import { Button as BaseButton } from "@base-ui/react/button";
 import { ConditionalRender, Layer } from "@uiid/layout";
 import { paletteClassName } from "@uiid/tokens";
-import { cx } from "@uiid/utils";
+import { cx, prepareComponentProps } from "@uiid/utils";
 
 import {
   BUTTON_DEFAULT_SIZE,
@@ -43,7 +43,7 @@ const DISABLED_BUTTON_PROPS = {
 export const Button = ({
   tooltip,
   shape,
-  fullwidth,
+  w,
   variant,
   color,
   loading,
@@ -94,11 +94,18 @@ export const Button = ({
       shape,
       size,
       variant,
-      fullwidth,
     }),
     colorClassName,
     className,
   );
+
+  // `w` reaches the button itself through the style-prop pipeline, so it writes
+  // `data-ui-w`; with a `tooltip` it sizes the button within the wrapper.
+  const preparedProps = prepareComponentProps({
+    componentName: "button",
+    styleProps: ["w"],
+    props: { ...props, w },
+  });
 
   const content = (
     <Layer ay="center" ax="center">
@@ -125,7 +132,7 @@ export const Button = ({
         <ButtonLink
           className={buttonClassName}
           focusableWhenDisabled={focusableWhenDisabled}
-          {...props}
+          {...preparedProps}
           {...tooltipName}
           {...tooltipDescription}
         >
@@ -136,7 +143,7 @@ export const Button = ({
           focusableWhenDisabled={focusableWhenDisabled}
           data-slot="button"
           className={buttonClassName}
-          {...props}
+          {...preparedProps}
           nativeButton={
             props.nativeButton ??
             (!props.render || isNativeButtonRender(props.render))

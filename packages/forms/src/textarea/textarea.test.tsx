@@ -401,9 +401,9 @@ describe("Textarea shared compositions", () => {
     expect(className()).toMatch(/composes-field-surface-ghost/);
   });
 
-  it("composes the shared fullwidth", () => {
-    render(<Textarea fullwidth />);
-    expect(className()).toMatch(/composes-fullwidth/);
+  it('fills with w="full" on the textarea, not a class', () => {
+    render(<Textarea w="full" />);
+    expect(screen.getByRole("textbox")).toHaveAttribute("data-ui-w", "full");
   });
 });
 
@@ -477,20 +477,20 @@ describe("Textarea before/after slots", () => {
     expect(slots).toEqual(["input-before", "textarea", "input-after"]);
   });
 
-  it("moves variant, fullwidth and color to the wrapper", () => {
+  it("moves variant, w and color to the wrapper", () => {
     const { container } = render(
-      <Textarea before="top" variant="ghost" fullwidth color="blue" />,
+      <Textarea before="top" variant="ghost" w="full" color="blue" />,
     );
     const surface = wrapper(container);
     const textarea = screen.getByRole("textbox");
 
     expect(surface?.className).toMatch(/composes-field-surface-ghost/);
-    expect(surface?.className).toMatch(/composes-fullwidth/);
+    expect(surface).toHaveAttribute("data-ui-w", "full");
     expect(surface).toHaveClass("palette-blue");
     expect(surface?.className).toMatch(/composes-field-surface-color/);
 
     expect(textarea.className).not.toMatch(/composes-field-surface-ghost/);
-    expect(textarea.className).not.toMatch(/composes-fullwidth/);
+    expect(textarea).not.toHaveAttribute("data-ui-w");
     expect(textarea).not.toHaveClass("palette-blue");
     expect(textarea.className).not.toMatch(/composes-field-surface-color/);
   });
@@ -643,9 +643,9 @@ describe("Textarea before/after slots", () => {
 });
 
 /* Field reads `disabled` off its root, not the control, so the label and
-   description only dim when Textarea hands it up. `fullwidth` reaches the
-   root as `w="full"` so the field stretches with the control it holds. */
-describe("Textarea hands disabled and fullwidth to Field", () => {
+   description only dim when Textarea hands it up. `w` reaches the root as
+   well as the control, so the field stretches with the control it holds. */
+describe("Textarea hands disabled and w to Field", () => {
   it("dims the label and description with a disabled textarea", () => {
     render(<Textarea label="Notes" description="Optional" disabled />);
     expect(screen.getByText("Notes")).toHaveAttribute("data-disabled");
@@ -658,15 +658,15 @@ describe("Textarea hands disabled and fullwidth to Field", () => {
     expect(screen.getByText("Optional")).not.toHaveAttribute("data-disabled");
   });
 
-  it("stretches the field root with fullwidth", () => {
-    const { container } = render(<Textarea fullwidth />);
+  it('stretches the field root with w="full"', () => {
+    const { container } = render(<Textarea w="full" />);
     expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
       "data-ui-w",
       "full",
     );
   });
 
-  it("leaves the field root at its own width without fullwidth", () => {
+  it("leaves the field root at its own width without w", () => {
     const { container } = render(<Textarea />);
     expect(
       container.querySelector("[data-slot='field-root']"),
@@ -868,10 +868,8 @@ describe("Textarea FieldProps", () => {
     expect(field).toHaveAttribute("data-ui-w", "full");
   });
 
-  it("lets a FieldProps w beat the width fullwidth sets", () => {
-    const { container } = render(
-      <Textarea fullwidth FieldProps={{ w: 320 }} />,
-    );
+  it("lets a FieldProps w beat the top-level w on the field root", () => {
+    const { container } = render(<Textarea w="full" FieldProps={{ w: 320 }} />);
     expect(container.querySelector("[data-slot='field-root']")).toHaveAttribute(
       "data-ui-w",
       "320",

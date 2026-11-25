@@ -8,7 +8,7 @@ import type { FieldSlotProps } from "../shared/field-slot.types";
 import type { FormItemProps } from "../types";
 
 /**
- * The root lays its rows out from `orientation` and `fullwidth`, so it takes
+ * The root lays its rows out from `orientation` and `w`, so it takes
  * no alignment axes of its own.
  */
 type RadioGroupLayoutProps = Omit<StackProps, "ax" | "ay">;
@@ -18,8 +18,6 @@ export type RadioGroupRootProps = WithLayoutProps<
   RadioGroupLayoutProps
 > & {
   orientation?: "horizontal" | "vertical";
-  /** Stretch to fill the container width, sharing it evenly between the rows */
-  fullwidth?: boolean;
 };
 
 export type RadioGroupProps = WithLayoutProps<
@@ -55,8 +53,6 @@ export type RadioGroupProps = WithLayoutProps<
   /** Reaches every radio's indicator, as the Radio slot of the same name. */
   IndicatorProps?: RadioProps["IndicatorProps"];
   /** Reaches the Field around the group. The keys RadioGroup hands to Field itself are left out. */
-  FieldProps?: FieldSlotProps<
-    "name" | "required" | "disabled" | "fullwidth" | "size"
-  >;
+  FieldProps?: FieldSlotProps<"name" | "required" | "disabled" | "w" | "size">;
 } & Pick<RadioProps, "size" | "bordered" | "reversed" | "color"> &
   Pick<FieldProps, "label" | "description" | "action">;

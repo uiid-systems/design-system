@@ -143,7 +143,7 @@ function DisabledDemo() {
 export const Default: Story = {
   name: "Resizable",
   render: () => (
-    <Stack gap={8} fullwidth>
+    <Stack gap={8} w="full">
       <Stack gap={2}>
         <Text size={1} weight="bold">
           Horizontal
@@ -199,7 +199,7 @@ export const Default: Story = {
 
 export const Disabled: Story = {
   render: () => (
-    <Stack gap={2} fullwidth>
+    <Stack gap={2} w="full">
       <Text size={1} weight="bold">
         Disabled handle
       </Text>

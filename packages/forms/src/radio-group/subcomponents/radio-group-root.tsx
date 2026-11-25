@@ -7,7 +7,7 @@ import type { RadioGroupRootProps } from "../radio-group.types";
 
 export const RadioGroupRoot = ({
   orientation = "vertical",
-  fullwidth,
+  w,
   gap = 2,
   children,
   ...props
@@ -15,7 +15,7 @@ export const RadioGroupRoot = ({
   return (
     <BaseRadioGroup
       data-slot="radio-group-root"
-      render={fieldRowsRender({ orientation, fullwidth, gap })}
+      render={fieldRowsRender({ orientation, w, gap })}
       {...props}
     >
       {children}

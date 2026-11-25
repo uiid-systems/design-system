@@ -4,7 +4,6 @@ import type { BoxProps } from "@uiid/design-system";
 export const EXAMPLE_LAYOUT_GAP: BoxProps["gap"] = 2;
 
 export const toggleControls: ArgTypes = {
-  fullwidth: { control: "boolean", table: { category: "Toggles" } },
   grow: { control: "boolean", table: { category: "Toggles" } },
   evenly: { control: "boolean", table: { category: "Toggles" } },
   wrap: { control: "boolean", table: { category: "Toggles" } },

@@ -14,7 +14,7 @@ export const RadioGroup = ({
   action,
   name,
   orientation = "vertical",
-  fullwidth,
+  w,
   size,
   bordered,
   reversed,
@@ -30,7 +30,7 @@ export const RadioGroup = ({
 }: RadioGroupProps) => {
   return (
     /*
-     * `fullwidth` lands on the field as well as the group. A labelled field is
+     * `w` lands on the field as well as the group. A labelled field is
      * an `inline-flex` Stack that shrink-wraps its content, so a stretched group
      * inside it would only ever fill the width of its own label.
      */
@@ -43,14 +43,14 @@ export const RadioGroup = ({
         action,
         required,
         disabled,
-        fullwidth,
+        w,
         size,
       })}
     >
       <RadioGroupRoot
         name={name}
         orientation={orientation}
-        fullwidth={fullwidth}
+        w={w}
         disabled={disabled}
         required={required}
         {...props}

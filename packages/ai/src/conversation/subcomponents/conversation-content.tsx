@@ -12,7 +12,7 @@ export const ConversationContent = ({
   ref,
   viewportRef,
   ax = "stretch",
-  fullwidth = true,
+  w = "full",
   gap = 8,
   p = 4,
   className,
@@ -39,7 +39,7 @@ export const ConversationContent = ({
         aria-label="Conversation"
         ref={composedRef}
         ax={ax}
-        fullwidth={fullwidth}
+        w={w}
         gap={gap}
         p={p}
         className={cx(styles["content"], className)}

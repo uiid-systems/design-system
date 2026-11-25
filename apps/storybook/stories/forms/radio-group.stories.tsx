@@ -33,7 +33,6 @@ const meta = {
     value: { control: "text", table: { category: "Data" } },
     defaultValue: { control: "text", table: { category: "Data" } },
 
-    fullwidth: { control: "boolean", table: { category: "Toggles" } },
     bordered: { control: "boolean", table: { category: "Toggles" } },
     reversed: { control: "boolean", table: { category: "Toggles" } },
     hideIndicators: { control: "boolean", table: { category: "Toggles" } },

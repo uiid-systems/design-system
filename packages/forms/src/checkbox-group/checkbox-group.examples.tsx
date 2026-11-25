@@ -43,21 +43,21 @@ export const Bordered = () => (
 );
 
 /*
- * `fullwidth` stretches the group across its container. A horizontal group
+ * `w="full"` stretches the group across its container. A horizontal group
  * shares that width evenly between its rows, and a vertical one stretches each
  * row across it — a `bordered` frame follows the row out to the edge.
  */
 export const Fullwidth = () => (
-  <Stack gap={6} fullwidth>
-    <CheckboxGroup fullwidth orientation="horizontal" items={ITEMS} />
+  <Stack gap={6} w="full">
+    <CheckboxGroup w="full" orientation="horizontal" items={ITEMS} />
     <CheckboxGroup
-      fullwidth
+      w="full"
       bordered
       orientation="horizontal"
       items={ITEMS}
       defaultValue={["email"]}
     />
-    <CheckboxGroup fullwidth bordered items={ITEMS} defaultValue={["email"]} />
+    <CheckboxGroup w="full" bordered items={ITEMS} defaultValue={["email"]} />
   </Stack>
 );
 

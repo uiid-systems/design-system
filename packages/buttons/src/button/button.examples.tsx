@@ -133,10 +133,10 @@ export const Loading = () => (
 
 export const Fullwidth = () => (
   <Stack gap={2} ax="start" w="full">
-    <Button fullwidth color="green">
+    <Button w="full" color="green">
       Fullwidth
     </Button>
-    <Button color="red">Not fullwidth</Button>
+    <Button color="red">Not full width</Button>
   </Stack>
 );
 

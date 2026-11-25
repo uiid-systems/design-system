@@ -8,7 +8,7 @@ const headingId = (children: React.ReactNode) =>
 
 const components: MDXComponents = {
   wrapper: ({ children }) => (
-    <Stack data-slot="mdx-page" pb={8} gap={6} fullwidth>
+    <Stack data-slot="mdx-page" pb={8} gap={6} w="full">
       {children}
     </Stack>
   ),

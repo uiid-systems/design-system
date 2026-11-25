@@ -8,7 +8,7 @@ import type { FieldSlotProps } from "../shared/field-slot.types";
 import type { FormItemProps } from "../types";
 
 /**
- * The root lays its rows out from `orientation` and `fullwidth`, so it takes
+ * The root lays its rows out from `orientation` and `w`, so it takes
  * no alignment axes of its own.
  */
 type CheckboxGroupLayoutProps = Omit<StackProps, "ax" | "ay">;
@@ -18,8 +18,6 @@ export type CheckboxGroupRootProps = WithLayoutProps<
   CheckboxGroupLayoutProps
 > & {
   orientation?: "horizontal" | "vertical";
-  /** Stretch to fill the container width, sharing it evenly between the rows */
-  fullwidth?: boolean;
 };
 
 export type CheckboxGroupProps = {
@@ -52,9 +50,7 @@ export type CheckboxGroupProps = {
   /** Reaches every box's indicator, as the Checkbox slot of the same name. */
   IndicatorProps?: CheckboxProps["IndicatorProps"];
   /** Reaches the Field around the group. The keys CheckboxGroup hands to Field itself are left out. */
-  FieldProps?: FieldSlotProps<
-    "name" | "required" | "disabled" | "fullwidth" | "size"
-  >;
+  FieldProps?: FieldSlotProps<"name" | "required" | "disabled" | "w" | "size">;
 } & WithLayoutProps<BaseCheckboxGroup.Props, CheckboxGroupLayoutProps> &
   Pick<
     CheckboxProps,

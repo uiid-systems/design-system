@@ -61,7 +61,7 @@ export function Select<
   Multiple extends SelectMultipleMode = false,
 >({
   size = SELECT_DEFAULT_SIZE,
-  fullwidth,
+  w,
   variant,
   color,
   disabled,
@@ -183,7 +183,7 @@ export function Select<
         <SelectTrigger
           {...TriggerProps}
           {...definedProps({ ...domAttributes })}
-          {...definedProps({ size, fullwidth, variant, color, before, after })}
+          {...definedProps({ size, w, variant, color, before, after })}
         >
           <SelectValue
             {...ValueProps}

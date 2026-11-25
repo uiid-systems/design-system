@@ -21,7 +21,7 @@ import type {
   ToggleGroupVariants,
   ToggleProps,
 } from "./toggle-group.types";
-import { toggleGroupVariants, toggleVariants } from "./toggle-group.variants";
+import { toggleVariants } from "./toggle-group.variants";
 
 import styles from "./toggle-group.module.css";
 
@@ -91,7 +91,7 @@ const ToggleGroupItem = ({ child, size, buttonsRef }: ToggleGroupItemProps) => {
 export const ToggleGroup = <Value extends string = string>({
   size = TOGGLE_GROUP_DEFAULT_SIZE,
   variant,
-  fullwidth,
+  w,
   orientation,
   multiple,
   value,
@@ -161,15 +161,15 @@ export const ToggleGroup = <Value extends string = string>({
       value={value}
       defaultValue={defaultValue}
       onValueChange={handleValueChange}
-      className={cx(
-        styles["toggle-group-panel"],
-        toggleGroupVariants({ fullwidth }),
-        className,
-      )}
+      className={cx(styles["toggle-group-panel"], className)}
       data-size={size}
       data-variant={variant}
       render={
-        orientation === "vertical" ? <Stack gap={2} /> : <Group gap={2} />
+        orientation === "vertical" ? (
+          <Stack gap={2} w={w} />
+        ) : (
+          <Group gap={2} w={w} />
+        )
       }
       {...props}
     >

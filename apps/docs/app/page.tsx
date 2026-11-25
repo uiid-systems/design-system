@@ -4,7 +4,7 @@ import { Markdown } from "@/components/docs";
 
 export default function HomePage() {
   return (
-    <Stack data-slot="home-page" pb={32} fullwidth>
+    <Stack data-slot="home-page" pb={32} w="full">
       <Markdown file="README.md" />
     </Stack>
   );

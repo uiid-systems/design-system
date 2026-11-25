@@ -184,10 +184,6 @@
   padding-inline: 0;
 }
 
-.fullwidth {
-  composes: composes-fullwidth from global;
-}
-
 .button-tooltip-positioner {
   composes: composes-popup-positioner from global;
 }

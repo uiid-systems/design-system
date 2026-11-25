@@ -27,7 +27,7 @@ export type AutocompleteInputProps = Omit<
 > &
   Pick<
     InputProps,
-    "FieldProps" | "before" | "after" | "size" | "variant" | "fullwidth"
+    "FieldProps" | "before" | "after" | "size" | "variant" | "w"
   > &
   Pick<FieldProps, "label" | "description" | "action"> & {
     /**
@@ -39,7 +39,7 @@ export type AutocompleteInputProps = Omit<
     /**
      * Props for the input group the part renders around its control row. The
      * group wraps the row alone, not the label, description or error, since
-     * Base UI positions the popup against it. `size`, `fullwidth` and the row
+     * Base UI positions the popup against it. `size`, `w` and the row
      * itself are set by the part.
      */
     InputGroupProps?: AutocompleteInputGroupSlotProps;
@@ -77,14 +77,14 @@ export type AutocompleteEmptyProps =
   WithStringClassName<BaseAutocomplete.Empty.Props>;
 export type AutocompleteInputGroupProps =
   WithStringClassName<BaseAutocomplete.InputGroup.Props> &
-    Pick<InputProps, "size" | "fullwidth">;
+    Pick<InputProps, "size" | "w">;
 /**
  * The `InputGroupProps` slot on the input part and the monolith. The part sets
- * `size`, `fullwidth` and the control row on the group itself.
+ * `size`, `w` and the control row on the group itself.
  */
 type AutocompleteInputGroupSlotProps = Omit<
   AutocompleteInputGroupProps,
-  "size" | "fullwidth" | "children"
+  "size" | "w" | "children"
 >;
 export type AutocompleteTriggerProps =
   WithStringClassName<BaseAutocomplete.Trigger.Props>;
@@ -116,14 +116,14 @@ export type AutocompleteProps<Value = string> = {
     | "after"
     | "size"
     | "variant"
-    | "fullwidth"
+    | "w"
     | "color"
     | "disabled"
     | "required"
     | "onFocus"
     | "onBlur"
   >;
-  /** Reaches the input group. `size` and `fullwidth` are set on Autocomplete itself. */
+  /** Reaches the input group. `size` and `w` are set on Autocomplete itself. */
   InputGroupProps?: AutocompleteInputGroupSlotProps;
   PortalProps?: AutocompletePortalProps;
   PositionerProps?: AutocompletePositionerProps;
@@ -148,6 +148,6 @@ export type AutocompleteProps<Value = string> = {
     | "after"
     | "size"
     | "variant"
-    | "fullwidth"
+    | "w"
   > &
   Pick<FieldProps, "label" | "description" | "action">;

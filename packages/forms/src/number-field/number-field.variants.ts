@@ -14,8 +14,7 @@ import styles from "./number-field.module.css";
  * --forms-icon-size reaches their glyphs by inheritance. The input inside
  * paints from Input's shared control surface (`inputControlClassName`), but the
  * axis itself is declared here — aliasing `InputVariants` would put Input's
- * `variant` and `fullwidth` on Number Field's public type with no styles behind
- * them.
+ * `variant` on Number Field's public type with no styles behind it.
  */
 export const numberFieldVariants = cva({
   variants: {

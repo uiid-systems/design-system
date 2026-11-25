@@ -24,7 +24,7 @@ describe("Message", () => {
     expect(root).toHaveAttribute("data-slot", "message");
     expect(root).toHaveAttribute("data-from", "assistant");
     expect(root).toHaveAttribute("data-ui-gap", "2");
-    expect(root).toHaveAttribute("data-ui-fullwidth");
+    expect(root).toHaveAttribute("data-ui-w", "full");
     expect(root).toHaveClass(styles["message"]);
     expect(root).toHaveTextContent("hello");
   });

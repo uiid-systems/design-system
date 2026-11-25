@@ -529,7 +529,7 @@ describe("Conversation", () => {
       expect(content).toHaveAttribute("data-ui-gap", "8");
       expect(content).toHaveAttribute("data-ui-p", "4");
       expect(content).toHaveAttribute("data-ui-ay", "stretch");
-      expect(content).toHaveAttribute("data-ui-fullwidth");
+      expect(content).toHaveAttribute("data-ui-w", "full");
     });
 
     it("passes Stack props through", () => {

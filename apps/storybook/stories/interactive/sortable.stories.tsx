@@ -35,7 +35,7 @@ function VerticalDemo() {
             <SortableItem key={item.id} value={item.id}>
               <Card
                 title={item.title}
-                fullwidth
+                w="full"
                 action={
                   <SortableItemHandle aria-label="Drag to reorder">
                     <GripVerticalIcon />
@@ -50,7 +50,7 @@ function VerticalDemo() {
         {({ value }) => {
           const item = items.find((i) => i.id === value);
           return item ? (
-            <Card title={item.title} action={<GripVerticalIcon />} fullwidth />
+            <Card title={item.title} action={<GripVerticalIcon />} w="full" />
           ) : null;
         }}
       </SortableOverlay>

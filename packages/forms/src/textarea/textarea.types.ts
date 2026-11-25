@@ -1,6 +1,6 @@
 import type { Field as BaseField } from "@base-ui/react/field";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps } from "@uiid/utils";
+import type { SizingProps, VariantProps } from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { FieldSlotProps } from "../shared/field-slot.types";
@@ -51,4 +51,5 @@ export type TextareaProps = Omit<
      */
     color?: TextareaColor;
   } & Pick<FieldProps, "label" | "description" | "action"> &
-  TextareaVariants;
+  TextareaVariants &
+  Pick<SizingProps, "w">;

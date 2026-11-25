@@ -170,17 +170,17 @@ export const Ghost = () => (
 );
 
 export const Fullwidth = () => (
-  <Stack gap={4} fullwidth>
+  <Stack gap={4} w="full">
     <MaskInput
       mask={phoneMask}
-      fullwidth
+      w="full"
       aria-label="Home phone"
       placeholder="Fullwidth"
     />
     <MaskInput
       mask={phoneMask}
       aria-label="Work phone"
-      placeholder="Not fullwidth"
+      placeholder="Not full width"
     />
   </Stack>
 );

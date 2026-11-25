@@ -11,7 +11,7 @@ Use Slider when you want to:
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`) — the row height, inline padding and readout match a sibling Input at the same tier, and the thumb and track scale with it
 - Run it top-to-bottom with `orientation="vertical"`
 - Label it inline with `label` and `description` instead of composing a [`Field`](../field/README.md) by hand
-- Soften the surface with `variant="ghost"`, fill the container with `fullwidth`, or mark it `disabled`
+- Soften the surface with `variant="ghost"`, fill the container with `w="full"`, or mark it `disabled`
 - Colour the filled track and thumb with a palette `color` (`red`, `blue`, …) — the unfilled track and the surrounding surface stay neutral
 
 Leave `value` unset and the slider runs itself; pass `value` and `onValueChange` to drive it yourself.
@@ -22,6 +22,6 @@ Slider's root is a control surface like any other form control, so it paints wit
 
 `SliderRoot`, `SliderLabel`, `SliderValue`, `SliderControl`, `SliderTrack`, `SliderIndicator`, and `SliderThumb` are exported for composition, and slot overrides (`RootProps`, `ValueProps`, `ControlProps`, `TrackProps`, `IndicatorProps`, `ThumbProps`, `FieldProps`) reach them from the monolithic component. When a top-level prop and `RootProps` set the same key, the top-level prop wins.
 
-The root and `SliderControl` each render a `Group`, so the slider's own props, `RootProps`, and `ControlProps` take its layout props (`gap`, `p`, `ax`, `ay`, ...) alongside Base UI's. The root defaults to `gap={2}` and `ay="center"`, the control to `ay="center"`, `px={3}`, and `fullwidth`; pass any of them to change it. A `render` of your own replaces the `Group`, so layout props passed beside it reach your element as plain attributes.
+The root and `SliderControl` each render a `Group`, so the slider's own props, `RootProps`, and `ControlProps` take its layout props (`gap`, `p`, `ax`, `ay`, ...) alongside Base UI's. The root defaults to `gap={2}` and `ay="center"`, the control to `ay="center"`, `px={3}`, and `w="full"`; pass any of them to change it, or `w={null}` to release the fill. A `render` of your own replaces the `Group`, so layout props passed beside it reach your element as plain attributes.
 
 Additional props are forwarded to the underlying Base UI [Slider](https://base-ui.com/react/components/slider).

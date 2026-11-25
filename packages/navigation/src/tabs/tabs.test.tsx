@@ -436,11 +436,6 @@ describe("Tabs", () => {
     );
   });
 
-  it("takes no top-level fullwidth prop", () => {
-    // @ts-expect-error -- stretch the list with `ListProps={{ w: "full" }}`
-    void (<Tabs items={MOCK_ITEMS} fullwidth />);
-  });
-
   it("stretches the list with w from ListProps, and leaves it unset by default", () => {
     const list = () =>
       document.querySelector<HTMLElement>("[data-slot='tabs-list']");
@@ -449,7 +444,6 @@ describe("Tabs", () => {
 
     rerender(<Tabs items={MOCK_ITEMS} ListProps={{ w: "full" }} />);
     expect(list()).toHaveAttribute("data-ui-w", "full");
-    expect(list()).not.toHaveAttribute("data-ui-fullwidth");
   });
 
   it("rejects the list's children in ListProps, which Tabs renders from items", () => {
@@ -486,7 +480,6 @@ describe("Tabs", () => {
       "[data-slot='tabs-panel']",
     );
     expect(panel).toHaveAttribute("data-ui-w", "full");
-    expect(panel).not.toHaveAttribute("data-ui-fullwidth");
   });
 
   it("releases the panel's default fill with w={null}", () => {

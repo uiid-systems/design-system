@@ -44,21 +44,21 @@ export const Bordered = () => (
 );
 
 /*
- * `fullwidth` stretches the group across its container. A horizontal group
+ * `w="full"` stretches the group across its container. A horizontal group
  * shares that width evenly between its rows, and a vertical one stretches each
  * row across it — a `bordered` frame follows the row out to the edge.
  */
 export const Fullwidth = () => (
-  <Stack gap={6} fullwidth>
-    <RadioGroup fullwidth orientation="horizontal" items={ITEMS} />
+  <Stack gap={6} w="full">
+    <RadioGroup w="full" orientation="horizontal" items={ITEMS} />
     <RadioGroup
-      fullwidth
+      w="full"
       bordered
       orientation="horizontal"
       items={ITEMS}
       defaultValue="standard"
     />
-    <RadioGroup fullwidth bordered items={ITEMS} defaultValue="standard" />
+    <RadioGroup w="full" bordered items={ITEMS} defaultValue="standard" />
   </Stack>
 );
 

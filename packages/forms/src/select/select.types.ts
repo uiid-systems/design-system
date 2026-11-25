@@ -2,7 +2,11 @@ import type { Select as BaseSelect } from "@base-ui/react/select";
 import type { CardContainerProps } from "@uiid/cards";
 import type { Icon } from "@uiid/icons";
 import type { PaletteColor } from "@uiid/tokens";
-import type { WithLayoutProps, WithStringClassName } from "@uiid/utils";
+import type {
+  SizingProps,
+  WithLayoutProps,
+  WithStringClassName,
+} from "@uiid/utils";
 
 import type { FieldProps } from "../field/field.types";
 import type { InputVariants } from "../input/input.types";
@@ -53,7 +57,8 @@ export type SelectRootProps<
   Multiple extends SelectMultipleMode = false,
 > = BaseSelect.Root.Props<Value, Multiple>;
 export type SelectTriggerProps = WithStringClassName<BaseSelect.Trigger.Props> &
-  Pick<InputVariants, "variant" | "fullwidth" | "size"> & {
+  Pick<InputVariants, "variant" | "size"> &
+  Pick<SizingProps, "w"> & {
     before?: React.ReactNode;
     after?: React.ReactNode;
     /**
@@ -123,7 +128,7 @@ export type SelectProps<
   /** Reaches the trigger. The keys Select sets on the trigger itself are left out. */
   TriggerProps?: Omit<
     SelectTriggerProps,
-    "size" | "fullwidth" | "variant" | "color" | "before" | "after" | "children"
+    "size" | "w" | "variant" | "color" | "before" | "after" | "children"
   >;
   PortalProps?: SelectPortalProps;
   BackdropProps?: SelectBackdropProps;
@@ -145,4 +150,5 @@ export type SelectProps<
    */
   Omit<SelectRootProps<Value, Multiple>, "items"> &
   Pick<FieldProps, "label" | "description" | "action"> &
-  InputVariants;
+  InputVariants &
+  Pick<SizingProps, "w">;

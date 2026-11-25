@@ -44,7 +44,7 @@ The region. All [`Box`](../../../layout/src/box/README.md) props. Renders `data-
 
 ### ConversationContent
 
-The column of messages. All [`Stack`](../../../layout/src/stack/README.md) props, with `ax="stretch"`, `fullwidth`, `gap={8}` and `p={4}` as defaults, so messages span the region. Renders `data-slot="conversation-content"` with `role="log"` and the label "Conversation" (pass `aria-label`, or `aria-labelledby` to name it after a visible heading), inside a scroller, `data-slot="conversation-viewport"` (reach it with `viewportRef`), which takes keyboard focus so arrow keys scroll it.
+The column of messages. All [`Stack`](../../../layout/src/stack/README.md) props, with `ax="stretch"`, `w="full"`, `gap={8}` and `p={4}` as defaults, so messages span the region. Renders `data-slot="conversation-content"` with `role="log"` and the label "Conversation" (pass `aria-label`, or `aria-labelledby` to name it after a visible heading), inside a scroller, `data-slot="conversation-viewport"` (reach it with `viewportRef`), which takes keyboard focus so arrow keys scroll it.
 
 The log is a polite live region, so a screen reader may read a reply out in fragments as it streams. Pass `aria-busy` while a reply is in flight to hold announcements until it settles. The log is the column rather than the region, so the scroll button appearing and disappearing is not announced as a new message.
 

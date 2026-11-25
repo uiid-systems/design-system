@@ -2,7 +2,7 @@ import type { Button as BaseButton } from "@base-ui/react/button";
 import { type LoadingSpinnerIconProps } from "@uiid/icons/loading-spinner";
 import type { GroupProps } from "@uiid/layout";
 import type { PaletteColor } from "@uiid/tokens";
-import type { VariantProps } from "@uiid/utils";
+import type { SizingProps, VariantProps } from "@uiid/utils";
 
 import type { buttonVariants } from "./button.variants";
 
@@ -24,7 +24,8 @@ export type ButtonSpinnerProps = LoadingSpinnerIconProps & {
 
 export type ButtonProps = Omit<React.ComponentProps<"button">, "color"> &
   Omit<BaseButton.Props, "onClick" | "color" | "focusableWhenDisabled"> &
-  ButtonVariants & {
+  ButtonVariants &
+  Pick<SizingProps, "w"> & {
     /** Palette hue applied as a full bg/fg/border/hover surface treatment. */
     color?: ButtonColor;
     /**
@@ -55,5 +56,5 @@ export type ButtonProps = Omit<React.ComponentProps<"button">, "color"> &
  */
 export type ButtonLinkProps = Omit<
   ButtonProps,
-  "tooltip" | "loading" | "color" | keyof ButtonVariants
+  "tooltip" | "loading" | "color" | "w" | keyof ButtonVariants
 >;

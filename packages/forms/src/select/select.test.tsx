@@ -978,10 +978,9 @@ describe("Select popup layout props", () => {
     await user.click(screen.getByRole("combobox"));
 
     expect(popup()).toHaveAttribute("data-ui-gap", "0");
-    expect(popup()).toHaveAttribute("data-ui-fullwidth");
+    expect(popup()).toHaveAttribute("data-ui-w", "full");
   });
 
-  // The list and its rows fill with `w`, not the deprecated `fullwidth` toggle.
   it("fills the list and its rows with w", async () => {
     const user = userEvent.setup();
     render(<Select items={items} label="Pick" />);
@@ -990,12 +989,10 @@ describe("Select popup layout props", () => {
 
     const list = document.querySelector("[data-slot='select-list']");
     expect(list).toHaveAttribute("data-ui-w", "full");
-    expect(list).not.toHaveAttribute("data-ui-fullwidth");
     const row = screen
       .getByRole("option", { name: "Option A" })
       .querySelector("[data-slot='list-item']");
     expect(row).toHaveAttribute("data-ui-w", "full");
-    expect(row).not.toHaveAttribute("data-ui-fullwidth");
   });
 
   /*
@@ -1005,17 +1002,21 @@ describe("Select popup layout props", () => {
   it("forwards layout props from PopupProps to the popup Card", async () => {
     const user = userEvent.setup();
     render(
-      <Select
-        items={items}
-        label="Pick"
-        PopupProps={{ gap: 2, fullwidth: false }}
-      />,
+      <Select items={items} label="Pick" PopupProps={{ gap: 2, w: null }} />,
     );
 
     await user.click(screen.getByRole("combobox"));
 
     expect(popup()).toHaveAttribute("data-ui-gap", "2");
-    expect(popup()).not.toHaveAttribute("data-ui-fullwidth");
+    expect(popup()).not.toHaveAttribute("data-ui-w");
+  });
+
+  it('fills the trigger with w="full", and leaves it unset by default', () => {
+    const { rerender } = render(<Select items={items} label="Pick" />);
+    expect(screen.getByRole("combobox")).not.toHaveAttribute("data-ui-w");
+
+    rerender(<Select items={items} label="Pick" w="full" />);
+    expect(screen.getByRole("combobox")).toHaveAttribute("data-ui-w", "full");
   });
 });
 
@@ -1603,8 +1604,8 @@ describe("Select TriggerProps", () => {
   it("rejects TriggerProps the control owns", () => {
     // @ts-expect-error -- `size` is set on Select itself
     void (<Select TriggerProps={{ size: "small" }} />);
-    // @ts-expect-error -- `fullwidth` is set on Select itself
-    void (<Select TriggerProps={{ fullwidth: true }} />);
+    // @ts-expect-error -- `w` is set on Select itself
+    void (<Select TriggerProps={{ w: "full" }} />);
     // @ts-expect-error -- `variant` is set on Select itself
     void (<Select TriggerProps={{ variant: "ghost" }} />);
     // @ts-expect-error -- `color` is set on Select itself

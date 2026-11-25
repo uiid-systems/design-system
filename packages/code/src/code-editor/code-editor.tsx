@@ -99,7 +99,7 @@ export const CodeEditor = ({
       data-slot="code-editor"
       data-disabled={disabled || undefined}
       className={cx(styles["code-editor"], className)}
-      fullwidth
+      w="full"
       {...props}
     >
       {showHeader && (
@@ -122,7 +122,7 @@ export const CodeEditor = ({
         style={
           rows ? ({ "--code-rows": rows } as React.CSSProperties) : undefined
         }
-        fullwidth
+        w="full"
       >
         {/* Highlighted code backdrop: a duplicate of the textarea's text, so `inert` keeps Shiki's focusable `<pre>` out of the tab order and the accessibility tree */}
         <div

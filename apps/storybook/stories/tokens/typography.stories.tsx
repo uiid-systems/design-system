@@ -46,14 +46,14 @@ type Story = StoryObj<typeof meta>;
 /** The scale as it is actually applied — one specimen per step. */
 export const Scale: Story = {
   render: () => (
-    <Stack gap={3} fullwidth>
+    <Stack gap={3} w="full">
       <Text size={-1} emphasis="muted">
         Eight steps, &minus;1 through 6. Size, weight, line height and letter
         spacing travel together in one composite token, so a step is a
         typographic decision rather than four loose values.
       </Text>
       {STEPS.map(({ step }) => (
-        <Group key={step} gap={3} ay="baseline" fullwidth>
+        <Group key={step} gap={3} ay="baseline" w="full">
           <Text
             size={-1}
             family="mono"
@@ -92,13 +92,13 @@ export const Values: Story = {
 /** The three family stacks, rendered through Text's `family` variant. */
 export const Families: Story = {
   render: () => (
-    <Stack gap={4} fullwidth>
+    <Stack gap={4} w="full">
       <Text size={-1} emphasis="muted">
         System stacks. The design system embeds no typefaces of its own, so each
         family resolves against whatever the reader&rsquo;s OS provides.
       </Text>
       {FAMILIES.map(([name, token]) => (
-        <Stack key={name} gap={1} fullwidth>
+        <Stack key={name} gap={1} w="full">
           <Group gap={2} ay="baseline">
             <Text size={0} weight="semibold">
               {name}

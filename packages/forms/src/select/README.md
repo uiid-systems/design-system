@@ -11,7 +11,7 @@ Use Select when you want to:
 - Match a control row with `size` (`xsmall`, `small`, `medium`, `large`)
 - Put an icon or a hint inside the trigger with `before` and `after`
 - Collect several values at once with `multiple` — the trigger lists the selection and the popup keeps the checked state
-- Soften the surface with `variant="ghost"` or fill the container with `fullwidth`
+- Soften the surface with `variant="ghost"` or fill the container with `w="full"`
 - Tint it with a palette `color` (`red`, `blue`, …) — the hue paints the trigger and the popup together
 - Mark it `required`, `disabled`, or `readOnly`
 - Keep an open menu from getting lost in the page — it dims what's behind it, the way a dialog or drawer does. Pass `backdrop={false}` for a select that should sit quietly in a dense form
@@ -34,7 +34,7 @@ The open popup dims the page behind it so it can't be lost in surrounding conten
 
 Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ListProps`, `ValueProps`, `IconProps`, `FieldProps`) reach the individual parts when a top-level prop isn't expressive enough. When a top-level prop and `RootProps` set the same key, the top-level prop wins. Select passes a top-level `aria-*` or `data-*` attribute to the trigger, and it wins over the same key in `TriggerProps`: the two values are not joined, so an `aria-describedby` set in both keeps only the top-level one.
 
-The popup renders a [`Card`](../../../cards/src/card/README.md), so `PopupProps` takes the layout props `Card` spreads onto its container (`p`, `fullwidth`, `maxh`, ...) alongside Base UI's, though not its content slots like `title` or `footer`. It defaults to `p={2}`, `gap={0}`, and `fullwidth`; pass any of them to change it. The rows sit inside the Card's inner container, so `gap`, `ax`, and `ay` on the popup don't move them. A `render` of your own replaces the `Card`, so layout props passed beside it reach your element as plain attributes.
+The popup renders a [`Card`](../../../cards/src/card/README.md), so `PopupProps` takes the layout props `Card` spreads onto its container (`p`, `w`, `maxh`, ...) alongside Base UI's, though not its content slots like `title` or `footer`. It defaults to `p={2}`, `gap={0}`, and `w="full"`; pass any of them to change it. The rows sit inside the Card's inner container, so `gap`, `ax`, and `ay` on the popup don't move them. A `render` of your own replaces the `Card`, so layout props passed beside it reach your element as plain attributes.
 
 When the list is long enough to need filtering, reach for [`Combobox`](../combobox/README.md); when the typed value doesn't have to come from the list, [`Autocomplete`](../autocomplete/README.md).
 

@@ -40,7 +40,7 @@ All `Collapsible` root props, which are Base UI's `open`, `defaultOpen`, `onOpen
 | `duration`  | `number`                            | —       | How long the model thought, in whole seconds. Overrides the measured time  |
 | `label`     | `ReactNode \| (state) => ReactNode` | English | The trigger's text. A function gets `{ streaming, duration }`              |
 
-Defaults: `gap={2}` and `ax="start"`, so the trigger hugs its label; the panel is `fullwidth` so the text spans the block. Renders `data-slot="reasoning"` on the root, with `data-streaming` while `streaming`, `data-slot="reasoning-trigger"` on the trigger and `data-slot="reasoning-panel"` on the panel.
+Defaults: `gap={2}` and `ax="start"`, so the trigger hugs its label; the panel takes `w="full"` so the text spans the block. Renders `data-slot="reasoning"` on the root, with `data-streaming` while `streaming`, `data-slot="reasoning-trigger"` on the trigger and `data-slot="reasoning-panel"` on the panel.
 
 ## Behavior
 
