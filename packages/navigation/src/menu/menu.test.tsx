@@ -213,6 +213,17 @@ describe("Menu parts", () => {
     );
   });
 
+  it("keeps a titled icon out of a MenuItem's name", () => {
+    const TitledIcon = (props: React.SVGProps<SVGSVGElement>) => (
+      <svg {...props}>
+        <title>Pencil</title>
+      </svg>
+    );
+    renderParts(<MenuItem label="Edit" icon={TitledIcon} />);
+
+    expect(screen.getByRole("menuitem", { name: "Edit" })).toBeInTheDocument();
+  });
+
   it("draws a MenuItem's description under its label", () => {
     renderParts(<MenuItem label="Edit" description="Change the name" />);
 
@@ -284,7 +295,7 @@ describe("Menu parts", () => {
 
     const trigger = screen.getByRole("menuitem");
     expect(chevron(trigger)).toBeInTheDocument();
-    expect(chevron(trigger)!.closest("[data-slot='list-item']")).toBeNull();
+    expect(trigger.lastElementChild).toBe(chevron(trigger));
   });
 
   it("keeps the chevron when children replace a SubmenuTrigger's content", () => {
@@ -617,6 +628,46 @@ describe("SubmenuTrigger layout props", () => {
  * A part's `className` is a string, merged with its own module class. Its
  * state is styled through the `data-*` attributes Base UI sets.
  */
+/*
+ * The inverted highlight in `menu.module.css` keys on these attributes. Its
+ * paint needs a real browser; these pin the states the rules select.
+ */
+describe("Menu row highlight", () => {
+  it("marks the keyboard-highlighted row on Menu's own row class", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={MOCK_ITEMS} />);
+
+    await user.click(screen.getByText("Open"));
+    await user.keyboard("{ArrowDown}");
+
+    const [first] = document.querySelectorAll("[data-slot='menu-item']");
+    expect(first).toHaveClass(styles["item"]);
+    expect(first).toHaveAttribute("data-highlighted");
+  });
+
+  /* Base UI lets the keyboard land on a disabled row, which is why the
+     highlight rule excludes `[data-disabled]`. */
+  it("highlights a disabled row by keyboard, marked as disabled", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Edit", value: "edit", disabled: true },
+          { label: "Delete", value: "delete" },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.keyboard("{ArrowDown}");
+
+    const edit = screen.getByRole("menuitem", { name: "Edit" });
+    expect(edit).toHaveAttribute("data-highlighted");
+    expect(edit).toHaveAttribute("data-disabled");
+  });
+});
+
 describe("Menu className", () => {
   it("merges a caller's className on the item with its own class and marks its state", async () => {
     const user = userEvent.setup();

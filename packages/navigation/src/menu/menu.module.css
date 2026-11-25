@@ -46,8 +46,8 @@
   --list-icon-color: var(--palette-on-tint);
 }
 
-/* Padding, radius and the highlight come from `composes-option`, the class
-   Select's rows wear. */
+/* Padding, radius and the disabled look come from `composes-option`, the
+   class Select's rows wear. The highlight stays Menu's own, below. */
 .item {
   composes: composes-option from global;
 }
@@ -68,7 +68,7 @@
     position: relative;
   }
 
-  &[data-popup-open]::before {
+  &[data-popup-open]:not([data-highlighted])::before {
     content: "";
     z-index: -1;
     position: absolute;
@@ -76,6 +76,28 @@
     inset-inline: 0.25rem;
     border-radius: 0.25rem;
     background-color: var(--shade-accent);
+  }
+
+  /*
+   * Rows draw no outline, so the highlight is the only sign of keyboard focus.
+   * `composes-option`'s tint is too faint against the popup for that (WCAG
+   * 1.4.11 asks 3:1), so Menu keeps its inverted fill until the shared class
+   * carries a stronger indicator. The label inherits `color`; the icon and
+   * description read the list names the popup publishes, so they invert too.
+   * A disabled row never shows it.
+   */
+  &[data-highlighted]:not([data-disabled]) {
+    background-color: var(--shade-foreground);
+    color: var(--shade-surface);
+
+    --list-description-color: var(--shade-surface);
+    --list-icon-color: var(--shade-surface);
+  }
+
+  /* Base UI lets the keyboard highlight a disabled row, so it must not take
+     `composes-option`'s tint either. */
+  &[data-disabled] {
+    background-color: transparent;
   }
 }
 

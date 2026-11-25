@@ -23,14 +23,13 @@ const renderItem = (item: MenuItemType, ItemProps?: MenuItemProps) => (
     label={item.label}
     icon={item.icon}
     description={undefined}
+    children={undefined}
     disabled={item.disabled ?? ItemProps?.disabled}
     onClick={(event) => {
       ItemProps?.onClick?.(event);
       item.onClick?.(event);
     }}
-  >
-    {undefined}
-  </MenuItem>
+  />
 );
 
 export const Menu = ({
@@ -69,10 +68,9 @@ export const Menu = ({
                       label={item.label}
                       icon={item.icon}
                       description={undefined}
+                      children={undefined}
                       disabled={item.disabled ?? SubmenuTriggerProps?.disabled}
-                    >
-                      {undefined}
-                    </SubmenuTrigger>
+                    />
                     <MenuPortal>
                       <MenuPositioner>
                         <MenuPopup>
