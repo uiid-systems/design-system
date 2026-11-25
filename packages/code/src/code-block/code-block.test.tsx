@@ -5,7 +5,10 @@ import * as React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { CodeBlock } from "./code-block";
-import type { CodeBlockProps } from "./code-block.types";
+import type {
+  CodeBlockExpandToggleProps,
+  CodeBlockProps,
+} from "./code-block.types";
 import {
   CodeBlockContent,
   CodeBlockCopyButton,
@@ -826,10 +829,9 @@ describe("CodeBlock parts composed by hand", () => {
   it("names the expand toggle part by its expanded state", () => {
     const { rerender } = render(<CodeBlockExpandToggle />);
 
-    expect(screen.getByRole("button", { name: "Show more" })).toHaveAttribute(
-      "aria-expanded",
-      "false",
-    );
+    const toggle = screen.getByRole("button", { name: "Show more" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(toggle).toHaveAttribute("data-slot", "code-block-expand-toggle");
 
     rerender(<CodeBlockExpandToggle expanded />);
     expect(screen.getByRole("button", { name: "Show less" })).toHaveAttribute(
@@ -885,6 +887,22 @@ describe("CodeBlock parts composed by hand", () => {
     await user.click(screen.getByRole("button", { name: "Show more" }));
     expect(onClick).toHaveBeenCalledOnce();
     expect(onExpandedChange).not.toHaveBeenCalled();
+  });
+
+  it("runs the expand toggle part's onClick and then asks for the change", async () => {
+    const user = userEvent.setup();
+    const onExpandedChange = vi.fn();
+    const onClick = vi.fn();
+    render(
+      <CodeBlockExpandToggle
+        onClick={onClick}
+        onExpandedChange={onExpandedChange}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Show more" }));
+    expect(onClick).toHaveBeenCalledOnce();
+    expect(onExpandedChange).toHaveBeenCalledWith(true);
   });
 
   it("renders a header part with its filename, language icon and buttons", () => {
@@ -1077,6 +1095,15 @@ describe("CodeBlock HeaderProps precedence", () => {
 
 /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
 describe("CodeBlock slot props", () => {
+  it("rejects aria-expanded on the expand toggle part, which derives it", () => {
+    // A props object, since TypeScript accepts any hyphenated JSX attribute.
+    const props: CodeBlockExpandToggleProps = {
+      // @ts-expect-error -- `aria-expanded` follows the part's `expanded`
+      "aria-expanded": true,
+    };
+    void props;
+  });
+
   it("rejects every key CodeBlock owns in HeaderProps", () => {
     void (
       <>
