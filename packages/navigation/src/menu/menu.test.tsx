@@ -425,6 +425,31 @@ describe("Menu items", () => {
     expect(onClick).not.toHaveBeenCalled();
   });
 
+  /*
+   * Pins Base UI's behaviour, not Menu's CSS: the keyboard can land on a
+   * disabled row, which is why `menu.module.css` keeps the highlight on it.
+   * Whether that row is visibly highlighted needs a browser test.
+   */
+  it("lets the keyboard highlight a disabled item", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Edit", value: "edit", disabled: true },
+          { label: "Delete", value: "delete" },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.keyboard("{ArrowDown}");
+
+    const edit = screen.getByRole("menuitem", { name: "Edit" });
+    expect(edit).toHaveAttribute("data-highlighted");
+    expect(edit).toHaveAttribute("data-disabled");
+  });
+
   it("renders an item's icon before its label", async () => {
     const user = userEvent.setup();
     render(
@@ -628,46 +653,6 @@ describe("SubmenuTrigger layout props", () => {
  * A part's `className` is a string, merged with its own module class. Its
  * state is styled through the `data-*` attributes Base UI sets.
  */
-/*
- * The inverted highlight in `menu.module.css` keys on these attributes. Its
- * paint needs a real browser; these pin the states the rules select.
- */
-describe("Menu row highlight", () => {
-  it("marks the keyboard-highlighted row on Menu's own row class", async () => {
-    const user = userEvent.setup();
-    render(<Menu trigger="Open" items={MOCK_ITEMS} />);
-
-    await user.click(screen.getByText("Open"));
-    await user.keyboard("{ArrowDown}");
-
-    const [first] = document.querySelectorAll("[data-slot='menu-item']");
-    expect(first).toHaveClass(styles["item"]);
-    expect(first).toHaveAttribute("data-highlighted");
-  });
-
-  /* Base UI lets the keyboard land on a disabled row, which is why the
-     highlight rule excludes `[data-disabled]`. */
-  it("highlights a disabled row by keyboard, marked as disabled", async () => {
-    const user = userEvent.setup();
-    render(
-      <Menu
-        trigger="Open"
-        items={[
-          { label: "Edit", value: "edit", disabled: true },
-          { label: "Delete", value: "delete" },
-        ]}
-      />,
-    );
-
-    await user.click(screen.getByText("Open"));
-    await user.keyboard("{ArrowDown}");
-
-    const edit = screen.getByRole("menuitem", { name: "Edit" });
-    expect(edit).toHaveAttribute("data-highlighted");
-    expect(edit).toHaveAttribute("data-disabled");
-  });
-});
-
 describe("Menu className", () => {
   it("merges a caller's className on the item with its own class and marks its state", async () => {
     const user = userEvent.setup();
