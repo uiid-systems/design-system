@@ -625,64 +625,9 @@ describe("CodeBlock", () => {
     });
   });
 
-  it("runs CopyButtonProps.onCopy and then the top-level onCopy", async () => {
-    const user = userEvent.setup();
-    const calls: string[] = [];
-    render(
-      <CodeBlock
-        code="const x = 1;"
-        onCopy={(copied) => calls.push(`top-level:${copied}`)}
-        CopyButtonProps={{
-          onCopy: (copied) => calls.push(`slot:${copied}`),
-        }}
-      />,
-    );
-
-    await user.click(screen.getByRole("button", { name: /copy/i }));
-
-    await waitFor(() => {
-      expect(calls).toEqual(["slot:const x = 1;", "top-level:const x = 1;"]);
-    });
-  });
-
-  it("still runs the top-level onCopy and shows the copy when CopyButtonProps.onCopy throws", async () => {
+  it("shows the copy and logs the error once when the top-level onCopy throws", async () => {
     const user = userEvent.setup();
     const errors = vi.spyOn(console, "error").mockImplementation(() => {});
-    const onCopy = vi.fn();
-    try {
-      render(
-        <CodeBlock
-          code="const x = 1;"
-          onCopy={onCopy}
-          CopyButtonProps={{
-            onCopy: () => {
-              throw new Error("slot failed");
-            },
-          }}
-        />,
-      );
-
-      await user.click(screen.getByRole("button", { name: /copy/i }));
-
-      await waitFor(() => expect(onCopy).toHaveBeenCalledWith("const x = 1;"));
-      expect(
-        await screen.findByRole("button", { name: "Copied" }),
-      ).toHaveAttribute("data-copied", "true");
-      // Logged as a handler error, not as a failed copy.
-      expect(errors).toHaveBeenCalledWith("onCopy threw:", expect.any(Error));
-      expect(errors).not.toHaveBeenCalledWith(
-        "Failed to copy code:",
-        expect.anything(),
-      );
-    } finally {
-      errors.mockRestore();
-    }
-  });
-
-  it("shows the copy after running CopyButtonProps.onCopy when the top-level onCopy throws", async () => {
-    const user = userEvent.setup();
-    const errors = vi.spyOn(console, "error").mockImplementation(() => {});
-    const slotOnCopy = vi.fn();
     const topLevelError = new Error("top-level failed");
     try {
       render(
@@ -691,7 +636,6 @@ describe("CodeBlock", () => {
           onCopy={() => {
             throw topLevelError;
           }}
-          CopyButtonProps={{ onCopy: slotOnCopy }}
         />,
       );
 
@@ -700,81 +644,22 @@ describe("CodeBlock", () => {
       expect(
         await screen.findByRole("button", { name: "Copied" }),
       ).toHaveAttribute("data-copied", "true");
-      expect(slotOnCopy).toHaveBeenCalledWith("const x = 1;");
       await waitFor(() =>
         expect(errors).toHaveBeenCalledWith("onCopy threw:", topLevelError),
       );
+      // Logged as a handler error, not as a failed copy.
+      expect(errors).toHaveBeenCalledTimes(1);
     } finally {
       errors.mockRestore();
     }
   });
 
-  it("reports both errors when both onCopy handlers throw", async () => {
-    const user = userEvent.setup();
-    const errors = vi.spyOn(console, "error").mockImplementation(() => {});
-    const slotError = new Error("slot failed");
-    const topLevelError = new Error("top-level failed");
-    try {
-      render(
-        <CodeBlock
-          code="const x = 1;"
-          onCopy={() => {
-            throw topLevelError;
-          }}
-          CopyButtonProps={{
-            onCopy: () => {
-              throw slotError;
-            },
-          }}
-        />,
-      );
-
-      await user.click(screen.getByRole("button", { name: "Copy code" }));
-
-      await waitFor(() => {
-        expect(errors).toHaveBeenCalledWith("onCopy threw:", slotError);
-        expect(errors).toHaveBeenCalledWith("onCopy threw:", topLevelError);
-      });
-      expect(errors).toHaveBeenCalledTimes(2);
-      expect(screen.getByRole("button", { name: "Copied" })).toHaveAttribute(
-        "data-copied",
-        "true",
-      );
-    } finally {
-      errors.mockRestore();
-    }
-  });
-
-  it("runs CopyButtonProps.onCopy on its own when no top-level onCopy is given", async () => {
-    const user = userEvent.setup();
-    const slotOnCopy = vi.fn();
-    render(
-      <CodeBlock
-        code="const x = 1;"
-        CopyButtonProps={{ onCopy: slotOnCopy }}
-      />,
-    );
-
-    await user.click(screen.getByRole("button", { name: "Copy code" }));
-
-    await waitFor(() =>
-      expect(slotOnCopy).toHaveBeenCalledExactlyOnceWith("const x = 1;"),
-    );
-  });
-
-  it("runs neither onCopy and shows no copy when the clipboard write fails", async () => {
+  it("runs no onCopy and shows no copy when the clipboard write fails", async () => {
     const user = userEvent.setup();
     const errors = vi.spyOn(console, "error").mockImplementation(() => {});
     const onCopy = vi.fn();
-    const slotOnCopy = vi.fn();
     try {
-      render(
-        <CodeBlock
-          code="const x = 1;"
-          onCopy={onCopy}
-          CopyButtonProps={{ onCopy: slotOnCopy }}
-        />,
-      );
+      render(<CodeBlock code="const x = 1;" onCopy={onCopy} />);
       // user-event installs its own clipboard on setup, so stub it after.
       const writeText = vi
         .spyOn(navigator.clipboard, "writeText")
@@ -791,7 +676,6 @@ describe("CodeBlock", () => {
       );
       expect(writeText).toHaveBeenCalledWith("const x = 1;");
       expect(onCopy).not.toHaveBeenCalled();
-      expect(slotOnCopy).not.toHaveBeenCalled();
       expect(copyButton).toHaveAttribute("data-copied", "false");
       expect(copyButton).toHaveAccessibleName("Copy code");
     } finally {
@@ -970,6 +854,26 @@ describe("CodeBlock HeaderProps precedence", () => {
     await waitFor(() => expect(onCopy).toHaveBeenCalledWith("const x = 1;"));
   });
 
+  it("runs only the top-level onCopy over an untyped CopyButtonProps.onCopy", async () => {
+    const user = userEvent.setup();
+    const onCopy = vi.fn();
+    const slotOnCopy = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        onCopy={onCopy}
+        CopyButtonProps={{ onCopy: slotOnCopy } as object}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Copy code" }));
+
+    await waitFor(() =>
+      expect(onCopy).toHaveBeenCalledExactlyOnceWith("const x = 1;"),
+    );
+    expect(slotOnCopy).not.toHaveBeenCalled();
+  });
+
   it("still enters fullscreen over an untyped FullscreenButtonProps.onPressedChange", async () => {
     const user = userEvent.setup();
     render(
@@ -1080,6 +984,11 @@ describe("CodeBlock slot props", () => {
           code=""
           // @ts-expect-error -- the copied text is CodeBlock's `code`
           CopyButtonProps={{ code: "other" }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `onCopy` is set on CodeBlock itself
+          CopyButtonProps={{ onCopy: () => {} }}
         />
         <CodeBlock
           code=""
