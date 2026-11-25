@@ -12,7 +12,12 @@
   border-radius: var(--code-inline-border-radius);
   font-family: var(--code-inline-font-family);
   font-size: var(--code-inline-font-size);
-  white-space: nowrap;
+
+  /* Wrap at spaces like the text around it, and anywhere in a run too long
+     for its line, so a long snippet never widens the page or a table cell.
+     No box-decoration-break: clone, since Chromium does not count the cloned
+     end padding when it breaks a run, so each full line overhangs by it. */
+  overflow-wrap: anywhere;
 
   /* Shiki spans - inline code strips the .shiki wrapper, so target spans directly.
      Uses light-dark() to resolve against the nearest [data-theme] color-scheme. */
