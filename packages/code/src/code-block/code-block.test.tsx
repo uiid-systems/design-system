@@ -108,12 +108,25 @@ describe("CodeBlock", () => {
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
-  it("renders no button when the code is empty, even with every flag on", () => {
+  it("leaves the copy button out when the code is empty, even with every flag on", () => {
     render(<CodeBlock code="" copyable wrappable fullscreenable />);
-    expect(
-      document.querySelector('[data-slot="code-block-copy-button"]'),
-    ).not.toBeInTheDocument();
-    expect(document.querySelector("[disabled]")).not.toBeInTheDocument();
+    const buttons = screen.getAllByRole("button");
+    expect(buttons.map((b) => b.getAttribute("data-slot"))).toEqual([
+      "code-block-wrap-button",
+      "code-block-fullscreen-button",
+    ]);
+    for (const button of buttons) {
+      expect(button).toBeEnabled();
+      expect(button).not.toHaveAttribute("aria-disabled", "true");
+    }
+  });
+
+  it("removes the copy button when the code becomes empty", () => {
+    const { rerender } = render(<CodeBlock code="x" />);
+    expect(screen.getByRole("button", { name: "Copy code" })).toBeEnabled();
+
+    rerender(<CodeBlock code="" />);
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
   it("leaves the wrap toggle out by default", () => {
@@ -393,6 +406,21 @@ describe("CodeBlock", () => {
     expect(
       document.querySelector('[data-slot="code-block-fullscreen-button"]'),
     ).toBeInTheDocument();
+  });
+
+  it("leaves the copy button out of the fullscreen dialog when the code is empty", async () => {
+    const user = userEvent.setup();
+    render(<CodeBlock code="" fullscreenable />);
+
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
+
+    const dialog = await screen.findByRole("dialog");
+    expect(
+      within(dialog).queryByRole("button", { name: /copy/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(dialog).getByRole("button", { name: /exit fullscreen/i }),
+    ).toBeEnabled();
   });
 
   it("enters fullscreen when the toggle is pressed", async () => {
