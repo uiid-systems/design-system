@@ -2,12 +2,21 @@
 "use client";
 
 import { Button } from "@uiid/buttons";
+import { Card } from "@uiid/cards";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { useRef, useState } from "react";
 
 import { Dialog } from "./dialog";
-import { DialogClose } from "./subcomponents";
+import {
+  DialogBackdrop,
+  DialogClose,
+  DialogPopup,
+  DialogPortal,
+  DialogRoot,
+  DialogTrigger,
+  DialogViewport,
+} from "./subcomponents";
 
 const ITEMS = ["Opening", "Middlegame", "Bear-off"];
 
@@ -310,4 +319,32 @@ export const Nested = () => (
       </Dialog>
     </Stack>
   </Dialog>
+);
+
+/**
+ * An unstyled popup brings no Card, so its content is the whole surface: here
+ * a Card of its own, filling the popup at `size="full"`. With no title to name
+ * it, the popup takes an `aria-label`.
+ */
+export const Unstyled = () => (
+  <DialogRoot>
+    <DialogTrigger>
+      <Button>Open viewer</Button>
+    </DialogTrigger>
+    <DialogPortal>
+      <DialogBackdrop />
+      <DialogViewport>
+        <DialogPopup unstyled size="full" aria-label="Contract.pdf">
+          <Card
+            h="full"
+            shadow
+            title="Contract.pdf"
+            action={<DialogClose size="small">Close</DialogClose>}
+          >
+            {BODY}
+          </Card>
+        </DialogPopup>
+      </DialogViewport>
+    </DialogPortal>
+  </DialogRoot>
 );

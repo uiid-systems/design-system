@@ -21,7 +21,7 @@ type ConfirmDialogProps = Required<Pick<DialogProps, "open" | "onOpenChange">> &
 
 Dialog wraps Base UI's [Dialog](https://base-ui.com/react/components/dialog). Its top-level root props are `open`, `defaultOpen`, `onOpenChange` and `modal`, the same set as Popover and Drawer; Dialog's other root props go through `RootProps`. Slot overrides (`RootProps`, `TriggerProps`, `PortalProps`, `BackdropProps`, `ViewportProps`, `PopupProps`) reach the individual parts when a slot prop isn't expressive enough. When a top-level prop and `RootProps` set the same key, the top-level prop wins. `onOpenChange` is the one exception: `RootProps.onOpenChange` and the top-level `onOpenChange` both run, `RootProps` first, and cancelling the change in the first skips the second. `TriggerProps` and `PopupProps` take none of the keys Dialog sets itself: the trigger's content is `trigger`, and `size`, `title`, `description`, `action`, `footer`, `hideCloseButton` and `children` are top-level props. Passing one through the slot is a type error, and at runtime the top-level value wins.
 
-The popup renders as a `Card`, so its content slots match Drawer and Popover. For a panel anchored to an edge, use `Drawer`; for something attached to a control without blocking the page, use `Popover`.
+The popup renders as a `Card`, so its content slots match Drawer and Popover. A composed dialog can leave the Card out; see [Unstyled popup](#unstyled-popup). For a panel anchored to an edge, use `Drawer`; for something attached to a control without blocking the page, use `Popover`.
 
 ## Close button
 
@@ -168,3 +168,33 @@ On a screen shorter than 30rem, where a pinned header and footer would leave the
 ## Composing the parts
 
 When a slot override isn't enough, build the dialog from its exported parts: `DialogRoot`, `DialogTrigger`, `DialogPortal`, `DialogBackdrop`, `DialogViewport`, `DialogPopup` and `DialogClose`, each a Base UI part under its own name. Nest them in that order, as `Dialog` does. `pending` is a `Dialog` prop, not a part's, so a composed dialog has none: `DialogClose` and the header close stay enabled, and guarding the close is up to your own `onOpenChange` on `DialogRoot`.
+
+## Unstyled popup
+
+`DialogPopup unstyled` renders the popup without its `Card`, for content that brings its own surface, such as a fullscreen viewer with its own frame and header. The children are the popup's direct content: there is no padding, background, border, radius or shadow, no header, close button or footer, and no scrolling body, so the popup is not a scroll container either. What makes it a dialog popup stays: the `size` variant, the open and close transition, the max height that keeps it inside the viewport, and the stacking above a dialog it opens from. It keeps the `dialog-popup` slot, and `className`, `ref`, `data-*`, `aria-*` and Base UI's popup props such as `initialFocus` reach the popup element.
+
+With no title, nothing names the dialog, so name it yourself with `aria-label`, or `aria-labelledby` pointing at a heading in your content. The Card slots (`title`, `description`, `action`, `footer`) and `hideCloseButton` are a type error alongside `unstyled`. Scrolling is yours too: make your content's own scroll area the element that scrolls, since the popup won't.
+
+```tsx
+<DialogRoot>
+  <DialogTrigger>
+    <Button>Open viewer</Button>
+  </DialogTrigger>
+  <DialogPortal>
+    <DialogBackdrop />
+    <DialogViewport>
+      <DialogPopup unstyled size="full" aria-label="Contract.pdf">
+        <Card
+          h="full"
+          title="Contract.pdf"
+          action={<DialogClose>Close</DialogClose>}
+        >
+          …
+        </Card>
+      </DialogPopup>
+    </DialogViewport>
+  </DialogPortal>
+</DialogRoot>
+```
+
+At `size="full"` the popup fills the viewport inside its 1.5rem padding on every side. `unstyled` belongs to the `DialogPopup` part only; `Dialog` doesn't take it, at the top level or through `PopupProps`.

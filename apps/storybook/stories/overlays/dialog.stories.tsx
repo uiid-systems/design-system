@@ -57,3 +57,6 @@ export const OpenedFromElsewhere: Story = {
 
 /** A dialog opened from another; `BackdropProps.forceRender` dims the outer one behind it. */
 export const Nested: Story = { render: () => <Examples.Nested /> };
+
+/** `DialogPopup unstyled` at `size="full"`: no Card of its own, so its content is the surface. */
+export const Unstyled: Story = { render: () => <Examples.Unstyled /> };
