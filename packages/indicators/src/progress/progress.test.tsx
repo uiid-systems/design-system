@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 
 import { Progress } from "./progress";
 import * as Examples from "./progress.examples";
+import type { ProgressProps } from "./progress.types";
 import {
   ProgressRoot,
   ProgressLabel,
@@ -436,6 +437,66 @@ describe("Progress RootProps precedence", () => {
       "aria-valuemax",
       "50",
     );
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("Progress slot props", () => {
+  it("rejects the label's children in LabelProps, which come from `label`", () => {
+    void (
+      <Progress
+        value={25}
+        label="Uploading"
+        // @ts-expect-error -- `label` is the label's content
+        LabelProps={{ children: "Other" }}
+      />
+    );
+  });
+
+  it("rejects the children Progress places in the header and track", () => {
+    void (
+      <Progress
+        value={25}
+        // @ts-expect-error -- the header holds Progress's label and readout
+        HeaderProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <Progress
+        value={25}
+        // @ts-expect-error -- the track holds Progress's indicator
+        TrackProps={{ children: "Other" }}
+      />
+    );
+  });
+});
+
+describe("Progress slot precedence", () => {
+  // Untyped on purpose: the types reject these keys, so this pins what a
+  // caller without the types gets.
+  const untyped = <T,>(slot: Record<string, unknown>) => slot as T;
+
+  it("keeps the top-level label and Progress's own parts when a slot passes children", () => {
+    const { container } = render(
+      <Progress
+        value={25}
+        label="Uploading"
+        LabelProps={untyped<ProgressProps["LabelProps"]>({
+          children: "Slot label",
+        })}
+        HeaderProps={untyped<ProgressProps["HeaderProps"]>({
+          children: "Slot header",
+        })}
+        TrackProps={untyped<ProgressProps["TrackProps"]>({
+          children: "Slot track",
+        })}
+      />,
+    );
+
+    expect(part(container, "progress-label")).toHaveTextContent("Uploading");
+    expect(part(container, "progress-value")).toBeInTheDocument();
+    expect(part(container, "progress-indicator")).toBeInTheDocument();
+    expect(screen.queryByText(/Slot/)).not.toBeInTheDocument();
   });
 });
 
