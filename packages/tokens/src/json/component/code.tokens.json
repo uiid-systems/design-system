@@ -7,6 +7,7 @@
     "letter-spacing": { "$value": "0.01em", "$type": "dimension" },
     "line-height": { "$value": 1.75, "$type": "number" },
     "tab-size": { "$value": 2, "$type": "number" },
-    "padding": { "$value": "1rem", "$type": "dimension" }
+    "padding": { "$value": "1rem", "$type": "dimension" },
+    "actions-inset": { "$value": "0.5rem", "$type": "dimension" }
   }
 }
