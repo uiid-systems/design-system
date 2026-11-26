@@ -5,6 +5,7 @@ import * as React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { CodeBlock } from "./code-block";
+import { Composed, Controlled } from "./code-block.examples";
 import type {
   CodeBlockExpandToggleProps,
   CodeBlockProps,
@@ -989,6 +990,16 @@ describe("CodeBlock parts composed by hand", () => {
     );
   });
 
+  it("keeps the expand toggle part's aria-expanded over an untyped one", () => {
+    const untyped = { "aria-expanded": true } as object;
+    render(<CodeBlockExpandToggle {...untyped} />);
+
+    expect(screen.getByRole("button", { name: "Show more" })).toHaveAttribute(
+      "aria-expanded",
+      "false",
+    );
+  });
+
   it("labels the expand toggle part with expandLabel and collapseLabel", () => {
     const { rerender } = render(
       <CodeBlockExpandToggle expandLabel="More" collapseLabel="Less" />,
@@ -1380,5 +1391,522 @@ describe("CodeBlock slot props", () => {
         />
       </>
     );
+  });
+
+  it("rejects the language CodeBlock owns in LanguageIconProps", () => {
+    void (
+      <CodeBlock
+        code=""
+        // @ts-expect-error -- `language` is set on CodeBlock itself
+        LanguageIconProps={{ language: "ts" }}
+      />
+    );
+  });
+
+  it("rejects every key CodeBlock owns in ContentProps", () => {
+    void (
+      <>
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- the highlighted markup is CodeBlock's `html`
+          ContentProps={{ html: "<pre></pre>" }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- the code is CodeBlock's `code`
+          ContentProps={{ code: "other" }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `showLineNumbers` is set on CodeBlock itself
+          ContentProps={{ showLineNumbers: true }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock owns the wrap state
+          ContentProps={{ wrap: true }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock renders the code as the content
+          ContentProps={{ children: "other" }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock renders the code as the content
+          ContentProps={{ dangerouslySetInnerHTML: { __html: "" } }}
+        />
+      </>
+    );
+  });
+
+  it("rejects every key CodeBlock owns in ExpandToggleProps", () => {
+    void (
+      <>
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- CodeBlock owns the expanded state
+          ExpandToggleProps={{ expanded: true }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `onExpandedChange` is set on CodeBlock itself
+          ExpandToggleProps={{ onExpandedChange: () => {} }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `expandLabel` is set on CodeBlock itself
+          ExpandToggleProps={{ expandLabel: "More" }}
+        />
+        <CodeBlock
+          code=""
+          // @ts-expect-error -- `collapseLabel` is set on CodeBlock itself
+          ExpandToggleProps={{ collapseLabel: "Less" }}
+        />
+      </>
+    );
+    // A props object, since TypeScript accepts any hyphenated JSX attribute.
+    const slot: CodeBlockProps["ExpandToggleProps"] = {
+      // @ts-expect-error -- `aria-expanded` follows CodeBlock's `expanded`
+      "aria-expanded": true,
+    };
+    void slot;
+  });
+});
+
+describe("CodeBlock examples", () => {
+  it("builds a block from the exported parts without CodeBlock", async () => {
+    const user = userEvent.setup();
+    render(<Composed />);
+
+    expect(
+      document.querySelector('[data-slot="code-block"]'),
+    ).not.toBeInTheDocument();
+    const header = document.querySelector<HTMLElement>(
+      '[data-slot="code-block-header"]',
+    )!;
+    expect(within(header).getByText("counter.tsx")).toBeInTheDocument();
+    expect(
+      within(header).getByRole("button", { name: "Copy code" }),
+    ).toBeInTheDocument();
+    const content = document.querySelector('[data-slot="code-block-content"]');
+    expect(content).toHaveTextContent("export function Counter()");
+    expect(content).not.toHaveAttribute("data-wrap");
+
+    await user.click(
+      within(header).getByRole("button", { name: "Toggle line wrap" }),
+    );
+    expect(content).toHaveAttribute("data-wrap", "true");
+  });
+
+  it("drives a controlled block from outside", async () => {
+    const user = userEvent.setup();
+    render(<Controlled />);
+    const content = () =>
+      document.querySelector('[data-slot="code-block-content"]');
+    expect(content()).not.toHaveAttribute("data-wrap");
+
+    await user.click(screen.getByRole("button", { name: "Wrap lines" }));
+    expect(content()).toHaveAttribute("data-wrap", "true");
+
+    await user.click(screen.getByRole("button", { name: "Open fullscreen" }));
+    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+  });
+});
+
+describe("CodeBlock ContentProps", () => {
+  const contents = () =>
+    document.querySelectorAll<HTMLElement>('[data-slot="code-block-content"]');
+
+  it("passes ContentProps to the content part", () => {
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        ContentProps={{ id: "code", className: "mine", p: 2 }}
+      />,
+    );
+
+    const content = contents()[0]!;
+    expect(content).toHaveAttribute("id", "code");
+    expect(content).toHaveClass("mine");
+    expect(content.className).not.toBe("mine");
+  });
+
+  it("passes ContentProps to the fullscreen content without its id", async () => {
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        fullscreenable
+        fullscreen
+        ContentProps={{ id: "code", className: "mine" }}
+      />,
+    );
+    await screen.findByRole("dialog");
+
+    const [inline, fullscreen] = contents();
+    expect(inline).toHaveAttribute("id", "code");
+    expect(fullscreen).toHaveClass("mine");
+    expect(fullscreen).not.toHaveAttribute("id");
+  });
+
+  it("keeps CodeBlock's code, line numbers and wrap over an untyped ContentProps", () => {
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        showLineNumbers
+        wrap
+        ContentProps={
+          {
+            html: "<pre><code>slot</code></pre>",
+            code: "slot",
+            showLineNumbers: false,
+            wrap: false,
+            // StackProps types `data-*`, so `object` alone is not assignable.
+          } as CodeBlockProps["ContentProps"]
+        }
+      />,
+    );
+
+    const content = contents()[0]!;
+    expect(content).toHaveTextContent("const x = 1;");
+    expect(content).not.toHaveTextContent("slot");
+    expect(content).toHaveAttribute("data-line-numbers", "true");
+    expect(content).toHaveAttribute("data-wrap", "true");
+  });
+
+  it("keeps the highlighted code over an untyped ContentProps.dangerouslySetInnerHTML", () => {
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        html={`<pre class="shiki"><code>const x = 1;</code></pre>`}
+        ContentProps={
+          {
+            dangerouslySetInnerHTML: { __html: "<pre>slot</pre>" },
+          } as CodeBlockProps["ContentProps"]
+        }
+      />,
+    );
+
+    const content = contents()[0]!;
+    expect(content.querySelector("pre.shiki")).toHaveTextContent(
+      "const x = 1;",
+    );
+    expect(content).not.toHaveTextContent("slot");
+  });
+
+  it("keeps the highlighted code over an untyped ContentProps.children", () => {
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        html={`<pre class="shiki"><code>const x = 1;</code></pre>`}
+        ContentProps={{ children: "slot" } as CodeBlockProps["ContentProps"]}
+      />,
+    );
+
+    const content = contents()[0]!;
+    expect(content.querySelector("pre.shiki")).toHaveTextContent(
+      "const x = 1;",
+    );
+    expect(content).not.toHaveTextContent("slot");
+  });
+});
+
+describe("CodeBlock controlled state", () => {
+  const content = () =>
+    document.querySelector('[data-slot="code-block-content"]');
+  const wrapButton = () =>
+    screen.getByRole("button", { name: /toggle line wrap/i });
+
+  it("holds a controlled wrap when onWrapChange does nothing", async () => {
+    const user = userEvent.setup();
+    const onWrapChange = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        wrappable
+        wrap={false}
+        onWrapChange={onWrapChange}
+      />,
+    );
+
+    await user.click(wrapButton());
+
+    expect(onWrapChange).toHaveBeenCalledTimes(1);
+    expect(onWrapChange).toHaveBeenCalledWith(true);
+    expect(content()).not.toHaveAttribute("data-wrap");
+    expect(wrapButton()).toHaveAttribute("aria-pressed", "false");
+  });
+
+  it("follows a controlled wrap switched from outside", () => {
+    const onWrapChange = vi.fn();
+    const { rerender } = render(
+      <CodeBlock
+        code="const x = 1;"
+        wrappable
+        wrap={false}
+        onWrapChange={onWrapChange}
+      />,
+    );
+    expect(content()).not.toHaveAttribute("data-wrap");
+
+    rerender(
+      <CodeBlock
+        code="const x = 1;"
+        wrappable
+        wrap
+        onWrapChange={onWrapChange}
+      />,
+    );
+
+    expect(content()).toHaveAttribute("data-wrap", "true");
+    expect(wrapButton()).toHaveAttribute("aria-pressed", "true");
+    expect(onWrapChange).not.toHaveBeenCalled();
+  });
+
+  it("lets a controlled wrap win over defaultWrap", () => {
+    render(<CodeBlock code="const x = 1;" wrap={false} defaultWrap />);
+    expect(content()).not.toHaveAttribute("data-wrap");
+  });
+
+  it("fires onWrapChange once per press with the next value, uncontrolled", async () => {
+    const user = userEvent.setup();
+    const onWrapChange = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        wrappable
+        defaultWrap
+        onWrapChange={onWrapChange}
+      />,
+    );
+
+    await user.click(wrapButton());
+    expect(onWrapChange).toHaveBeenCalledTimes(1);
+    expect(onWrapChange).toHaveBeenLastCalledWith(false);
+    expect(content()).not.toHaveAttribute("data-wrap");
+
+    await user.click(wrapButton());
+    expect(onWrapChange).toHaveBeenCalledTimes(2);
+    expect(onWrapChange).toHaveBeenLastCalledWith(true);
+    expect(content()).toHaveAttribute("data-wrap", "true");
+  });
+
+  it("applies a controlled wrap to the fullscreen view too", async () => {
+    render(<CodeBlock code="const x = 1;" fullscreenable fullscreen wrap />);
+
+    const dialog = await screen.findByRole("dialog");
+    expect(dialog).toHaveAttribute("data-wrap", "true");
+    expect(
+      dialog.querySelector('[data-slot="code-block-content"]'),
+    ).toHaveAttribute("data-wrap", "true");
+  });
+
+  it("opens a controlled fullscreen view on mount", async () => {
+    render(<CodeBlock code="const x = 1;" fullscreenable fullscreen />);
+
+    expect(await screen.findByRole("dialog")).toHaveAttribute(
+      "data-fullscreen",
+    );
+  });
+
+  it("asks to enter fullscreen without opening a controlled view", async () => {
+    const user = userEvent.setup();
+    const onFullscreenChange = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        fullscreenable
+        fullscreen={false}
+        onFullscreenChange={onFullscreenChange}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
+
+    await waitFor(() => expect(onFullscreenChange).toHaveBeenCalledWith(true));
+    expect(onFullscreenChange).toHaveBeenCalledTimes(1);
+    // Give a wrongly opening view the time an uncontrolled one takes to mount.
+    await expect(
+      screen.findByRole("dialog", {}, { timeout: 200 }),
+    ).rejects.toThrow();
+  });
+
+  it("keeps a controlled fullscreen view open on Escape and asks to close", async () => {
+    const user = userEvent.setup();
+    const onFullscreenChange = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        fullscreenable
+        fullscreen
+        onFullscreenChange={onFullscreenChange}
+      />,
+    );
+    await screen.findByRole("dialog");
+
+    await user.keyboard("{Escape}");
+
+    expect(onFullscreenChange).toHaveBeenCalledTimes(1);
+    expect(onFullscreenChange).toHaveBeenCalledWith(false);
+    // Base UI sets `data-closed` as soon as a close starts.
+    expect(screen.getByRole("dialog")).not.toHaveAttribute("data-closed");
+  });
+
+  it("keeps a controlled fullscreen view open on a backdrop press and asks to close", async () => {
+    const user = userEvent.setup();
+    const onFullscreenChange = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        fullscreenable
+        fullscreen
+        onFullscreenChange={onFullscreenChange}
+      />,
+    );
+    await screen.findByRole("dialog");
+
+    await user.click(
+      document.querySelector<HTMLElement>('[data-slot="code-block-backdrop"]')!,
+    );
+
+    expect(onFullscreenChange).toHaveBeenCalledTimes(1);
+    expect(onFullscreenChange).toHaveBeenCalledWith(false);
+    expect(screen.getByRole("dialog")).not.toHaveAttribute("data-closed");
+  });
+
+  it("returns focus to an outside opener when a controlled view closes", async () => {
+    const user = userEvent.setup();
+    const Opener = () => {
+      const [fullscreen, setFullscreen] = React.useState(false);
+      return (
+        <>
+          <button type="button" onClick={() => setFullscreen(true)}>
+            Open
+          </button>
+          <CodeBlock
+            code="const x = 1;"
+            fullscreenable
+            fullscreen={fullscreen}
+            onFullscreenChange={setFullscreen}
+          />
+        </>
+      );
+    };
+    render(<Opener />);
+    const opener = screen.getByRole("button", { name: "Open" });
+
+    await user.click(opener);
+    const dialog = await screen.findByRole("dialog");
+    await waitFor(() =>
+      expect(dialog).toContainElement(document.activeElement as HTMLElement),
+    );
+
+    await user.keyboard("{Escape}");
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+    await waitFor(() => expect(opener).toHaveFocus());
+  });
+
+  it("keeps a controlled fullscreen view open on the exit button and asks to close", async () => {
+    const user = userEvent.setup();
+    const onFullscreenChange = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        fullscreenable
+        fullscreen
+        onFullscreenChange={onFullscreenChange}
+      />,
+    );
+    const dialog = await screen.findByRole("dialog");
+
+    await user.click(
+      within(dialog).getByRole("button", { name: /exit fullscreen/i }),
+    );
+
+    expect(onFullscreenChange).toHaveBeenCalledTimes(1);
+    expect(onFullscreenChange).toHaveBeenCalledWith(false);
+    expect(screen.getByRole("dialog")).not.toHaveAttribute("data-closed");
+  });
+
+  it("opens and closes a controlled fullscreen view switched from outside", async () => {
+    const onFullscreenChange = vi.fn();
+    const block = (fullscreen: boolean) => (
+      <CodeBlock
+        code="const x = 1;"
+        fullscreenable
+        fullscreen={fullscreen}
+        onFullscreenChange={onFullscreenChange}
+      />
+    );
+    const { rerender } = render(block(false));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+    rerender(block(true));
+    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+
+    rerender(block(false));
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+    expect(onFullscreenChange).not.toHaveBeenCalled();
+  });
+
+  it("closes a controlled fullscreen view when the callback follows Escape", async () => {
+    const user = userEvent.setup();
+    const Controlled = () => {
+      const [fullscreen, setFullscreen] = React.useState(true);
+      return (
+        <CodeBlock
+          code="const x = 1;"
+          fullscreenable
+          fullscreen={fullscreen}
+          onFullscreenChange={setFullscreen}
+        />
+      );
+    };
+    render(<Controlled />);
+    await screen.findByRole("dialog");
+
+    await user.keyboard("{Escape}");
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+  });
+
+  it("fires onFullscreenChange once per action, uncontrolled", async () => {
+    const user = userEvent.setup();
+    const onFullscreenChange = vi.fn();
+    render(
+      <CodeBlock
+        code="const x = 1;"
+        fullscreenable
+        onFullscreenChange={onFullscreenChange}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /enter fullscreen/i }));
+    await screen.findByRole("dialog");
+    expect(onFullscreenChange).toHaveBeenCalledTimes(1);
+    expect(onFullscreenChange).toHaveBeenLastCalledWith(true);
+
+    await user.keyboard("{Escape}");
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+    expect(onFullscreenChange).toHaveBeenCalledTimes(2);
+    expect(onFullscreenChange).toHaveBeenLastCalledWith(false);
+  });
+
+  it("mounts no fullscreen view for a controlled fullscreen without fullscreenable", () => {
+    render(<CodeBlock code="const x = 1;" fullscreen />);
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(
+      document.querySelector('[data-slot="code-block-fullscreen"]'),
+    ).not.toBeInTheDocument();
   });
 });

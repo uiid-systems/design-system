@@ -8,6 +8,8 @@ import {
   Text,
 } from "@uiid/design-system";
 
+import * as Examples from "../../../../packages/code/src/code-block/code-block.examples";
+
 const meta = {
   title: "Code/Code Block",
   component: CodeBlock,
@@ -385,4 +387,16 @@ export const Languages: Story = {
       <CodeBlock code={sampleCSS} language="css" filename="styles.css" />
     </Stack>
   ),
+};
+
+/** Wrap, expanded and fullscreen held in the caller's state and set from outside. */
+export const Controlled: Story = {
+  args: { code: sampleTypeScript },
+  render: () => <Examples.Controlled />,
+};
+
+/** A block built from the exported parts, without CodeBlock. */
+export const Composed: Story = {
+  args: { code: sampleTypeScript },
+  render: () => <Examples.Composed />,
 };

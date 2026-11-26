@@ -27,11 +27,12 @@ export const CodeBlockExpandToggle = ({
     <Button
       type="button"
       data-slot="code-block-expand-toggle"
-      aria-expanded={expanded}
       className={cx(styles["code-block-expand-toggle"], className)}
       size="small"
       variant="ghost"
       {...props}
+      // After the spread, so an untyped `aria-expanded` cannot contradict `expanded`.
+      aria-expanded={expanded}
       onClick={handleClick}
     >
       {expanded ? collapseLabel : expandLabel}
