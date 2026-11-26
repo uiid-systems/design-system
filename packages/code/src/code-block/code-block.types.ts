@@ -1,5 +1,6 @@
 import type { ButtonProps, ToggleButtonProps } from "@uiid/buttons";
 import type { GroupProps, StackProps } from "@uiid/layout";
+import type { DialogPopupProps } from "@uiid/overlays";
 
 import type { CodeLanguage } from "../highlighter/highlighter.types";
 import type { LanguageIconProps } from "./language-icons";
@@ -148,6 +149,14 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
   fullscreen?: boolean;
   /** Fires with the next state when fullscreen is entered or left */
   onFullscreenChange?: (fullscreen: boolean) => void;
+  /**
+   * Where focus goes when the fullscreen view closes, as Base UI's Dialog
+   * `finalFocus`. Unset, focus returns to whatever had it when the view opened,
+   * or to the block's fullscreen toggle when that was nothing or the page body.
+   * Set it to return focus to your own control, which Safari does not focus on
+   * click.
+   */
+  finalFocus?: DialogPopupProps["finalFocus"];
   /** Fires after the code is successfully copied */
   onCopy?: (code: string) => void;
   /** Pre-highlighted HTML for SSR */

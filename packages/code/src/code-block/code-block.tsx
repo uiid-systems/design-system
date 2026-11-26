@@ -7,7 +7,7 @@ import {
   DialogRoot,
   DialogViewport,
 } from "@uiid/overlays";
-import { cx, definedProps } from "@uiid/utils";
+import { cx, definedProps, useComposedRefs } from "@uiid/utils";
 import * as React from "react";
 
 import {
@@ -47,6 +47,7 @@ export const CodeBlock = ({
   onWrapChange,
   fullscreen: fullscreenProp,
   onFullscreenChange,
+  finalFocus,
   onCopy,
   html: prerenderedHtml,
   className,
@@ -102,6 +103,26 @@ export const CodeBlock = ({
     },
     [expandedControlled, onExpandedChange],
   );
+
+  // Closing returns focus to whatever had it when the view opened. When that
+  // was nothing or the body (an open on mount, or a click in Safari, which does
+  // not focus the clicked button), the inline toggle takes it instead.
+  const fullscreenButtonRef = React.useRef<HTMLButtonElement>(null);
+  const inlineFullscreenButtonRef = useComposedRefs(
+    FullscreenButtonProps?.ref,
+    fullscreenButtonRef,
+  );
+  const focusedAtOpenRef = React.useRef<Element | null>(null);
+  React.useLayoutEffect(() => {
+    if (fullscreen) focusedAtOpenRef.current = document.activeElement;
+  }, [fullscreen]);
+  const returnFocus = React.useCallback(() => {
+    const focused = focusedAtOpenRef.current;
+    if (focused?.isConnected && focused !== focused.ownerDocument.body) {
+      return true;
+    }
+    return fullscreenButtonRef.current ?? true;
+  }, []);
 
   const [overflows, setOverflows] = React.useState(false);
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
@@ -165,7 +186,11 @@ export const CodeBlock = ({
           LanguageIconProps={slot(LanguageIconProps)}
           WrapButtonProps={slot(WrapButtonProps)}
           CopyButtonProps={{ ...slot(CopyButtonProps), onCopy }}
-          FullscreenButtonProps={slot(FullscreenButtonProps)}
+          FullscreenButtonProps={
+            inFullscreen
+              ? slot(FullscreenButtonProps)
+              : { ...FullscreenButtonProps, ref: inlineFullscreenButtonRef }
+          }
         />
 
         <div
@@ -239,6 +264,7 @@ export const CodeBlock = ({
                 aria-label={filename ?? "Code block"}
                 className={cx(styles["code-block"], className)}
                 initialFocus={popupRef}
+                finalFocus={finalFocus ?? returnFocus}
               >
                 {renderParts(true)}
               </DialogPopup>
