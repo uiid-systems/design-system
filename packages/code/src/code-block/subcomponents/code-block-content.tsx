@@ -12,7 +12,7 @@ import type { CodeBlockContentProps } from "../code-block.types";
 import styles from "../code-block.module.css";
 
 /** Shiki's `tabindex="0"` on its <pre>, set whether or not the code scrolls. */
-const PRE_TABINDEX = /^(<pre\b[^>]*?)\s+tabindex="0"/;
+const PRE_TABINDEX = /^(\s*<pre\b[^>]*?)\s+tabindex="0"/;
 
 export const CodeBlockContent = ({
   html,
@@ -22,12 +22,16 @@ export const CodeBlockContent = ({
   className,
   ref,
   "aria-label": label = "Code",
+  "aria-labelledby": labelledBy,
   ...props
 }: CodeBlockContentProps) => {
   // The content is the box that scrolls, so it is the tab stop the keyboard
   // scrolls with, and only while it has code to scroll to. While it is, it is
-  // a region named by `aria-label`, so a screen reader announces where focus
-  // landed; otherwise it is a plain box, which a name would not suit.
+  // a group named by `aria-label` (or `aria-labelledby`), so a screen reader
+  // announces where focus landed. A group, not a region: a page of code blocks
+  // would otherwise fill the landmark list with identical names that come and
+  // go as the page resizes. Otherwise it is a plain box, which a name would
+  // not suit, so neither name is set.
   const scroll = useScrollOverflow();
   const composedRef = useComposedRefs(ref, scroll.ref);
 
@@ -55,8 +59,9 @@ export const CodeBlockContent = ({
     ref: composedRef,
     ...(scroll.scrolls && {
       tabIndex: 0,
-      role: "region",
+      role: "group",
       "aria-label": label,
+      "aria-labelledby": labelledBy,
     }),
   };
 

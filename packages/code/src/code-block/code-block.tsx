@@ -93,12 +93,13 @@ export const CodeBlock = ({
     highlightLines,
     enabled: !prerenderedHtml,
   });
+  const serverHtml = React.useMemo(
+    () => prerenderedHtml && withoutTrailingLine(prerenderedHtml, code),
+    [prerenderedHtml, code],
+  );
   // After a failed highlight the last result is for older code, so the plain
   // current code shows instead until a highlight succeeds.
-  const displayHtml =
-    (prerenderedHtml && withoutTrailingLine(prerenderedHtml, code)) ||
-    (!error && html) ||
-    undefined;
+  const displayHtml = serverHtml || (!error && html) || undefined;
 
   const [expandedState, setExpandedState] = React.useState(defaultExpanded);
   const expandedControlled = expandedProp !== undefined;
@@ -292,7 +293,7 @@ const withoutIdentity = <T,>(slotProps: T): T => {
 const TRAILING_NEWLINE = /\r?\n$/;
 
 /** Shiki's empty last line, which a trailing newline in its input renders. */
-const EMPTY_LAST_LINE = /\n<span class="line"><\/span>(<\/code><\/pre>)$/;
+const EMPTY_LAST_LINE = /\n<span class="line"><\/span>(<\/code><\/pre>\s*)$/;
 
 /**
  * Server `html` is highlighted from `code` as given, so a trailing newline in

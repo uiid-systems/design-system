@@ -281,3 +281,11 @@
     scale: none;
   }
 }
+
+/* While its code scrolls, the content is a tab stop. It spans the frame, which
+   clips anything drawn outside it, so its ring is drawn inside, as the toggle's
+   is. Floating buttons cover the ring's top-right corner, not the rest of it. */
+.code-block-content:focus-visible {
+  outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+  outline-offset: calc(-1 * var(--globals-outline-width));
+}
