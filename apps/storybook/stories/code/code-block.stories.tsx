@@ -422,3 +422,15 @@ export const InFlexRow: Story = {
     </Stack>
   ),
 };
+
+/** Wrapped with line numbers: each long line wraps as one line, its later rows hanging past the number. */
+export const LongLineWrapWithLineNumbers: Story = {
+  args: {
+    code: `${sampleLongLine}\nconst url = "https://example.com/${"0123456789abcdef".repeat(12)}";`,
+    language: "typescript",
+    filename: "long-line.ts",
+    showLineNumbers: true,
+    wrappable: true,
+    defaultWrap: true,
+  },
+};
