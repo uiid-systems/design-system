@@ -354,6 +354,9 @@ importers:
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
+      '@uiid/interactive':
+        specifier: workspace:*
+        version: link:../interactive
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout
@@ -391,9 +394,6 @@ importers:
       '@uiid/config':
         specifier: workspace:*
         version: link:../config
-      '@uiid/interactive':
-        specifier: workspace:*
-        version: link:../interactive
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -776,6 +776,9 @@ importers:
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout
+      '@uiid/lists':
+        specifier: workspace:*
+        version: link:../lists
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../tokens

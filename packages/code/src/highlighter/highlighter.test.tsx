@@ -228,6 +228,18 @@ describe("highlight line markup", () => {
 
     expect(textOf(html)).toBe("const a = 1;\nconst b = 2;");
   });
+
+  it("keeps notation comments as written with notations off, still marking meta lines", async () => {
+    const code =
+      "const a = 1; // [!code ++]\nconst b = 2; // [!code highlight]";
+    const html = await highlight(code, "typescript", {
+      notations: false,
+      highlightLines: [2],
+    });
+
+    expect(textOf(html)).toBe(code);
+    expect(lineClasses(html)).toEqual(["line", "line highlighted"]);
+  });
 });
 
 describe("loadLanguage into the shared highlighter", () => {

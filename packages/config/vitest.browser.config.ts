@@ -30,6 +30,9 @@ export default defineConfig({
     ...shared,
     name: "browser",
     include: ["packages/**/*.browser.test.tsx"],
+    // One file at a time: every page uses the browser's one shared clipboard, so
+    // a copy in one file could land in another file's paste.
+    fileParallelism: false,
     browser: {
       enabled: true,
       headless: true,

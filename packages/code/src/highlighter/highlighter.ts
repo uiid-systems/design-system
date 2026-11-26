@@ -162,7 +162,7 @@ export async function highlight(
     transformerMetaHighlight,
   } = await loadRuntime();
 
-  const { highlightLines } = options;
+  const { highlightLines, notations = true } = options;
   const meta = highlightLines?.length
     ? { __raw: `{${highlightLines.join(",")}}` }
     : undefined;
@@ -180,9 +180,11 @@ export async function highlight(
     tokenizeTimeLimit: 0,
     tokenizeMaxLineLength: TOKENIZE_MAX_LINE_LENGTH,
     ...(meta && { meta }),
+    // The notation transformers strip their comments from the output
     transformers: [
-      transformerNotationDiff(),
-      transformerNotationHighlight(),
+      ...(notations
+        ? [transformerNotationDiff(), transformerNotationHighlight()]
+        : []),
       transformerMetaHighlight(),
     ],
   });

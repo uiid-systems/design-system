@@ -47,6 +47,7 @@
     "@shikijs/transformers": "^4.6.0",
     "@uiid/buttons": "workspace:*",
     "@uiid/icons": "workspace:*",
+    "@uiid/interactive": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/overlays": "workspace:*",
     "@uiid/tokens": "workspace:*",
@@ -66,7 +67,6 @@
     "@types/react-dom": "^19.1.6",
     "@uiid/cards": "workspace:*",
     "@uiid/config": "workspace:*",
-    "@uiid/interactive": "workspace:*",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "typescript": "~7.0.2"

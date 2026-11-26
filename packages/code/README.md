@@ -15,6 +15,7 @@ Each component documents its own props and behavior:
 - [CodeBlock](./src/code-block/README.md) - Read-only code with a copy button, and opt-in wrap and fullscreen buttons
 - [CodeInline](./src/code-inline/README.md) - Inline code inside text
 - [CodeEditor](./src/code-editor/README.md) - Editable code with live highlighting
+- [CodePreview](./src/code-preview/README.md) - A live example with its source collapsed beneath it
 
 ```tsx
 import { CodeBlock, CodeInline } from "@uiid/code";
@@ -62,6 +63,8 @@ function MyComponent() {
 ```
 
 Pass `{ enabled: false }` as the third argument to skip highlighting when there is nothing to do, such as plain code or pre-rendered `html`. No theme or grammar is fetched, and the hook returns empty `html` with `loading` false.
+
+While a newer value is pending, `html` is the newest highlight that has finished, which can be for an earlier value. The hook also returns `code`, the text that `html` was highlighted from: when it equals your input `html` is current, and otherwise the rest of your input after it is not highlighted yet. `loading` is true only until the first result lands, so it does not say whether `html` is current.
 
 ## Supported Languages
 

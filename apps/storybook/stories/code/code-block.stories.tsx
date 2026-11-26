@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
 } from "@uiid/design-system";
+import { useEffect, useState } from "react";
 
 import * as Examples from "../../../../packages/code/src/code-block/code-block.examples";
 
@@ -448,4 +449,103 @@ export const InDialog: Story = {
       />
     </Dialog>
   ),
+};
+
+const sampleStream = Array.from({ length: 6 }, (_, i) =>
+  [
+    `// Counter ${i + 1}: a labelled button that counts its clicks`,
+    `export function Counter${i + 1}({ label = "Clicks" }: { label?: string }) {`,
+    `  const [count, setCount] = useState(${i});`,
+    "  /* Strings, comments and tags arrive unterminated mid-stream */",
+    "  return (",
+    `    <button className="counter" onClick={() => setCount(count + 1)}>`,
+    "      {label}: {count}",
+    "    </button>",
+    "  );",
+    "}",
+  ].join("\n"),
+).join("\n\n");
+
+/** Grows `sampleStream` a few characters per frame, as a chat response does. */
+const StreamingBlock = () => {
+  const [run, setRun] = useState(0);
+  const [length, setLength] = useState(0);
+  const done = length >= sampleStream.length;
+
+  useEffect(() => {
+    if (done) return;
+    const frame = requestAnimationFrame(() =>
+      setLength((n) => Math.min(n + 6, sampleStream.length)),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [length, done]);
+
+  return (
+    <Stack gap={4} w="full">
+      <Group gap={2} ay="center">
+        <Button
+          size="small"
+          variant="subtle"
+          onClick={() => {
+            setRun((n) => n + 1);
+            setLength(0);
+          }}
+        >
+          Replay
+        </Button>
+        <Text size={-1} emphasis="muted">
+          {done ? "Done" : "Streaming…"}
+        </Text>
+      </Group>
+      {/* A new block per run, so a replay starts from empty rather than from
+          the last run's markup. */}
+      <CodeBlock
+        key={run}
+        code={sampleStream.slice(0, length)}
+        language="tsx"
+        filename="counters.tsx"
+        rows={16}
+      />
+    </Stack>
+  );
+};
+
+/** A file streamed in on load, a few characters per frame. Replay streams it again. */
+export const Streaming: Story = {
+  args: { code: sampleStream },
+  render: () => <StreamingBlock />,
+};
+
+/** In a flex row beside a label, with no `min-width: 0` anywhere: the long line scrolls inside the frame, or wraps, and the row never widens. */
+export const InFlexRow: Story = {
+  args: {
+    code: sampleLongLine,
+    language: "typescript",
+    filename: "long-line.ts",
+    wrappable: true,
+  },
+  render: (args) => (
+    <Stack gap={4} w="full">
+      <Group gap={4} w="full" ay="start">
+        <Text>Wrap off</Text>
+        <CodeBlock {...args} />
+      </Group>
+      <Group gap={4} w="full" ay="start">
+        <Text>Wrap on</Text>
+        <CodeBlock {...args} defaultWrap />
+      </Group>
+    </Stack>
+  ),
+};
+
+/** Wrapped with line numbers: each long line wraps as one line, its later rows hanging past the number. */
+export const LongLineWrapWithLineNumbers: Story = {
+  args: {
+    code: `${sampleLongLine}\nconst url = "https://example.com/${"0123456789abcdef".repeat(12)}";`,
+    language: "typescript",
+    filename: "long-line.ts",
+    showLineNumbers: true,
+    wrappable: true,
+    defaultWrap: true,
+  },
 };

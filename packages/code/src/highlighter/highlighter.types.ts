@@ -20,10 +20,33 @@ export type CodeLanguage = BundledLanguage | (string & {});
 export type HighlightOptions = {
   /** Lines to highlight, 1-indexed */
   highlightLines?: number[];
+  /**
+   * Set to `false` to leave notation comments such as `// [!code ++]` in the
+   * code as written, rather than turning them into line classes. An editor
+   * needs this, since its highlight must hold exactly the text typed.
+   * @default true
+   */
+  notations?: boolean;
 };
 
 export type HighlightResult = {
+  /**
+   * The newest finished highlight. It can be for an earlier value than the
+   * one passed in while a newer value is pending; `code` says which.
+   */
   html: string;
+  /**
+   * The text `html` was highlighted from, and empty when there is no `html`.
+   * Equal to the value passed in means `html` is current; otherwise `html`
+   * covers an earlier value, and a newer highlight is pending or has failed
+   * (see `error`). Compare with this, not `loading`.
+   */
+  code: string;
+  /**
+   * While enabled, true until the first result lands and again after
+   * re-enabling. It is not set again when the value changes, so it does not
+   * say whether `html` is current.
+   */
   loading: boolean;
   error: Error | null;
 };
