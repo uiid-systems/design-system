@@ -5,10 +5,14 @@ import * as React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import { CodeBlock } from "./code-block";
-import type { CodeBlockProps } from "./code-block.types";
+import type {
+  CodeBlockExpandToggleProps,
+  CodeBlockProps,
+} from "./code-block.types";
 import {
   CodeBlockContent,
   CodeBlockCopyButton,
+  CodeBlockExpandToggle,
   CodeBlockFullscreenButton,
   CodeBlockHeader,
   CodeBlockWrapButton,
@@ -822,6 +826,85 @@ describe("CodeBlock parts composed by hand", () => {
     ).toHaveAttribute("aria-pressed", "true");
   });
 
+  it("names the expand toggle part by its expanded state", () => {
+    const { rerender } = render(<CodeBlockExpandToggle />);
+
+    const toggle = screen.getByRole("button", { name: "Show more" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(toggle).toHaveAttribute("data-slot", "code-block-expand-toggle");
+
+    rerender(<CodeBlockExpandToggle expanded />);
+    expect(screen.getByRole("button", { name: "Show less" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+  });
+
+  it("labels the expand toggle part with expandLabel and collapseLabel", () => {
+    const { rerender } = render(
+      <CodeBlockExpandToggle expandLabel="More" collapseLabel="Less" />,
+    );
+    expect(screen.getByRole("button", { name: "More" })).toBeInTheDocument();
+
+    rerender(
+      <CodeBlockExpandToggle
+        expanded
+        expandLabel="More"
+        collapseLabel="Less"
+      />,
+    );
+    expect(screen.getByRole("button", { name: "Less" })).toBeInTheDocument();
+  });
+
+  it("asks for the opposite state when the expand toggle part is pressed", async () => {
+    const user = userEvent.setup();
+    const onExpandedChange = vi.fn();
+    const { rerender } = render(
+      <CodeBlockExpandToggle onExpandedChange={onExpandedChange} />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Show more" }));
+    expect(onExpandedChange).toHaveBeenLastCalledWith(true);
+
+    rerender(
+      <CodeBlockExpandToggle expanded onExpandedChange={onExpandedChange} />,
+    );
+    await user.click(screen.getByRole("button", { name: "Show less" }));
+    expect(onExpandedChange).toHaveBeenLastCalledWith(false);
+  });
+
+  it("runs the expand toggle part's onClick, and skips the change when prevented", async () => {
+    const user = userEvent.setup();
+    const onExpandedChange = vi.fn();
+    const onClick = vi.fn((event: React.MouseEvent) => event.preventDefault());
+    render(
+      <CodeBlockExpandToggle
+        onClick={onClick}
+        onExpandedChange={onExpandedChange}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Show more" }));
+    expect(onClick).toHaveBeenCalledOnce();
+    expect(onExpandedChange).not.toHaveBeenCalled();
+  });
+
+  it("runs the expand toggle part's onClick and then asks for the change", async () => {
+    const user = userEvent.setup();
+    const onExpandedChange = vi.fn();
+    const onClick = vi.fn();
+    render(
+      <CodeBlockExpandToggle
+        onClick={onClick}
+        onExpandedChange={onExpandedChange}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Show more" }));
+    expect(onClick).toHaveBeenCalledOnce();
+    expect(onExpandedChange).toHaveBeenCalledWith(true);
+  });
+
   it("renders a header part with its filename, language icon and buttons", () => {
     render(
       <CodeBlockHeader
@@ -1012,6 +1095,15 @@ describe("CodeBlock HeaderProps precedence", () => {
 
 /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
 describe("CodeBlock slot props", () => {
+  it("rejects aria-expanded on the expand toggle part, which derives it", () => {
+    // A props object, since TypeScript accepts any hyphenated JSX attribute.
+    const props: CodeBlockExpandToggleProps = {
+      // @ts-expect-error -- `aria-expanded` follows the part's `expanded`
+      "aria-expanded": true,
+    };
+    void props;
+  });
+
   it("rejects every key CodeBlock owns in HeaderProps", () => {
     void (
       <>

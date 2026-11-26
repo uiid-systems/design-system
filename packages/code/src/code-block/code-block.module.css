@@ -161,25 +161,9 @@
   padding: var(--code-padding);
 }
 
-.code-block-expand-toggle {
-  appearance: none;
-  width: 100%;
-  border: none;
-  border-top: var(--globals-border-width) solid var(--globals-border-color);
-  background-color: var(--shade-surface);
-  color: var(--shade-muted);
-  font-family: inherit;
-  font-size: var(--code-font-size);
-  padding: 0.5rem;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--shade-foreground);
-    background-color: var(--shade-halftone);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--shade-foreground);
-    outline-offset: -2px;
-  }
+/* The block clips its overflow and the toggle sits flush with its edges, so
+   draw the Button's ring inside the toggle. The `.code-block` ancestor
+   outranks Button's own `.button:focus-visible`, which shares this layer. */
+.code-block .code-block-expand-toggle:focus-visible {
+  outline-offset: calc(-1 * var(--globals-outline-width));
 }
