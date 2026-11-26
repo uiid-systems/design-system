@@ -22,6 +22,7 @@ import {
   CodePreviewCanvas,
   CodePreviewPanel,
   CodePreviewResetButton,
+  CodePreviewRoot,
   CodePreviewTrigger,
 } from "./subcomponents";
 
@@ -769,6 +770,28 @@ describe("CodePreview", () => {
       await user.click(screen.getByRole("button", { name: "Open" }));
       expect(screen.getByText("Panel content")).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+    });
+
+    it("renders the frame as CodePreviewRoot, the same root CodePreview draws", () => {
+      const { container } = render(
+        <>
+          <CodePreviewRoot className="custom" data-testid="composed" />
+          <CodePreview data-testid="assembled">x</CodePreview>
+        </>,
+      );
+      const composed = screen.getByTestId("composed");
+      const assembled = screen.getByTestId("assembled");
+      expect(composed).toHaveAttribute("data-slot", "code-preview");
+      expect(composed).toHaveClass("custom");
+      // The frame's own class is on both, so the look comes with the part.
+      const frameClass = [...assembled.classList].find((c) =>
+        c.includes("code-preview"),
+      );
+      expect(frameClass).toBeDefined();
+      expect(composed).toHaveClass(frameClass!);
+      expect(
+        container.querySelectorAll('[data-slot="code-preview"]'),
+      ).toHaveLength(2);
     });
 
     it("keeps a caller's layout props on the canvas and bar", () => {

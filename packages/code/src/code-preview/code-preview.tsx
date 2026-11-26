@@ -1,7 +1,5 @@
 "use client";
 
-import { CollapsibleRoot } from "@uiid/interactive";
-import { cx } from "@uiid/utils";
 import * as React from "react";
 
 import { CodeBlockContent, CodeBlockCopyButton } from "../code-block";
@@ -13,6 +11,7 @@ import {
   CodePreviewCanvas,
   CodePreviewPanel,
   CodePreviewResetButton,
+  CodePreviewRoot,
   CodePreviewTrigger,
 } from "./subcomponents";
 import { CodePreviewBoundary } from "./subcomponents/code-preview-boundary";
@@ -91,9 +90,8 @@ export const CodePreview = ({
   });
 
   return (
-    <CollapsibleRoot
-      data-slot="code-preview"
-      className={cx(styles["code-preview"], className)}
+    <CodePreviewRoot
+      className={className}
       {...props}
       open={open}
       onOpenChange={handleOpenChange}
@@ -143,7 +141,7 @@ export const CodePreview = ({
           </CodePreviewPanel>
         </>
       )}
-    </CollapsibleRoot>
+    </CodePreviewRoot>
   );
 };
 CodePreview.displayName = "CodePreview";

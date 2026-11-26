@@ -1,8 +1,13 @@
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { userEvent } from "vitest/browser";
+import { page, userEvent } from "vitest/browser";
 
+import {
+  mountSized,
+  waitForHighlight,
+} from "../code-block/code-block.browser.test.helpers";
 import { CodePreview } from "./code-preview";
+import * as Examples from "./code-preview.examples";
 
 // The spacing, border and form-size tokens come from the global sheet.
 import "@uiid/tokens/globals.css";
@@ -106,5 +111,42 @@ describe("CodePreview reset button", () => {
       };
     };
     expect(measure("resettable")).toEqual(measure("plain"));
+  });
+});
+
+/** A frame's look: its border, its radius and the colour of each zone. */
+const readLook = (root: ParentNode) => {
+  const frame = query(root, '[data-slot="code-preview"]');
+  const style = (slot: string) =>
+    getComputedStyle(query(frame, `[data-slot="${slot}"]`));
+  const pre = frame.querySelector("pre");
+  return {
+    border: getComputedStyle(frame).borderTop,
+    radius: getComputedStyle(frame).borderTopLeftRadius,
+    overflow: getComputedStyle(frame).overflow,
+    canvas: style("code-preview-canvas").backgroundColor,
+    bar: style("code-preview-bar").backgroundColor,
+    panel: style("code-preview-panel").backgroundColor,
+    code: pre && getComputedStyle(pre).backgroundColor,
+  };
+};
+
+describe("CodePreview composed from its parts", () => {
+  it("looks the same as the assembled preview, and highlights once open", async () => {
+    const assembled = mountSized(<Examples.Default />);
+    const composed = mountSized(<Examples.Composed />);
+
+    for (const root of [assembled, composed]) {
+      await userEvent.click(
+        page.getByRole("button", { name: "Show code" }).first(),
+      );
+      await waitForHighlight(root);
+    }
+
+    const look = readLook(composed);
+    expect(look).toEqual(readLook(assembled));
+    // The two zones differ, and the frame has a border.
+    expect(look.canvas).not.toBe(look.code);
+    expect(look.border).not.toMatch(/^0px/);
   });
 });

@@ -13,6 +13,12 @@ import type {
 } from "../code-block/code-block.types";
 import type { CodeLanguage } from "../highlighter/highlighter.types";
 
+/**
+ * The frame around the canvas, the bar and the code: a `CollapsibleRoot` that
+ * opens and closes the panel.
+ */
+export type CodePreviewRootProps = WithStringClassName<CollapsibleRootProps>;
+
 /** The area that holds the live example. */
 export type CodePreviewCanvasProps = StackProps;
 

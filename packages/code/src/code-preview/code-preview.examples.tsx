@@ -1,15 +1,16 @@
 import { Button } from "@uiid/buttons";
-import { CollapsibleRoot } from "@uiid/interactive";
 import { Group, Stack } from "@uiid/layout";
 import { Reveal, Text } from "@uiid/typography";
 import { useState } from "react";
 
 import { CodeBlockContent, CodeBlockCopyButton } from "../code-block";
+import { useHighlight } from "../highlighter/highlighter.hooks";
 import { CodePreview } from "./code-preview";
 import {
   CodePreviewBar,
   CodePreviewCanvas,
   CodePreviewPanel,
+  CodePreviewRoot,
   CodePreviewTrigger,
 } from "./subcomponents";
 
@@ -126,20 +127,25 @@ export const Controlled = () => {
 };
 
 /**
- * The parts sit under a `CollapsibleRoot` from `@uiid/interactive`. The
- * monolithic CodePreview adds the frame, the highlighting and the copy button.
+ * The same preview from its parts. `CodePreviewRoot` is the frame, and
+ * `useHighlight` colors the code. Unlike CodePreview, this highlights on mount
+ * rather than waiting for the first open.
  */
-export const Composed = () => (
-  <CollapsibleRoot>
-    <CodePreviewCanvas>
-      <Actions />
-    </CodePreviewCanvas>
-    <CodePreviewBar>
-      <CodePreviewTrigger />
-      <CodeBlockCopyButton code={SAMPLE} />
-    </CodePreviewBar>
-    <CodePreviewPanel>
-      <CodeBlockContent code={SAMPLE} />
-    </CodePreviewPanel>
-  </CollapsibleRoot>
-);
+export const Composed = () => {
+  const { html } = useHighlight(SAMPLE, "tsx");
+
+  return (
+    <CodePreviewRoot>
+      <CodePreviewCanvas>
+        <Actions />
+      </CodePreviewCanvas>
+      <CodePreviewBar>
+        <CodePreviewTrigger />
+        <CodeBlockCopyButton code={SAMPLE} />
+      </CodePreviewBar>
+      <CodePreviewPanel>
+        <CodeBlockContent code={SAMPLE} html={html || undefined} />
+      </CodePreviewPanel>
+    </CodePreviewRoot>
+  );
+};
