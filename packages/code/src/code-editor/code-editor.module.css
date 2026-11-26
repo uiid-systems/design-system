@@ -1,10 +1,8 @@
+/* The frame (border, radius, clip and the editor theme's surface) is CodeBlock's
+   `.code-block`, which the root also carries, so a block and an editor stacked
+   together are one family. Only the editor's own states live here. */
 .code-editor {
   composes: composes-disabled from global;
-
-  border: var(--globals-border-width) solid var(--globals-border-color);
-  border-radius: var(--globals-border-radius);
-  overflow: hidden;
-  position: relative;
 
   /* The focus ring form controls draw (composes-field-surface), on the editor
      because the textarea resets its own outline. Scoped to the textarea so a
@@ -14,6 +12,27 @@
 
   &:has(.code-editor-textarea:focus-visible) {
     outline-style: var(--globals-outline-style);
+  }
+}
+
+/* Read-only dashes the frame's border. The code keeps the editor theme's surface in
+   every state, since the token colours are tuned for it; a lighter or darker surface
+   behind them drops common tokens below 4.5:1. Disabled dims the whole frame instead
+   (composes-disabled). The cue is visual only: assistive technology reads the
+   textarea's native `readonly`. */
+.code-editor[data-readonly] {
+  border-style: dashed;
+}
+
+/* With no bar the copy button floats over the top-right corner. CodeBlock keeps only
+   its first line clear of it, but a textarea cannot pad one line, so every line of
+   both layers keeps the button, its gap and the inset clear. Both layers take the
+   same padding, so they still wrap at the same point; under a stacked CodeBlock the
+   editor's later lines wrap one button's width sooner. */
+.code-editor:has(> [data-slot="code-block-header"][data-floating]) {
+  & .code-editor-textarea,
+  & .code-editor-highlight :global(pre) {
+    padding-inline-end: calc(var(--forms-size-xs-height) + var(--code-actions-gap) + var(--code-actions-inset));
   }
 }
 
@@ -48,6 +67,20 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
   }
+
+  /* A textarea gives the empty line after a trailing newline (or an empty value) a row,
+     while a `<pre>` ending in a newline does not, so the textarea would outgrow this
+     layer and scroll on its own. A zero-width space gives that line its row here too. */
+  & :global(.line:last-child:empty)::after {
+    content: "\200b";
+  }
+}
+
+/* The value painted as plain text before the first highlight lands, in the colour the
+   caret takes. Afterwards the `<pre>` is Shiki's, and a line still waiting for its
+   highlight takes Shiki's own foreground. */
+.code-editor-plain {
+  color: var(--shade-foreground);
 }
 
 /* Line numbers sit in the gutter, out of the text flow, so the code wraps as the textarea's does.

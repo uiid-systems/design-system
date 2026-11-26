@@ -15,6 +15,7 @@ Each component documents its own props and behavior:
 - [CodeBlock](./src/code-block/README.md) - Read-only code with a copy button, and opt-in wrap and fullscreen buttons
 - [CodeInline](./src/code-inline/README.md) - Inline code inside text
 - [CodeEditor](./src/code-editor/README.md) - Editable code with live highlighting
+- [CodePreview](./src/code-preview/README.md) - A live example with its source collapsed beneath it
 
 ```tsx
 import { CodeBlock, CodeInline } from "@uiid/code";

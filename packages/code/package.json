@@ -47,6 +47,7 @@
     "@shikijs/transformers": "^4.6.0",
     "@uiid/buttons": "workspace:*",
     "@uiid/icons": "workspace:*",
+    "@uiid/interactive": "workspace:*",
     "@uiid/layout": "workspace:*",
     "@uiid/overlays": "workspace:*",
     "@uiid/tokens": "workspace:*",

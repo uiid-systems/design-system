@@ -1,3 +1,5 @@
+"use client";
+
 import { Stack } from "@uiid/layout";
 import { cx, useComposedRefs } from "@uiid/utils";
 import * as React from "react";
@@ -5,9 +7,13 @@ import * as React from "react";
 import { DEFAULT_SHOW_LINE_NUMBERS, DEFAULT_WRAP } from "../../code.constants";
 import { codeContentVariants } from "../../code.variants";
 import { HighlightedCodeContext } from "../code-block.context";
+import { useScrollOverflow } from "../code-block.hooks";
 import type { CodeBlockContentProps } from "../code-block.types";
 
 import styles from "../code-block.module.css";
+
+/** Shiki's `tabindex="0"` on its <pre>, set whether or not the code scrolls. */
+const PRE_TABINDEX = /^(\s*<pre\b[^>]*?)\s+tabindex="0"/;
 
 export const CodeBlockContent = ({
   html,
@@ -16,14 +22,30 @@ export const CodeBlockContent = ({
   wrap = DEFAULT_WRAP,
   className,
   ref,
+  "aria-label": label = "Code",
+  "aria-labelledby": labelledBy,
   ...props
 }: CodeBlockContentProps) => {
+  // The content is the box that scrolls, so it is the tab stop the keyboard
+  // scrolls with, and only while it has code to scroll to. While it is, it is
+  // a group named by `aria-label` (or `aria-labelledby`), so a screen reader
+  // announces where focus landed. A group, not a region: a page of code blocks
+  // would otherwise fill the landmark list with identical names that come and
+  // go as the page resizes. Otherwise it is a plain box, which a name would
+  // not suit, so neither name is set.
+  const scroll = useScrollOverflow();
   const ownRef = React.useRef<HTMLDivElement>(null);
-  const composedRef = useComposedRefs(ownRef, ref);
-  // React rewrites `innerHTML` whenever this object changes, so it changes
-  // only with `html`. Every other render leaves the markup, and the remainder
-  // below, in place.
-  const innerHtml = React.useMemo(() => ({ __html: html ?? "" }), [html]);
+  const composedRef = useComposedRefs(ownRef, ref, scroll.ref);
+
+  // Shiki's own tab stop on the <pre> is removed from the markup itself, so
+  // the server and the client render the same string. One object per string:
+  // React writes `innerHTML` again whenever the object changes, which would
+  // replace the code, any selection in it, and the remainder below, on every
+  // render.
+  const innerHtml = React.useMemo(
+    () => html && { __html: html.replace(PRE_TABINDEX, "$1") },
+    [html],
+  );
 
   // A stream can outrun the highlighter, leaving `html` for an earlier start
   // of `code`. Show the rest uncolored, before paint, so every character is
@@ -38,6 +60,7 @@ export const CodeBlockContent = ({
     if (!el) return;
     return appendRemainder(el, remainder);
   }, [html, remainder]);
+
   const sharedClass = cx(
     styles["code-block-content"],
     wrap && styles["code-block-content-wrap"],
@@ -50,10 +73,17 @@ export const CodeBlockContent = ({
     "data-wrap": wrap || undefined,
     ax: "stretch" as const,
     w: "full" as const,
+    ref: composedRef,
+    ...(scroll.scrolls && {
+      tabIndex: 0,
+      role: "group",
+      "aria-label": label,
+      "aria-labelledby": labelledBy,
+    }),
   };
 
   // Highlighted (shiki) path — preferred when html is available.
-  if (html) {
+  if (innerHtml) {
     return (
       <Stack
         {...sharedAttrs}
@@ -70,7 +100,8 @@ export const CodeBlockContent = ({
   // space (or a "Loading..." string). It mirrors Shiki's markup: a newline
   // between the line spans is what breaks the rows inside the <pre>, and a
   // blank line is an empty span, so nothing moves when the colors land.
-  const lines = (code ?? "").split("\n");
+  // Split on CRLF too, as Shiki does, so no line ends in a stray `\r`.
+  const lines = (code ?? "").split(/\r?\n/);
   return (
     <Stack
       {...sharedAttrs}

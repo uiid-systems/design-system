@@ -42,9 +42,11 @@ import { CodeEditor } from "@uiid/code";
 | `CopyButtonProps` | `CodeBlockCopyButtonProps`, less `code`               | —              | Props for copy button        |
 | `TextareaProps`   | `CodeEditorTextareaProps`                             | —              | Props for the textarea       |
 
-The copy button is left out while the value is empty, rather than shown disabled, and appears once there is something to copy. The header is drawn whenever there is a `filename` or `copyable` is on, including while the value is empty.
+The copy button is left out while the value is empty, rather than shown disabled, and appears once there is something to copy. The header follows CodeBlock's rule: a bar is drawn when there is a `filename` (or a `HeaderProps.language` icon or children), including while the value is empty. With none of them there is no bar, and the copy button floats in the top-right corner over the code, out of the flow, so the textarea never moves as it comes and goes; every line of the editor keeps the button's width clear, since a textarea cannot pad its first line alone, so beside a CodeBlock the editor's later lines wrap one button's width sooner.
 
-`HeaderProps` takes the header's own layout and element props. `filename`, `copyable`, the copied code (the editor's value) and `CopyButtonProps` are set on CodeEditor, so passing one through `HeaderProps` is a type error. At runtime CodeEditor's value wins, for `filename` only when it is set. The header shows no language icon unless `HeaderProps.language` names one, such as `HeaderProps={{ language: "python" }}`; that icon is independent of the top-level `language`, which only picks the highlighting.
+The editor wears CodeBlock's frame: the same border, radius and editor-theme surface, with the same header, padding, line-number gutter and typography, so a block and an editor stacked together line up. Focus on the textarea draws the focus ring around the frame. The code stays on the editor theme's surface in every state, since the token colours are tuned for it. Read-only dashes the frame's border and disabled dims the whole frame; the root carries `data-readonly` and `data-disabled` for each. The dashed border is a visual cue only: assistive technology reads the textarea's native `readonly`, so no `aria-readonly` is needed.
+
+`HeaderProps` takes the header's own layout and element props. `filename`, `copyable`, the copied code (the editor's value) and `CopyButtonProps` are set on CodeEditor, so passing one through `HeaderProps` is a type error. The wrap and fullscreen keys are left out too, since the editor has neither button. At runtime CodeEditor's value wins, for `filename` only when it is set. The header shows no language icon unless `HeaderProps.language` names one, such as `HeaderProps={{ language: "python" }}`; that icon is independent of the top-level `language`, which only picks the highlighting.
 
 `TextareaProps` reaches the `<textarea>` itself, so it is where `name`, `id`, `ref`, `onBlur` and `aria-*` go; a top-level `ref` or `aria-label` still lands on the root container. The textarea is named "Code editor", or "{filename} code editor" when `filename` is set, unless `TextareaProps` carries an `aria-label` or `aria-labelledby`. `value`, `defaultValue`, `readOnly`, `disabled` and `placeholder` stay top-level props, and `onChange` and `onScroll` run after the editor's own handlers.
 
@@ -91,6 +93,8 @@ The editor uses a transparent `<textarea>` overlaid on syntax-highlighted code v
 │ └──────────────────────────────────┘ │
 └──────────────────────────────────────┘
 ```
+
+The textarea's own text is transparent, so the backdrop must always hold exactly the textarea's text. A highlight lands one pass after the value changes. Until it does, every line whose text the last highlight already paints keeps that highlight, and only a changed or new line is painted as plain text (the backdrop carries `data-pending` meanwhile), so a typed or pasted character shows in the frame it is typed, the rest of the code keeps its colours and the caret never sits over different text. Line endings are worked in LF, as the textarea holds them, so a value with CRLF endings highlights too. Notation comments such as `// [!code ++]` stay in the code as typed, rather than being turned into diff or highlight lines as CodeBlock does. With `rows` the layer is capped at that many lines and scrolls as one, so the textarea never scrolls on its own; without it the editor grows with its content.
 
 ## See Also
 

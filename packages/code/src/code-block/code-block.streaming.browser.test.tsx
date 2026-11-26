@@ -177,7 +177,10 @@ const settle = async (
   onFrame: () => void,
   maxFrames = 600,
 ) => {
-  const oneShot = serialized(await highlight(text, "tsx"));
+  // The content renders Shiki's markup without the <pre>'s own tab stop.
+  const oneShot = serialized(
+    (await highlight(text, "tsx")).replace(' tabindex="0"', ""),
+  );
   for (let i = 0; i < maxFrames && content(root).innerHTML !== oneShot; i++) {
     onFrame();
     await nextFrame();
@@ -226,16 +229,21 @@ describe("CodeBlock while its code streams in", () => {
         if (highlighted && !now) plainAfterHighlight++;
         highlighted ||= now;
 
+        // A chunk can end on a newline, which CodeBlock leaves out: it ends
+        // the last line and starts no blank one until more code arrives.
+        const expected = code.replace(/\r?\n$/, "");
         const shown = shownText(root);
-        if (shown !== code) {
-          failures.push(`${at}: ${shown?.length} of ${code.length} characters`);
+        if (shown !== expected) {
+          failures.push(
+            `${at}: ${shown?.length} of ${expected.length} characters`,
+          );
         }
 
         // The block's height moves only with its line count, and both only
         // grow.
         const lines = lineCount(root);
         const { height } = getBlock(root).getBoundingClientRect();
-        if (lines !== code.split("\n").length) {
+        if (lines !== expected.split("\n").length) {
           failures.push(`${at}: ${lines} lines`);
         }
         if (lines === last.lines && height !== last.height) {

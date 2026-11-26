@@ -7,7 +7,7 @@ import {
   DialogRoot,
   DialogViewport,
 } from "@uiid/overlays";
-import { cx, definedProps } from "@uiid/utils";
+import { cx, definedProps, useComposedRefs } from "@uiid/utils";
 import * as React from "react";
 
 import {
@@ -48,6 +48,7 @@ export const CodeBlock = ({
   onWrapChange,
   fullscreen: fullscreenProp,
   onFullscreenChange,
+  finalFocus,
   onCopy,
   html: prerenderedHtml,
   className,
@@ -87,17 +88,26 @@ export const CodeBlock = ({
     [fullscreenControlled, onFullscreenChange],
   );
 
+  // A trailing newline ends the last line rather than starting a blank one, so
+  // the code shown leaves it out. The copy button still copies `code` as given.
+  const shownCode = code.replace(TRAILING_NEWLINE, "");
   const {
     html,
     code: highlightedCode,
     error,
-  } = useHighlight(code, language, {
+  } = useHighlight(shownCode, language, {
     highlightLines,
     enabled: !prerenderedHtml,
   });
-  const displayHtml = prerenderedHtml || html || undefined;
+  const serverHtml = React.useMemo(
+    () => prerenderedHtml && withoutTrailingLine(prerenderedHtml, code),
+    [prerenderedHtml, code],
+  );
+  // After a failed highlight the last result is for older code, so the plain
+  // current code shows instead until a highlight succeeds.
+  const displayHtml = serverHtml || (!error && html) || undefined;
   // Prerendered html is taken as covering all of `code`.
-  const displayHtmlCode = prerenderedHtml ? undefined : highlightedCode;
+  const displayHtmlCode = serverHtml ? undefined : highlightedCode;
 
   const [expandedState, setExpandedState] = React.useState(defaultExpanded);
   const expandedControlled = expandedProp !== undefined;
@@ -109,6 +119,30 @@ export const CodeBlock = ({
     },
     [expandedControlled, onExpandedChange],
   );
+
+  // Closing returns focus to whatever had it when the view opened. When that
+  // was nothing, the body, or an element since removed (an open on mount, or a
+  // click in Safari, which does not focus the clicked button), the inline
+  // toggle takes it instead. Base UI treats a function as an explicit return,
+  // so focus moves on close even if the caller moved it outside the view first.
+  const fullscreenButtonRef = React.useRef<HTMLButtonElement>(null);
+  const inlineFullscreenButtonRef = useComposedRefs(
+    FullscreenButtonProps?.ref,
+    fullscreenButtonRef,
+  );
+  const focusedAtOpenRef = React.useRef<Element | null>(null);
+  React.useLayoutEffect(() => {
+    if (!fullscreen) return;
+    const doc = fullscreenButtonRef.current?.ownerDocument ?? document;
+    focusedAtOpenRef.current = doc.activeElement;
+  }, [fullscreen]);
+  const returnFocus = React.useCallback(() => {
+    const focused = focusedAtOpenRef.current;
+    if (focused?.isConnected && focused !== focused.ownerDocument.body) {
+      return true;
+    }
+    return fullscreenButtonRef.current ?? true;
+  }, []);
 
   const [overflows, setOverflows] = React.useState(false);
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
@@ -172,7 +206,11 @@ export const CodeBlock = ({
           LanguageIconProps={slot(LanguageIconProps)}
           WrapButtonProps={slot(WrapButtonProps)}
           CopyButtonProps={{ ...slot(CopyButtonProps), onCopy }}
-          FullscreenButtonProps={slot(FullscreenButtonProps)}
+          FullscreenButtonProps={
+            inFullscreen
+              ? slot(FullscreenButtonProps)
+              : { ...FullscreenButtonProps, ref: inlineFullscreenButtonRef }
+          }
         />
 
         <div
@@ -188,9 +226,10 @@ export const CodeBlock = ({
               is not routed through definedProps() as filename is above. */}
           <HighlightedCodeContext value={displayHtmlCode}>
             <CodeBlockContent
+              aria-label={filename}
               {...withoutContent(slot(ContentProps))}
               html={displayHtml}
-              code={code}
+              code={shownCode}
               showLineNumbers={showLineNumbers}
               wrap={wrap}
             />
@@ -248,6 +287,7 @@ export const CodeBlock = ({
                 aria-label={filename ?? "Code block"}
                 className={cx(styles["code-block"], className)}
                 initialFocus={popupRef}
+                finalFocus={finalFocus ?? returnFocus}
               >
                 {renderParts(true)}
               </DialogPopup>
@@ -288,3 +328,16 @@ const withoutIdentity = <T,>(slotProps: T): T => {
   const { id: _id, ref: _ref, ...rest } = slotProps as T & WithIdentity;
   return rest as T;
 };
+
+const TRAILING_NEWLINE = /\r?\n$/;
+
+/** Shiki's empty last line, which a trailing newline in its input renders. */
+const EMPTY_LAST_LINE = /\n<span class="line"><\/span>(<\/code><\/pre>\s*)$/;
+
+/**
+ * Server `html` is highlighted from `code` as given, so a trailing newline in
+ * it leaves an empty last line in the markup. Drop that line, as the code shown
+ * on the client drops the newline.
+ */
+const withoutTrailingLine = (html: string, code: string) =>
+  TRAILING_NEWLINE.test(code) ? html.replace(EMPTY_LAST_LINE, "$1") : html;
