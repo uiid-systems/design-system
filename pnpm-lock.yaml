@@ -357,6 +357,9 @@ importers:
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout
+      '@uiid/overlays':
+        specifier: workspace:*
+        version: link:../overlays
       '@uiid/tokens':
         specifier: workspace:*
         version: link:../tokens
