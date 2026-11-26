@@ -24,6 +24,8 @@ export type UseHighlightOptions = Pick<HighlightOptions, "highlightLines"> & {
 /** One set of inputs to highlight, and the key that identifies it. */
 type HighlightRequest = {
   key: string;
+  /** How many times the hook had been disabled when the request was made. */
+  generation: number;
   code: string;
   language: CodeLanguage;
   highlightLines: number[] | undefined;
@@ -43,12 +45,16 @@ export function useHighlight(
   const [error, setError] = useState<Error | null>(null);
 
   // One highlight runs at a time and at most one waits. A new value replaces
-  // the waiting one, so a fast stream skips the values in between. A result
-  // is kept only if it is for the latest value, which is null while disabled
-  // or unmounted.
+  // the waiting one, so a fast stream skips the values in between. Passes
+  // finish in order, so each result is newer than the one shown and is kept
+  // even while a newer value is pending: a stream never waits for its latest
+  // value. Only the latest value's result ends loading or reports an error.
+  // Nothing is kept while disabled or unmounted (the latest value is null),
+  // nor from a pass started before the last disable (an older generation).
   const latestRef = useRef<HighlightRequest | null>(null);
   const runningRef = useRef<HighlightRequest | null>(null);
   const waitingRef = useRef<HighlightRequest | null>(null);
+  const generationRef = useRef(0);
 
   // Stable key so callers don't need to memoize the highlightLines array
   const highlightLinesKey = options.highlightLines?.join(",") ?? "";
@@ -56,6 +62,7 @@ export function useHighlight(
   useEffect(() => {
     if (!enabled) {
       latestRef.current = null;
+      generationRef.current++;
       waitingRef.current = null;
       // Clear the last result so re-enabling never shows stale markup.
       setHtml("");
@@ -66,6 +73,7 @@ export function useHighlight(
 
     const request: HighlightRequest = {
       key: JSON.stringify([code, language, highlightLinesKey]),
+      generation: generationRef.current,
       code,
       language,
       highlightLines: options.highlightLines,
@@ -82,10 +90,16 @@ export function useHighlight(
       })
         .then(
           (result) => {
-            if (!isLatest(next)) return;
-            setHtml(result);
-            setLoading(false);
-            setError(null);
+            if (isLatest(next)) {
+              setHtml(result);
+              setLoading(false);
+              setError(null);
+            } else if (
+              latestRef.current &&
+              next.generation === generationRef.current
+            ) {
+              setHtml(result);
+            }
           },
           (err) => {
             if (!isLatest(next)) return;

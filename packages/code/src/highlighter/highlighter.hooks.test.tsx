@@ -154,13 +154,31 @@ describe("useHighlight request race", () => {
     expect(result.current.html).toBe("<pre>second</pre>");
   });
 
-  it("stays loading while only a stale request has settled", async () => {
+  // A stream never pauses for its latest value, so the newest finished pass is
+  // shown while the latest is pending, and loading stays true until it lands.
+  it("shows a stale result and stays loading while the latest is pending", async () => {
     const first = deferHighlight();
     deferHighlight();
     const { result, rerender } = renderCode("first");
     rerender({ code: "second" });
 
     await first.resolve("<pre>first</pre>");
+
+    expect(result.current.html).toBe("<pre>first</pre>");
+    expect(result.current.loading).toBe(true);
+  });
+
+  it("never shows a result from before it was disabled", async () => {
+    const first = deferHighlight();
+    deferHighlight();
+    const { result, rerender } = renderHook(
+      ({ code, enabled }) => useHighlight(code, "typescript", { enabled }),
+      { initialProps: { code: "old", enabled: true } },
+    );
+    rerender({ code: "old", enabled: false });
+    rerender({ code: "new", enabled: true });
+
+    await first.resolve("<pre>old</pre>");
 
     expect(result.current.html).toBe("");
     expect(result.current.loading).toBe(true);
@@ -277,11 +295,17 @@ describe("useHighlight scheduling", () => {
       initialProps: { code },
     });
 
-    // A highlight takes as long as ten chunks to arrive
+    // A highlight takes as long as ten chunks to arrive. Each pass is shown as
+    // it lands, though the stream has moved on.
     for (let i = 1; i < chunks.length; i++) {
       code += chunks[i];
       rerender({ code });
-      if (i % 10 === 0) await control.resolveCurrent();
+      if (i % 10 === 0) {
+        const pass = control.calls.at(-1)!.code;
+        await control.resolveCurrent();
+        expect(result.current.html).toBe(markupFor(pass));
+        expect(result.current.loading).toBe(true);
+      }
     }
     // The pass started at chunk 390, then the final text
     await control.resolveCurrent();
