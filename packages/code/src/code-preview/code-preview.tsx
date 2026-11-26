@@ -12,8 +12,10 @@ import {
   CodePreviewBar,
   CodePreviewCanvas,
   CodePreviewPanel,
+  CodePreviewResetButton,
   CodePreviewTrigger,
 } from "./subcomponents";
+import { CodePreviewBoundary } from "./subcomponents/code-preview-boundary";
 
 import styles from "./code-preview.module.css";
 
@@ -31,6 +33,8 @@ export const CodePreview = ({
   onOpenChange,
   copyable = DEFAULT_COPYABLE,
   onCopy,
+  resettable = false,
+  onReset,
   showLabel,
   hideLabel,
   className,
@@ -38,6 +42,7 @@ export const CodePreview = ({
   BarProps,
   TriggerProps,
   PanelProps,
+  ResetButtonProps,
   CopyButtonProps,
   ContentProps,
   ...props
@@ -60,6 +65,25 @@ export const CodePreview = ({
   const [shown, setShown] = React.useState(open);
   if (open && !shown) setShown(true);
 
+  // Bumped by reset. It keys the boundary around `children`, so the example
+  // remounts from the nodes it was given, which is all a server component
+  // hands over, and a caught error clears with it. The reset button sits
+  // outside the keyed subtree, so it keeps focus across the remount.
+  const [resetKey, setResetKey] = React.useState(0);
+  const cornerRef = React.useRef<HTMLDivElement>(null);
+  const handleReset = () => {
+    // Focus held inside the example would drop to the body as it remounts,
+    // which is where it is when a click does not focus the button (Safari).
+    // Move it to the reset button first.
+    const corner = cornerRef.current;
+    const active = document.activeElement;
+    if (corner?.parentElement?.contains(active) && !corner.contains(active)) {
+      corner.querySelector("button")?.focus();
+    }
+    setResetKey((key) => key + 1);
+    onReset?.();
+  };
+
   const hasCode = !!code;
   const { html } = useHighlight(code ?? "", language, {
     highlightLines,
@@ -74,7 +98,23 @@ export const CodePreview = ({
       open={open}
       onOpenChange={handleOpenChange}
     >
-      <CodePreviewCanvas {...CanvasProps}>{children}</CodePreviewCanvas>
+      <CodePreviewCanvas {...CanvasProps}>
+        <CodePreviewBoundary key={resetKey}>{children}</CodePreviewBoundary>
+        {resettable && (
+          // Places the button in the corner. The button stays in this box's
+          // flow, so its tooltip anchors to the button.
+          <div
+            ref={cornerRef}
+            data-slot="code-preview-reset"
+            className={styles["code-preview-reset"]}
+          >
+            <CodePreviewResetButton
+              {...ResetButtonProps}
+              onClick={handleReset}
+            />
+          </div>
+        )}
+      </CodePreviewCanvas>
 
       {hasCode && (
         <>

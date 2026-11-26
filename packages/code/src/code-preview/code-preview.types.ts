@@ -1,3 +1,4 @@
+import type { ButtonProps } from "@uiid/buttons";
 import type {
   CollapsiblePanelProps,
   CollapsibleRootProps,
@@ -33,6 +34,9 @@ export type CodePreviewTriggerProps = WithStringClassName<
   hideLabel?: React.ReactNode;
 };
 
+/** The icon button that remounts the example. Named "Reset preview". */
+export type CodePreviewResetButtonProps = Omit<ButtonProps, "children">;
+
 /** The area that holds the code. */
 export type CodePreviewPanelProps = Omit<CollapsiblePanelProps, "orientation">;
 
@@ -67,6 +71,14 @@ export type CodePreviewProps = Omit<
     /** Fires after the code is successfully copied */
     onCopy?: (code: string) => void;
     /**
+     * Render a reset button in the canvas that remounts `children`, so load
+     * animations replay and state inside the example returns to its start.
+     * @default false
+     */
+    resettable?: boolean;
+    /** Fires on each press of the reset button, before the example remounts */
+    onReset?: () => void;
+    /**
      * The trigger's text while the code is hidden
      * @default "Show code"
      */
@@ -82,6 +94,8 @@ export type CodePreviewProps = Omit<
     BarProps?: Omit<CodePreviewBarProps, "children">;
     /** Reaches the trigger. Its labels are set on CodePreview itself. */
     TriggerProps?: Omit<CodePreviewTriggerProps, "showLabel" | "hideLabel">;
+    /** Reaches the reset button. Pressing it resets; listen with `onReset`. */
+    ResetButtonProps?: Omit<CodePreviewResetButtonProps, "onClick">;
     /** Reaches the panel. Its content is the code. */
     PanelProps?: Omit<CodePreviewPanelProps, "children">;
     /** Reaches the copy button. `code` and `onCopy` are set on CodePreview itself. */

@@ -14,6 +14,7 @@ const meta = {
     showLineNumbers: { control: "boolean" },
     copyable: { control: "boolean" },
     defaultOpen: { control: "boolean" },
+    resettable: { control: "boolean" },
   },
 } satisfies Meta<typeof CodePreview>;
 
@@ -37,6 +38,16 @@ export const NoCode: Story = {
 /* A 40-line file opens in full. */
 export const LongCode: Story = {
   render: () => <Examples.LongCode />,
+};
+
+/* Reset remounts the example: the words reveal again and the count clears. */
+export const Resettable: Story = {
+  render: () => <Examples.Resettable />,
+};
+
+/* An example that throws: a short message in the canvas, the rest intact. */
+export const Throws: Story = {
+  render: () => <Examples.Throws />,
 };
 
 export const Labels: Story = {

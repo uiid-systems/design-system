@@ -1,7 +1,7 @@
 import { Button } from "@uiid/buttons";
 import { CollapsibleRoot } from "@uiid/interactive";
 import { Group, Stack } from "@uiid/layout";
-import { Text } from "@uiid/typography";
+import { Reveal, Text } from "@uiid/typography";
 import { useState } from "react";
 
 import { CodeBlockContent, CodeBlockCopyButton } from "../code-block";
@@ -68,6 +68,42 @@ export const Labels = () => (
     hideLabel="Hide source"
   >
     <Actions />
+  </CodePreview>
+);
+
+const Counter = () => {
+  const [count, setCount] = useState(0);
+  return (
+    <Button variant="subtle" onClick={() => setCount(count + 1)}>
+      Clicked {count} times
+    </Button>
+  );
+};
+
+/**
+ * Reset remounts the example: the words reveal again and the count returns
+ * to zero. The code panel stays as it was.
+ */
+export const Resettable = () => (
+  <CodePreview code={SAMPLE} language="tsx" resettable>
+    <Stack gap={4} ax="center">
+      <Reveal size={2}>Every word fades in when the example mounts</Reveal>
+      <Counter />
+    </Stack>
+  </CodePreview>
+);
+
+const Broken = (): React.ReactNode => {
+  throw new Error("This example throws while rendering.");
+};
+
+/**
+ * An example that throws shows a short message in the canvas. The frame, the
+ * bar and the code still render, and reset tries the example again.
+ */
+export const Throws = () => (
+  <CodePreview code={SAMPLE} language="tsx" resettable>
+    <Broken />
   </CodePreview>
 );
 

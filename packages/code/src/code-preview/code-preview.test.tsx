@@ -1,7 +1,17 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CollapsibleRoot } from "@uiid/interactive";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { useState } from "react";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  onTestFinished,
+  vi,
+  type MockInstance,
+} from "vitest";
 
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import { CodePreview } from "./code-preview";
@@ -11,6 +21,7 @@ import {
   CodePreviewBar,
   CodePreviewCanvas,
   CodePreviewPanel,
+  CodePreviewResetButton,
   CodePreviewTrigger,
 } from "./subcomponents";
 
@@ -388,12 +399,358 @@ describe("CodePreview", () => {
         { ContentProps: { html: "x" } },
         // @ts-expect-error Line numbers are set on CodePreview.
         { ContentProps: { showLineNumbers: true } },
+        // @ts-expect-error Pressing reset is CodePreview's own handler; use `onReset`.
+        { ResetButtonProps: { onClick: () => {} } },
+        // @ts-expect-error The reset button's content is its icon.
+        { ResetButtonProps: { children: "x" } },
       ];
-      expect(props).toHaveLength(11);
+      expect(props).toHaveLength(13);
+    });
+  });
+
+  describe("reset", () => {
+    const resetButton = () =>
+      screen.getByRole("button", { name: "Reset preview" });
+
+    // Reports how many times it has mounted: the initializer runs once per mount.
+    let mounts = 0;
+    const MountCounter = () => {
+      const [mount] = useState(() => ++mounts);
+      return <span>Mount {mount}</span>;
+    };
+
+    beforeEach(() => {
+      mounts = 0;
+    });
+
+    it("renders no reset button by default", () => {
+      render(<CodePreview code={CODE}>x</CodePreview>);
+      expect(
+        screen.queryByRole("button", { name: "Reset preview" }),
+      ).not.toBeInTheDocument();
+      expect(
+        document.querySelector('[data-slot="code-preview-reset-button"]'),
+      ).not.toBeInTheDocument();
+    });
+
+    it("renders the reset button in the canvas with resettable", () => {
+      const { container } = render(
+        <CodePreview code={CODE} resettable>
+          x
+        </CodePreview>,
+      );
+      const canvas = container.querySelector(
+        '[data-slot="code-preview-canvas"]',
+      );
+      expect(canvas).toContainElement(resetButton());
+      expect(resetButton().tagName).toBe("BUTTON");
+    });
+
+    it("renders the reset button with no code", () => {
+      render(<CodePreview resettable>x</CodePreview>);
+      expect(resetButton()).toBeInTheDocument();
+    });
+
+    it("remounts children on each reset", async () => {
+      const user = userEvent.setup();
+      render(
+        <CodePreview code={CODE} resettable>
+          <MountCounter />
+        </CodePreview>,
+      );
+      expect(screen.getByText("Mount 1")).toBeInTheDocument();
+      await user.click(resetButton());
+      expect(screen.getByText("Mount 2")).toBeInTheDocument();
+      await user.click(resetButton());
+      expect(screen.getByText("Mount 3")).toBeInTheDocument();
+    });
+
+    it("returns state inside the example to its start", async () => {
+      const user = userEvent.setup();
+      const Counter = () => {
+        const [count, setCount] = useState(0);
+        return (
+          <button type="button" onClick={() => setCount(count + 1)}>
+            Count {count}
+          </button>
+        );
+      };
+      render(
+        <CodePreview resettable>
+          <Counter />
+        </CodePreview>,
+      );
+      await user.click(screen.getByRole("button", { name: "Count 0" }));
+      await user.click(screen.getByRole("button", { name: "Count 1" }));
+      await user.click(resetButton());
+      expect(screen.getByRole("button", { name: "Count 0" })).toBeVisible();
+    });
+
+    // A server component reaches a client component as already-rendered
+    // nodes: host elements and client-component elements, never a function.
+    // Reset must remount those nodes as they are, by key.
+    it("remounts already-rendered host elements", async () => {
+      const user = userEvent.setup();
+      const { container } = render(
+        <CodePreview resettable>
+          <label>
+            Name
+            <input defaultValue="start" />
+          </label>
+        </CodePreview>,
+      );
+      const before = screen.getByRole("textbox", { name: "Name" });
+      await user.clear(before);
+      await user.type(before, "edited");
+      expect(before).toHaveValue("edited");
+
+      await user.click(resetButton());
+      const after = screen.getByRole("textbox", { name: "Name" });
+      expect(after).not.toBe(before);
+      expect(after).toHaveValue("start");
+      expect(container).toContainElement(after);
+    });
+
+    it("remounts an element created once outside the preview", async () => {
+      const user = userEvent.setup();
+      const example = <MountCounter />;
+      const { rerender } = render(
+        <CodePreview resettable>{example}</CodePreview>,
+      );
+      await user.click(resetButton());
+      expect(screen.getByText("Mount 2")).toBeInTheDocument();
+      // Re-rendering the parent with the same element does not remount it.
+      rerender(<CodePreview resettable>{example}</CodePreview>);
+      expect(screen.getByText("Mount 2")).toBeInTheDocument();
+    });
+
+    it("leaves the code panel's open state alone", async () => {
+      const user = userEvent.setup();
+      const onOpenChange = vi.fn();
+      render(
+        <CodePreview
+          code={CODE}
+          resettable
+          defaultOpen
+          onOpenChange={onOpenChange}
+        >
+          <MountCounter />
+        </CodePreview>,
+      );
+      await user.click(resetButton());
+      expect(screen.getByText("Mount 2")).toBeInTheDocument();
+      expect(trigger()).toHaveAttribute("aria-expanded", "true");
+      expect(onOpenChange).not.toHaveBeenCalled();
+
+      await user.click(trigger());
+      await user.click(resetButton());
+      expect(screen.getByText("Mount 3")).toBeInTheDocument();
+      expect(trigger()).toHaveAttribute("aria-expanded", "false");
+      expect(onOpenChange).toHaveBeenCalledTimes(1);
+    });
+
+    it("keeps focus on the reset button", async () => {
+      const user = userEvent.setup();
+      render(
+        <CodePreview code={CODE} resettable>
+          <MountCounter />
+        </CodePreview>,
+      );
+      const button = resetButton();
+      await user.click(button);
+      expect(screen.getByText("Mount 2")).toBeInTheDocument();
+      expect(resetButton()).toBe(button);
+      expect(button).toHaveFocus();
+
+      // And from the keyboard.
+      await user.keyboard("{Enter}");
+      expect(screen.getByText("Mount 3")).toBeInTheDocument();
+      expect(button).toHaveFocus();
+    });
+
+    // Safari does not focus a button on click, so focus can still sit on a
+    // control in the example when reset is pressed. fireEvent clicks without
+    // moving focus, as Safari does.
+    it("moves focus from inside the example to the reset button", () => {
+      render(
+        <CodePreview resettable>
+          <input aria-label="Name" />
+        </CodePreview>,
+      );
+      const input = screen.getByRole("textbox", { name: "Name" });
+      input.focus();
+      fireEvent.click(resetButton());
+      expect(resetButton()).toHaveFocus();
+      expect(screen.getByRole("textbox", { name: "Name" })).not.toBe(input);
+    });
+
+    it("leaves focus alone when it is outside the canvas", () => {
+      render(
+        <CodePreview code={CODE} resettable>
+          x
+        </CodePreview>,
+      );
+      trigger().focus();
+      fireEvent.click(resetButton());
+      expect(trigger()).toHaveFocus();
+    });
+
+    it("fires onReset once per reset", async () => {
+      const user = userEvent.setup();
+      const onReset = vi.fn();
+      render(
+        <CodePreview resettable onReset={onReset}>
+          x
+        </CodePreview>,
+      );
+      await user.click(resetButton());
+      expect(onReset).toHaveBeenCalledTimes(1);
+      await user.click(resetButton());
+      expect(onReset).toHaveBeenCalledTimes(2);
+    });
+
+    it("reaches the reset button through ResetButtonProps", () => {
+      render(
+        <CodePreview resettable ResetButtonProps={{ className: "reset" }}>
+          x
+        </CodePreview>,
+      );
+      expect(resetButton()).toHaveClass("reset");
+    });
+  });
+
+  describe("error boundary", () => {
+    const failure = new Error("<b>Example exploded</b>");
+    let broken = true;
+    const Fragile = () => {
+      if (broken) throw failure;
+      return <span>Recovered</span>;
+    };
+
+    const MESSAGE = "This example failed to render.";
+
+    // React reports a caught render error to console.error. Each test that
+    // throws checks the report carried the thrown error.
+    let consoleError: MockInstance<typeof console.error>;
+    const expectReported = () =>
+      expect(
+        consoleError.mock.calls.some((call) => call.includes(failure)),
+      ).toBe(true);
+
+    beforeEach(() => {
+      broken = true;
+      consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      consoleError.mockRestore();
+    });
+
+    it("shows a short message in the canvas and keeps the frame, bar and code", () => {
+      const { container } = render(
+        <CodePreview code={CODE} defaultOpen>
+          <Fragile />
+        </CodePreview>,
+      );
+      const canvas = container.querySelector(
+        '[data-slot="code-preview-canvas"]',
+      )!;
+      expect(canvas).toHaveTextContent("This example failed to render.");
+      expect(
+        container.querySelector('[data-slot="code-preview-bar"]'),
+      ).toBeInTheDocument();
+      expect(trigger()).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Copy code" }),
+      ).toBeInTheDocument();
+      expect(screen.getByText(`hl:${CODE}`)).toBeInTheDocument();
+      expectReported();
+    });
+
+    it("shows the message as a status", () => {
+      render(
+        <CodePreview code={CODE}>
+          <Fragile />
+        </CodePreview>,
+      );
+      expect(screen.getByRole("status")).toHaveTextContent(MESSAGE);
+      expectReported();
+    });
+
+    it("never renders the thrown value as markup", () => {
+      const { container } = render(
+        <CodePreview code={CODE}>
+          <Fragile />
+        </CodePreview>,
+      );
+      expect(container.querySelector("b")).not.toBeInTheDocument();
+      expect(container).not.toHaveTextContent("Example exploded");
+      expectReported();
+    });
+
+    it("retries on reset", async () => {
+      const user = userEvent.setup();
+      render(
+        <CodePreview code={CODE} resettable>
+          <Fragile />
+        </CodePreview>,
+      );
+      expect(screen.getByText(MESSAGE)).toBeInTheDocument();
+      broken = false;
+      await user.click(screen.getByRole("button", { name: "Reset preview" }));
+      expect(screen.getByText("Recovered")).toBeInTheDocument();
+      expect(screen.queryByText(MESSAGE)).not.toBeInTheDocument();
+      expectReported();
+    });
+
+    it("shows the message again when a retry still throws, with focus on reset", async () => {
+      const user = userEvent.setup();
+      render(
+        <CodePreview code={CODE} resettable>
+          <Fragile />
+        </CodePreview>,
+      );
+      const button = screen.getByRole("button", { name: "Reset preview" });
+      await user.click(button);
+      expect(screen.getByText(MESSAGE)).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Reset preview" })).toBe(
+        button,
+      );
+      expect(button).toHaveFocus();
+      expectReported();
+    });
+
+    it("still catches an example that throws after a reset", async () => {
+      const user = userEvent.setup();
+      broken = false;
+      render(
+        <CodePreview code={CODE} resettable>
+          <Fragile />
+        </CodePreview>,
+      );
+      expect(screen.getByText("Recovered")).toBeInTheDocument();
+      broken = true;
+      await user.click(screen.getByRole("button", { name: "Reset preview" }));
+      expect(screen.getByText(MESSAGE)).toBeInTheDocument();
+      expect(trigger()).toBeInTheDocument();
+      expectReported();
     });
   });
 
   describe("parts", () => {
+    it("renders a standalone reset button named Reset preview", async () => {
+      const user = userEvent.setup();
+      const onClick = vi.fn();
+      const { container } = render(
+        <CodePreviewResetButton onClick={onClick} />,
+      );
+      const button = screen.getByRole("button", { name: "Reset preview" });
+      expect(button).toHaveAttribute("data-slot", "code-preview-reset-button");
+      expect(container.querySelector("svg")).toBeInTheDocument();
+      await user.click(button);
+      expect(onClick).toHaveBeenCalledTimes(1);
+    });
+
     it("composes from the exported parts", async () => {
       const user = userEvent.setup();
       const { container } = render(
@@ -432,10 +789,47 @@ describe("CodePreview", () => {
 });
 
 describe("CodePreview examples", () => {
-  it.each(Object.entries(Examples))("renders %s", (_name, Example) => {
+  const { Throws, ...rendering } = Examples;
+
+  it.each(Object.entries(rendering))("renders %s", (_name, Example) => {
     const { container } = render(<Example />);
     expect(
       container.querySelector('[data-slot="code-preview-canvas"]'),
+    ).toBeInTheDocument();
+  });
+
+  it("catches the Throws example inside the canvas", () => {
+    // React reports the caught error to console.error.
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    onTestFinished(() => consoleError.mockRestore());
+    const { container } = render(<Throws />);
+    expect(
+      container.querySelector('[data-slot="code-preview-canvas"]'),
+    ).toHaveTextContent("This example failed to render.");
+    expect(trigger()).toBeInTheDocument();
+    expect(
+      consoleError.mock.calls.some((call) =>
+        call.some(
+          (arg) =>
+            arg instanceof Error &&
+            arg.message === "This example throws while rendering.",
+        ),
+      ),
+    ).toBe(true);
+  });
+
+  it("resets the Resettable example's state", async () => {
+    const user = userEvent.setup();
+    render(<Examples.Resettable />);
+    await user.click(screen.getByRole("button", { name: "Clicked 0 times" }));
+    expect(
+      screen.getByRole("button", { name: "Clicked 1 times" }),
+    ).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Reset preview" }));
+    expect(
+      screen.getByRole("button", { name: "Clicked 0 times" }),
     ).toBeInTheDocument();
   });
 
