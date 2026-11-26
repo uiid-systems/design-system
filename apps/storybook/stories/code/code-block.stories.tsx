@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   Button,
+  Card,
   CodeBlock,
+  Collapsible,
   Dialog,
   Group,
   Stack,
@@ -399,4 +401,51 @@ export const Controlled: Story = {
 export const Composed: Story = {
   args: { code: sampleTypeScript },
   render: () => <Examples.Composed />,
+};
+
+const sampleLongWithLongLine = `${sampleLongLine}\n${sampleLong}`;
+
+/** Inside a Card, the block takes the card's width and its long line scrolls inside the code. */
+export const InCard: Story = {
+  args: { code: sampleLongWithLongLine },
+  render: () => (
+    <Card title="Server" description="The entry point.">
+      <CodeBlock
+        code={sampleLongWithLongLine}
+        language="typescript"
+        filename="server.ts"
+        rows={8}
+      />
+    </Card>
+  ),
+};
+
+/** Closed at first, so the block is measured while hidden; opened, it shows the right toggle. */
+export const InCollapsible: Story = {
+  args: { code: sampleLongWithLongLine },
+  render: () => (
+    <Collapsible trigger={<Button>Show the code</Button>} keepMounted>
+      <CodeBlock
+        code={sampleLongWithLongLine}
+        language="typescript"
+        filename="long-file.ts"
+        rows={8}
+      />
+    </Collapsible>
+  ),
+};
+
+/** Inside a Dialog, the block fits the popup. */
+export const InDialog: Story = {
+  args: { code: sampleLongWithLongLine },
+  render: () => (
+    <Dialog title="Generated config" trigger={<Button>Open dialog</Button>}>
+      <CodeBlock
+        code={sampleLongWithLongLine}
+        language="typescript"
+        filename="long-file.ts"
+        rows={8}
+      />
+    </Dialog>
+  ),
 };
