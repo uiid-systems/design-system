@@ -76,8 +76,9 @@
   }
 }
 
-/* The value painted as plain text while its highlight is still on the way, in the
-   colour the caret takes */
+/* The value painted as plain text before the first highlight lands, in the colour the
+   caret takes. Afterwards the `<pre>` is Shiki's, and a line still waiting for its
+   highlight takes Shiki's own foreground. */
 .code-editor-plain {
   color: var(--shade-foreground);
 }

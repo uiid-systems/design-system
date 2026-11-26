@@ -361,6 +361,32 @@ describe("CodeEditor", () => {
     expect(highlight.querySelector(".diff")).toBeNull();
   });
 
+  it.each([
+    ["a controlled value", { value: "a = 1\r\nb = 2\rc" }],
+    ["a default value", { defaultValue: "a = 1\r\nb = 2\rc" }],
+  ])(
+    "highlights %s with Windows line endings in LF, as the textarea holds it",
+    async (_, props) => {
+      render(<CodeEditor {...props} />);
+      const highlight = document.querySelector<HTMLElement>(
+        "[data-slot='code-editor-highlight']",
+      )!;
+
+      // The plain text painted first carries no carriage returns either
+      expect(highlight.querySelector("code")!.textContent).toBe(
+        "a = 1\nb = 2\nc",
+      );
+      await waitFor(
+        () => expect(highlight).not.toHaveAttribute("data-pending"),
+        { timeout: 5000 },
+      );
+      expect(highlight.querySelector(".shiki")).not.toBeNull();
+      expect(highlight.querySelector("code")!.textContent).toBe(
+        "a = 1\nb = 2\nc",
+      );
+    },
+  );
+
   // The CSS keys the shared gutter off this attribute; check alignment by eye in the LongLines story
   it("marks the layer holding both the highlight and the textarea for line numbers", () => {
     const { rerender } = render(<CodeEditor defaultValue="const x = 1;" />);
@@ -560,7 +586,9 @@ describe("CodeEditor", () => {
     expect(handleChange).toHaveBeenCalledTimes(2);
   });
 
-  it("chains TextareaProps.onScroll with the highlight scroll sync", () => {
+  // The layer scrolls as one, so the textarea never scrolls alone (the browser
+  // test proves it) and the editor keeps no scroll sync of its own
+  it("passes TextareaProps.onScroll to the textarea", () => {
     const handleScroll = vi.fn();
     render(
       <CodeEditor
@@ -569,15 +597,8 @@ describe("CodeEditor", () => {
       />,
     );
 
-    const textarea = screen.getByRole("textbox");
-    const highlight = textarea
-      .closest("[data-slot='code-editor']")!
-      .querySelector<HTMLElement>("[data-slot='code-editor-highlight']")!;
+    fireEvent.scroll(screen.getByRole("textbox"));
 
-    textarea.scrollTop = 40;
-    fireEvent.scroll(textarea);
-
-    expect(highlight.scrollTop).toBe(40);
     expect(handleScroll).toHaveBeenCalledTimes(1);
   });
 

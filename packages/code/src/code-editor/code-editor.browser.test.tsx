@@ -284,6 +284,11 @@ describe("CodeEditor header", () => {
    same character in the highlight layer (a Range over its text nodes). The
    caret is drawn at the boundary between two characters, so when the
    characters either side of it match within 1px, so does the caret.
+
+   This pins Chromium's `caretPositionFromPoint`, which CI runs. On a one-row
+   value the row's bottom edge is found because a point below the last line
+   puts the caret at the end of the text, as Mac and Unix editing does; a
+   Windows-style engine may not, so read failures there with that in mind.
    --------------------------------------------------------------------------- */
 
 type CaretDocument = Document & {
@@ -293,19 +298,28 @@ type CaretDocument = Document & {
   ) => { offsetNode: Node; offset: number } | null;
 };
 
+type ActGlobal = { IS_REACT_ACT_ENVIRONMENT?: boolean };
+
 /* Testing Library marks the page as an act() environment, which suits
    happy-dom. Here the events come from outside React, so act() never wraps
-   them and React would warn on every keystroke. */
+   them and React would warn on every keystroke. Both the flag and the
+   viewport go back to what they were after each test. */
 const leaveActEnvironment = () => {
+  let actEnvironment: boolean | undefined;
+  let viewport: [number, number];
   beforeEach(async () => {
-    (
-      globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
-    ).IS_REACT_ACT_ENVIRONMENT = false;
+    actEnvironment = (globalThis as ActGlobal).IS_REACT_ACT_ENVIRONMENT;
+    (globalThis as ActGlobal).IS_REACT_ACT_ENVIRONMENT = false;
+    viewport = [window.innerWidth, window.innerHeight];
     // Hit-testing only reaches what is inside the viewport
     await page.viewport(1024, 900);
   });
-  // A failed test never leaves later highlights held
-  afterEach(() => gate.release?.());
+  afterEach(async () => {
+    // A failed test never leaves later highlights held
+    gate.release?.();
+    (globalThis as ActGlobal).IS_REACT_ACT_ENVIRONMENT = actEnvironment;
+    await page.viewport(...viewport);
+  });
 };
 
 const editorRoot = (container: Element, index = 0) =>
@@ -322,6 +336,8 @@ const highlightedAs = (root: Element, value: string) =>
   waitFor(
     () => {
       expect(highlightOf(root).querySelector(".shiki span")).not.toBeNull();
+      // Every line is Shiki's markup, none plain text waiting for it
+      expect(highlightOf(root)).not.toHaveAttribute("data-pending");
       expect(paintedText(root)).toBe(value);
     },
     { timeout: 5000 },
@@ -448,8 +464,11 @@ const TO_END = navigator.platform.startsWith("Mac")
   ? "{Meta>}{ArrowDown}{/Meta}"
   : "{Control>}{End}{/Control}";
 
-/* Puts `text` on the system clipboard with a real copy keystroke, so the paste
-   that follows is the browser's own, as the forms mask tests do. */
+/* Puts `text` on the clipboard with a real copy keystroke, so the paste that
+   follows is the browser's own, as the forms mask tests do. It relies on the
+   headless browser keeping its own clipboard, apart from the computer's; the
+   clipboard is deliberately not saved and restored, which would mean reading
+   it. */
 const copyToClipboard = async (text: string) => {
   const source = document.createElement("textarea");
   document.body.append(source);
@@ -474,6 +493,10 @@ const LONG_LINE = `const message = ${Array.from(
   { length: 24 },
   (_, i) => `word${i}`,
 ).join(" + ")}; const url = "https://example.com/${"a".repeat(90)}";\nnext();`;
+/** Characters inside words spread through LONG_LINE, so none ends a row. */
+const LONG_LINE_SAMPLES = ["const", "word5", "word12", "word19"].map(
+  (word) => LONG_LINE.indexOf(word) + 2,
+);
 const MANY_LINES = Array.from(
   { length: 30 },
   (_, i) => `const line${i} = ${i};`,
@@ -525,7 +548,7 @@ describe("CodeEditor layer alignment", () => {
       );
       // Characters spread through the wrapped line, including inside the long URL
       const url = LONG_LINE.indexOf("aaaa");
-      expectAligned(root, [3, 60, 120, 180, url + 10, url + 60]);
+      expectAligned(root, [...LONG_LINE_SAMPLES, url + 10, url + 60]);
       expectNoInnerScroll(root);
     },
   );
@@ -602,12 +625,15 @@ describe("CodeEditor typing", () => {
         });
       });
     textarea.addEventListener("input", onInput);
-    // One key at a time, each waiting for its frame
-    await userEvent.keyboard(" ");
-    await expect.poll(() => frames.length).toBe(1);
-    await userEvent.keyboard("x");
-    await expect.poll(() => frames.length).toBe(2);
-    textarea.removeEventListener("input", onInput);
+    try {
+      // One key at a time, each waiting for its frame
+      await userEvent.keyboard(" ");
+      await expect.poll(() => frames.length).toBe(1);
+      await userEvent.keyboard("x");
+      await expect.poll(() => frames.length).toBe(2);
+    } finally {
+      textarea.removeEventListener("input", onInput);
+    }
 
     const typed = `${SHORT} x`;
     expect(frames.map((frame) => frame.value)).toEqual([`${SHORT} `, typed]);
@@ -623,12 +649,78 @@ describe("CodeEditor typing", () => {
     await highlightedAs(root, typed);
     expectAligned(root, aroundCaret(textarea));
   });
+
+  it("keeps the other lines' highlight while an edited line waits for its own", async () => {
+    const { container } = render(<CodeEditor defaultValue={SHORT} />);
+    const root = editorRoot(container);
+    await highlightedAs(root, SHORT);
+    const textarea = textareaOf(root);
+    const lines = () => [...highlightOf(root).querySelectorAll(".line")];
+    /** The distinct token colours a line paints. */
+    const colours = (line: Element) =>
+      new Set(
+        [...line.querySelectorAll("span")].map(
+          (span) => getComputedStyle(span).color,
+        ),
+      );
+    const before = lines().map((line) => line.innerHTML);
+    expect(colours(lines()[0]!).size).toBeGreaterThan(1);
+    expect(colours(lines()[2]!).size).toBeGreaterThan(1);
+
+    // The caret after "41" on the second line
+    await userEvent.click(textarea);
+    const caret = SHORT.indexOf("41") + 2;
+    textarea.setSelectionRange(caret, caret);
+    await expect.poll(() => textarea.selectionStart).toBe(caret);
+
+    const release = holdHighlights();
+    const frames: { value: string; painted: string; lines: Element[] }[] = [];
+    const onInput = () =>
+      requestAnimationFrame(() =>
+        frames.push({
+          value: textarea.value,
+          painted: paintedText(root),
+          lines: lines(),
+        }),
+      );
+    textarea.addEventListener("input", onInput);
+    try {
+      await userEvent.keyboard("2");
+      await expect.poll(() => frames.length).toBe(1);
+    } finally {
+      textarea.removeEventListener("input", onInput);
+    }
+
+    const typed = SHORT.replace("41", "412");
+    const [frame] = frames;
+    expect(frame!.value).toBe(typed);
+    expect(frame!.painted).toBe(typed);
+    const [first, edited, last] = frame!.lines;
+    // The unchanged lines keep Shiki's markup and its token colours
+    expect(first!.innerHTML).toBe(before[0]);
+    expect(last!.innerHTML).toBe(before[2]);
+    expect(colours(first!).size).toBeGreaterThan(1);
+    expect(colours(last!).size).toBeGreaterThan(1);
+    // The edited line shows its new text, plain, until its highlight lands
+    expect(edited!.textContent).toBe("let total = a + 412;");
+    expect(edited!.querySelector("span")).toBeNull();
+    expect(highlightOf(root)).toHaveAttribute("data-pending");
+    expectAligned(root, aroundCaret(textarea));
+
+    release();
+    await highlightedAs(root, typed);
+    expect(highlightOf(root)).not.toHaveAttribute("data-pending");
+    expect(colours(lines()[1]!).size).toBeGreaterThan(1);
+    expectAligned(root, aroundCaret(textarea));
+  });
 });
 
 describe("CodeEditor scroll", () => {
   leaveActEnvironment();
 
-  it("follows the textarea's scroll on both axes after a paste", async () => {
+  // The editor wraps, so it never scrolls sideways; the horizontal half of
+  // "both axes" is that neither layer can.
+  it("follows the textarea's scroll on both axes after a paste, and never scrolls sideways", async () => {
     const { container } = render(
       <div style={{ width: 600 }}>
         <CodeEditor defaultValue="start();" rows={4} />
@@ -707,7 +799,8 @@ describe("CodeEditor edge input", () => {
       () => expect(highlightOf(root).querySelector(".shiki")).not.toBeNull(),
       { timeout: 5000 },
     );
-    expect(paintedText(root).trim()).toBe("");
+    expect(paintedText(root)).toBe("");
+    expect(textarea.matches(":placeholder-shown")).toBe(true);
     expectNoInnerScroll(root);
 
     await userEvent.click(textarea);
@@ -755,6 +848,23 @@ describe("CodeEditor edge input", () => {
     ]);
   });
 
+  it("highlights a controlled value with Windows line endings, as the textarea shows it", async () => {
+    const value = "const a = 1;\r\nconst b = 2;\rend();";
+    const { container } = render(
+      <div style={{ width: 600 }}>
+        <CodeEditor value={value} showLineNumbers />
+      </div>,
+    );
+    const root = editorRoot(container);
+    // The textarea holds LF line endings, so the highlight holds the same
+    const shown = textareaOf(root).value;
+    expect(shown).toBe("const a = 1;\nconst b = 2;\nend();");
+    await highlightedAs(root, shown);
+    expect(highlightOf(root)).not.toHaveAttribute("data-pending");
+    expectAligned(root, [2, shown.indexOf("b ="), shown.indexOf("end") + 1]);
+    expectNoInnerScroll(root);
+  });
+
   it("keeps the layers aligned when a controlled value changes from outside", async () => {
     const Controlled = () => {
       const [value, setValue] = useState(SHORT);
@@ -775,12 +885,12 @@ describe("CodeEditor edge input", () => {
     await userEvent.click(page.getByRole("button", { name: "replace" }));
     await expect.element(page.getByRole("textbox")).toHaveValue(LONG_LINE);
     expect(paintedText(root)).toBe(LONG_LINE);
-    expectAligned(root, [3, 60, 120]);
+    expectAligned(root, LONG_LINE_SAMPLES);
     expectNoInnerScroll(root);
 
     release();
     await highlightedAs(root, LONG_LINE);
-    expectAligned(root, [3, 60, 120]);
+    expectAligned(root, LONG_LINE_SAMPLES);
     expectNoInnerScroll(root);
   });
 
