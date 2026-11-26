@@ -69,11 +69,17 @@ const find = async (selector: string) => {
   return document.querySelector(selector) as HTMLElement;
 };
 
-/* The row of `slot` whose text is `name`, once the popup has rendered it. */
+/* The row of `slot` whose label is `name`, once the popup has rendered it.
+   It matches the label slot, not the row's whole text: a row holds more than
+   its label, such as Select's indicator, whose Base UI default `✔️` children
+   land in the selected row's `textContent`. */
 const row = async (slot: string, name: string) => {
   const lookup = () =>
     [...document.querySelectorAll<HTMLElement>(`[data-slot="${slot}"]`)].find(
-      (element) => element.textContent?.trim() === name,
+      (element) =>
+        element
+          .querySelector('[data-slot="list-text-label"]')
+          ?.textContent?.trim() === name,
     );
   await expect.poll(lookup).toBeTruthy();
   return lookup()!;
