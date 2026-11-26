@@ -172,6 +172,18 @@
   }
 }
 
+/* Line numbers make each line a flex row, so a wrapped line would break every
+   token in its own column. Wrapped, the line stays an inline box, and the
+   number hangs in its start padding so later rows line up with the code. */
+.code-block-content-wrap[data-line-numbers] :global(.line) {
+  display: inline-block;
+  padding-inline-start: calc(var(--code-block-line-bleed) + var(--code-gutter-number) + var(--code-gutter-gap));
+
+  &::before {
+    margin-inline-start: calc(-1 * (var(--code-gutter-number) + var(--code-gutter-gap)));
+  }
+}
+
 /* Fullscreen dialog. The popup is an unstyled `size="full"` DialogPopup, a
    second `.code-block` carrying [data-fullscreen]. The dialog viewport places
    it and stacks it, the backdrop included, above a Dialog it opens from, and
