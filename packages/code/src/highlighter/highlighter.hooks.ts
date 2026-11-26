@@ -10,7 +10,10 @@ import type {
   HighlightResult,
 } from "./highlighter.types";
 
-export type UseHighlightOptions = Pick<HighlightOptions, "highlightLines"> & {
+export type UseHighlightOptions = Pick<
+  HighlightOptions,
+  "highlightLines" | "notations"
+> & {
   /**
    * Set to `false` to skip highlighting: Shiki is never loaded, no theme or
    * grammar is fetched and nothing is highlighted on the client. Use it
@@ -27,6 +30,7 @@ type HighlightRequest = {
   code: string;
   language: CodeLanguage;
   highlightLines: number[] | undefined;
+  notations: boolean;
 };
 
 /**
@@ -52,6 +56,7 @@ export function useHighlight(
 
   // Stable key so callers don't need to memoize the highlightLines array
   const highlightLinesKey = options.highlightLines?.join(",") ?? "";
+  const notations = options.notations ?? true;
 
   useEffect(() => {
     if (!enabled) {
@@ -65,10 +70,11 @@ export function useHighlight(
     }
 
     const request: HighlightRequest = {
-      key: JSON.stringify([code, language, highlightLinesKey]),
+      key: JSON.stringify([code, language, highlightLinesKey, notations]),
       code,
       language,
       highlightLines: options.highlightLines,
+      notations,
     };
     latestRef.current = request;
 
@@ -79,6 +85,7 @@ export function useHighlight(
       runningRef.current = next;
       highlight(next.code, next.language, {
         highlightLines: next.highlightLines,
+        notations: next.notations,
       })
         .then(
           (result) => {
@@ -110,7 +117,7 @@ export function useHighlight(
       waitingRef.current = request;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, language, highlightLinesKey, enabled]);
+  }, [code, language, highlightLinesKey, notations, enabled]);
 
   // Unmounting drops the running result and the waiting value. StrictMode's
   // remount runs the effect above again, which re-adopts the running value.
