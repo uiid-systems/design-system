@@ -87,11 +87,20 @@ export const CodeBlock = ({
     [fullscreenControlled, onFullscreenChange],
   );
 
-  const { html, error } = useHighlight(code, language, {
+  // A trailing newline ends the last line rather than starting a blank one, so
+  // the code shown leaves it out. The copy button still copies `code` as given.
+  const shownCode = code.replace(TRAILING_NEWLINE, "");
+  const { html, error } = useHighlight(shownCode, language, {
     highlightLines,
     enabled: !prerenderedHtml,
   });
-  const displayHtml = prerenderedHtml || html || undefined;
+  const serverHtml = React.useMemo(
+    () => prerenderedHtml && withoutTrailingLine(prerenderedHtml, code),
+    [prerenderedHtml, code],
+  );
+  // After a failed highlight the last result is for older code, so the plain
+  // current code shows instead until a highlight succeeds.
+  const displayHtml = serverHtml || (!error && html) || undefined;
 
   const [expandedState, setExpandedState] = React.useState(defaultExpanded);
   const expandedControlled = expandedProp !== undefined;
@@ -209,9 +218,10 @@ export const CodeBlock = ({
           {/* Line numbers are CodeBlock's with its own default, so an unset one
               is not routed through definedProps() as filename is above. */}
           <CodeBlockContent
+            aria-label={filename}
             {...withoutContent(slot(ContentProps))}
             html={displayHtml}
-            code={code}
+            code={shownCode}
             showLineNumbers={showLineNumbers}
             wrap={wrap}
           />
@@ -309,3 +319,16 @@ const withoutIdentity = <T,>(slotProps: T): T => {
   const { id: _id, ref: _ref, ...rest } = slotProps as T & WithIdentity;
   return rest as T;
 };
+
+const TRAILING_NEWLINE = /\r?\n$/;
+
+/** Shiki's empty last line, which a trailing newline in its input renders. */
+const EMPTY_LAST_LINE = /\n<span class="line"><\/span>(<\/code><\/pre>\s*)$/;
+
+/**
+ * Server `html` is highlighted from `code` as given, so a trailing newline in
+ * it leaves an empty last line in the markup. Drop that line, as the code shown
+ * on the client drops the newline.
+ */
+const withoutTrailingLine = (html: string, code: string) =>
+  TRAILING_NEWLINE.test(code) ? html.replace(EMPTY_LAST_LINE, "$1") : html;

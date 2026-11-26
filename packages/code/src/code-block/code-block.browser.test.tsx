@@ -642,7 +642,9 @@ describe("CodeBlock with server html", () => {
     const ui = <CodeBlock code={SOURCE} language="tsx" html={html} />;
 
     const container = document.createElement("div");
-    container.style.width = "480px";
+    // Wide enough for every line: code that scrolls becomes a tab stop once
+    // the client measures it, which the server cannot know.
+    container.style.width = "640px";
     document.body.append(container);
     container.innerHTML = renderToString(ui);
 
@@ -658,6 +660,11 @@ describe("CodeBlock with server html", () => {
       expect(colours.size).toBeGreaterThan(1);
       const before = readBoxes(getBlock(container));
       const markup = container.innerHTML;
+      // Precondition: the code fits, so the client adds no tab stop.
+      const content = container.querySelector<HTMLElement>(
+        '[data-slot="code-block-content"]',
+      )!;
+      expect(content.scrollWidth).toBeLessThanOrEqual(content.clientWidth);
 
       const mutations: MutationRecord[] = [];
       const observer = new MutationObserver((records) =>
@@ -687,6 +694,282 @@ describe("CodeBlock with server html", () => {
     } finally {
       container.remove();
     }
+  });
+});
+
+/* Real Shiki output, which puts `tabindex="0"` on its <pre> whether or not the
+   code scrolls. The content is the box that scrolls, so it is the tab stop, and
+   only while it has somewhere to scroll. */
+describe("CodeBlock keyboard scrolling", () => {
+  const SHORT = "const a = 1;";
+  const WIDE = `const wide = "${"x".repeat(200)}";`;
+  const content = (root: ParentNode = document) =>
+    root.querySelector<HTMLElement>('[data-slot="code-block-content"]')!;
+
+  it("adds no tab stop beyond its buttons when the code fits", async () => {
+    const html = await highlight(SHORT, "typescript");
+    render(
+      <>
+        <CodeBlock code={SHORT} html={html} />
+        <button type="button">After</button>
+      </>,
+    );
+    const copy = page.getByRole("button", { name: /copy/i });
+    await expect.element(copy).toBeInTheDocument();
+
+    expect(content()).not.toHaveAttribute("tabindex");
+    expect(content().querySelector("[tabindex]")).toBeNull();
+    expect(page.getByRole("group").query()).not.toBeInTheDocument();
+
+    (document.activeElement as HTMLElement | null)?.blur();
+    await userEvent.tab();
+    expect(copy.element()).toHaveFocus();
+    await userEvent.tab();
+    expect(page.getByRole("button", { name: "After" }).element()).toHaveFocus();
+  });
+
+  it("is a named group and a tab stop while a line overflows, and the arrow keys scroll it", async () => {
+    const html = await highlight(WIDE, "typescript");
+    mountSized(<CodeBlock code={WIDE} html={html} filename="wide.ts" />, {
+      width: 360,
+    });
+    const group = page.getByRole("group", { name: "wide.ts" });
+    await expect.element(group).toBeInTheDocument();
+    const el = group.element() as HTMLElement;
+    expect(el).toBe(content());
+    expect(el.scrollWidth).toBeGreaterThan(el.clientWidth);
+    // Shiki's own tab stop is gone, so the group is the only one in the code.
+    expect(el.querySelector("[tabindex]")).toBeNull();
+    // A group, not a region, so it adds no landmark.
+    expect(page.getByRole("region").query()).not.toBeInTheDocument();
+
+    await tabTo(el);
+    await userEvent.keyboard("{ArrowRight}");
+    await expect.poll(() => el.scrollLeft).toBeGreaterThan(0);
+  });
+
+  it("is named Code when there is no filename", async () => {
+    mountSized(<CodeBlock code={WIDE} html={toHtml(WIDE)} />, { width: 360 });
+    await expect
+      .element(page.getByRole("group", { name: "Code" }))
+      .toBeInTheDocument();
+  });
+
+  it("draws its focus ring inside the frame, where the frame cannot clip it", async () => {
+    mountSized(<CodeBlock code={WIDE} html={toHtml(WIDE)} />, { width: 360 });
+    const el = content();
+    await expect.poll(() => el.getAttribute("tabindex")).toBe("0");
+    await tabTo(el);
+
+    const style = getComputedStyle(el);
+    const width = px(style.outlineWidth);
+    expect(style.outlineStyle).toBe("solid");
+    expect(width).toBeGreaterThan(0);
+    expect(px(style.outlineOffset)).toBe(-width);
+    expect(style.outlineColor).toBe(toColor("var(--globals-outline-color)"));
+
+    // A click focuses it too, but shows no ring.
+    el.blur();
+    await userEvent.click(el);
+    expect(el).toHaveFocus();
+    expect(el.matches(":focus-visible")).toBe(false);
+  });
+
+  it("gains and drops the tab stop as its code grows and shrinks in a box of the same size", async () => {
+    const shortHtml = await highlight(SHORT, "typescript");
+    const wideHtml = await highlight(WIDE, "typescript");
+    const ui = (code: string, html: string) => (
+      <div style={{ width: 360 }}>
+        <CodeBlock code={code} html={html} />
+      </div>
+    );
+    const { rerender } = render(ui(SHORT, shortHtml));
+    const el = content();
+    const width = el.clientWidth;
+    // Not a timing wait: the hook measures once, synchronously, when its
+    // effect runs, and it starts with no tab stop either way.
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    expect(el).not.toHaveAttribute("tabindex");
+
+    rerender(ui(WIDE, wideHtml));
+    await expect.poll(() => el.getAttribute("tabindex")).toBe("0");
+    expect(el.clientWidth).toBe(width);
+
+    rerender(ui(SHORT, shortHtml));
+    await expect.poll(() => el.getAttribute("tabindex")).toBeNull();
+    expect(el.clientWidth).toBe(width);
+  });
+
+  it("hydrates overflowing server html with only the tab stop's attributes added", async () => {
+    const html = await highlight(SOURCE, "tsx");
+    const ui = <CodeBlock code={SOURCE} language="tsx" html={html} />;
+    const container = document.createElement("div");
+    container.style.width = "360px";
+    document.body.append(container);
+    container.innerHTML = renderToString(ui);
+
+    try {
+      const el = content(container);
+      // Precondition: the code overflows, which only the client can measure.
+      expect(el.scrollWidth).toBeGreaterThan(el.clientWidth);
+      expect(el).not.toHaveAttribute("tabindex");
+      const before = readBoxes(getBlock(container));
+      const markup = el.innerHTML;
+
+      const mutations: MutationRecord[] = [];
+      const observer = new MutationObserver((records) =>
+        mutations.push(...records),
+      );
+      observer.observe(container, {
+        subtree: true,
+        childList: true,
+        attributes: true,
+        characterData: true,
+      });
+      const errors: unknown[] = [];
+      let root: ReturnType<typeof hydrateRoot> | undefined;
+      await act(async () => {
+        root = hydrateRoot(container, ui, {
+          onRecoverableError: (error) => errors.push(error),
+        });
+      });
+      await expect.poll(() => el.getAttribute("tabindex")).toBe("0");
+      mutations.push(...observer.takeRecords());
+      observer.disconnect();
+
+      expect(errors).toEqual([]);
+      // The highlighted markup is never rewritten: no childList or text
+      // records, only the three attributes on the content itself.
+      expect(
+        mutations.map((m) => ({
+          type: m.type,
+          target: m.target === el,
+          name: m.attributeName,
+        })),
+      ).toEqual(
+        expect.arrayContaining([
+          { type: "attributes", target: true, name: "tabindex" },
+          { type: "attributes", target: true, name: "role" },
+          { type: "attributes", target: true, name: "aria-label" },
+        ]),
+      );
+      for (const m of mutations) {
+        expect(m.type).toBe("attributes");
+        expect(m.target).toBe(el);
+        expect(["tabindex", "role", "aria-label"]).toContain(m.attributeName);
+      }
+      expect(el.innerHTML).toBe(markup);
+      expect(readBoxes(getBlock(container))).toEqual(before);
+      expect(el).toHaveAttribute("role", "group");
+      expect(el).toHaveAccessibleName("Code");
+      act(() => root?.unmount());
+    } finally {
+      container.remove();
+    }
+  });
+
+  it("gains and drops the tab stop as the block resizes", async () => {
+    const container = mountSized(
+      <CodeBlock code={WIDE} html={toHtml(WIDE)} />,
+      { width: 3000 },
+    );
+    const el = content(container);
+    await expect.poll(() => el.scrollWidth).toBeLessThanOrEqual(el.clientWidth);
+    expect(el).not.toHaveAttribute("tabindex");
+
+    container.style.width = "360px";
+    await expect.poll(() => el.getAttribute("tabindex")).toBe("0");
+    expect(el).toHaveAttribute("role", "group");
+
+    container.style.width = "3000px";
+    await expect.poll(() => el.getAttribute("tabindex")).toBeNull();
+    expect(el).not.toHaveAttribute("role");
+    expect(el).not.toHaveAttribute("aria-label");
+  });
+
+  it("drops the tab stop when the lines wrap", async () => {
+    const { rerender } = render(
+      <div style={{ width: 360 }}>
+        <CodeBlock code={WIDE} html={toHtml(WIDE)} wrap={false} />
+      </div>,
+    );
+    const el = content();
+    await expect.poll(() => el.getAttribute("tabindex")).toBe("0");
+
+    rerender(
+      <div style={{ width: 360 }}>
+        <CodeBlock code={WIDE} html={toHtml(WIDE)} wrap />
+      </div>,
+    );
+    await expect.poll(() => el.getAttribute("tabindex")).toBeNull();
+  });
+
+  it("keeps the tab stop under focus, and drops it once focus leaves", async () => {
+    const container = mountSized(
+      <>
+        <CodeBlock code={WIDE} html={toHtml(WIDE)} copyable={false} />
+        <button type="button">After</button>
+      </>,
+      { width: 360 },
+    );
+    const el = content(container);
+    await expect.poll(() => el.getAttribute("tabindex")).toBe("0");
+    await tabTo(el);
+
+    // Dropping it now would send focus to the document. A second observer on
+    // the content, made after the component's, fires after it in the same
+    // delivery; the timeouts after it let React commit what that measured.
+    let delivered = () => {};
+    const probe = new ResizeObserver(() => delivered());
+    const nextDelivery = () =>
+      new Promise<void>((resolve) => {
+        delivered = resolve;
+      });
+    // The probe's first delivery is its initial size; widen after it.
+    const initial = nextDelivery();
+    probe.observe(el);
+    await initial;
+    const resized = nextDelivery();
+    container.style.width = "3000px";
+    await resized;
+    probe.disconnect();
+    await expect.poll(() => el.scrollWidth).toBeLessThanOrEqual(el.clientWidth);
+    for (let i = 0; i < 3; i++) {
+      await new Promise((resolve) => setTimeout(resolve, 20));
+    }
+    expect(el).toHaveFocus();
+    expect(el).toHaveAttribute("tabindex", "0");
+
+    await userEvent.tab();
+    expect(page.getByRole("button", { name: "After" }).element()).toHaveFocus();
+    await expect.poll(() => el.getAttribute("tabindex")).toBeNull();
+  });
+
+  it("is a tab stop in the fullscreen view while the code is taller than it, and the arrow keys scroll it", async () => {
+    await page.viewport(1280, 800);
+    render(
+      <CodeBlock
+        code={LONG}
+        html={toHtml(LONG)}
+        filename="a.ts"
+        fullscreenable
+      />,
+    );
+    await userEvent.click(
+      page.getByRole("button", { name: "Enter fullscreen" }).element(),
+    );
+    const dialog = page.getByRole("dialog", { name: "a.ts" });
+    await expect.element(dialog).toBeInTheDocument();
+    const el = content(dialog.element());
+    expect(el.scrollHeight).toBeGreaterThan(el.clientHeight);
+    await expect.poll(() => el.getAttribute("tabindex")).toBe("0");
+    expect(el).toHaveAttribute("role", "group");
+    expect(el).toHaveAccessibleName("a.ts");
+
+    await tabTo(el);
+    await userEvent.keyboard("{ArrowDown}");
+    await expect.poll(() => el.scrollTop).toBeGreaterThan(0);
+    await userEvent.keyboard("{Escape}");
   });
 });
 
