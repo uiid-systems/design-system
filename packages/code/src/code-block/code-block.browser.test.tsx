@@ -689,3 +689,105 @@ describe("CodeBlock with server html", () => {
     }
   });
 });
+
+/* A long line scrolls inside the frame, or wraps, and never widens the block's
+   container or the page. */
+const WIDE_LINE = `const wide = "${"a long unbroken string ".repeat(12).trim()}";`;
+const WIDE = `${WIDE_LINE}\n${LONG}\n${WIDE_LINE}`;
+
+describe("CodeBlock with long lines", () => {
+  // None of the parents sets `min-width: 0` on the block.
+  const parents = {
+    block: {},
+    "flex row": { display: "flex" },
+    "flex row beside a sibling": { display: "flex", gap: 8 },
+    grid: { display: "grid" },
+    "grid with a 1fr column": { display: "grid", gridTemplateColumns: "1fr" },
+  };
+
+  const mountIn = (style: object, sibling: boolean, wrap: boolean) => {
+    render(
+      <div data-testid="parent" style={{ ...style, width: 320 }}>
+        {sibling && <span>side</span>}
+        <CodeBlock
+          code={WIDE}
+          html={toHtml(WIDE)}
+          filename="wide.ts"
+          wrappable
+          defaultWrap={wrap}
+        />
+      </div>,
+    );
+    const parent = page.getByTestId("parent").element() as HTMLElement;
+    const block = getBlock(parent);
+    return {
+      parent,
+      box: parent.getBoundingClientRect(),
+      rect: block.getBoundingClientRect(),
+      content: block.querySelector<HTMLElement>(
+        '[data-slot="code-block-content"]',
+      )!,
+    };
+  };
+
+  for (const [name, style] of Object.entries(parents)) {
+    const sibling = name.includes("sibling");
+
+    it(`stays inside a ${name} parent and scrolls the line inside the frame`, async () => {
+      const { parent, box, rect, content } = mountIn(style, sibling, false);
+      expect(rect.right).toBeLessThanOrEqual(box.right + 0.5);
+      expect(parent.scrollWidth).toBeLessThanOrEqual(parent.clientWidth);
+      // The long line scrolls in the content, the frame's one sideways scroller.
+      expect(getComputedStyle(content).overflowX).toBe("auto");
+      expect(content.scrollWidth).toBeGreaterThan(content.clientWidth);
+    });
+
+    it(`wraps the line in a ${name} parent with wrap on, and nothing scrolls sideways`, async () => {
+      const { parent, box, rect, content } = mountIn(style, sibling, true);
+      expect(rect.right).toBeLessThanOrEqual(box.right + 0.5);
+      expect(parent.scrollWidth).toBeLessThanOrEqual(parent.clientWidth);
+      expect(content.scrollWidth).toBeLessThanOrEqual(content.clientWidth);
+      // The long line breaks onto more than one row.
+      const row = toPx("calc(var(--code-font-size) * var(--code-line-height))");
+      const line = content.querySelector<HTMLElement>(".line")!;
+      expect(line.getBoundingClientRect().height).toBeGreaterThan(1.5 * row);
+    });
+  }
+});
+
+describe("CodeBlock at a 320px viewport", () => {
+  const filename = `${"deeply/nested/".repeat(8)}component.tsx`;
+
+  for (const wrap of [false, true]) {
+    it(`causes no horizontal page scroll${wrap ? " with wrap on" : ""}`, async () => {
+      const { innerWidth, innerHeight } = window;
+      await page.viewport(320, 640);
+      try {
+        const container = document.createElement("div");
+        document.body.append(container);
+        render(
+          <CodeBlock
+            code={WIDE}
+            language="tsx"
+            filename={filename}
+            wrappable
+            fullscreenable
+            defaultWrap={wrap}
+          />,
+          { container },
+        );
+        expect(getBlock(container).querySelectorAll("button")).toHaveLength(3);
+
+        const root = document.documentElement;
+        expect(root.clientWidth).toBe(320);
+        expect(root.scrollWidth).toBe(320);
+
+        // The same once the highlighter's output replaces the fallback.
+        await waitForHighlight(container);
+        expect(root.scrollWidth).toBe(320);
+      } finally {
+        await page.viewport(innerWidth, innerHeight);
+      }
+    });
+  }
+});

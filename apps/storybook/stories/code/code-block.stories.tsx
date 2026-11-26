@@ -400,3 +400,25 @@ export const Composed: Story = {
   args: { code: sampleTypeScript },
   render: () => <Examples.Composed />,
 };
+
+/** In a flex row beside a label, with no `min-width: 0` anywhere: the long line scrolls inside the frame, or wraps, and the row never widens. */
+export const InFlexRow: Story = {
+  args: {
+    code: sampleLongLine,
+    language: "typescript",
+    filename: "long-line.ts",
+    wrappable: true,
+  },
+  render: (args) => (
+    <Stack gap={4} w="full">
+      <Group gap={4} w="full" ay="start">
+        <Text>Wrap off</Text>
+        <CodeBlock {...args} />
+      </Group>
+      <Group gap={4} w="full" ay="start">
+        <Text>Wrap on</Text>
+        <CodeBlock {...args} defaultWrap />
+      </Group>
+    </Stack>
+  ),
+};
