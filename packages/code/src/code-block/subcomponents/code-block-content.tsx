@@ -77,7 +77,8 @@ export const CodeBlockContent = ({
   // space (or a "Loading..." string). It mirrors Shiki's markup: a newline
   // between the line spans is what breaks the rows inside the <pre>, and a
   // blank line is an empty span, so nothing moves when the colors land.
-  const lines = (code ?? "").split("\n");
+  // Split on CRLF too, as Shiki does, so no line ends in a stray `\r`.
+  const lines = (code ?? "").split(/\r?\n/);
   return (
     <Stack {...sharedAttrs} className={sharedClass} {...props}>
       <pre>
