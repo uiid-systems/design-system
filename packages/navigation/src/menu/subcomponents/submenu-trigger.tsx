@@ -36,7 +36,11 @@ export const SubmenuTrigger = ({
       >
         {children}
       </ListItem>
-      <ChevronRightIcon size={12} />
+      <ChevronRightIcon
+        data-slot="submenu-chevron"
+        className={styles["submenu-chevron"]}
+        aria-hidden
+      />
     </BaseMenu.SubmenuTrigger>
   );
 };

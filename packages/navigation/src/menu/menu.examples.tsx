@@ -1,10 +1,13 @@
 "use client";
 
 import { Button } from "@uiid/buttons";
+import { ArchiveIcon } from "@uiid/icons/archive";
 import { ChevronDownIcon } from "@uiid/icons/chevron-down";
 import { ChevronUpIcon } from "@uiid/icons/chevron-up";
 import { CopyIcon } from "@uiid/icons/copy";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
+import { FolderInputIcon } from "@uiid/icons/folder-input";
+import { InboxIcon } from "@uiid/icons/inbox";
 import { PencilIcon } from "@uiid/icons/pencil";
 import { Share2Icon } from "@uiid/icons/share-2";
 import { Trash2Icon } from "@uiid/icons/trash-2";
@@ -167,4 +170,87 @@ export const Composed = () => (
       </MenuPositioner>
     </MenuPortal>
   </MenuRoot>
+);
+
+/* A composed row takes a `description`, stacked under its label. */
+export const Descriptions = () => (
+  <MenuRoot>
+    <MenuTrigger>
+      <Button>Share</Button>
+    </MenuTrigger>
+    <MenuPortal>
+      <MenuBackdrop />
+      <MenuPositioner>
+        <MenuPopup>
+          <MenuItem
+            label="Copy link"
+            description="Anyone with the link can view"
+            icon={CopyIcon}
+          />
+          <MenuItem
+            label="Invite people"
+            description="Send an email invitation"
+            icon={Share2Icon}
+          />
+          <MenuItem
+            label="Archive"
+            description="Hide it from everyone but you"
+            icon={ArchiveIcon}
+            disabled
+          />
+        </MenuPopup>
+      </MenuPositioner>
+    </MenuPortal>
+  </MenuRoot>
+);
+
+/*
+ * A disabled row is dimmed and takes no pointer. The keyboard still lands on
+ * it, so focus never disappears, but choosing it does nothing.
+ */
+export const Disabled = () => (
+  <Menu
+    trigger={<Button>Actions</Button>}
+    items={[
+      { label: "Edit", value: "edit", icon: PencilIcon },
+      {
+        label: "Duplicate",
+        value: "duplicate",
+        icon: CopyIcon,
+        disabled: true,
+      },
+      {
+        label: "Move to",
+        value: "move",
+        icon: FolderInputIcon,
+        disabled: true,
+        items: [{ label: "Inbox", value: "inbox", icon: InboxIcon }],
+      },
+      { label: "Delete", value: "delete", icon: Trash2Icon },
+    ]}
+  />
+);
+
+/* A long label widens the popup, and the submenu chevron keeps the far edge. */
+export const LongLabels = () => (
+  <Menu
+    trigger={<Button>Actions</Button>}
+    items={[
+      { label: "Edit", value: "edit", icon: PencilIcon },
+      {
+        label: "Duplicate this document with all of its comments",
+        value: "duplicate",
+        icon: CopyIcon,
+      },
+      {
+        label: "Move this document to another folder",
+        value: "move",
+        icon: FolderInputIcon,
+        items: [
+          { label: "Inbox", value: "inbox", icon: InboxIcon },
+          { label: "Archive", value: "archive", icon: ArchiveIcon },
+        ],
+      },
+    ]}
+  />
 );
