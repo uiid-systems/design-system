@@ -1,0 +1,43 @@
+/* One frame: CodeBlock's border and radius around the canvas, the bar and the
+   code. The code reads the block's surface variable, so the frame restates it
+   from the same tokens and the code paints as it does in a CodeBlock. */
+.code-preview {
+  --code-block-surface: light-dark(var(--code-surface-light), var(--code-surface-dark));
+
+  border: var(--globals-border-width) solid var(--globals-border-color);
+  border-radius: var(--globals-border-radius);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* An example wider than the frame scrolls inside the canvas rather than
+   widening the frame. */
+.code-preview-canvas {
+  min-width: 0;
+  overflow: auto;
+}
+
+.code-preview-bar {
+  background-color: var(--shade-surface);
+}
+
+/* The chevron turns to point at the open code. */
+.code-preview-trigger-icon {
+  flex-shrink: 0;
+}
+
+:where(.code-preview-trigger)[data-panel-open] .code-preview-trigger-icon {
+  rotate: 90deg;
+}
+
+/* The bar's divider sits above the code once it opens. */
+.code-preview-panel {
+  border-block-start: var(--globals-border-width) solid var(--globals-border-color);
+  background-color: var(--code-block-surface);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .code-preview-trigger-icon {
+    transition: rotate var(--globals-transition-duration) ease-out;
+  }
+}
