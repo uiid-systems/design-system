@@ -311,7 +311,7 @@ describe("CodeEditor", () => {
     // Shiki renders a focusable `<pre tabindex="0">`; wait for the real output
     const pre = await waitFor(
       () => {
-        const element = highlight.querySelector("pre");
+        const element = highlight.querySelector<HTMLElement>("pre.shiki");
         expect(element).not.toBeNull();
         return element!;
       },
@@ -322,6 +322,43 @@ describe("CodeEditor", () => {
 
     act(() => pre.focus());
     expect(pre).not.toHaveFocus();
+  });
+
+  // The browser test proves the plain text sits on the textarea's own glyphs
+  it("paints the value as plain text, as text, until its highlight lands", async () => {
+    const value = "<b>bold</b>\nnext";
+    render(<CodeEditor defaultValue={value} />);
+    const highlight = document.querySelector<HTMLElement>(
+      "[data-slot='code-editor-highlight']",
+    )!;
+
+    expect(highlight).toHaveAttribute("data-pending");
+    expect(highlight.querySelector("code")!.textContent).toBe(value);
+    expect(highlight.querySelector("b")).toBeNull();
+    expect(highlight.querySelectorAll(".line")).toHaveLength(2);
+
+    await waitFor(
+      () => expect(highlight.querySelector(".shiki")).not.toBeNull(),
+      { timeout: 5000 },
+    );
+    expect(highlight).not.toHaveAttribute("data-pending");
+    expect(highlight.querySelector("code")!.textContent).toBe(value);
+    expect(highlight.querySelector("b")).toBeNull();
+  });
+
+  it("keeps notation comments in the highlighted copy, as the textarea does", async () => {
+    const value = "const a = 1; // [!code ++]";
+    render(<CodeEditor defaultValue={value} />);
+    const highlight = document.querySelector<HTMLElement>(
+      "[data-slot='code-editor-highlight']",
+    )!;
+
+    await waitFor(
+      () => expect(highlight.querySelector(".shiki")).not.toBeNull(),
+      { timeout: 5000 },
+    );
+    expect(highlight.querySelector("code")!.textContent).toBe(value);
+    expect(highlight.querySelector(".diff")).toBeNull();
   });
 
   // The CSS keys the shared gutter off this attribute; check alignment by eye in the LongLines story

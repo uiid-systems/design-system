@@ -2,7 +2,7 @@
 
 import { Stack, Layer } from "@uiid/layout";
 import { cx, definedProps, useComposedRefs } from "@uiid/utils";
-import { useState, useCallback, useRef } from "react";
+import { Fragment, useState, useCallback, useMemo, useRef } from "react";
 
 import { CodeBlockHeader } from "../code-block/subcomponents/code-block-header";
 import {
@@ -14,6 +14,7 @@ import {
 import { codeTypographyVariant, shikiVariants } from "../code.variants";
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import type { CodeEditorProps } from "./code-editor.types";
+import { textOfMarkup } from "./code-editor.utils";
 
 import blockStyles from "../code-block/code-block.module.css";
 import styles from "./code-editor.module.css";
@@ -62,8 +63,16 @@ export const CodeEditor = ({
       ? `${filename} code editor`
       : "Code editor";
 
-  // Syntax highlighting
-  const { html } = useHighlight(value || " ", language);
+  // Syntax highlighting. Notation comments stay as typed, so the highlight holds
+  // exactly the textarea's text.
+  const { html } = useHighlight(value, language, { notations: false });
+
+  // The highlight lags the value by one pass. Until the markup for the current
+  // value lands, the layer paints the value as plain text with the same line
+  // structure, so a typed character shows in the frame it is typed and the
+  // layers never hold different text.
+  const highlightedText = useMemo(() => textOfMarkup(html), [html]);
+  const highlightIsCurrent = html !== "" && highlightedText === value;
 
   // Sync scroll between textarea and highlight layer
   const handleScroll = useCallback(
@@ -137,13 +146,29 @@ export const CodeEditor = ({
           ref={highlightRef}
           inert
           data-slot="code-editor-highlight"
+          data-pending={highlightIsCurrent ? undefined : true}
           className={cx(
             styles["code-editor-highlight"],
             // The editor draws its own line numbers in its gutter (see the CSS module)
             shikiVariants({ showLineNumbers: false }),
           )}
-          dangerouslySetInnerHTML={{ __html: html || "" }}
-        />
+        >
+          {highlightIsCurrent ? (
+            <div dangerouslySetInnerHTML={{ __html: html }} />
+          ) : (
+            // Text children, never markup: Shiki's line structure with no tokens
+            <pre className={styles["code-editor-plain"]}>
+              <code>
+                {value.split("\n").map((line, index) => (
+                  <Fragment key={index}>
+                    {index > 0 && "\n"}
+                    <span className="line">{line}</span>
+                  </Fragment>
+                ))}
+              </code>
+            </pre>
+          )}
+        </div>
 
         {/* Transparent textarea overlay: defaults, then the caller's props, then the props the editor owns */}
         <textarea

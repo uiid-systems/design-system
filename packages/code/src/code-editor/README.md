@@ -94,6 +94,8 @@ The editor uses a transparent `<textarea>` overlaid on syntax-highlighted code v
 └──────────────────────────────────────┘
 ```
 
+The textarea's own text is transparent, so the backdrop must always hold exactly the textarea's text. A highlight lands one pass after the value changes; until the markup for the current value arrives, the backdrop paints the value as plain text in Shiki's line structure (and carries `data-pending`), so a typed or pasted character shows in the frame it is typed and the caret never sits over different text. Notation comments such as `// [!code ++]` stay in the code as typed, rather than being turned into diff or highlight lines as CodeBlock does. With `rows` the layer is capped at that many lines and scrolls as one, so the textarea never scrolls on its own; without it the editor grows with its content.
+
 ## See Also
 
 - [CodeBlock](../code-block/README.md) - Read-only code display

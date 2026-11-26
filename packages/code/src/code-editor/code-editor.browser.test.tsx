@@ -1,11 +1,42 @@
 import { render, waitFor } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { useState } from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
 import { CodeBlock } from "../code-block/code-block";
 import { CodeEditor } from "./code-editor";
 
 import "@uiid/tokens/globals.css";
+
+/* Highlights pass straight through unless a test holds them, so a test can
+   type while no highlight can land. */
+const gate = vi.hoisted(() => ({
+  held: null as Promise<void> | null,
+  release: null as (() => void) | null,
+}));
+vi.mock("../highlighter/highlighter", async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import("../highlighter/highlighter")>();
+  return {
+    ...actual,
+    highlight: async (...args: Parameters<typeof actual.highlight>) => {
+      while (gate.held) await gate.held;
+      return actual.highlight(...args);
+    },
+  };
+});
+
+/** Holds every highlight until the returned function is called. */
+const holdHighlights = () => {
+  gate.held = new Promise<void>((resolve) => {
+    gate.release = () => {
+      gate.held = null;
+      gate.release = null;
+      resolve();
+    };
+  });
+  return gate.release!;
+};
 
 const header = () => document.querySelector('[data-slot="code-block-header"]');
 
@@ -238,5 +269,597 @@ describe("CodeEditor header", () => {
       .poll(() => page.getByRole("button", { name: "Copy code" }).query())
       .toBeNull();
     expect(el.getBoundingClientRect().top).toBe(top);
+  });
+});
+
+/* ---------------------------------------------------------------------------
+   Layer alignment
+
+   A textarea exposes no caret rectangle, so these tests ask the textarea's own
+   layout where each character is: `document.caretPositionFromPoint` hit-tests
+   the real textarea and returns the value offset nearest a point. The x at
+   which that offset steps from `i` to `i + 1` is the textarea's centre of
+   character `i`, and the y at which it steps to the next row is its row edge.
+   Both are found by bisection to 1/32px and compared with the rectangle of the
+   same character in the highlight layer (a Range over its text nodes). The
+   caret is drawn at the boundary between two characters, so when the
+   characters either side of it match within 1px, so does the caret.
+   --------------------------------------------------------------------------- */
+
+type CaretDocument = Document & {
+  caretPositionFromPoint: (
+    x: number,
+    y: number,
+  ) => { offsetNode: Node; offset: number } | null;
+};
+
+/* Testing Library marks the page as an act() environment, which suits
+   happy-dom. Here the events come from outside React, so act() never wraps
+   them and React would warn on every keystroke. */
+const leaveActEnvironment = () => {
+  beforeEach(async () => {
+    (
+      globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }
+    ).IS_REACT_ACT_ENVIRONMENT = false;
+    // Hit-testing only reaches what is inside the viewport
+    await page.viewport(1024, 900);
+  });
+  // A failed test never leaves later highlights held
+  afterEach(() => gate.release?.());
+};
+
+const editorRoot = (container: Element, index = 0) =>
+  container.querySelectorAll<HTMLElement>('[data-slot="code-editor"]')[index]!;
+const textareaOf = (root: Element) => root.querySelector("textarea")!;
+const highlightOf = (root: Element) =>
+  root.querySelector<HTMLElement>('[data-slot="code-editor-highlight"]')!;
+/** The text the highlight layer paints. */
+const paintedText = (root: Element) =>
+  highlightOf(root).querySelector("code")?.textContent ?? "";
+
+/** Waits until Shiki's markup for exactly `value` is in the highlight layer. */
+const highlightedAs = (root: Element, value: string) =>
+  waitFor(
+    () => {
+      expect(highlightOf(root).querySelector(".shiki span")).not.toBeNull();
+      expect(paintedText(root)).toBe(value);
+    },
+    { timeout: 5000 },
+  );
+
+/** The rectangle of the character at value offset `index` in the highlight layer. */
+const glyphRect = (root: Element, index: number) => {
+  const code = highlightOf(root).querySelector("code")!;
+  const walker = document.createTreeWalker(code, NodeFilter.SHOW_TEXT);
+  let start = 0;
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    const length = node.textContent!.length;
+    if (index < start + length) {
+      const range = document.createRange();
+      range.setStart(node, index - start);
+      range.setEnd(node, index - start + 1);
+      return range.getBoundingClientRect();
+    }
+    start += length;
+  }
+  throw new Error(`no character ${index} in the highlight layer`);
+};
+
+const offsetAt = (textarea: HTMLTextAreaElement, x: number, y: number) => {
+  const position = (document as CaretDocument).caretPositionFromPoint(x, y);
+  expect(position?.offsetNode, `hit at ${x},${y}`).toBe(textarea);
+  return position!.offset;
+};
+
+/** The smallest t in [lo, hi] for which `test(t)` holds, assuming it is monotonic. */
+const bisect = (lo: number, hi: number, test: (t: number) => boolean) => {
+  while (hi - lo > 1 / 32) {
+    const mid = (lo + hi) / 2;
+    if (test(mid)) hi = mid;
+    else lo = mid;
+  }
+  return hi;
+};
+
+/**
+ * How far the textarea's character `index` sits from the highlight layer's on
+ * each axis, in px. Pick a character that is not the last on its visual row.
+ */
+const drift = (root: Element, index: number) => {
+  const textarea = textareaOf(root);
+  const glyph = glyphRect(root, index);
+  const lineHeight = Number.parseFloat(getComputedStyle(textarea).lineHeight);
+  const cx = glyph.left + glyph.width / 2;
+  const cy = glyph.top + glyph.height / 2;
+  // The highlight's line box: the half-leading sits evenly above and below the glyph
+  const rowTop = cy - lineHeight / 2;
+
+  expect(
+    [index, index + 1],
+    `the textarea has character ${index} under its glyph`,
+  ).toContain(offsetAt(textarea, cx, cy));
+
+  const x = bisect(
+    glyph.left - glyph.width,
+    glyph.right + glyph.width,
+    (t) => offsetAt(textarea, t, cy) > index,
+  );
+  // Measure the row's top edge where there is a row above, else its bottom edge
+  const hasRowAbove =
+    cy - lineHeight > textarea.getBoundingClientRect().top &&
+    offsetAt(textarea, cx, cy - lineHeight) < index;
+  const dy = hasRowAbove
+    ? bisect(cy - lineHeight, cy, (t) => offsetAt(textarea, cx, t) >= index) -
+      rowTop
+    : bisect(
+        cy,
+        cy + lineHeight,
+        (t) => offsetAt(textarea, cx, t) > index + 1,
+      ) -
+      (rowTop + lineHeight);
+  return { dx: Math.abs(x - cx), dy: Math.abs(dy) };
+};
+
+const expectAligned = (root: Element, indices: number[]) => {
+  for (const index of indices) {
+    const { dx, dy } = drift(root, index);
+    expect(dx, `character ${index} x drift`).toBeLessThanOrEqual(1);
+    expect(dy, `character ${index} y drift`).toBeLessThanOrEqual(1);
+  }
+};
+
+/** The offsets of the characters either side of the caret, on its row. */
+const aroundCaret = (textarea: HTMLTextAreaElement) => {
+  const caret = textarea.selectionStart;
+  return [caret - 2, caret - 1].filter(
+    (i) => i >= 0 && !textarea.value.slice(i, caret).includes("\n"),
+  );
+};
+
+/** The textarea never scrolls on its own: it is exactly as tall as the highlight. */
+const expectNoInnerScroll = (root: Element) => {
+  const textarea = textareaOf(root);
+  expect(textarea.scrollHeight, "textarea overflow").toBe(
+    textarea.clientHeight,
+  );
+  expect(textarea.scrollWidth).toBe(textarea.clientWidth);
+  expect(textarea.scrollTop).toBe(0);
+  expect(textarea.scrollLeft).toBe(0);
+  expect(highlightOf(root).getBoundingClientRect().height).toBe(
+    textarea.getBoundingClientRect().height,
+  );
+};
+
+/** The glyph before the caret is wholly inside the layer's scrollport. */
+const expectCaretInView = (root: Element) => {
+  const textarea = textareaOf(root);
+  const glyph = glyphRect(root, textarea.selectionStart - 1);
+  const port = textarea.parentElement!.getBoundingClientRect();
+  expect(glyph.top, "caret below the scrollport top").toBeGreaterThanOrEqual(
+    port.top,
+  );
+  expect(glyph.bottom, "caret above the scrollport bottom").toBeLessThanOrEqual(
+    port.bottom,
+  );
+};
+
+/** The key that moves the caret to the end of the text, on the machine's platform. */
+const TO_END = navigator.platform.startsWith("Mac")
+  ? "{Meta>}{ArrowDown}{/Meta}"
+  : "{Control>}{End}{/Control}";
+
+/* Puts `text` on the system clipboard with a real copy keystroke, so the paste
+   that follows is the browser's own, as the forms mask tests do. */
+const copyToClipboard = async (text: string) => {
+  const source = document.createElement("textarea");
+  document.body.append(source);
+  source.value = text;
+  source.focus();
+  source.select();
+  await userEvent.copy();
+  source.remove();
+};
+
+/** The offset each line of `value` starts at. */
+const lineStarts = (value: string) => {
+  const starts = [0];
+  for (let i = 0; i < value.length; i++) {
+    if (value[i] === "\n") starts.push(i + 1);
+  }
+  return starts;
+};
+
+const SHORT = "const a = 1;\nlet total = a + 41;\nconsole.log(total);";
+const LONG_LINE = `const message = ${Array.from(
+  { length: 24 },
+  (_, i) => `word${i}`,
+).join(" + ")}; const url = "https://example.com/${"a".repeat(90)}";\nnext();`;
+const MANY_LINES = Array.from(
+  { length: 30 },
+  (_, i) => `const line${i} = ${i};`,
+).join("\n");
+
+describe("CodeEditor layer alignment", () => {
+  leaveActEnvironment();
+
+  it.each([
+    { width: 600, showLineNumbers: false },
+    { width: 600, showLineNumbers: true },
+    { width: 320, showLineNumbers: false },
+    { width: 320, showLineNumbers: true },
+  ])(
+    "keeps every character on its glyph ($width px, line numbers: $showLineNumbers)",
+    async ({ width, showLineNumbers }) => {
+      const { container } = render(
+        <div style={{ width }}>
+          <CodeEditor defaultValue={SHORT} showLineNumbers={showLineNumbers} />
+        </div>,
+      );
+      const root = editorRoot(container);
+      await highlightedAs(root, SHORT);
+      expectAligned(root, [1, 8, 15, 22, 36, 44]);
+    },
+  );
+
+  it.each([
+    { width: 600, showLineNumbers: false },
+    { width: 600, showLineNumbers: true },
+    { width: 320, showLineNumbers: true },
+  ])(
+    "wraps a long line at the same point in both layers ($width px, line numbers: $showLineNumbers)",
+    async ({ width, showLineNumbers }) => {
+      const { container } = render(
+        <div style={{ width }}>
+          <CodeEditor
+            defaultValue={LONG_LINE}
+            showLineNumbers={showLineNumbers}
+          />
+        </div>,
+      );
+      const root = editorRoot(container);
+      await highlightedAs(root, LONG_LINE);
+      const line = document.createRange();
+      line.selectNodeContents(highlightOf(root).querySelector(".line")!);
+      expect(line.getBoundingClientRect().height).toBeGreaterThan(
+        2 * Number.parseFloat(getComputedStyle(textareaOf(root)).lineHeight),
+      );
+      // Characters spread through the wrapped line, including inside the long URL
+      const url = LONG_LINE.indexOf("aaaa");
+      expectAligned(root, [3, 60, 120, 180, url + 10, url + 60]);
+      expectNoInnerScroll(root);
+    },
+  );
+
+  it.each([false, true])(
+    "keeps the caret on its glyph at every scroll offset (line numbers: %s)",
+    async (showLineNumbers) => {
+      const { container } = render(
+        <div style={{ width: 600 }}>
+          <CodeEditor
+            defaultValue={MANY_LINES}
+            rows={4}
+            showLineNumbers={showLineNumbers}
+          />
+        </div>,
+      );
+      const root = editorRoot(container);
+      await highlightedAs(root, MANY_LINES);
+      const textarea = textareaOf(root);
+      const scroller = textarea.parentElement!;
+      const max = scroller.scrollHeight - scroller.clientHeight;
+      expect(max).toBeGreaterThan(0);
+      const starts = lineStarts(MANY_LINES);
+
+      for (const top of [0, 37, Math.round(max / 2), max]) {
+        scroller.scrollTop = top;
+        await expect.poll(() => scroller.scrollTop).toBe(top);
+        // The first line wholly inside the scrollport
+        const box = scroller.getBoundingClientRect();
+        const start = starts.find(
+          (s) => glyphRect(root, s + 3).top > box.top + 4,
+        )!;
+        expectAligned(root, [start + 3, start + 8]);
+        expectNoInnerScroll(root);
+      }
+
+      // The caret the keyboard moves, after the browser scrolls it into view
+      scroller.scrollTop = 0;
+      await userEvent.click(textarea);
+      await userEvent.keyboard(TO_END);
+      await expect.poll(() => textarea.selectionStart).toBe(MANY_LINES.length);
+      await expect.poll(() => scroller.scrollTop).toBeGreaterThan(0);
+      expectCaretInView(root);
+      expectAligned(root, aroundCaret(textarea));
+    },
+  );
+});
+
+describe("CodeEditor typing", () => {
+  leaveActEnvironment();
+
+  it("paints a typed character in the frame it is typed, before its highlight lands", async () => {
+    const { container } = render(<CodeEditor defaultValue={SHORT} />);
+    const root = editorRoot(container);
+    await highlightedAs(root, SHORT);
+    const textarea = textareaOf(root);
+    await userEvent.click(textarea);
+    await userEvent.keyboard(TO_END);
+
+    // Hold every highlight, so none can land while the check runs
+    const release = holdHighlights();
+
+    /* Reads what the next frame paints: an `input` listener schedules a frame
+       callback, which runs after React has committed the keystroke and before
+       the browser paints that frame. */
+    const frames: { value: string; painted: string; color: string }[] = [];
+    const onInput = () =>
+      requestAnimationFrame(() => {
+        const code = highlightOf(root).querySelector("code")!;
+        frames.push({
+          value: textarea.value,
+          painted: code.textContent ?? "",
+          color: getComputedStyle(code).color,
+        });
+      });
+    textarea.addEventListener("input", onInput);
+    // One key at a time, each waiting for its frame
+    await userEvent.keyboard(" ");
+    await expect.poll(() => frames.length).toBe(1);
+    await userEvent.keyboard("x");
+    await expect.poll(() => frames.length).toBe(2);
+    textarea.removeEventListener("input", onInput);
+
+    const typed = `${SHORT} x`;
+    expect(frames.map((frame) => frame.value)).toEqual([`${SHORT} `, typed]);
+    for (const frame of frames) {
+      expect(frame.painted).toBe(frame.value);
+      expect(TRANSPARENT.has(frame.color)).toBe(false);
+    }
+    // The textarea's own text stays transparent, so the text is painted once
+    expect(TRANSPARENT.has(getComputedStyle(textarea).color)).toBe(true);
+    expectAligned(root, aroundCaret(textarea));
+
+    release();
+    await highlightedAs(root, typed);
+    expectAligned(root, aroundCaret(textarea));
+  });
+});
+
+describe("CodeEditor scroll", () => {
+  leaveActEnvironment();
+
+  it("follows the textarea's scroll on both axes after a paste", async () => {
+    const { container } = render(
+      <div style={{ width: 600 }}>
+        <CodeEditor defaultValue="start();" rows={4} />
+      </div>,
+    );
+    const root = editorRoot(container);
+    await highlightedAs(root, "start();");
+    const textarea = textareaOf(root);
+    const scroller = textarea.parentElement!;
+
+    const pasted = `\n${MANY_LINES}\n${LONG_LINE}`;
+    await copyToClipboard(pasted);
+    await userEvent.click(textarea);
+    await userEvent.keyboard(TO_END);
+    await userEvent.paste();
+    const value = `start();${pasted}`;
+    await expect.element(page.getByRole("textbox")).toHaveValue(value);
+    await highlightedAs(root, value);
+
+    // The paste moved the scroll position to the caret at the end
+    await expect.poll(() => scroller.scrollTop).toBeGreaterThan(0);
+    expectCaretInView(root);
+    expect(scroller.scrollLeft).toBe(0);
+    expect(scroller.scrollWidth).toBe(scroller.clientWidth);
+    expectNoInnerScroll(root);
+    expectAligned(root, aroundCaret(textarea));
+  });
+
+  it("follows a programmatic value change", async () => {
+    const replaced = `${MANY_LINES}\nend();`;
+    const Controlled = () => {
+      const [value, setValue] = useState("start();");
+      return (
+        <div style={{ width: 600 }}>
+          <button type="button" onClick={() => setValue(replaced)}>
+            replace
+          </button>
+          <CodeEditor value={value} onValueChange={setValue} rows={4} />
+        </div>
+      );
+    };
+    const { container } = render(<Controlled />);
+    const root = editorRoot(container);
+    await highlightedAs(root, "start();");
+    const scroller = textareaOf(root).parentElement!;
+
+    const release = holdHighlights();
+    await userEvent.click(page.getByRole("button", { name: "replace" }));
+    await expect.element(page.getByRole("textbox")).toHaveValue(replaced);
+    // Before its highlight lands
+    expect(paintedText(root)).toBe(replaced);
+    expectAligned(root, [2, 9]);
+    expectNoInnerScroll(root);
+
+    release();
+    await highlightedAs(root, replaced);
+    scroller.scrollTop = scroller.scrollHeight;
+    await expect.poll(() => scroller.scrollTop).toBeGreaterThan(0);
+    expectNoInnerScroll(root);
+    expectAligned(root, [replaced.length - 4]);
+  });
+});
+
+describe("CodeEditor edge input", () => {
+  leaveActEnvironment();
+
+  it("paints only the placeholder when empty, then aligns the first characters typed", async () => {
+    const { container } = render(
+      <div style={{ width: 600 }}>
+        <CodeEditor defaultValue="" placeholder="Write some code" />
+      </div>,
+    );
+    const root = editorRoot(container);
+    const textarea = textareaOf(root);
+    await waitFor(
+      () => expect(highlightOf(root).querySelector(".shiki")).not.toBeNull(),
+      { timeout: 5000 },
+    );
+    expect(paintedText(root).trim()).toBe("");
+    expectNoInnerScroll(root);
+
+    await userEvent.click(textarea);
+    await userEvent.keyboard("abc");
+    await highlightedAs(root, "abc");
+    expectAligned(root, [0, 1]);
+    expectNoInnerScroll(root);
+  });
+
+  it("keeps a trailing newline's empty last line in both layers", async () => {
+    const value = "const a = 1;\nconst b = 2;\n";
+    const { container } = render(
+      <div style={{ width: 600 }}>
+        <CodeEditor defaultValue={value} showLineNumbers />
+      </div>,
+    );
+    const root = editorRoot(container);
+    await highlightedAs(root, value);
+    expectNoInnerScroll(root);
+
+    const textarea = textareaOf(root);
+    await userEvent.click(textarea);
+    await userEvent.keyboard(`${TO_END}{Enter}`);
+    await highlightedAs(root, `${value}\n`);
+    expectNoInnerScroll(root);
+    await userEvent.keyboard("xyz");
+    await highlightedAs(root, `${value}\nxyz`);
+    expectAligned(root, [value.length + 1, value.length + 2]);
+  });
+
+  it("lines tabs up in both layers", async () => {
+    const value =
+      "\tconst a = 1;\n\t\tif (a) {\n\t\t\treturn a;\n\t\t}\nend();";
+    const { container } = render(
+      <div style={{ width: 600 }}>
+        <CodeEditor defaultValue={value} showLineNumbers language="tsx" />
+      </div>,
+    );
+    const root = editorRoot(container);
+    await highlightedAs(root, value);
+    expectAligned(root, [
+      value.indexOf("const") + 1,
+      value.indexOf("if") + 1,
+      value.indexOf("return") + 1,
+    ]);
+  });
+
+  it("keeps the layers aligned when a controlled value changes from outside", async () => {
+    const Controlled = () => {
+      const [value, setValue] = useState(SHORT);
+      return (
+        <div style={{ width: 320 }}>
+          <button type="button" onClick={() => setValue(LONG_LINE)}>
+            replace
+          </button>
+          <CodeEditor value={value} onValueChange={setValue} showLineNumbers />
+        </div>
+      );
+    };
+    const { container } = render(<Controlled />);
+    const root = editorRoot(container);
+    await highlightedAs(root, SHORT);
+
+    const release = holdHighlights();
+    await userEvent.click(page.getByRole("button", { name: "replace" }));
+    await expect.element(page.getByRole("textbox")).toHaveValue(LONG_LINE);
+    expect(paintedText(root)).toBe(LONG_LINE);
+    expectAligned(root, [3, 60, 120]);
+    expectNoInnerScroll(root);
+
+    release();
+    await highlightedAs(root, LONG_LINE);
+    expectAligned(root, [3, 60, 120]);
+    expectNoInnerScroll(root);
+  });
+
+  it("paints notation comments as typed, not the highlighter's stripped copy", async () => {
+    const value =
+      "const a = 1; // [!code ++]\nconst b = 2; // [!code highlight]\nend();";
+    const { container } = render(
+      <div style={{ width: 600 }}>
+        <CodeEditor defaultValue={value} />
+      </div>,
+    );
+    const root = editorRoot(container);
+    await highlightedAs(root, value);
+    expectAligned(root, [value.indexOf("++"), value.indexOf("end") + 1]);
+  });
+});
+
+describe("CodeEditor rows and forms", () => {
+  leaveActEnvironment();
+
+  it("caps the height at rows and scrolls inside; with no rows it grows with its content", async () => {
+    const { container } = render(
+      <div style={{ width: 600 }}>
+        <CodeEditor defaultValue={MANY_LINES} rows={5} />
+        <CodeEditor defaultValue={SHORT} />
+        <CodeEditor defaultValue={MANY_LINES} />
+      </div>,
+    );
+    const roots = [0, 1, 2].map((i) => editorRoot(container, i));
+    const [capped, short, tall] = roots as [
+      HTMLElement,
+      HTMLElement,
+      HTMLElement,
+    ];
+    await highlightedAs(capped, MANY_LINES);
+    await highlightedAs(short, SHORT);
+    await highlightedAs(tall, MANY_LINES);
+
+    const style = getComputedStyle(textareaOf(short));
+    const lineHeight = Number.parseFloat(style.lineHeight);
+    const padding = Number.parseFloat(style.paddingTop);
+    const layer = (root: Element) => textareaOf(root).parentElement!;
+
+    expect(layer(capped).clientHeight).toBeCloseTo(
+      5 * lineHeight + 2 * padding,
+      0,
+    );
+    expect(layer(capped).scrollHeight).toBeGreaterThan(
+      layer(capped).clientHeight,
+    );
+    expect(layer(short).clientHeight).toBeCloseTo(
+      3 * lineHeight + 2 * padding,
+      0,
+    );
+    expect(layer(tall).clientHeight).toBeCloseTo(
+      30 * lineHeight + 2 * padding,
+      0,
+    );
+    for (const root of roots) expectNoInnerScroll(root);
+  });
+
+  it("submits the typed value under TextareaProps.name", async () => {
+    let submitted: FormData | undefined;
+    render(
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          submitted = new FormData(event.currentTarget);
+        }}
+      >
+        <CodeEditor defaultValue="a" TextareaProps={{ name: "source" }} />
+        <button type="submit">Save</button>
+      </form>,
+    );
+    const textbox = page.getByRole("textbox");
+    await userEvent.click(textbox);
+    await userEvent.keyboard(`${TO_END}bc`);
+    await expect.element(textbox).toHaveValue("abc");
+    await userEvent.click(page.getByRole("button", { name: "Save" }));
+    await expect.poll(() => submitted?.get("source")).toBe("abc");
   });
 });
