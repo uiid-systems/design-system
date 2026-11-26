@@ -1,4 +1,7 @@
 .code-block {
+  /* The radius inside the border, which is the shape the block clips to. */
+  --code-block-inner-radius: calc(var(--globals-border-radius) - var(--globals-border-width));
+
   position: relative;
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
@@ -7,8 +10,59 @@
   background-color: var(--shade-surface);
 }
 
+/* One frame: the block's border, radius and surface. Inside it the only rule is
+   the header bar's bottom border, which the bar draws with `bb={1}`. */
 .code-block-header {
   background-color: var(--shade-surface);
+}
+
+/* With no filename or icon there is no bar. The buttons float in the top-right
+   corner, centred on the first line, on a surface plate so the code never shows
+   through them. The insets keep their focus rings inside the clipped frame. */
+:where(.code-block-header)[data-floating] {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: calc(var(--code-padding) + (var(--code-font-size) * var(--code-line-height) - var(--forms-size-xs-height)) / 2);
+  inset-inline-end: var(--code-actions-inset);
+  border-radius: var(--globals-border-radius);
+}
+
+/* One button tall even with no buttons, so a bar keeps its height as a button
+   comes or goes, such as CodeEditor's copy button when its value empties. */
+.code-block-title {
+  min-block-size: var(--forms-size-xs-height);
+}
+
+.code-block-actions {
+  gap: var(--code-actions-gap);
+}
+
+/* The floating buttons cover the end of the first line, so that line reserves
+   their width. A wrapped first line breaks before them; an unwrapped one longer
+   than the block still scrolls beneath them. A collapsed block clips rather than
+   scrolls, so only fullscreen scrolls vertically; there any line can pass
+   beneath the buttons, so every line reserves it. */
+.code-block:has(> :where(.code-block-header)[data-floating]) {
+  --code-block-actions-count: 1;
+}
+
+.code-block:has(> :where(.code-block-header)[data-floating] .code-block-actions > :nth-child(2)) {
+  --code-block-actions-count: 2;
+}
+
+.code-block:has(> :where(.code-block-header)[data-floating] .code-block-actions > :nth-child(3)) {
+  --code-block-actions-count: 3;
+}
+
+/* The reserve runs from the line box's end to one gap short of the buttons: each
+   button and the gap after it, plus the inset, less the code padding the line
+   already sits inside, plus the line's own bleed past that padding. */
+.code-block:has(> :where(.code-block-header)[data-floating]) .code-block-content :global(.line:first-child),
+:where(.code-block)[data-fullscreen]:has(> :where(.code-block-header)[data-floating]) .code-block-content :global(.line) {
+  padding-inline-end: calc(
+    var(--code-block-actions-count) * (var(--forms-size-xs-height) + var(--code-actions-gap)) + var(--code-actions-inset) - var(--code-padding) +
+      var(--code-block-line-bleed)
+  );
 }
 
 .code-block-language-icon {
@@ -29,16 +83,19 @@
   position: relative;
 }
 
-/* `rows` writes --code-rows; collapsed, the area is that many lines tall. */
-.code-block-scroll[data-rows] {
-  overflow-y: auto;
-}
-
+/* `rows` writes --code-rows; collapsed, the area is that many lines tall. It
+   clips rather than scrolls: "Show more" is the one way to the rest, so the area
+   is no scroll container and no tab stop. Long unwrapped lines still scroll
+   sideways in the content inside it. */
 .code-block-scroll[data-collapsed] {
   max-height: calc(var(--code-rows) * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding));
+  overflow-y: clip;
 }
 
 .code-block-content {
+  /* How far each line's box bleeds past the code padding on either side. */
+  --code-block-line-bleed: var(--spacing-unit);
+
   overflow-x: auto;
 
   /* Apply background to pre so it extends with scrollable content */
@@ -51,8 +108,8 @@
   & :global(.line) {
     display: inline-block;
     width: 100%;
-    padding-inline: 0.25rem;
-    margin-inline: -0.25rem;
+    padding-inline: var(--code-block-line-bleed);
+    margin-inline: calc(-1 * var(--code-block-line-bleed));
   }
 
   /*
@@ -161,9 +218,52 @@
   padding: var(--code-padding);
 }
 
+/* The expand toggle is the frame's bottom edge: full width, flush with the
+   border, its bottom corners following the frame's inner radius. It stays
+   muted until hover or focus. Button shares this layer, so the `.code-block`
+   ancestor is what lets these rules outrank its own. */
+.code-block .code-block-expand-toggle {
+  width: 100%;
+  border-radius: 0 0 var(--code-block-inner-radius) var(--code-block-inner-radius);
+  color: var(--shade-muted);
+
+  &:where(:hover, :focus-visible) {
+    color: var(--shade-foreground);
+  }
+
+  /* A full-width bar shrinking on press reads as the frame moving. */
+  &:where(:active) {
+    scale: none;
+  }
+}
+
 /* The block clips its overflow and the toggle sits flush with its edges, so
-   draw the Button's ring inside the toggle. The `.code-block` ancestor
-   outranks Button's own `.button:focus-visible`, which shares this layer. */
+   draw the Button's ring inside the toggle, where its rounded bottom corners
+   follow the same radius as the clip. */
 .code-block .code-block-expand-toggle:focus-visible {
   outline-offset: calc(-1 * var(--globals-outline-width));
+}
+
+/* A fade over the last collapsed line, shown only while the toggle is there to
+   reveal the rest. A mask, so it fades to whatever surface is beneath. The
+   bottom padding stays clear, hiding the next line's top peeking into it. Only
+   the mask's alpha counts, so the opaque stop is plain black. */
+:where(.code-block-scroll)[data-collapsed]:has(~ .code-block-expand-toggle) {
+  mask-image: linear-gradient(
+    to top,
+    transparent var(--code-padding),
+    black calc(var(--code-padding) + var(--code-font-size) * var(--code-line-height))
+  );
+}
+
+/* Under reduced motion the block's buttons do not scale on press. Their colour
+   changes stay, since a fade is not motion. */
+@media (prefers-reduced-motion: reduce) {
+  /* No `.code-block` ancestor, so CodeEditor's copy button is reached too. The
+     `:active` pseudo-class outranks Button's own `.button:where(:active)` only
+     while both modules sit in the same cascade layer, as they do in the build
+     (and unlayered, in tests); a later layer for Button would win instead. */
+  .code-block-icon-button:active {
+    scale: none;
+  }
 }

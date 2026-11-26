@@ -4,7 +4,7 @@ import { Stack, Layer } from "@uiid/layout";
 import { cx, definedProps, useComposedRefs } from "@uiid/utils";
 import { useState, useCallback, useRef } from "react";
 
-import { CodeBlockHeader } from "../code-block/subcomponents";
+import { CodeBlockHeaderBase } from "../code-block/subcomponents/code-block-header-base";
 import {
   DEFAULT_LANGUAGE,
   DEFAULT_SHOW_LINE_NUMBERS,
@@ -91,8 +91,7 @@ export const CodeEditor = ({
     [readOnly, isControlled, onValueChange, onTextareaChange],
   );
 
-  // Show header if filename or copyable
-  const showHeader = filename || copyable;
+  const showHeader = !!filename || copyable;
 
   return (
     <Stack
@@ -102,10 +101,13 @@ export const CodeEditor = ({
       w="full"
       {...props}
     >
+      {/* As before UI-486: a bar whenever there is a filename or copying is on, even while the
+          value is empty, so the textarea never moves as the first character is typed */}
       {showHeader && (
-        <CodeBlockHeader
+        <CodeBlockHeaderBase
           {...HeaderProps}
           {...definedProps({ filename })}
+          bar
           copyable={copyable}
           code={value}
           CopyButtonProps={CopyButtonProps}

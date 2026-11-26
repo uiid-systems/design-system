@@ -1,88 +1,14 @@
-import { Group } from "@uiid/layout";
-import { Text } from "@uiid/typography";
-import { cx } from "@uiid/utils";
-
-import { DEFAULT_COPYABLE, DEFAULT_CODE } from "../../code.constants";
 import type { CodeBlockHeaderProps } from "../code-block.types";
-import { LanguageIcon } from "../language-icons";
-import { CodeBlockCopyButton } from "./code-block-copy-button";
-import { CodeBlockFullscreenButton } from "./code-block-fullscreen-button";
-import { CodeBlockWrapButton } from "./code-block-wrap-button";
+import { CodeBlockHeaderBase } from "./code-block-header-base";
 
-import styles from "../code-block.module.css";
-
-export const CodeBlockHeader = ({
-  filename,
-  language,
-  copyable = DEFAULT_COPYABLE,
-  code = DEFAULT_CODE,
-  wrappable = false,
-  wrap,
-  defaultWrap,
-  onWrapChange,
-  fullscreenable = false,
-  fullscreen,
-  onFullscreenChange,
-  className,
-  LanguageIconProps,
-  WrapButtonProps,
-  CopyButtonProps,
-  FullscreenButtonProps,
-  children,
-  ...props
-}: CodeBlockHeaderProps) => {
-  // Nothing to copy means no copy button at all.
-  const showCopy = copyable && !!code;
-
-  return (
-    <Group
-      data-slot="code-block-header"
-      className={cx(styles["code-block-header"], className)}
-      ay="center"
-      ax="space-between"
-      gap={3}
-      py={2}
-      px={4}
-      bb={1}
-      w="full"
-      {...props}
-    >
-      <Group ay="center" gap={2}>
-        {language && (
-          <LanguageIcon
-            language={language}
-            className={styles["code-block-language-icon"]}
-            {...LanguageIconProps}
-          />
-        )}
-        {filename && (
-          <Text size={-1} family="mono" emphasis="muted">
-            {filename}
-          </Text>
-        )}
-      </Group>
-      {children}
-      {(wrappable || showCopy || fullscreenable) && (
-        <Group ay="center" gap={1}>
-          {wrappable && (
-            <CodeBlockWrapButton
-              {...WrapButtonProps}
-              pressed={wrap}
-              defaultPressed={defaultWrap}
-              onPressedChange={onWrapChange}
-            />
-          )}
-          {showCopy && <CodeBlockCopyButton {...CopyButtonProps} code={code} />}
-          {fullscreenable && (
-            <CodeBlockFullscreenButton
-              {...FullscreenButtonProps}
-              pressed={fullscreen}
-              onPressedChange={onFullscreenChange}
-            />
-          )}
-        </Group>
-      )}
-    </Group>
-  );
-};
+/**
+ * The bar above the code: language icon, filename and buttons. It renders from
+ * its content, and with no filename, icon or children its buttons float over
+ * the code instead. Floating, it is `position: absolute` against its nearest
+ * positioned ancestor, and only inside `CodeBlock` do the lines beside it keep
+ * clear of the buttons.
+ */
+export const CodeBlockHeader = (props: CodeBlockHeaderProps) => (
+  <CodeBlockHeaderBase {...props} />
+);
 CodeBlockHeader.displayName = "CodeBlockHeader";

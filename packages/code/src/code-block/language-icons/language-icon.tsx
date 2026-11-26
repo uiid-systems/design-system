@@ -1,38 +1,5 @@
-import { resolveLanguage } from "../../highlighter/highlighter";
-import type {
-  BundledLanguage,
-  CodeLanguage,
-} from "../../highlighter/highlighter.types";
-import bashSvg from "./bash-original.svg?raw";
-import css3Svg from "./css3-original.svg?raw";
-import html5Svg from "./html5-original.svg?raw";
-import javascriptSvg from "./javascript-original.svg?raw";
-import jsonSvg from "./json-original.svg?raw";
-import markdownSvg from "./markdown-original.svg?raw";
-import pythonSvg from "./python-original.svg?raw";
-import reactSvg from "./react-original.svg?raw";
-import typescriptSvg from "./typescript-original.svg?raw";
-
-type ParsedIcon = { viewBox: string; body: string };
-
-function parseSvg(svg: string): ParsedIcon {
-  const viewBox = svg.match(/viewBox="([^"]+)"/)?.[1] ?? "0 0 128 128";
-  const body = svg.match(/<svg[^>]*>([\s\S]*)<\/svg>/)?.[1] ?? "";
-  return { viewBox, body };
-}
-
-const LANGUAGE_ICONS: Partial<Record<BundledLanguage, ParsedIcon>> = {
-  typescript: parseSvg(typescriptSvg),
-  tsx: parseSvg(reactSvg),
-  javascript: parseSvg(javascriptSvg),
-  jsx: parseSvg(reactSvg),
-  python: parseSvg(pythonSvg),
-  html: parseSvg(html5Svg),
-  css: parseSvg(css3Svg),
-  json: parseSvg(jsonSvg),
-  bash: parseSvg(bashSvg),
-  markdown: parseSvg(markdownSvg),
-};
+import type { CodeLanguage } from "../../highlighter/highlighter.types";
+import { getLanguageIcon } from "./language-icon.utils";
 
 export type LanguageIconProps = Omit<
   React.SVGProps<SVGSVGElement>,
@@ -48,15 +15,14 @@ export const LanguageIcon = ({
   size = 16,
   ...props
 }: LanguageIconProps) => {
-  const language = resolveLanguage(languageProp);
-  const icon = language && LANGUAGE_ICONS[language];
+  const icon = getLanguageIcon(languageProp);
   if (!icon) return null;
   return (
     <svg
       data-slot="language-icon"
-      data-language={language}
+      data-language={icon.language}
       role="img"
-      aria-label={language}
+      aria-label={icon.language}
       viewBox={icon.viewBox}
       width={size}
       height={size}

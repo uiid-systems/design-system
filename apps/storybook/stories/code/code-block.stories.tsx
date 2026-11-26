@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, CodeBlock } from "@uiid/design-system";
+import { Group, Stack, Text, CodeBlock } from "@uiid/design-system";
 
 const meta = {
   title: "Code/Code Block",
@@ -107,6 +107,169 @@ export const Default: Story = {
     filename: "counter.tsx",
     showLineNumbers: false,
   },
+};
+
+/* A filename and no language: the bar shows the name alone. */
+export const Filename: Story = {
+  args: {
+    code: sampleTypeScript,
+    filename: "counter.tsx",
+  },
+};
+
+/* No filename and no language: no bar. The copy button floats in the
+   top-right corner, centred on the first line. */
+export const NoHeader: Story = {
+  args: {
+    code: sampleTypeScript,
+  },
+};
+
+/* Each button on its own, with a bar (left) and floating (right). */
+export const EachButton: Story = {
+  args: {
+    code: sampleTypeScript,
+  },
+  render: () => (
+    <Stack gap={4} w="full">
+      {(
+        [
+          ["Copy", { copyable: true }],
+          ["Wrap", { copyable: false, wrappable: true }],
+          ["Fullscreen", { copyable: false, fullscreenable: true }],
+        ] as const
+      ).map(([label, flags]) => (
+        <Stack key={label} gap={2} w="full">
+          <Text size={-1} emphasis="muted">
+            {label}
+          </Text>
+          <Group gap={4} evenly w="full">
+            <CodeBlock
+              code={sampleBash}
+              language="bash"
+              filename="setup.sh"
+              {...flags}
+            />
+            <CodeBlock code={sampleBash} {...flags} />
+          </Group>
+        </Stack>
+      ))}
+    </Stack>
+  ),
+};
+
+/* All three buttons, with a bar (left) and floating (right). */
+export const AllButtons: Story = {
+  args: {
+    code: sampleTypeScript,
+  },
+  render: () => (
+    <Group gap={4} evenly w="full">
+      <CodeBlock
+        code={sampleTypeScript}
+        language="tsx"
+        filename="counter.tsx"
+        wrappable
+        fullscreenable
+      />
+      <CodeBlock code={sampleTypeScript} wrappable fullscreenable />
+    </Group>
+  ),
+};
+
+/* Floating buttons keep the end of the first line clear. Wrapped (left), the
+   first line breaks before them; unwrapped (right), it scrolls beneath them. */
+export const FloatingFirstLine: Story = {
+  args: {
+    code: sampleLongLine,
+  },
+  render: () => (
+    <Group gap={4} evenly w="full">
+      <CodeBlock
+        code={`${sampleLongLine}\n${sampleLongLine}`}
+        wrappable
+        fullscreenable
+        defaultWrap
+      />
+      <CodeBlock
+        code={`${sampleLongLine}\n${sampleLongLine}`}
+        wrappable
+        fullscreenable
+      />
+    </Group>
+  ),
+};
+
+/* Collapsed, no header: the code clips at its rows rather than scrolling, so
+   only the first line keeps the buttons' column clear and "Show more" reveals
+   the rest. Wrapped (left); unwrapped (right), the lines still scroll sideways. */
+export const FloatingCollapsed: Story = {
+  args: {
+    code: sampleLongLine,
+  },
+  render: () => (
+    <Group gap={4} evenly w="full">
+      <CodeBlock
+        code={Array.from({ length: 12 }, () => sampleLongLine).join("\n")}
+        rows={6}
+        wrappable
+        fullscreenable
+        defaultWrap
+      />
+      <CodeBlock
+        code={Array.from({ length: 12 }, () => sampleLongLine).join("\n")}
+        rows={6}
+        wrappable
+        fullscreenable
+      />
+    </Group>
+  ),
+};
+
+/* A long filename truncates; the buttons keep their size and row. */
+export const LongFilename: Story = {
+  args: {
+    code: sampleTypeScript,
+  },
+  render: () => (
+    <Stack gap={4} maxw={360}>
+      <CodeBlock
+        code={sampleTypeScript}
+        language="tsx"
+        filename="src/components/dashboard/widgets/charts/revenue-by-region-chart.tsx"
+        wrappable
+        fullscreenable
+      />
+    </Stack>
+  ),
+};
+
+/* Each container's [data-theme] picks the colors, with no re-highlight. */
+export const Themes: Story = {
+  args: {
+    code: sampleTypeScript,
+  },
+  render: () => (
+    <Group gap={4} evenly w="full">
+      {(["light", "dark"] as const).map((theme) => (
+        <Stack key={theme} data-theme={theme} gap={4} p={4} w="full">
+          <CodeBlock
+            code={sampleTypeScript}
+            language="tsx"
+            filename="counter.tsx"
+            wrappable
+          />
+          <CodeBlock code={sampleTypeScript} wrappable fullscreenable />
+          <CodeBlock
+            code={sampleLong}
+            language="typescript"
+            filename="long-file.ts"
+            rows={6}
+          />
+        </Stack>
+      ))}
+    </Group>
+  ),
 };
 
 export const WithLineNumbers: Story = {

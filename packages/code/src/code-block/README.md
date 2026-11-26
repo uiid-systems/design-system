@@ -9,7 +9,11 @@ Use CodeBlock when you want to:
 - Cap a long file at a number of `rows`, with a "Show more" toggle to expand it (`defaultExpanded` starts it open). The toggle appears only when the code overflows its rows; `expandLabel` and `collapseLabel` replace its English text. The cap is written as one `--code-rows` custom property, and the scroll area carries `data-collapsed` while it is capped
 - Let readers copy the code, and opt in to soft-wrapping long lines or opening it fullscreen; Escape or the backdrop closes fullscreen
 
-Only the copy button renders by default. Turn it off with `copyable={false}`, and opt in to the others with `wrappable` and `fullscreenable`. A button that is off is not rendered at all, and the copy button is also left out while `code` is empty, rather than shown disabled. Without `fullscreenable` no fullscreen dialog is mounted. The header row renders even with every button off, so pass a `filename` or `language` to give it something to show.
+Only the copy button renders by default. Turn it off with `copyable={false}`, and opt in to the others with `wrappable` and `fullscreenable`. A button that is off is not rendered at all, and the copy button is also left out while `code` is empty, rather than shown disabled. Without `fullscreenable` no fullscreen dialog is mounted.
+
+The header bar renders from its content: a `filename`, a `language` that has an icon, or `HeaderProps.children`. With none of them there is no bar, and the buttons float in the top-right corner over the code, always visible, with the end of the first line kept clear for them. In fullscreen, where the code scrolls vertically, every line keeps that space clear, since any line can pass beneath them. A wrapped line breaks before the buttons; an unwrapped one longer than the block scrolls beneath them, and once any line overflows sideways even a short line that reserves the space (the first, or every line in fullscreen) can sit under them. The reserved space fits the buttons at their default size, so a `size` or text children passed through a button's slot props can overlap the code. With no bar and no buttons, nothing is rendered above the code. A long filename truncates with an ellipsis; the buttons never shrink or wrap. Its full text is kept as a native `title` tooltip, which only a mouse hover shows, so it is no way for keyboard, touch or screen reader users to read the name.
+
+While `rows` caps the code, the code area clips at that height rather than scrolling, so "Show more" is the one way to see the rest, and the area is not a tab stop. Long unwrapped lines still scroll sideways. The last visible line fades out and the toggle runs the full width of the frame's bottom edge, muted until hovered or focused. When the code fits in its `rows`, there is no toggle and no fade, and nothing is clipped.
 
 Wrap and fullscreen are uncontrolled. `defaultWrap` sets the initial wrap state, and `onWrapChange`, `onFullscreenChange` and `onCopy` report changes. There is no `wrap` or `fullscreen` prop to control them from outside.
 
@@ -41,14 +45,16 @@ The inline block stays mounted underneath, so its copy state and "Show more" sta
 
 ## Parts
 
-`CodeBlockHeader`, `CodeBlockCopyButton`, `CodeBlockWrapButton`, `CodeBlockFullscreenButton`, `CodeBlockExpandToggle`, `CodeBlockContent` and `LanguageIcon` are exported for composing a block of your own, as CodeEditor does with the header. Each icon button names itself and has a tooltip, and the copy button's name changes to "Copied" after a copy. An `aria-label` of your own on the copy button replaces both names, so "Copied" is then never conveyed. `CodeBlockExpandToggle` shows `expandLabel` or `collapseLabel` by its `expanded` prop, sets `aria-expanded` to match, and asks for the opposite state through `onExpandedChange`; an `onClick` that calls `event.preventDefault()` skips the change. CodeBlock adds what the parts leave to you: highlighting (pass `CodeBlockContent` the `html` from `highlight`), the row cap and its toggle, the wrap and fullscreen state behind the toggles' `pressed` and `onPressedChange`, and the fullscreen dialog with its name and focus handling.
+`CodeBlockHeader`, `CodeBlockCopyButton`, `CodeBlockWrapButton`, `CodeBlockFullscreenButton`, `CodeBlockExpandToggle`, `CodeBlockContent` and `LanguageIcon` are exported for composing a block of your own. Used on its own, `CodeBlockHeader` with no filename, icon or children floats its buttons with `position: absolute` against its nearest positioned ancestor, and nothing keeps the code beside it clear of them; that reserve applies only inside CodeBlock. Pass a `filename` or `children` for a bar. Each icon button names itself and has a tooltip, and the copy button's name changes to "Copied" after a copy. An `aria-label` of your own on the copy button replaces both names, so "Copied" is then never conveyed. `CodeBlockExpandToggle` shows `expandLabel` or `collapseLabel` by its `expanded` prop, sets `aria-expanded` to match, and asks for the opposite state through `onExpandedChange`; an `onClick` that calls `event.preventDefault()` skips the change. CodeBlock adds what the parts leave to you: highlighting (pass `CodeBlockContent` the `html` from `highlight`), the row cap and its toggle, the wrap and fullscreen state behind the toggles' `pressed` and `onPressedChange`, and the fullscreen dialog with its name and focus handling.
 
 ## Data Slots
 
 | Slot                           | Element                                  |
 | ------------------------------ | ---------------------------------------- |
 | `code-block`                   | Root container, and the fullscreen popup |
-| `code-block-header`            | Header row                               |
+| `code-block-header`            | Header bar, or the floating buttons' box |
+| `code-block-title`             | Language icon and filename in the bar    |
+| `code-block-actions`           | The header's buttons                     |
 | `code-block-copy-button`       | Copy button                              |
 | `code-block-wrap-button`       | Line-wrap toggle                         |
 | `code-block-fullscreen-button` | Fullscreen toggle                        |
@@ -60,7 +66,7 @@ The inline block stays mounted underneath, so its copy state and "Show more" sta
 | `code-block-backdrop`          | Fullscreen backdrop, closes on click     |
 | `code-block-error`             | Highlighting error message               |
 
-The root carries each state attribute only while that state is on: `data-wrap` while lines wrap, and `data-expanded` only when `rows` is set and the block is expanded. `data-fullscreen` marks the fullscreen popup, not the inline root.
+The root carries each state attribute only while that state is on: `data-wrap` while lines wrap, and `data-expanded` only when `rows` is set and the block is expanded. `data-fullscreen` marks the fullscreen popup, not the inline root. The header carries `data-floating` when it has no bar and its buttons float.
 
 ## See Also
 
