@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Menu } from "@uiid/design-system";
+import { Button, Group, Menu, Select, Stack } from "@uiid/design-system";
 import {
   MenuRoot,
   MenuPopup,
@@ -87,3 +87,34 @@ export const FunctionTrigger: Story = {
 };
 
 export const Composed: Story = { render: () => <Examples.Composed /> };
+
+export const Descriptions: Story = { render: () => <Examples.Descriptions /> };
+
+export const Disabled: Story = { render: () => <Examples.Disabled /> };
+
+export const LongLabels: Story = { render: () => <Examples.LongLabels /> };
+
+/* Open each in turn to compare: the popups and rows should read as one kind. */
+export const BesideSelect: Story = {
+  render: () => (
+    <Group gap={4} ay="start">
+      <Menu
+        trigger={<Button>Actions</Button>}
+        items={[
+          { label: "Edit", value: "edit" },
+          { label: "Duplicate", value: "duplicate", disabled: true },
+          { label: "Delete", value: "delete" },
+        ]}
+      />
+      <Select
+        aria-label="Action"
+        placeholder="Choose an action"
+        items={[
+          { label: "Edit", value: "edit" },
+          { label: "Duplicate", value: "duplicate", disabled: true },
+          { label: "Delete", value: "delete" },
+        ]}
+      />
+    </Group>
+  ),
+};
