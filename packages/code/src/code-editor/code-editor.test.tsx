@@ -13,6 +13,8 @@ import { describe, it, expect, vi } from "vitest";
 import { CodeEditor } from "./code-editor";
 import type { CodeEditorProps } from "./code-editor.types";
 
+import blockStyles from "../code-block/code-block.module.css";
+
 describe("CodeEditor", () => {
   // ============================================
   // RENDERING
@@ -152,6 +154,33 @@ describe("CodeEditor", () => {
     expect(handleChange).not.toHaveBeenCalled();
   });
 
+  it("marks the frame read-only, apart from disabled, for the CSS module to style", () => {
+    const { rerender } = render(<CodeEditor defaultValue="test" />);
+    const frame = () =>
+      screen.getByRole("textbox").closest("[data-slot='code-editor']");
+    expect(frame()).not.toHaveAttribute("data-readonly");
+    expect(frame()).not.toHaveAttribute("data-disabled");
+
+    rerender(<CodeEditor defaultValue="test" readOnly />);
+    expect(frame()).toHaveAttribute("data-readonly");
+    expect(frame()).not.toHaveAttribute("data-disabled");
+
+    rerender(<CodeEditor defaultValue="test" disabled />);
+    expect(frame()).toHaveAttribute("data-disabled");
+    expect(frame()).not.toHaveAttribute("data-readonly");
+  });
+
+  // The browser test measures that the two line up; this pins where the frame comes from
+  it("carries CodeBlock's frame class", () => {
+    render(<CodeEditor defaultValue="test" />);
+    const frame = screen
+      .getByRole("textbox")
+      .closest<HTMLElement>("[data-slot='code-editor']")!;
+    for (const name of blockStyles["code-block"]!.split(" ")) {
+      expect(frame).toHaveClass(name);
+    }
+  });
+
   // ============================================
   // COPY BUTTON
   // ============================================
@@ -170,7 +199,7 @@ describe("CodeEditor", () => {
 
   it("keeps the same bar from empty to typed, adding only the copy button", async () => {
     const user = userEvent.setup();
-    render(<CodeEditor />);
+    render(<CodeEditor filename="a.ts" />);
     await act(async () => {});
 
     const header = document.querySelector('[data-slot="code-block-header"]');
@@ -196,15 +225,40 @@ describe("CodeEditor", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("keeps the copy button in a bar without a filename, never floating", async () => {
+  it("floats the copy button with no bar when there is no filename, as CodeBlock does", async () => {
     render(<CodeEditor value="x" />);
+    await act(async () => {});
+    const header = document.querySelector('[data-slot="code-block-header"]');
+    expect(header).toHaveAttribute("data-floating");
+    expect(header).not.toHaveAttribute("data-ui-bb");
+    expect(
+      header!.querySelector('[data-slot="code-block-title"]'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(header as HTMLElement).getByRole("button", { name: "Copy code" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders no header for an empty editor without a filename", async () => {
+    const user = userEvent.setup();
+    render(<CodeEditor />);
+    await act(async () => {});
+    expect(
+      document.querySelector('[data-slot="code-block-header"]'),
+    ).not.toBeInTheDocument();
+
+    await user.type(screen.getByRole("textbox"), "x");
+    expect(
+      document.querySelector('[data-slot="code-block-header"]'),
+    ).toHaveAttribute("data-floating");
+  });
+
+  it("draws a bar for a HeaderProps language icon without a filename", async () => {
+    render(<CodeEditor value="x" HeaderProps={{ language: "python" }} />);
     await act(async () => {});
     const header = document.querySelector('[data-slot="code-block-header"]');
     expect(header).not.toHaveAttribute("data-floating");
     expect(header).toHaveAttribute("data-ui-bb", "1");
-    expect(
-      within(header as HTMLElement).getByRole("button", { name: "Copy code" }),
-    ).toBeInTheDocument();
   });
 
   it("draws a bar with a filename", async () => {
@@ -496,6 +550,7 @@ describe("CodeEditor", () => {
       readOnly: true,
       disabled: true,
       placeholder: "hijacked",
+      rows: 9,
     } as React.ComponentProps<"textarea">;
 
     render(
@@ -511,6 +566,8 @@ describe("CodeEditor", () => {
     expect(textarea).toHaveAttribute("placeholder", "Enter code...");
     expect(textarea).not.toHaveAttribute("readonly");
     expect(textarea).not.toBeDisabled();
+    // `rows` is CodeEditor's own cap, never the textarea's native height
+    expect(textarea).not.toHaveAttribute("rows");
   });
 });
 
@@ -540,6 +597,19 @@ describe("CodeEditor HeaderProps precedence", () => {
     expect(
       screen.getByRole("button", { name: "Copy top-level" }),
     ).toBeInTheDocument();
+  });
+
+  it("renders only the copy button, whatever HeaderProps asks for", async () => {
+    render(
+      <CodeEditor
+        defaultValue="real"
+        HeaderProps={untyped({ wrappable: true, fullscreenable: true })}
+      />,
+    );
+    await act(async () => {});
+
+    expect(screen.getAllByRole("button")).toHaveLength(1);
+    expect(screen.getByRole("button", { name: "Copy code" })).toBeEnabled();
   });
 
   it("copies the editor's value, not HeaderProps.code", async () => {
@@ -631,8 +701,52 @@ describe("CodeEditor slot props", () => {
           HeaderProps={{ CopyButtonProps: {} }}
         />
         <CodeEditor
-          // @ts-expect-error -- the copied text is the editor's value
-          CopyButtonProps={{ code: "other" }}
+          // @ts-expect-error -- the editor has no wrap button
+          HeaderProps={{ wrappable: true }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- the editor has no fullscreen button
+          HeaderProps={{ fullscreenable: true }}
+        />
+      </>
+    );
+  });
+
+  it("rejects every key CodeEditor owns in CopyButtonProps", () => {
+    void (
+      <CodeEditor
+        // @ts-expect-error -- the copied text is the editor's value
+        CopyButtonProps={{ code: "other" }}
+      />
+    );
+  });
+
+  it("rejects every key CodeEditor owns in TextareaProps", () => {
+    void (
+      <>
+        <CodeEditor
+          // @ts-expect-error -- `value` is set on CodeEditor itself
+          TextareaProps={{ value: "other" }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- `defaultValue` is set on CodeEditor itself
+          TextareaProps={{ defaultValue: "other" }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- `readOnly` is set on CodeEditor itself
+          TextareaProps={{ readOnly: true }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- `disabled` is set on CodeEditor itself
+          TextareaProps={{ disabled: true }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- `placeholder` is set on CodeEditor itself
+          TextareaProps={{ placeholder: "other" }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- `rows` is set on CodeEditor itself
+          TextareaProps={{ rows: 4 }}
         />
       </>
     );
