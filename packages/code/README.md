@@ -12,7 +12,7 @@ pnpm add @uiid/code
 
 Each component documents its own props and behavior:
 
-- [CodeBlock](./src/code-block/README.md) - Read-only code with copy, wrap and fullscreen buttons
+- [CodeBlock](./src/code-block/README.md) - Read-only code with a copy button, and opt-in wrap and fullscreen buttons
 - [CodeInline](./src/code-inline/README.md) - Inline code inside text
 - [CodeEditor](./src/code-editor/README.md) - Editable code with live highlighting
 

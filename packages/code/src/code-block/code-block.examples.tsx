@@ -47,26 +47,21 @@ export const Collapsed = () => (
 
 export const Wrap = () => (
   <Stack gap={4}>
-    <CodeBlock code={LONG_LINE} filename="scroll.ts" />
-    <CodeBlock code={LONG_LINE} filename="wrap.ts" defaultWrap />
+    <CodeBlock code={LONG_LINE} filename="scroll.ts" wrappable />
+    <CodeBlock code={LONG_LINE} filename="wrap.ts" wrappable defaultWrap />
   </Stack>
 );
 
 export const HeaderActions = () => (
   <Stack gap={4}>
+    <CodeBlock code={SAMPLE} filename="copy-only.tsx" />
     <CodeBlock
       code={SAMPLE}
-      filename="copy-only.tsx"
-      wrappable={false}
-      fullscreenable={false}
+      filename="all-actions.tsx"
+      wrappable
+      fullscreenable
     />
-    <CodeBlock
-      code={SAMPLE}
-      filename="no-actions.tsx"
-      copyable={false}
-      wrappable={false}
-      fullscreenable={false}
-    />
+    <CodeBlock code={SAMPLE} filename="no-actions.tsx" copyable={false} />
   </Stack>
 );
 

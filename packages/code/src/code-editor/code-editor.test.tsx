@@ -162,6 +162,31 @@ describe("CodeEditor", () => {
     expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
+  it("renders no button while the value is empty", async () => {
+    render(<CodeEditor />);
+    await act(async () => {});
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("renders the copy button once the empty editor gets a value", async () => {
+    const user = userEvent.setup();
+    render(<CodeEditor />);
+    await act(async () => {});
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    await user.type(screen.getByRole("textbox"), "x");
+    expect(screen.getByRole("button", { name: "Copy code" })).toBeEnabled();
+  });
+
+  it("removes the copy button when the value is cleared", async () => {
+    const user = userEvent.setup();
+    render(<CodeEditor defaultValue="x" />);
+    await act(async () => {});
+    expect(screen.getByRole("button", { name: "Copy code" })).toBeEnabled();
+
+    await user.clear(screen.getByRole("textbox"));
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
   it("does not render copy button when copyable is false", async () => {
     render(
       <CodeEditor defaultValue="test" copyable={false} filename="test.ts" />,
