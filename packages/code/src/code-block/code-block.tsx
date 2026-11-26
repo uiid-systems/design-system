@@ -180,6 +180,7 @@ export const CodeBlock = ({
           {/* Line numbers are CodeBlock's with its own default, so an unset one
               is not routed through definedProps() as filename is above. */}
           <CodeBlockContent
+            aria-label={filename}
             {...withoutContent(slot(ContentProps))}
             html={displayHtml}
             code={code}

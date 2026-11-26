@@ -1,12 +1,18 @@
+"use client";
+
 import { Stack } from "@uiid/layout";
-import { cx } from "@uiid/utils";
+import { cx, useComposedRefs } from "@uiid/utils";
 import * as React from "react";
 
 import { DEFAULT_SHOW_LINE_NUMBERS, DEFAULT_WRAP } from "../../code.constants";
 import { codeContentVariants } from "../../code.variants";
+import { useScrollOverflow } from "../code-block.hooks";
 import type { CodeBlockContentProps } from "../code-block.types";
 
 import styles from "../code-block.module.css";
+
+/** Shiki's `tabindex="0"` on its <pre>, set whether or not the code scrolls. */
+const PRE_TABINDEX = /^(<pre\b[^>]*?)\s+tabindex="0"/;
 
 export const CodeBlockContent = ({
   html,
@@ -14,8 +20,26 @@ export const CodeBlockContent = ({
   showLineNumbers = DEFAULT_SHOW_LINE_NUMBERS,
   wrap = DEFAULT_WRAP,
   className,
+  ref,
+  "aria-label": label = "Code",
   ...props
 }: CodeBlockContentProps) => {
+  // The content is the box that scrolls, so it is the tab stop the keyboard
+  // scrolls with, and only while it has code to scroll to. While it is, it is
+  // a region named by `aria-label`, so a screen reader announces where focus
+  // landed; otherwise it is a plain box, which a name would not suit.
+  const scroll = useScrollOverflow();
+  const composedRef = useComposedRefs(ref, scroll.ref);
+
+  // Shiki's own tab stop on the <pre> is removed from the markup itself, so
+  // the server and the client render the same string. One object per string:
+  // React writes `innerHTML` again whenever the object changes, which would
+  // replace the code, and any selection in it, on every render.
+  const innerHtml = React.useMemo(
+    () => html && { __html: html.replace(PRE_TABINDEX, "$1") },
+    [html],
+  );
+
   const sharedClass = cx(
     styles["code-block-content"],
     wrap && styles["code-block-content-wrap"],
@@ -28,15 +52,21 @@ export const CodeBlockContent = ({
     "data-wrap": wrap || undefined,
     ax: "stretch" as const,
     w: "full" as const,
+    ref: composedRef,
+    ...(scroll.scrolls && {
+      tabIndex: 0,
+      role: "region",
+      "aria-label": label,
+    }),
   };
 
   // Highlighted (shiki) path — preferred when html is available.
-  if (html) {
+  if (innerHtml) {
     return (
       <Stack
         {...sharedAttrs}
         className={sharedClass}
-        dangerouslySetInnerHTML={{ __html: html }}
+        dangerouslySetInnerHTML={innerHtml}
         {...props}
       />
     );

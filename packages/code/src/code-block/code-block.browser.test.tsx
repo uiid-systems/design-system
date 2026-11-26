@@ -642,7 +642,9 @@ describe("CodeBlock with server html", () => {
     const ui = <CodeBlock code={SOURCE} language="tsx" html={html} />;
 
     const container = document.createElement("div");
-    container.style.width = "480px";
+    // Wide enough for every line: code that scrolls becomes a tab stop once
+    // the client measures it, which the server cannot know.
+    container.style.width = "640px";
     document.body.append(container);
     container.innerHTML = renderToString(ui);
 
@@ -687,5 +689,149 @@ describe("CodeBlock with server html", () => {
     } finally {
       container.remove();
     }
+  });
+});
+
+/* Real Shiki output, which puts `tabindex="0"` on its <pre> whether or not the
+   code scrolls. The content is the box that scrolls, so it is the tab stop, and
+   only while it has somewhere to scroll. */
+describe("CodeBlock keyboard scrolling", () => {
+  const SHORT = "const a = 1;";
+  const WIDE = `const wide = "${"x".repeat(200)}";`;
+  const content = (root: ParentNode = document) =>
+    root.querySelector<HTMLElement>('[data-slot="code-block-content"]')!;
+
+  it("adds no tab stop beyond its buttons when the code fits", async () => {
+    const html = await highlight(SHORT, "typescript");
+    render(
+      <>
+        <CodeBlock code={SHORT} html={html} />
+        <button type="button">After</button>
+      </>,
+    );
+    const copy = page.getByRole("button", { name: /copy/i });
+    await expect.element(copy).toBeInTheDocument();
+
+    expect(content()).not.toHaveAttribute("tabindex");
+    expect(content().querySelector("[tabindex]")).toBeNull();
+    expect(page.getByRole("region").query()).not.toBeInTheDocument();
+
+    (document.activeElement as HTMLElement | null)?.blur();
+    await userEvent.tab();
+    expect(copy.element()).toHaveFocus();
+    await userEvent.tab();
+    expect(page.getByRole("button", { name: "After" }).element()).toHaveFocus();
+  });
+
+  it("is a named region and a tab stop while a line overflows, and the arrow keys scroll it", async () => {
+    const html = await highlight(WIDE, "typescript");
+    mountSized(<CodeBlock code={WIDE} html={html} filename="wide.ts" />, {
+      width: 360,
+    });
+    const region = page.getByRole("region", { name: "wide.ts" });
+    await expect.element(region).toBeInTheDocument();
+    const el = region.element() as HTMLElement;
+    expect(el).toBe(content());
+    expect(el.scrollWidth).toBeGreaterThan(el.clientWidth);
+    // Shiki's own tab stop is gone, so the region is the only one in the code.
+    expect(el.querySelector("[tabindex]")).toBeNull();
+
+    await tabTo(el);
+    await userEvent.keyboard("{ArrowRight}");
+    await expect.poll(() => el.scrollLeft).toBeGreaterThan(0);
+  });
+
+  it("is named Code when there is no filename", async () => {
+    mountSized(<CodeBlock code={WIDE} html={toHtml(WIDE)} />, { width: 360 });
+    await expect
+      .element(page.getByRole("region", { name: "Code" }))
+      .toBeInTheDocument();
+  });
+
+  it("gains and drops the tab stop as the block resizes", async () => {
+    const container = mountSized(
+      <CodeBlock code={WIDE} html={toHtml(WIDE)} />,
+      { width: 3000 },
+    );
+    const el = content(container);
+    await expect.poll(() => el.scrollWidth).toBeLessThanOrEqual(el.clientWidth);
+    expect(el).not.toHaveAttribute("tabindex");
+
+    container.style.width = "360px";
+    await expect.poll(() => el.getAttribute("tabindex")).toBe("0");
+    expect(el).toHaveAttribute("role", "region");
+
+    container.style.width = "3000px";
+    await expect.poll(() => el.getAttribute("tabindex")).toBeNull();
+    expect(el).not.toHaveAttribute("role");
+    expect(el).not.toHaveAttribute("aria-label");
+  });
+
+  it("drops the tab stop when the lines wrap", async () => {
+    const { rerender } = render(
+      <div style={{ width: 360 }}>
+        <CodeBlock code={WIDE} html={toHtml(WIDE)} wrap={false} />
+      </div>,
+    );
+    const el = content();
+    await expect.poll(() => el.getAttribute("tabindex")).toBe("0");
+
+    rerender(
+      <div style={{ width: 360 }}>
+        <CodeBlock code={WIDE} html={toHtml(WIDE)} wrap />
+      </div>,
+    );
+    await expect.poll(() => el.getAttribute("tabindex")).toBeNull();
+  });
+
+  it("keeps the tab stop under focus, and drops it once focus leaves", async () => {
+    const container = mountSized(
+      <>
+        <CodeBlock code={WIDE} html={toHtml(WIDE)} copyable={false} />
+        <button type="button">After</button>
+      </>,
+      { width: 360 },
+    );
+    const el = content(container);
+    await expect.poll(() => el.getAttribute("tabindex")).toBe("0");
+    await tabTo(el);
+
+    // Dropping it now would send focus to the document.
+    container.style.width = "3000px";
+    await expect.poll(() => el.scrollWidth).toBeLessThanOrEqual(el.clientWidth);
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    expect(el).toHaveFocus();
+    expect(el).toHaveAttribute("tabindex", "0");
+
+    await userEvent.tab();
+    expect(page.getByRole("button", { name: "After" }).element()).toHaveFocus();
+    await expect.poll(() => el.getAttribute("tabindex")).toBeNull();
+  });
+
+  it("is a tab stop in the fullscreen view while the code is taller than it, and the arrow keys scroll it", async () => {
+    await page.viewport(1280, 800);
+    render(
+      <CodeBlock
+        code={LONG}
+        html={toHtml(LONG)}
+        filename="a.ts"
+        fullscreenable
+      />,
+    );
+    await userEvent.click(
+      page.getByRole("button", { name: "Enter fullscreen" }).element(),
+    );
+    const dialog = page.getByRole("dialog", { name: "a.ts" });
+    await expect.element(dialog).toBeInTheDocument();
+    const el = content(dialog.element());
+    expect(el.scrollHeight).toBeGreaterThan(el.clientHeight);
+    await expect.poll(() => el.getAttribute("tabindex")).toBe("0");
+    expect(el).toHaveAttribute("role", "region");
+    expect(el).toHaveAccessibleName("a.ts");
+
+    await tabTo(el);
+    await userEvent.keyboard("{ArrowDown}");
+    await expect.poll(() => el.scrollTop).toBeGreaterThan(0);
+    await userEvent.keyboard("{Escape}");
   });
 });
