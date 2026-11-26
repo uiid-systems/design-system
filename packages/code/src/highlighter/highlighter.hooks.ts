@@ -37,10 +37,11 @@ const NO_PASS = { html: "", code: "" };
  * Hook to highlight code.
  *
  * `html` is the newest highlight that has finished, which can be for an
- * earlier value of `code` while a newer one is pending (`loading` is true
- * then). The returned `code` is the text that `html` was highlighted from, so
- * a caller can show what `html` does not cover yet.
- */
+ * earlier value of `code` while a newer one is pending. The returned `code` is
+ * the text `html` was highlighted from: compare it with your input, where
+ * equal means `html` is current, to show what `html` does not cover yet.
+ * `loading` is true only until the first result lands (and again after
+ * re-enabling), so it does not say whether `html` is current. */
 export function useHighlight(
   code: string,
   language: CodeLanguage = DEFAULT_LANGUAGE,
@@ -56,7 +57,8 @@ export function useHighlight(
   // the waiting one, so a fast stream skips the values in between. Passes
   // finish in order, so each result is newer than the one shown and is kept
   // even while a newer value is pending: a stream never waits for its latest
-  // value. Only the latest value's result ends loading or reports an error.
+  // value. Only the latest value's result ends the first load or reports an
+  // error; nothing sets loading again for later values.
   // Nothing is kept while disabled or unmounted (the latest value is null),
   // nor from a pass started before the last disable (an older generation).
   const latestRef = useRef<HighlightRequest | null>(null);

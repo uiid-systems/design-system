@@ -182,6 +182,8 @@ const settle = async (
     onFrame();
     await nextFrame();
   }
+  // The frame where the final pass replaced the uncolored rest.
+  onFrame();
   expect(content(root).innerHTML).toBe(oneShot);
 };
 
@@ -265,7 +267,8 @@ describe("CodeBlock while its code streams in", () => {
       expect(highlighted).toBe(true);
       expect(plainAfterHighlight).toBe(0);
       // Stale passes were shown as they landed, rather than dropped until the
-      // stream stopped.
+      // stream stopped. One pass lands every `gate.lag` chunks, about 133 here;
+      // the bound leaves room for passes that share a frame.
       expect(passesDuringStream).toBeGreaterThan(50);
     },
   );
