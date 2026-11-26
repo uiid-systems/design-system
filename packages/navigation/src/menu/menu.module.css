@@ -34,14 +34,26 @@
   composes: composes-popup-positioner from global;
 }
 
+/*
+ * The surface, radius, border and padding come from the `Card` the popup
+ * renders as. Like the forms popup layer, the popup publishes the names
+ * @uiid/lists reads, so a row's icon and description track the Card's hue.
+ */
 .popup {
   composes: composes-popup from global;
 
-  padding-block: 0.25rem;
-  border-radius: var(--globals-border-radius);
-  background-color: var(--shade-surface);
-  color: var(--shade-foreground);
-  border: var(--globals-border-width) solid var(--globals-border-color);
+  --list-description-color: var(--palette-on-tint);
+  --list-icon-color: var(--palette-on-tint);
+}
+
+/* Padding, radius and the disabled look come from `composes-option`, the
+   class Select's rows wear. The highlight stays Menu's own, below. */
+.item {
+  composes: composes-option from global;
+}
+
+.submenu-trigger {
+  composes: composes-option from global;
 }
 
 .item,
@@ -49,19 +61,17 @@
   outline: 0;
   cursor: default;
   user-select: none;
-  padding-block: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 2rem;
   display: flex;
-  font-size: 0.875rem;
-  line-height: 1rem;
+  /* `composes-option` fades the fill only; the inverted text switches at
+     once, so both switch together instead. */
+  transition: none;
 
   &[data-popup-open] {
     z-index: 0;
     position: relative;
   }
 
-  &[data-popup-open]::before {
+  &[data-popup-open]:not([data-highlighted])::before {
     content: "";
     z-index: -1;
     position: absolute;
@@ -71,26 +81,26 @@
     background-color: var(--shade-accent);
   }
 
+  /*
+   * Rows draw no outline, so the highlight is the only sign of keyboard focus.
+   * `composes-option`'s tint is too faint against the popup for that (WCAG
+   * 1.4.11 asks 3:1), so Menu keeps its inverted fill until the shared class
+   * carries a stronger indicator. The label inherits `color`; the icon and
+   * description read the list names the popup publishes, so they invert too.
+   * The keyboard can land on a disabled row, so it keeps the fill, dimmed by
+   * `composes-option`'s disabled opacity, and focus never disappears.
+   */
   &[data-highlighted] {
-    z-index: 0;
-    position: relative;
-    color: var(--shade-surface);
-  }
-
-  &[data-highlighted]::before {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    inset-block: 0;
-    inset-inline: 0.25rem;
-    border-radius: 0.25rem;
     background-color: var(--shade-foreground);
+    color: var(--shade-surface);
+
+    --list-description-color: var(--shade-surface);
+    --list-icon-color: var(--shade-surface);
   }
 }
 
-.submenu-trigger {
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-right: 1rem;
+.item > [data-slot="list-item"],
+.submenu-trigger > [data-slot="list-item"] {
+  flex: 1;
+  min-width: 0;
 }

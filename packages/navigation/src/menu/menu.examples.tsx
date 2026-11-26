@@ -2,7 +2,6 @@
 
 import { Button } from "@uiid/buttons";
 import { ChevronDownIcon } from "@uiid/icons/chevron-down";
-import { ChevronRightIcon } from "@uiid/icons/chevron-right";
 import { ChevronUpIcon } from "@uiid/icons/chevron-up";
 import { CopyIcon } from "@uiid/icons/copy";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
@@ -151,18 +150,15 @@ export const Composed = () => (
       <MenuBackdrop />
       <MenuPositioner>
         <MenuPopup>
-          <MenuItem>Edit</MenuItem>
-          <MenuItem>Duplicate</MenuItem>
+          <MenuItem label="Edit" icon={PencilIcon} />
+          <MenuItem label="Duplicate" icon={CopyIcon} />
           <SubmenuRoot>
-            <SubmenuTrigger>
-              Move to
-              <ChevronRightIcon size={12} />
-            </SubmenuTrigger>
+            <SubmenuTrigger label="Move to" />
             <MenuPortal>
               <MenuPositioner>
                 <MenuPopup>
-                  <MenuItem>Inbox</MenuItem>
-                  <MenuItem>Archive</MenuItem>
+                  <MenuItem label="Inbox" />
+                  <MenuItem label="Archive" />
                 </MenuPopup>
               </MenuPositioner>
             </MenuPortal>
