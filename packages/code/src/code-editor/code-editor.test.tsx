@@ -37,6 +37,16 @@ describe("CodeEditor", () => {
     ).toHaveClass("custom-class");
   });
 
+  it("fills the width with its wrapper and the layer under the textarea", () => {
+    render(<CodeEditor defaultValue="const x = 1;" />);
+    const textbox = screen.getByRole("textbox");
+    expect(textbox.closest("[data-slot='code-editor']")).toHaveAttribute(
+      "data-ui-w",
+      "full",
+    );
+    expect(textbox.parentElement).toHaveAttribute("data-ui-w", "full");
+  });
+
   it("renders with placeholder", () => {
     render(<CodeEditor placeholder="Enter code..." />);
     expect(screen.getByPlaceholderText("Enter code...")).toBeInTheDocument();

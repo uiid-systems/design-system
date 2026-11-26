@@ -117,7 +117,7 @@ export const CodeEditor = ({
         data-line-numbers={showLineNumbers || undefined}
         className={cx(styles["code-editor-layer"], codeTypographyVariant())}
         data-rows={rows ? true : undefined}
-        // The row count is the only value written inline; the CSS module turns
+        // The row count is the only value the editor writes inline; the CSS module turns
         // it into the max height.
         style={
           rows ? ({ "--code-rows": rows } as React.CSSProperties) : undefined

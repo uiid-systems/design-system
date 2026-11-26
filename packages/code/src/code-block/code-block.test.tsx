@@ -69,6 +69,23 @@ describe("CodeBlock", () => {
   // HEADER
   // ============================================
 
+  it("fills the width with its header and content", () => {
+    render(<CodeBlock code="const x = 1;" />);
+    expect(
+      document.querySelector('[data-slot="code-block-header"]'),
+    ).toHaveAttribute("data-ui-w", "full");
+    expect(
+      document.querySelector('[data-slot="code-block-content"]'),
+    ).toHaveAttribute("data-ui-w", "full");
+  });
+
+  it("fills the width with the unhighlighted content fallback", () => {
+    render(<CodeBlockContent code="const x = 1;" />);
+    expect(
+      document.querySelector('[data-slot="code-block-content"]'),
+    ).toHaveAttribute("data-ui-w", "full");
+  });
+
   it("renders filename in header when provided", () => {
     render(<CodeBlock code="const x = 1;" filename="example.ts" />);
     expect(screen.getByText("example.ts")).toBeInTheDocument();
