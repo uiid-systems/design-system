@@ -767,6 +767,12 @@ describe("CodeBlock keyboard scrolling", () => {
     expect(width).toBeGreaterThan(0);
     expect(px(style.outlineOffset)).toBe(-width);
     expect(style.outlineColor).toBe(toColor("var(--globals-outline-color)"));
+
+    // A click focuses it too, but shows no ring.
+    el.blur();
+    await userEvent.click(el);
+    expect(el).toHaveFocus();
+    expect(el.matches(":focus-visible")).toBe(false);
   });
 
   it("gains and drops the tab stop as its code grows and shrinks in a box of the same size", async () => {
@@ -780,6 +786,8 @@ describe("CodeBlock keyboard scrolling", () => {
     const { rerender } = render(ui(SHORT, shortHtml));
     const el = content();
     const width = el.clientWidth;
+    // Not a timing wait: the hook measures once, synchronously, when its
+    // effect runs, and it starts with no tab stop either way.
     await new Promise((resolve) => requestAnimationFrame(resolve));
     expect(el).not.toHaveAttribute("tabindex");
 

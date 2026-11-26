@@ -8,6 +8,7 @@ import {
   isHighlighted,
   mountSized,
   readBoxes,
+  waitForHighlight,
 } from "./code-block.browser.test.helpers";
 
 import "@uiid/tokens/globals.css";
@@ -57,7 +58,8 @@ describe("CodeBlock when highlighting fails", () => {
 
   it("shows the plain current code, not the last highlight of older code", async () => {
     const { rerender } = render(<CodeBlock code="const old = 0;" />);
-    await expect.poll(() => isHighlighted()).toBe(true);
+    // The first real highlight in this file: a cold load of Shiki and a grammar.
+    await waitForHighlight();
     expect(lineTexts()).toEqual(["const old = 0;"]);
 
     mockHighlight.mockRejectedValue(new Error("grammar failed to load"));
