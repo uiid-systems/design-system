@@ -27,32 +27,48 @@ export type UseHighlightOptions = Pick<
 /** One set of inputs to highlight, and the key that identifies it. */
 type HighlightRequest = {
   key: string;
+  /** How many times the hook had been disabled when the request was made. */
+  generation: number;
   code: string;
   language: CodeLanguage;
   highlightLines: number[] | undefined;
   notations: boolean;
 };
 
+const NO_PASS = { html: "", code: "" };
+
 /**
- * Hook to highlight code
- */
+ * Hook to highlight code.
+ *
+ * `html` is the newest highlight that has finished, which can be for an
+ * earlier value of `code` while a newer one is pending. The returned `code` is
+ * the text `html` was highlighted from: compare it with your input, where
+ * equal means `html` is current, to show what `html` does not cover yet.
+ * `loading` is true only until the first result lands (and again after
+ * re-enabling), so it does not say whether `html` is current. */
 export function useHighlight(
   code: string,
   language: CodeLanguage = DEFAULT_LANGUAGE,
   options: UseHighlightOptions = {},
 ): HighlightResult {
   const enabled = options.enabled ?? true;
-  const [html, setHtml] = useState("");
+  // The markup and the text it is for change together.
+  const [pass, setPass] = useState(NO_PASS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   // One highlight runs at a time and at most one waits. A new value replaces
-  // the waiting one, so a fast stream skips the values in between. A result
-  // is kept only if it is for the latest value, which is null while disabled
-  // or unmounted.
+  // the waiting one, so a fast stream skips the values in between. Passes
+  // finish in order, so each result is newer than the one shown and is kept
+  // even while a newer value is pending: a stream never waits for its latest
+  // value. Only the latest value's result ends the first load or reports an
+  // error; nothing sets loading again for later values.
+  // Nothing is kept while disabled or unmounted (the latest value is null),
+  // nor from a pass started before the last disable (an older generation).
   const latestRef = useRef<HighlightRequest | null>(null);
   const runningRef = useRef<HighlightRequest | null>(null);
   const waitingRef = useRef<HighlightRequest | null>(null);
+  const generationRef = useRef(0);
 
   // Stable key so callers don't need to memoize the highlightLines array
   const highlightLinesKey = options.highlightLines?.join(",") ?? "";
@@ -61,9 +77,10 @@ export function useHighlight(
   useEffect(() => {
     if (!enabled) {
       latestRef.current = null;
+      generationRef.current++;
       waitingRef.current = null;
       // Clear the last result so re-enabling never shows stale markup.
-      setHtml("");
+      setPass(NO_PASS);
       setLoading(true);
       setError(null);
       return;
@@ -71,6 +88,7 @@ export function useHighlight(
 
     const request: HighlightRequest = {
       key: JSON.stringify([code, language, highlightLinesKey, notations]),
+      generation: generationRef.current,
       code,
       language,
       highlightLines: options.highlightLines,
@@ -89,10 +107,16 @@ export function useHighlight(
       })
         .then(
           (result) => {
-            if (!isLatest(next)) return;
-            setHtml(result);
-            setLoading(false);
-            setError(null);
+            if (isLatest(next)) {
+              setPass({ html: result, code: next.code });
+              setLoading(false);
+              setError(null);
+            } else if (
+              latestRef.current &&
+              next.generation === generationRef.current
+            ) {
+              setPass({ html: result, code: next.code });
+            }
           },
           (err) => {
             if (!isLatest(next)) return;
@@ -129,6 +153,6 @@ export function useHighlight(
     [],
   );
 
-  if (!enabled) return { html: "", loading: false, error: null };
-  return { html, loading, error };
+  if (!enabled) return { html: "", code: "", loading: false, error: null };
+  return { html: pass.html, code: pass.code, loading, error };
 }

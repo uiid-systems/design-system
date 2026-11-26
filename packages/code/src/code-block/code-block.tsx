@@ -18,6 +18,7 @@ import {
   DEFAULT_WRAPPABLE,
 } from "../code.constants";
 import { useHighlight } from "../highlighter/highlighter.hooks";
+import { HighlightedCodeContext } from "./code-block.context";
 import type { CodeBlockProps } from "./code-block.types";
 import {
   CodeBlockHeader,
@@ -90,7 +91,11 @@ export const CodeBlock = ({
   // A trailing newline ends the last line rather than starting a blank one, so
   // the code shown leaves it out. The copy button still copies `code` as given.
   const shownCode = code.replace(TRAILING_NEWLINE, "");
-  const { html, error } = useHighlight(shownCode, language, {
+  const {
+    html,
+    code: highlightedCode,
+    error,
+  } = useHighlight(shownCode, language, {
     highlightLines,
     enabled: !prerenderedHtml,
   });
@@ -101,6 +106,8 @@ export const CodeBlock = ({
   // After a failed highlight the last result is for older code, so the plain
   // current code shows instead until a highlight succeeds.
   const displayHtml = serverHtml || (!error && html) || undefined;
+  // Prerendered html is taken as covering all of `code`.
+  const displayHtmlCode = serverHtml ? undefined : highlightedCode;
 
   const [expandedState, setExpandedState] = React.useState(defaultExpanded);
   const expandedControlled = expandedProp !== undefined;
@@ -217,14 +224,16 @@ export const CodeBlock = ({
         >
           {/* Line numbers are CodeBlock's with its own default, so an unset one
               is not routed through definedProps() as filename is above. */}
-          <CodeBlockContent
-            aria-label={filename}
-            {...withoutContent(slot(ContentProps))}
-            html={displayHtml}
-            code={shownCode}
-            showLineNumbers={showLineNumbers}
-            wrap={wrap}
-          />
+          <HighlightedCodeContext value={displayHtmlCode}>
+            <CodeBlockContent
+              aria-label={filename}
+              {...withoutContent(slot(ContentProps))}
+              html={displayHtml}
+              code={shownCode}
+              showLineNumbers={showLineNumbers}
+              wrap={wrap}
+            />
+          </HighlightedCodeContext>
         </div>
 
         {error && !prerenderedHtml && (

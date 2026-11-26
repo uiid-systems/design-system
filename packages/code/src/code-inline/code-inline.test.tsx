@@ -108,6 +108,7 @@ describe("CodeInline", () => {
   it("renders the children while highlighting is pending", () => {
     vi.mocked(useHighlight).mockReturnValueOnce({
       html: "",
+      code: "",
       loading: true,
       error: null,
     });

@@ -64,6 +64,8 @@ function MyComponent() {
 
 Pass `{ enabled: false }` as the third argument to skip highlighting when there is nothing to do, such as plain code or pre-rendered `html`. No theme or grammar is fetched, and the hook returns empty `html` with `loading` false.
 
+While a newer value is pending, `html` is the newest highlight that has finished, which can be for an earlier value. The hook also returns `code`, the text that `html` was highlighted from: when it equals your input `html` is current, and otherwise the rest of your input after it is not highlighted yet. `loading` is true only until the first result lands, so it does not say whether `html` is current.
+
 ## Supported Languages
 
 - JavaScript (`javascript`)

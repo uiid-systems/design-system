@@ -6,6 +6,7 @@ import * as React from "react";
 
 import { DEFAULT_SHOW_LINE_NUMBERS, DEFAULT_WRAP } from "../../code.constants";
 import { codeContentVariants } from "../../code.variants";
+import { HighlightedCodeContext } from "../code-block.context";
 import { useScrollOverflow } from "../code-block.hooks";
 import type { CodeBlockContentProps } from "../code-block.types";
 
@@ -33,16 +34,32 @@ export const CodeBlockContent = ({
   // go as the page resizes. Otherwise it is a plain box, which a name would
   // not suit, so neither name is set.
   const scroll = useScrollOverflow();
-  const composedRef = useComposedRefs(ref, scroll.ref);
+  const ownRef = React.useRef<HTMLDivElement>(null);
+  const composedRef = useComposedRefs(ownRef, ref, scroll.ref);
 
   // Shiki's own tab stop on the <pre> is removed from the markup itself, so
   // the server and the client render the same string. One object per string:
   // React writes `innerHTML` again whenever the object changes, which would
-  // replace the code, and any selection in it, on every render.
+  // replace the code, any selection in it, and the remainder below, on every
+  // render.
   const innerHtml = React.useMemo(
     () => html && { __html: html.replace(PRE_TABINDEX, "$1") },
     [html],
   );
+
+  // A stream can outrun the highlighter, leaving `html` for an earlier start
+  // of `code`. Show the rest uncolored, before paint, so every character is
+  // visible and nothing moves when the next pass lands.
+  const highlighted = React.useContext(HighlightedCodeContext);
+  const remainder =
+    html && code && highlighted !== undefined && code.startsWith(highlighted)
+      ? code.slice(highlighted.length)
+      : "";
+  React.useLayoutEffect(() => {
+    const el = remainder ? ownRef.current?.querySelector("pre code") : null;
+    if (!el) return;
+    return appendRemainder(el, remainder);
+  }, [html, remainder]);
 
   const sharedClass = cx(
     styles["code-block-content"],
@@ -73,6 +90,7 @@ export const CodeBlockContent = ({
         className={sharedClass}
         dangerouslySetInnerHTML={innerHtml}
         {...props}
+        ref={composedRef}
       />
     );
   }
@@ -85,7 +103,12 @@ export const CodeBlockContent = ({
   // Split on CRLF too, as Shiki does, so no line ends in a stray `\r`.
   const lines = (code ?? "").split(/\r?\n/);
   return (
-    <Stack {...sharedAttrs} className={sharedClass} {...props}>
+    <Stack
+      {...sharedAttrs}
+      className={sharedClass}
+      {...props}
+      ref={composedRef}
+    >
       <pre>
         <code>
           {lines.map((line, i) => (
@@ -100,3 +123,34 @@ export const CodeBlockContent = ({
   );
 };
 CodeBlockContent.displayName = "CodeBlockContent";
+
+/**
+ * Append `remainder` to `el` (Shiki's `<code>`) as text nodes, in Shiki's line
+ * layout: the rest of the last line joins its `.line` span, and each further
+ * line is a newline and a new one. Lines split on `\r\n` as well as `\n`, as
+ * Shiki splits them. Returns a cleanup that removes what it added. React never
+ * reconciles inside `innerHTML`, so these nodes are ours to add and remove.
+ */
+const appendRemainder = (el: Element, remainder: string) => {
+  const doc = el.ownerDocument;
+  const [rest, ...lines] = remainder.split(/\r?\n/);
+  const added: Node[] = [];
+  const append = (parent: Element, node: Node) => {
+    parent.append(node);
+    added.push(node);
+  };
+
+  const last = el.lastElementChild;
+  const lastLine = last?.classList.contains("line") ? last : el;
+  if (rest) append(lastLine, doc.createTextNode(rest));
+  for (const line of lines) {
+    append(el, doc.createTextNode("\n"));
+    const span = doc.createElement("span");
+    span.className = "line";
+    span.textContent = line;
+    append(el, span);
+  }
+  return () => {
+    for (const node of added) node.parentNode?.removeChild(node);
+  };
+};
