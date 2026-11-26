@@ -1,12 +1,13 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import { Stack, Text } from "@uiid/design-system";
+import { CodePreview, highlight, Stack, Text } from "@uiid/design-system";
 
-import { HighlightedCodeBlock } from "./highlighted-code-block";
 import { slugify } from "./slugify";
 
 const PACKAGES_DIR = path.resolve(process.cwd(), "../../packages");
+
+const LANGUAGE = "tsx";
 
 const EXPORT_PATTERN = /^export const /m;
 
@@ -38,11 +39,21 @@ type ExampleProps = React.PropsWithChildren<{
   of?: string;
   /** Named export in the component's examples file, e.g. "Variants" */
   name?: string;
+  /** Add a reset button that remounts the example, for examples that animate on load */
+  resettable?: boolean;
 }>;
 
 /** Frames a live component example with its source, parallel to a Storybook story. */
-export async function Example({ title, of, name, children }: ExampleProps) {
+export async function Example({
+  title,
+  of,
+  name,
+  resettable,
+  children,
+}: ExampleProps) {
   const code = of && name ? await getExampleSource(of, name) : undefined;
+  // Highlighted here so CodePreview never loads Shiki on the client.
+  const html = code ? await highlight(code, LANGUAGE) : undefined;
 
   return (
     <Stack
@@ -51,22 +62,19 @@ export async function Example({ title, of, name, children }: ExampleProps) {
       data-title={title}
       gap={2}
     >
-      {title && !code ? (
+      {title ? (
         <Text render={<h3 />} size={2} weight="semibold">
           {title}
         </Text>
       ) : null}
-      <Stack data-slot="example-canvas" b={1} p={6} ax="start">
+      <CodePreview
+        code={code}
+        html={html}
+        language={LANGUAGE}
+        resettable={resettable}
+      >
         {children}
-      </Stack>
-      {code ? (
-        <HighlightedCodeBlock
-          code={code}
-          language="tsx"
-          filename={title}
-          rows={8}
-        />
-      ) : null}
+      </CodePreview>
     </Stack>
   );
 }
