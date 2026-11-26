@@ -972,3 +972,210 @@ describe("CodeBlock keyboard scrolling", () => {
     await userEvent.keyboard("{Escape}");
   });
 });
+
+/* A long line scrolls inside the frame, or wraps, and never widens the block's
+   container or the page. */
+// A line with spaces to break at, and one with none: a long URL or hash only
+// wraps where the wrap rules allow a break anywhere.
+const SPACED_LINE = `const wide = "${"a long string with spaces ".repeat(12).trim()}";`;
+const UNBROKEN_LINE = `const url = "https://example.com/${"0123456789abcdef".repeat(16)}";`;
+const WIDE = `${SPACED_LINE}\n${LONG}\n${UNBROKEN_LINE}`;
+
+const ROW = "calc(var(--code-font-size) * var(--code-line-height))";
+
+/** The content's first and last lines: the two long ones in `WIDE`. */
+const wideLines = (content: HTMLElement) => {
+  const lines = content.querySelectorAll<HTMLElement>(".line");
+  return [lines[0], lines[lines.length - 1]];
+};
+
+describe("CodeBlock with long lines", () => {
+  type Style = Parameters<typeof CodeBlock>[0]["style"];
+
+  // None of the parents sets `min-width: 0` on the block. A block child always
+  // fills a block parent, so there the width checks hold whatever the CSS; what
+  // that case tests is the code's own scroller and the wrap rules. The plain
+  // flex row is a control: the root's `overflow: hidden` and `max-width: 100%`
+  // each contain it alone, so it goes red only if both are lost.
+  const parents: { name: string; style: Style; sibling?: boolean }[] = [
+    { name: "block", style: {} },
+    { name: "flex row (control)", style: { display: "flex" } },
+    {
+      name: "flex row beside a sibling",
+      style: { display: "flex", gap: 8 },
+      sibling: true,
+    },
+    { name: "grid", style: { display: "grid" } },
+    {
+      name: "grid with a 1fr column",
+      style: { display: "grid", gridTemplateColumns: "1fr" },
+    },
+  ];
+
+  const mountIn = (style: Style, sibling: boolean, wrap: boolean) => {
+    render(
+      <div data-testid="parent" style={{ ...style, width: 320 }}>
+        {sibling && <span>side</span>}
+        <CodeBlock
+          code={WIDE}
+          html={toHtml(WIDE)}
+          filename="wide.ts"
+          wrappable
+          defaultWrap={wrap}
+        />
+      </div>,
+    );
+    const parent = page.getByTestId("parent").element() as HTMLElement;
+    const block = getBlock(parent);
+    return {
+      parent,
+      box: parent.getBoundingClientRect(),
+      rect: block.getBoundingClientRect(),
+      content: block.querySelector<HTMLElement>(
+        '[data-slot="code-block-content"]',
+      )!,
+    };
+  };
+
+  for (const { name, style, sibling = false } of parents) {
+    it(`stays inside a ${name} parent and scrolls the line inside the frame`, () => {
+      const { parent, box, rect, content } = mountIn(style, sibling, false);
+      expect(rect.right).toBeLessThanOrEqual(box.right + 0.5);
+      expect(parent.scrollWidth).toBeLessThanOrEqual(parent.clientWidth);
+      // The long line scrolls in the content, the frame's one sideways scroller.
+      expect(getComputedStyle(content).overflowX).toBe("auto");
+      expect(content.scrollWidth).toBeGreaterThan(content.clientWidth);
+    });
+
+    it(`wraps the line in a ${name} parent with wrap on, and nothing scrolls sideways`, () => {
+      const { parent, box, rect, content } = mountIn(style, sibling, true);
+      expect(rect.right).toBeLessThanOrEqual(box.right + 0.5);
+      expect(parent.scrollWidth).toBeLessThanOrEqual(parent.clientWidth);
+      // Counts overflow the wrap rule's `overflow-x: hidden` would clip, so an
+      // unbroken line that failed to wrap fails here.
+      expect(content.scrollWidth).toBeLessThanOrEqual(content.clientWidth);
+      // Both long lines, the spaced and the unbroken, break onto more rows.
+      const row = toPx(ROW);
+      for (const line of wideLines(content)) {
+        expect(line.getBoundingClientRect().height).toBeGreaterThan(1.5 * row);
+      }
+    });
+  }
+
+  it("wraps real highlighted lines with line numbers as one line each", async () => {
+    const container = mountSized(
+      <CodeBlock code={WIDE} language="tsx" showLineNumbers defaultWrap />,
+      { width: 320 },
+    );
+    await waitForHighlight(container);
+    const content = getBlock(container).querySelector<HTMLElement>(
+      '[data-slot="code-block-content"]',
+    )!;
+    expect(content.scrollWidth).toBeLessThanOrEqual(content.clientWidth);
+
+    const row = toPx(ROW);
+    for (const line of wideLines(content)) {
+      expect(line.getBoundingClientRect().height).toBeGreaterThan(1.5 * row);
+      // The tokens flow as one line rather than each wrapping in its own
+      // column: the first, a short keyword, stays on one row.
+      const keyword = line.querySelector("span")!;
+      expect(keyword.textContent).toBe("const");
+      expect(keyword.getBoundingClientRect().height).toBeLessThan(1.5 * row);
+      // The rows after the first start where the first row's code does, so a
+      // wrapped row hangs past the line number.
+      const rects = textRects(line);
+      const top = Math.min(...rects.map((r) => r.top));
+      const start = Math.min(...rects.map((r) => r.left));
+      const later = rects.filter((r) => r.top > top + row / 2);
+      expect(later.length).toBeGreaterThan(0);
+      expect(Math.min(...later.map((r) => r.left))).toBeCloseTo(start, 0);
+    }
+  });
+
+  it("moves no line or number when wrap turns on with line numbers", async () => {
+    // Lines that fit, so wrapping has nothing to break.
+    const code = "const a = 1;\n\nif (a) {\n  log(a);\n}";
+    const reads = [];
+    for (const wrap of [false, true]) {
+      const container = mountSized(
+        <CodeBlock
+          code={code}
+          language="tsx"
+          showLineNumbers
+          defaultWrap={wrap}
+        />,
+      );
+      await waitForHighlight(container);
+      reads.push(readBoxes(getBlock(container)));
+      container.remove();
+    }
+    const [off, on] = reads;
+    expect(boxesDelta(off, on), JSON.stringify({ off, on })).toEqual({
+      x: 0,
+      y: 0,
+    });
+  });
+});
+
+describe("CodeBlock at a 320px viewport", () => {
+  const filename = `${"deeply/nested/".repeat(8)}component.tsx`;
+
+  for (const wrap of [false, true]) {
+    it(`causes no horizontal page scroll${wrap ? " with wrap on" : ""}`, async () => {
+      const { innerWidth, innerHeight } = window;
+      await page.viewport(320, 640);
+      try {
+        expect(window.innerWidth).toBe(320);
+        const container = document.createElement("div");
+        document.body.append(container);
+        render(
+          <CodeBlock
+            code={WIDE}
+            language="tsx"
+            filename={filename}
+            wrappable
+            fullscreenable
+            defaultWrap={wrap}
+          />,
+          { container },
+        );
+        const block = getBlock(container);
+        const content = block.querySelector<HTMLElement>(
+          '[data-slot="code-block-content"]',
+        )!;
+        const root = document.documentElement;
+
+        const check = () => {
+          // No sideways page scroll, whatever width a scrollbar takes.
+          expect(root.scrollWidth).toBe(root.clientWidth);
+          // The frame clips, so the page alone cannot see the header or the
+          // code overflow: hold each to the frame too.
+          const right = block.getBoundingClientRect().right;
+          const buttons = [...block.querySelectorAll<HTMLElement>("button")];
+          expect(buttons).toHaveLength(3);
+          for (const button of buttons) {
+            expect(button.getBoundingClientRect().right).toBeLessThanOrEqual(
+              right,
+            );
+          }
+          const name = page.getByText(filename).element() as HTMLElement;
+          expect(name.scrollWidth).toBeGreaterThan(name.clientWidth);
+          if (wrap) {
+            expect(content.scrollWidth).toBeLessThanOrEqual(
+              content.clientWidth,
+            );
+          } else {
+            expect(content.scrollWidth).toBeGreaterThan(content.clientWidth);
+          }
+        };
+
+        check();
+        // The same once the highlighter's output replaces the fallback.
+        await waitForHighlight(container);
+        check();
+      } finally {
+        await page.viewport(innerWidth, innerHeight);
+      }
+    });
+  }
+});

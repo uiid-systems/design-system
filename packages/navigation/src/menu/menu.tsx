@@ -1,8 +1,5 @@
 "use client";
 
-import { ChevronRightIcon } from "@uiid/icons/chevron-right";
-import { Group } from "@uiid/layout";
-
 import type { MenuItemProps, MenuItemType, MenuProps } from "./menu.types";
 import {
   MenuRoot,
@@ -16,28 +13,23 @@ import {
   SubmenuTrigger,
 } from "./subcomponents";
 
-const ItemLabel = ({ icon: Icon, label }: MenuItemType) =>
-  Icon ? (
-    <Group gap={2} ay="center">
-      <Icon size={14} aria-hidden />
-      {label}
-    </Group>
-  ) : (
-    label
-  );
-
+/* Each entry's `label` and `icon` are its row's content. They are set after
+   the slot spread, and `description` and `children` are cleared, so an
+   untyped slot cannot replace them or give every row one shared line. */
 const renderItem = (item: MenuItemType, ItemProps?: MenuItemProps) => (
   <MenuItem
     key={item.value}
     {...ItemProps}
+    label={item.label}
+    icon={item.icon}
+    description={undefined}
+    children={undefined}
     disabled={item.disabled ?? ItemProps?.disabled}
     onClick={(event) => {
       ItemProps?.onClick?.(event);
       item.onClick?.(event);
     }}
-  >
-    <ItemLabel {...item} />
-  </MenuItem>
+  />
 );
 
 export const Menu = ({
@@ -73,11 +65,12 @@ export const Menu = ({
                   <SubmenuRoot key={item.value} {...SubmenuRootProps}>
                     <SubmenuTrigger
                       {...SubmenuTriggerProps}
+                      label={item.label}
+                      icon={item.icon}
+                      description={undefined}
+                      children={undefined}
                       disabled={item.disabled ?? SubmenuTriggerProps?.disabled}
-                    >
-                      <ItemLabel {...item} />
-                      <ChevronRightIcon size={12} />
-                    </SubmenuTrigger>
+                    />
                     <MenuPortal>
                       <MenuPositioner>
                         <MenuPopup>

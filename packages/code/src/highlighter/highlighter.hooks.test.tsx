@@ -181,6 +181,26 @@ describe("useHighlight request race", () => {
     await waitFor(() => expect(highlight).toHaveBeenCalledTimes(2));
     expect(highlight).toHaveBeenLastCalledWith("a", "typescript", {
       highlightLines: [1, 3],
+      notations: true,
+    });
+  });
+
+  it("passes notations through and re-highlights when it changes", async () => {
+    const { result, rerender } = renderHook(
+      ({ notations }) => useHighlight("a", "typescript", { notations }),
+      { initialProps: { notations: false } },
+    );
+    await waitFor(() => expect(result.current.loading).toBe(false));
+    expect(highlight).toHaveBeenLastCalledWith("a", "typescript", {
+      highlightLines: undefined,
+      notations: false,
+    });
+
+    rerender({ notations: true });
+    await waitFor(() => expect(highlight).toHaveBeenCalledTimes(2));
+    expect(highlight).toHaveBeenLastCalledWith("a", "typescript", {
+      highlightLines: undefined,
+      notations: true,
     });
   });
 });

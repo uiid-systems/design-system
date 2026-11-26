@@ -2,9 +2,9 @@
 
 import { Stack, Layer } from "@uiid/layout";
 import { cx, definedProps, useComposedRefs } from "@uiid/utils";
-import { useState, useCallback, useRef } from "react";
+import { Fragment, useState, useCallback, useMemo, useRef } from "react";
 
-import { CodeBlockHeaderBase } from "../code-block/subcomponents/code-block-header-base";
+import { CodeBlockHeader } from "../code-block/subcomponents/code-block-header";
 import {
   DEFAULT_LANGUAGE,
   DEFAULT_SHOW_LINE_NUMBERS,
@@ -14,7 +14,13 @@ import {
 import { codeTypographyVariant, shikiVariants } from "../code.variants";
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import type { CodeEditorProps } from "./code-editor.types";
+import {
+  normalizeLineEndings,
+  parseMarkup,
+  reusableLines,
+} from "./code-editor.utils";
 
+import blockStyles from "../code-block/code-block.module.css";
 import styles from "./code-editor.module.css";
 
 export const CodeEditor = ({
@@ -41,7 +47,6 @@ export const CodeEditor = ({
   const value = isControlled ? valueProp : internalValue;
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const highlightRef = useRef<HTMLDivElement>(null);
 
   // The props the editor also sets are pulled out of the slot, so they are
   // composed or chained below rather than replaced by the caller's.
@@ -61,20 +66,23 @@ export const CodeEditor = ({
       ? `${filename} code editor`
       : "Code editor";
 
-  // Syntax highlighting
-  const { html } = useHighlight(value || " ", language);
+  // The text as the textarea holds it: a textarea turns CRLF and CR into LF, and
+  // so does the HTML parser that reads the markup back, so both layers work in LF.
+  const text = normalizeLineEndings(value);
 
-  // Sync scroll between textarea and highlight layer
-  const handleScroll = useCallback(
-    (e: React.UIEvent<HTMLTextAreaElement>) => {
-      if (textareaRef.current && highlightRef.current) {
-        highlightRef.current.scrollTop = textareaRef.current.scrollTop;
-        highlightRef.current.scrollLeft = textareaRef.current.scrollLeft;
-      }
-      onTextareaScroll?.(e);
-    },
-    [onTextareaScroll],
-  );
+  // Syntax highlighting. Notation comments stay as typed, so the highlight holds
+  // exactly the textarea's text.
+  const { html } = useHighlight(text, language, { notations: false });
+
+  // The highlight lags the text by one pass. Each line whose text the last
+  // highlight already paints keeps Shiki's markup for it; only a changed or new
+  // line is painted as plain text until its highlight lands. So a typed
+  // character shows in the frame it is typed, the rest keeps its colour, and the
+  // layers always hold identical text.
+  const markup = useMemo(() => parseMarkup(html), [html]);
+  const lines = text.split("\n");
+  const reused = markup ? reusableLines(markup.lines, lines) : [];
+  const pending = !markup || reused.includes(undefined);
 
   // Handle text changes
   const handleChange = useCallback(
@@ -91,28 +99,33 @@ export const CodeEditor = ({
     [readOnly, isControlled, onValueChange, onTextareaChange],
   );
 
-  const showHeader = !!filename || copyable;
-
   return (
     <Stack
       data-slot="code-editor"
       data-disabled={disabled || undefined}
-      className={cx(styles["code-editor"], className)}
+      data-readonly={readOnly || undefined}
+      // CodeBlock's frame, so a block and an editor share one border, radius and surface
+      className={cx(
+        blockStyles["code-block"],
+        styles["code-editor"],
+        className,
+      )}
       w="full"
       {...props}
     >
-      {/* As before UI-486: a bar whenever there is a filename or copying is on, even while the
-          value is empty, so the textarea never moves as the first character is typed */}
-      {showHeader && (
-        <CodeBlockHeaderBase
-          {...HeaderProps}
-          {...definedProps({ filename })}
-          bar
-          copyable={copyable}
-          code={value}
-          CopyButtonProps={CopyButtonProps}
-        />
-      )}
+      {/* CodeBlock's header rule: a bar only with a filename (or a HeaderProps icon or
+          children). Otherwise the copy button floats in the top-right corner, out of the
+          flow, so the textarea never moves as the button comes and goes. */}
+      <CodeBlockHeader
+        {...HeaderProps}
+        {...definedProps({ filename })}
+        copyable={copyable}
+        code={value}
+        CopyButtonProps={CopyButtonProps}
+        // The editor keeps only the copy button's width clear, so no other button floats
+        wrappable={false}
+        fullscreenable={false}
+      />
 
       {/* Typography on parent so both children inherit */}
       <Layer
@@ -128,16 +141,45 @@ export const CodeEditor = ({
       >
         {/* Highlighted code backdrop: a duplicate of the textarea's text, so `inert` keeps Shiki's focusable `<pre>` out of the tab order and the accessibility tree */}
         <div
-          ref={highlightRef}
           inert
           data-slot="code-editor-highlight"
+          data-pending={pending || undefined}
           className={cx(
             styles["code-editor-highlight"],
             // The editor draws its own line numbers in its gutter (see the CSS module)
             shikiVariants({ showLineNumbers: false }),
           )}
-          dangerouslySetInnerHTML={{ __html: html || "" }}
-        />
+        >
+          {/* Shiki's `<pre>` class and theme colours once a highlight has landed */}
+          <pre
+            className={markup ? markup.className : styles["code-editor-plain"]}
+            style={markup?.style}
+          >
+            <code>
+              {lines.map((line, index) => {
+                const highlighted = reused[index];
+                return (
+                  <Fragment key={index}>
+                    {index > 0 && "\n"}
+                    {highlighted ? (
+                      // Shiki's own markup for exactly this line's text
+                      <span
+                        key="highlighted"
+                        className={highlighted.className}
+                        dangerouslySetInnerHTML={{ __html: highlighted.html }}
+                      />
+                    ) : (
+                      // The user's text as a text child, never as markup
+                      <span key="plain" className="line">
+                        {line}
+                      </span>
+                    )}
+                  </Fragment>
+                );
+              })}
+            </code>
+          </pre>
+        </div>
 
         {/* Transparent textarea overlay: defaults, then the caller's props, then the props the editor owns */}
         <textarea
@@ -154,10 +196,12 @@ export const CodeEditor = ({
           className={cx(styles["code-editor-textarea"], textareaClassName)}
           value={value}
           onChange={handleChange}
-          onScroll={handleScroll}
+          onScroll={onTextareaScroll}
           placeholder={placeholder}
           readOnly={readOnly}
           disabled={disabled}
+          // `rows` is the editor's own cap above, never the textarea's native height
+          rows={undefined}
         />
       </Layer>
     </Stack>
