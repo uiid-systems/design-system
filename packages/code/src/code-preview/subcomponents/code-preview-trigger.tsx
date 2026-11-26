@@ -31,7 +31,12 @@ export const CodePreviewTrigger = ({
           aria-hidden
           className={styles["code-preview-trigger-icon"]}
         />
-        {state.open ? hideLabel : showLabel}
+        {/* Both labels share one cell, and the hidden one keeps its width, so
+            the trigger, and with it the frame, keeps its width on toggle. */}
+        <span className={styles["code-preview-trigger-labels"]}>
+          <span aria-hidden={state.open || undefined}>{showLabel}</span>
+          <span aria-hidden={!state.open || undefined}>{hideLabel}</span>
+        </span>
       </Button>
     )}
   />

@@ -43,10 +43,37 @@
   rotate: 90deg;
 }
 
+/* "Show code" and "Hide code" overlap in one cell, as wide as the wider. The
+   hidden one is left out of the button's name as well as out of sight. */
+.code-preview-trigger-labels {
+  display: inline-grid;
+
+  & > * {
+    grid-area: 1 / 1;
+  }
+}
+
+:where(.code-preview-trigger-labels > *)[aria-hidden="true"] {
+  visibility: hidden;
+}
+
 /* The bar's divider sits above the code once it opens. */
 .code-preview-panel {
   border-block-start: var(--globals-border-width) solid var(--globals-border-color);
   background-color: var(--code-block-surface);
+}
+
+/* The panel stays mounted while closed, and stays in the layout at no height,
+   so the code sets the frame's width whether it is open or not. Collapsible
+   hides a closed panel with `display: none`, which would drop that width; the
+   frame's class outweighs that rule. `visibility: hidden` keeps everything in
+   it out of sight and out of the tab order, as `hidden` keeps it out of the
+   accessibility tree. */
+.code-preview .code-preview-panel[hidden]:not([hidden="until-found"]) {
+  display: flex;
+  block-size: 0;
+  border-block-start-width: 0;
+  visibility: hidden;
 }
 
 @media (prefers-reduced-motion: no-preference) {

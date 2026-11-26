@@ -74,12 +74,38 @@ describe("CodePreview", () => {
         screen.getByRole("button", { name: "Copy code" }),
       );
 
-      // Closed by default, so the code is not in the DOM.
+      // Closed by default. The code is mounted, so it sets the frame's width,
+      // inside a hidden panel the trigger points at.
       expect(trigger()).toHaveAttribute("aria-expanded", "false");
-      expect(screen.queryByText(CODE)).not.toBeInTheDocument();
-      expect(
+      const panel = root!.querySelector('[data-slot="code-preview-panel"]');
+      expect(panel).toHaveAttribute("hidden");
+      expect(panel).toContainElement(
         container.querySelector('[data-slot="code-block-content"]'),
-      ).not.toBeInTheDocument();
+      );
+      expect(panel).toHaveTextContent(CODE);
+    });
+
+    it("ties aria-expanded on the trigger to the panel", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<CodePreview code={CODE}>x</CodePreview>);
+      const panel = container.querySelector(
+        '[data-slot="code-preview-panel"]',
+      )!;
+      await user.click(trigger());
+      expect(trigger()).toHaveAttribute("aria-expanded", "true");
+      expect(trigger()).toHaveAttribute("aria-controls", panel.id);
+      expect(panel).not.toHaveAttribute("hidden");
+      await user.click(trigger());
+      expect(trigger()).toHaveAttribute("aria-expanded", "false");
+      expect(panel).toHaveAttribute("hidden");
+    });
+
+    it("names the trigger with the current label only", async () => {
+      const user = userEvent.setup();
+      render(<CodePreview code={CODE}>x</CodePreview>);
+      expect(trigger()).toHaveAccessibleName("Show code");
+      await user.click(trigger());
+      expect(trigger()).toHaveAccessibleName("Hide code");
     });
 
     it("puts the trigger before the copy button in the bar", () => {
@@ -755,20 +781,23 @@ describe("CodePreview", () => {
     it("composes from the exported parts", async () => {
       const user = userEvent.setup();
       const { container } = render(
-        <CollapsibleRoot>
+        <CodePreviewRoot>
           <CodePreviewCanvas>Example</CodePreviewCanvas>
           <CodePreviewBar>
             <CodePreviewTrigger showLabel="Open" hideLabel="Close" />
           </CodePreviewBar>
           <CodePreviewPanel>Panel content</CodePreviewPanel>
-        </CollapsibleRoot>,
+        </CodePreviewRoot>,
       );
       expect(
         container.querySelector('[data-slot="code-preview-canvas"]'),
       ).toHaveTextContent("Example");
-      expect(screen.queryByText("Panel content")).not.toBeInTheDocument();
+      // The panel is kept mounted while closed, hidden.
+      const panel = container.querySelector('[data-slot="code-preview-panel"]');
+      expect(panel).toHaveTextContent("Panel content");
+      expect(panel).toHaveAttribute("hidden");
       await user.click(screen.getByRole("button", { name: "Open" }));
-      expect(screen.getByText("Panel content")).toBeInTheDocument();
+      expect(panel).not.toHaveAttribute("hidden");
       expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
     });
 

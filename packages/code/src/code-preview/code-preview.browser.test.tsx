@@ -150,3 +150,104 @@ describe("CodePreview composed from its parts", () => {
     expect(look.border).not.toMatch(/^0px/);
   });
 });
+
+/** Two animation frames, so a style change and any work it schedules have run. */
+const frames = () =>
+  new Promise<void>((resolve) =>
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+  );
+
+const WIDE_LINE =
+  'export const label = "a line of code wider than the example above it";';
+
+describe("CodePreview frame width", () => {
+  const cases = [
+    { name: "code narrower than the example", code: "const a = 1;" },
+    { name: "code wider than the example", code: WIDE_LINE },
+    {
+      name: "code wider than the parent",
+      code: `${WIDE_LINE} ${WIDE_LINE} ${WIDE_LINE}`,
+    },
+  ];
+
+  for (const { name, code } of cases) {
+    it(`stays the same closed, open and closed again, with ${name}`, async () => {
+      // A flex row sizes its child to fit, as a docs page column might.
+      const container = mountSized(
+        <div style={{ display: "flex", alignItems: "flex-start" }}>
+          <CodePreview
+            code={code}
+            language="tsx"
+            PanelProps={{ instant: true }}
+          >
+            <Example />
+          </CodePreview>
+        </div>,
+        { width: 720 },
+      );
+      const frame = query(container, '[data-slot="code-preview"]');
+      const width = () => frame.getBoundingClientRect().width;
+      const trigger = page.getByRole("button", { name: /^(show|hide) code$/i });
+
+      const closed = width();
+      await userEvent.click(trigger);
+      await waitForHighlight(container);
+      await frames();
+      const open = width();
+      await userEvent.click(trigger);
+      await frames();
+      const closedAgain = width();
+
+      const detail = JSON.stringify({ closed, open, closedAgain });
+      expect(Math.abs(open - closed), detail).toBeLessThan(0.5);
+      expect(Math.abs(closedAgain - closed), detail).toBeLessThan(0.5);
+      expect(closed).toBeLessThanOrEqual(720);
+    });
+  }
+
+  it("fills a parent that stretches it, whether open or closed", async () => {
+    const container = mountSized(
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <CodePreview code="const a = 1;" PanelProps={{ instant: true }}>
+          <Example />
+        </CodePreview>
+      </div>,
+    );
+    const frame = query(container, '[data-slot="code-preview"]');
+    expect(frame.getBoundingClientRect().width).toBe(480);
+    await userEvent.click(page.getByRole("button", { name: "Show code" }));
+    await frames();
+    expect(frame.getBoundingClientRect().width).toBe(480);
+  });
+});
+
+describe("CodePreview closed panel", () => {
+  it("stays mounted but out of sight, the tab order and the accessibility tree", async () => {
+    // Code wider than the frame, so the content is a scrolling tab stop.
+    const container = mountSized(
+      <CodePreview code={`${WIDE_LINE} ${WIDE_LINE}`} copyable={false}>
+        <Example />
+      </CodePreview>,
+      { width: 320 },
+    );
+    const panel = query(container, '[data-slot="code-preview-panel"]');
+    const content = query(panel, '[data-slot="code-block-content"]');
+    await frames();
+    expect(panel.checkVisibility({ visibilityProperty: true })).toBe(false);
+    expect(panel.getBoundingClientRect().height).toBe(0);
+    // Nothing in the closed panel takes focus, by keyboard or by script.
+    content.focus();
+    expect(content).not.toHaveFocus();
+    await userEvent.tab();
+    expect(document.activeElement).toHaveAttribute(
+      "data-slot",
+      "code-preview-trigger",
+    );
+    await userEvent.tab();
+    expect(panel.contains(document.activeElement)).toBe(false);
+    // And no named group a screen reader could land on.
+    await expect
+      .element(page.getByRole("group", { name: "Code" }))
+      .not.toBeInTheDocument();
+  });
+});
