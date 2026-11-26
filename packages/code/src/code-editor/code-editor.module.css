@@ -76,11 +76,12 @@
   }
 }
 
-/* The value painted as plain text before the first highlight lands, in the colour the
-   caret takes. Afterwards the `<pre>` is Shiki's, and a line still waiting for its
-   highlight takes Shiki's own foreground. */
+/* The value painted as plain text before the first highlight lands, in the code theme's
+   default foreground (code.module.css), so nothing but the tokens changes when it lands.
+   Afterwards the `<pre>` is Shiki's, and a line still waiting for its highlight takes
+   Shiki's own foreground, which is the same colour. */
 .code-editor-plain {
-  color: var(--shade-foreground);
+  color: light-dark(var(--code-foreground-light), var(--code-foreground-dark));
 }
 
 /* Line numbers sit in the gutter, out of the text flow, so the code wraps as the textarea's does.

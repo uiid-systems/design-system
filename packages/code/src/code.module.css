@@ -14,6 +14,17 @@
   --code-gutter-gap: 1rem;
 }
 
+/* The themes' default foregrounds (vitesse-light, vitesse-black), so plain code shown
+   before a highlight lands is already the colour Shiki gives untokenized text, and only
+   the tokens change tint when it does. The dark one is translucent, as the theme's is.
+   A browser test holds both to the loaded themes. */
+.shiki-theme {
+  --code-foreground-light: #393a34;
+  --code-foreground-dark: #dbd7cacc;
+
+  color: light-dark(var(--code-foreground-light), var(--code-foreground-dark));
+}
+
 /* Dual theme via light-dark() — resolves against the color-scheme of the nearest [data-theme] */
 .shiki-theme :global(.shiki),
 .shiki-theme :global(.shiki span) {
