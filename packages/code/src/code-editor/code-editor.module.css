@@ -67,6 +67,20 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
   }
+
+  /* A textarea gives the empty line after a trailing newline (or an empty value) a row,
+     while a `<pre>` ending in a newline does not, so the textarea would outgrow this
+     layer and scroll on its own. A zero-width space gives that line its row here too. */
+  & :global(.line:last-child:empty)::after {
+    content: "\200b";
+  }
+}
+
+/* The value painted as plain text before the first highlight lands, in the colour the
+   caret takes. Afterwards the `<pre>` is Shiki's, and a line still waiting for its
+   highlight takes Shiki's own foreground. */
+.code-editor-plain {
+  color: var(--shade-foreground);
 }
 
 /* Line numbers sit in the gutter, out of the text flow, so the code wraps as the textarea's does.

@@ -311,7 +311,7 @@ describe("CodeEditor", () => {
     // Shiki renders a focusable `<pre tabindex="0">`; wait for the real output
     const pre = await waitFor(
       () => {
-        const element = highlight.querySelector("pre");
+        const element = highlight.querySelector<HTMLElement>("pre.shiki");
         expect(element).not.toBeNull();
         return element!;
       },
@@ -323,6 +323,69 @@ describe("CodeEditor", () => {
     act(() => pre.focus());
     expect(pre).not.toHaveFocus();
   });
+
+  // The browser test proves the plain text sits on the textarea's own glyphs
+  it("paints the value as plain text, as text, until its highlight lands", async () => {
+    const value = "<b>bold</b>\nnext";
+    render(<CodeEditor defaultValue={value} />);
+    const highlight = document.querySelector<HTMLElement>(
+      "[data-slot='code-editor-highlight']",
+    )!;
+
+    expect(highlight).toHaveAttribute("data-pending");
+    expect(highlight.querySelector("code")!.textContent).toBe(value);
+    expect(highlight.querySelector("b")).toBeNull();
+    expect(highlight.querySelectorAll(".line")).toHaveLength(2);
+
+    await waitFor(
+      () => expect(highlight.querySelector(".shiki")).not.toBeNull(),
+      { timeout: 5000 },
+    );
+    expect(highlight).not.toHaveAttribute("data-pending");
+    expect(highlight.querySelector("code")!.textContent).toBe(value);
+    expect(highlight.querySelector("b")).toBeNull();
+  });
+
+  it("keeps notation comments in the highlighted copy, as the textarea does", async () => {
+    const value = "const a = 1; // [!code ++]";
+    render(<CodeEditor defaultValue={value} />);
+    const highlight = document.querySelector<HTMLElement>(
+      "[data-slot='code-editor-highlight']",
+    )!;
+
+    await waitFor(
+      () => expect(highlight.querySelector(".shiki")).not.toBeNull(),
+      { timeout: 5000 },
+    );
+    expect(highlight.querySelector("code")!.textContent).toBe(value);
+    expect(highlight.querySelector(".diff")).toBeNull();
+  });
+
+  it.each([
+    ["a controlled value", { value: "a = 1\r\nb = 2\rc" }],
+    ["a default value", { defaultValue: "a = 1\r\nb = 2\rc" }],
+  ])(
+    "highlights %s with Windows line endings in LF, as the textarea holds it",
+    async (_, props) => {
+      render(<CodeEditor {...props} />);
+      const highlight = document.querySelector<HTMLElement>(
+        "[data-slot='code-editor-highlight']",
+      )!;
+
+      // The plain text painted first carries no carriage returns either
+      expect(highlight.querySelector("code")!.textContent).toBe(
+        "a = 1\nb = 2\nc",
+      );
+      await waitFor(
+        () => expect(highlight).not.toHaveAttribute("data-pending"),
+        { timeout: 5000 },
+      );
+      expect(highlight.querySelector(".shiki")).not.toBeNull();
+      expect(highlight.querySelector("code")!.textContent).toBe(
+        "a = 1\nb = 2\nc",
+      );
+    },
+  );
 
   // The CSS keys the shared gutter off this attribute; check alignment by eye in the LongLines story
   it("marks the layer holding both the highlight and the textarea for line numbers", () => {
@@ -523,7 +586,9 @@ describe("CodeEditor", () => {
     expect(handleChange).toHaveBeenCalledTimes(2);
   });
 
-  it("chains TextareaProps.onScroll with the highlight scroll sync", () => {
+  // The layer scrolls as one, so the textarea never scrolls alone (the browser
+  // test proves it) and the editor keeps no scroll sync of its own
+  it("passes TextareaProps.onScroll to the textarea", () => {
     const handleScroll = vi.fn();
     render(
       <CodeEditor
@@ -532,15 +597,8 @@ describe("CodeEditor", () => {
       />,
     );
 
-    const textarea = screen.getByRole("textbox");
-    const highlight = textarea
-      .closest("[data-slot='code-editor']")!
-      .querySelector<HTMLElement>("[data-slot='code-editor-highlight']")!;
+    fireEvent.scroll(screen.getByRole("textbox"));
 
-    textarea.scrollTop = 40;
-    fireEvent.scroll(textarea);
-
-    expect(highlight.scrollTop).toBe(40);
     expect(handleScroll).toHaveBeenCalledTimes(1);
   });
 

@@ -94,6 +94,8 @@ The editor uses a transparent `<textarea>` overlaid on syntax-highlighted code v
 └──────────────────────────────────────┘
 ```
 
+The textarea's own text is transparent, so the backdrop must always hold exactly the textarea's text. A highlight lands one pass after the value changes. Until it does, every line whose text the last highlight already paints keeps that highlight, and only a changed or new line is painted as plain text (the backdrop carries `data-pending` meanwhile), so a typed or pasted character shows in the frame it is typed, the rest of the code keeps its colours and the caret never sits over different text. Line endings are worked in LF, as the textarea holds them, so a value with CRLF endings highlights too. Notation comments such as `// [!code ++]` stay in the code as typed, rather than being turned into diff or highlight lines as CodeBlock does. With `rows` the layer is capped at that many lines and scrolls as one, so the textarea never scrolls on its own; without it the editor grows with its content.
+
 ## See Also
 
 - [CodeBlock](../code-block/README.md) - Read-only code display
