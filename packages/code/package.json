@@ -64,7 +64,9 @@
     "@base-ui/react": "^1.9.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@uiid/cards": "workspace:*",
     "@uiid/config": "workspace:*",
+    "@uiid/interactive": "workspace:*",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "typescript": "~7.0.2"
