@@ -1,5 +1,6 @@
 import { Stack } from "@uiid/layout";
 import { cx } from "@uiid/utils";
+import * as React from "react";
 
 import { DEFAULT_SHOW_LINE_NUMBERS, DEFAULT_WRAP } from "../../code.constants";
 import { codeContentVariants } from "../../code.variants";
@@ -43,16 +44,19 @@ export const CodeBlockContent = ({
 
   // Unhighlighted fallback — same layout, no syntax colors. Used until the
   // highlighter finishes its async work so users don't see a flash of empty
-  // space (or a "Loading..." string).
+  // space (or a "Loading..." string). It mirrors Shiki's markup: a newline
+  // between the line spans is what breaks the rows inside the <pre>, and a
+  // blank line is an empty span, so nothing moves when the colors land.
   const lines = (code ?? "").split("\n");
   return (
     <Stack {...sharedAttrs} className={sharedClass} {...props}>
       <pre>
         <code>
           {lines.map((line, i) => (
-            <span key={i} className="line">
-              {line || " "}
-            </span>
+            <React.Fragment key={i}>
+              {i > 0 && "\n"}
+              <span className="line">{line}</span>
+            </React.Fragment>
           ))}
         </code>
       </pre>
