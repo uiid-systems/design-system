@@ -2,12 +2,22 @@
   "$description": "UIID Design System - Code Component Tokens",
   "code": {
     "font-family": { "$value": "{font.mono}", "$type": "fontFamily" },
-    "font-size": { "$value": "0.875rem", "$type": "dimension" },
+    "font-size": { "$value": "0.75rem", "$type": "dimension" },
     "font-weight": { "$value": 400, "$type": "fontWeight" },
     "letter-spacing": { "$value": "0.01em", "$type": "dimension" },
     "line-height": { "$value": 1.75, "$type": "number" },
     "tab-size": { "$value": 2, "$type": "number" },
     "padding": { "$value": "1rem", "$type": "dimension" },
+    "surface-light": {
+      "$value": "#ffffff",
+      "$type": "color",
+      "$description": "Background of the light Shiki theme (vitesse-light)"
+    },
+    "surface-dark": {
+      "$value": "#000000",
+      "$type": "color",
+      "$description": "Background of the dark Shiki theme (vitesse-black)"
+    },
     "actions-inset": { "$value": "0.5rem", "$type": "dimension" },
     "actions-gap": { "$value": "{spacing.unit}", "$type": "dimension" }
   }

@@ -1,13 +1,18 @@
 .code-block {
   /* The radius inside the border, which is the shape the block clips to. */
   --code-block-inner-radius: calc(var(--globals-border-radius) - var(--globals-border-width));
+  /* The frame takes the editor theme's background, so the frame, the code, the
+     floating buttons' plate and the collapsed fade are one surface. The header
+     bar and the toggle stay on the theme's surface. The two tokens restate the
+     Shiki themes' backgrounds; a browser test holds them to the rendered code. */
+  --code-block-surface: light-dark(var(--code-surface-light), var(--code-surface-dark));
 
   position: relative;
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   max-width: 100%;
   overflow: hidden;
-  background-color: var(--shade-surface);
+  background-color: var(--code-block-surface);
 }
 
 /* One frame: the block's border, radius and surface. Inside it the only rule is
@@ -25,6 +30,7 @@
   inset-block-start: calc(var(--code-padding) + (var(--code-font-size) * var(--code-line-height) - var(--forms-size-xs-height)) / 2);
   inset-inline-end: var(--code-actions-inset);
   border-radius: var(--globals-border-radius);
+  background-color: var(--code-block-surface);
 }
 
 /* One button tall even with no buttons, so a bar keeps its height as a button
@@ -100,7 +106,7 @@
 
   /* Apply background to pre so it extends with scrollable content */
   & :global(pre) {
-    background-color: var(--shade-surface) !important;
+    background-color: var(--code-block-surface) !important;
     min-width: fit-content;
   }
 
@@ -221,6 +227,11 @@
   border-radius: 0 0 var(--code-block-inner-radius) var(--code-block-inner-radius);
   color: var(--shade-muted);
 
+  /* At rest only, so the Button's own hover and pressed fills still show. */
+  &:where(:not(:hover, :active)) {
+    background-color: var(--shade-surface);
+  }
+
   &:where(:hover, :focus-visible) {
     color: var(--shade-foreground);
   }
@@ -238,16 +249,25 @@
   outline-offset: calc(-1 * var(--globals-outline-width));
 }
 
-/* A fade over the last collapsed line, shown only while the toggle is there to
-   reveal the rest. A mask, so it fades to whatever surface is beneath. The
-   bottom padding stays clear, hiding the next line's top peeking into it. Only
-   the mask's alpha counts, so the opaque stop is plain black. */
+/* While the toggle is there to reveal the rest, the collapsed area ends on the
+   last row's bottom edge, with no bottom padding for the next line to peek
+   into. The cap only shrinks once the code already overflows the taller one
+   above, so it cannot make the toggle come and go. */
 :where(.code-block-scroll)[data-collapsed]:has(~ .code-block-expand-toggle) {
-  mask-image: linear-gradient(
-    to top,
-    transparent var(--code-padding),
-    black calc(var(--code-padding) + var(--code-font-size) * var(--code-line-height))
-  );
+  max-height: calc(var(--code-rows) * var(--code-font-size) * var(--code-line-height) + var(--code-padding));
+}
+
+/* A fade to the block's surface over that last row stands in for the padding.
+   It sits at the visible bottom edge, so it does not move when a long line
+   scrolls sideways. */
+:where(.code-block-scroll)[data-collapsed]:has(~ .code-block-expand-toggle)::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: calc(var(--code-font-size) * var(--code-line-height));
+  background-image: linear-gradient(to top, var(--code-block-surface), transparent);
+  pointer-events: none;
 }
 
 /* Under reduced motion the block's buttons do not scale on press. Their colour

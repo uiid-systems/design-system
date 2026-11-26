@@ -19,7 +19,7 @@ const LONG_FIRST_LINE =
   "const message = 'a first line long enough to reach the corner where the buttons float';";
 
 const toHtml = (code: string) =>
-  `<pre class="shiki"><code>${code
+  `<pre class="shiki" style="--shiki-light-bg:#ffffff;--shiki-dark-bg:#000000"><code>${code
     .split("\n")
     .map((line) => `<span class="line">${line}</span>`)
     .join("\n")}</code></pre>`;
@@ -146,13 +146,29 @@ describe("CodeBlock expand toggle", () => {
     await expect.element(toggle).toBeInTheDocument();
 
     const scroll = query('[data-slot="code-block-scroll"]');
-    expect(getComputedStyle(scroll).maskImage).toContain("linear-gradient");
+    const fade = () => getComputedStyle(scroll, "::after");
+    expect(fade().backgroundImage).toContain("linear-gradient");
+    // The fade covers the last row.
+    const row = toPx("calc(var(--code-font-size) * var(--code-line-height))");
+    expect(px(fade().height)).toBeCloseTo(row, 1);
+
+    // The collapsed area ends on the last row's bottom edge: its rows plus the
+    // top padding, with the toggle directly beneath and no padding band.
+    const rows = 4;
+    expect(scroll.getBoundingClientRect().height).toBeCloseTo(
+      rows * row + toPx("var(--code-padding)"),
+      0,
+    );
+    const toggleBox = query(
+      '[data-slot="code-block-expand-toggle"]',
+    ).getBoundingClientRect();
+    expect(toggleBox.top).toBeCloseTo(scroll.getBoundingClientRect().bottom, 0);
 
     await toggle.click();
     await expect
       .element(page.getByRole("button", { name: "Show less" }))
       .toBeInTheDocument();
-    expect(getComputedStyle(scroll).maskImage).toBe("none");
+    expect(fade().content).toBe("none");
   });
 
   it("draws no fade when the code fits in its rows", async () => {
@@ -161,7 +177,7 @@ describe("CodeBlock expand toggle", () => {
     );
     const scroll = query('[data-slot="code-block-scroll"]');
     expect(scroll).toHaveAttribute("data-collapsed");
-    expect(getComputedStyle(scroll).maskImage).toBe("none");
+    expect(getComputedStyle(scroll, "::after").content).toBe("none");
   });
 });
 
@@ -218,12 +234,23 @@ describe("CodeBlock frame", () => {
       }
     }
 
-    // One surface: the bar, the code area and the code's own <pre> are either
-    // transparent or painted in the block's colour.
+    // The frame takes the editor theme's background, so the code area and the
+    // code's own <pre> are either transparent or painted in the block's colour.
+    // The fixture's <pre> carries the Shiki themes' backgrounds, as real output
+    // does, so this fails if the surface tokens drift from them.
     const surface = getComputedStyle(block).backgroundColor;
     expect(TRANSPARENT.has(surface)).toBe(false);
+    expect(surface).toBe(
+      getComputedStyle(block.querySelector("pre")!).backgroundColor,
+    );
+    // The bar and the toggle at rest sit on the theme's surface instead.
+    const themeSurface = toColor("var(--shade-surface)");
+    expect(getComputedStyle(header).backgroundColor).toBe(themeSurface);
+    expect(
+      getComputedStyle(query('[data-slot="code-block-expand-toggle"]'))
+        .backgroundColor,
+    ).toBe(themeSurface);
     const layers = [
-      header,
       query('[data-slot="code-block-scroll"]'),
       query('[data-slot="code-block-content"]'),
       block.querySelector("pre")!,
