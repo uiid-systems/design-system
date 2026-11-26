@@ -90,9 +90,10 @@
 /* The panel stays mounted while closed, and stays in the layout at no height,
    so the code sets the frame's width whether it is open or not. Collapsible
    hides a closed panel with `display: none`, which would drop that width; the
-   frame's class outweighs that rule. `visibility: hidden` keeps everything in
-   it out of sight and out of the tab order, as `hidden` keeps it out of the
-   accessibility tree. */
+   frame's class outweighs that rule. With `display` overridden, the `hidden`
+   attribute no longer hides anything: `visibility: hidden` alone keeps the
+   code out of sight, the tab order and the accessibility tree. Do not swap it
+   for opacity or a clip, which would leave the code focusable and announced. */
 .code-preview .code-preview-panel[hidden]:not([hidden="until-found"]) {
   display: flex;
   block-size: 0;

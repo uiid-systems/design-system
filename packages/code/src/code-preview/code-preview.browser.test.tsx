@@ -3,7 +3,7 @@ import { Card } from "@uiid/cards";
 import { Dialog, Popover } from "@uiid/overlays";
 // Types `cdp().send`, which the Playwright provider adds to vitest/browser.
 import type {} from "@vitest/browser-playwright";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { cdp, page, server, userEvent } from "vitest/browser";
 
 import { CodeBlock } from "../code-block";
@@ -87,7 +87,9 @@ describe("CodePreview reset button", () => {
       container,
       '[data-slot="code-preview-reset-button"]',
     ).getBoundingClientRect();
+    expect(canvas.right - button.right).toBeGreaterThanOrEqual(0);
     expect(canvas.right - button.right).toBeLessThan(16);
+    expect(button.top - canvas.top).toBeGreaterThanOrEqual(0);
     expect(button.top - canvas.top).toBeLessThan(16);
   });
 
@@ -133,10 +135,13 @@ describe("CodePreview reset button", () => {
 
     canvas.scrollLeft = canvas.scrollWidth;
     await frames();
+    expect(canvas.scrollLeft).toBeGreaterThan(0);
     const after = button.getBoundingClientRect();
     expect(after.left).toBe(before.left);
     expect(after.top).toBe(before.top);
-    expect(frame.getBoundingClientRect().right - after.right).toBeLessThan(16);
+    const inset = frame.getBoundingClientRect().right - after.right;
+    expect(inset).toBeGreaterThanOrEqual(0);
+    expect(inset).toBeLessThan(16);
   });
 
   it("is a subtle button, set apart from the canvas behind it", () => {
@@ -150,7 +155,9 @@ describe("CodePreview reset button", () => {
     const fill = getComputedStyle(button).backgroundColor;
     expect(["rgba(0, 0, 0, 0)", "transparent"]).not.toContain(fill);
     expect(fill).not.toBe(getComputedStyle(canvas).backgroundColor);
+    // Small and square.
     expect(button.getBoundingClientRect().height).toBe(32);
+    expect(button.getBoundingClientRect().width).toBe(32);
   });
 
   it("mutes its icon until hovered or focused", async () => {
@@ -175,6 +182,7 @@ describe("CodePreview reset button", () => {
     await userEvent.hover(button);
     await expect.poll(() => getComputedStyle(button).color).toBe(strong);
     await userEvent.unhover(button);
+    await expect.poll(() => getComputedStyle(button).color).toBe(muted);
     await userEvent.tab();
     expect(button).toHaveFocus();
     await expect.poll(() => getComputedStyle(button).color).toBe(strong);
@@ -239,9 +247,11 @@ describe("CodePreview composed from its parts", () => {
     const composed = mountSized(<Examples.Composed />);
 
     for (const root of [assembled, composed]) {
-      await userEvent.click(
-        page.getByRole("button", { name: "Show code" }).first(),
-      );
+      // Each preview's own trigger, found inside its own root.
+      const trigger = query(root, '[data-slot="code-preview-trigger"]');
+      expect(trigger).toHaveAttribute("aria-expanded", "false");
+      await userEvent.click(trigger);
+      expect(trigger).toHaveAttribute("aria-expanded", "true");
       await waitForHighlight(root);
     }
 
@@ -363,7 +373,11 @@ describe("CodePreview closed panel", () => {
     );
     const panel = query(container, '[data-slot="code-preview-panel"]');
     const content = query(panel, '[data-slot="code-block-content"]');
-    await frames();
+    // The code overflows even while closed, so the content really is a named
+    // tab stop: only `visibility: hidden` keeps it from focus and the tree.
+    await expect.poll(() => content.getAttribute("tabindex")).toBe("0");
+    expect(content).toHaveAttribute("role", "group");
+    expect(content).toHaveAttribute("aria-label", "Code");
     expect(panel.checkVisibility({ visibilityProperty: true })).toBe(false);
     expect(panel.getBoundingClientRect().height).toBe(0);
     // Nothing in the closed panel takes focus, by keyboard or by script.
@@ -574,23 +588,62 @@ describe("CodePreview inside UIID containers", () => {
 });
 
 describe("CodePreview with an example that opens a portal", () => {
-  it("opens a popover from the example, and reset closes it", async () => {
+  /* Reset is never pressed with the pointer here: a press outside a popover
+     dismisses it on its own, so it would pass whether or not reset works. */
+  const mountPopover = () => {
+    const onReset = vi.fn();
     mountSized(
-      <CodePreview code="const a = 1;" resettable>
+      <CodePreview code="const a = 1;" resettable onReset={onReset}>
         <Popover trigger="Open popover" title="Details">
           Inside the popover
         </Popover>
       </CodePreview>,
     );
-    await userEvent.click(page.getByRole("button", { name: "Open popover" }));
+    const opener = () =>
+      page.getByRole("button", { name: "Open popover" }).element();
+    const reset = page
+      .getByRole("button", { name: "Reset preview" })
+      .element() as HTMLElement;
+    return { onReset, opener, reset };
+  };
+
+  it("opens a popover from the example, and reset from the keyboard closes it", async () => {
+    const { onReset, opener, reset } = mountPopover();
+    const before = opener();
+    await userEvent.click(before);
     const popover = page.getByRole("dialog", { name: "Details" });
     await expect.element(popover).toBeVisible();
 
-    await userEvent.click(page.getByRole("button", { name: "Reset preview" }));
+    reset.focus();
+    expect(reset).toHaveFocus();
+    await expect.element(popover).toBeVisible();
+    await userEvent.keyboard("{Enter}");
+
+    expect(onReset).toHaveBeenCalledTimes(1);
     await expect.element(popover).not.toBeInTheDocument();
+    // The example remounted: its trigger is a new node.
+    expect(opener()).not.toBe(before);
+    expect(reset).toHaveFocus();
+  });
+
+  it("moves focus from inside the popover to reset when a click leaves it there", async () => {
+    const { onReset, opener, reset } = mountPopover();
+    const before = opener();
+    await userEvent.click(before);
+    const popover = page.getByRole("dialog", { name: "Details" });
+    await expect.element(popover).toBeVisible();
     await expect
-      .element(page.getByRole("button", { name: "Open popover" }))
-      .toBeVisible();
+      .poll(() => popover.element().contains(document.activeElement))
+      .toBe(true);
+
+    // A click that does not focus the button, as in Safari, and is no
+    // pointer press outside the popover.
+    reset.click();
+
+    expect(onReset).toHaveBeenCalledTimes(1);
+    await expect.element(popover).not.toBeInTheDocument();
+    expect(opener()).not.toBe(before);
+    expect(reset).toHaveFocus();
   });
 
   it("opens a dialog from the example outside the frame's clip, and closes it", async () => {
@@ -618,7 +671,10 @@ describe("CodePreview with an example that opens a portal", () => {
         </Dialog>
       </CodePreview>,
     );
-    await userEvent.click(page.getByRole("button", { name: "Open dialog" }));
+    const opener = () =>
+      page.getByRole("button", { name: "Open dialog" }).element();
+    const before = opener();
+    await userEvent.click(before);
     const dialog = page.getByRole("dialog", { name: "Details" });
     await expect.element(dialog).toBeVisible();
 
@@ -629,8 +685,13 @@ describe("CodePreview with an example that opens a portal", () => {
       .element() as HTMLElement;
     reset.focus();
     expect(reset).toHaveFocus();
+    await frames();
+    await expect.element(dialog).toBeVisible();
     await userEvent.keyboard("{Enter}");
     await expect.element(dialog).not.toBeInTheDocument();
+    // The click Enter fires counts as an outside press, which closes the
+    // dialog by itself, so prove the example remounted too.
+    expect(opener()).not.toBe(before);
     expect(reset).toHaveFocus();
   });
 });
@@ -666,6 +727,16 @@ describe.skipIf(server.browser !== "chromium")(
             .map((d) => Number.parseFloat(d));
         expect(Math.max(...durations(panel))).toBe(0);
         expect(Math.max(...durations(icon))).toBe(0);
+
+        // Opened under reduce, the panel is at full height within two frames.
+        await userEvent.click(page.getByRole("button", { name: "Show code" }));
+        await frames();
+        const content = query(panel, '[data-slot="code-block-content"]');
+        const height = panel.getBoundingClientRect().height;
+        expect(height).toBeGreaterThan(0);
+        expect(height).toBeGreaterThanOrEqual(
+          content.getBoundingClientRect().height,
+        );
       } finally {
         await setReducedMotion("no-preference");
       }

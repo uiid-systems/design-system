@@ -506,12 +506,21 @@ describe("CodePreview", () => {
           <CodePreview code={CODE} resettable CanvasProps={{ pt: 2 }}>
             x
           </CodePreview>
+          <CodePreview code={CODE} resettable CanvasProps={{ pb: 2 }}>
+            x
+          </CodePreview>
+          <CodePreview code={CODE} resettable CanvasProps={{ py: 2 }}>
+            x
+          </CodePreview>
         </>,
       );
       const canvases = container.querySelectorAll(
         '[data-slot="code-preview-canvas"]',
       );
-      for (const canvas of canvases) {
+      expect(canvases).toHaveLength(5);
+      // Only the caller's own `py` is written.
+      expect(canvases[4]).toHaveAttribute("data-ui-py", "2");
+      for (const canvas of [...canvases].slice(0, 4)) {
         expect(canvas).not.toHaveAttribute("data-ui-py");
       }
     });
@@ -654,7 +663,9 @@ describe("CodePreview", () => {
       expect(screen.getByRole("textbox", { name: "Name" })).not.toBe(input);
     });
 
-    it("leaves focus alone when it is outside the canvas", () => {
+    // Wherever focus was, a press of reset leaves it on the button, as a click
+    // does in browsers that focus a clicked button.
+    it("moves focus to the reset button from outside the canvas too", () => {
       render(
         <CodePreview code={CODE} resettable>
           x
@@ -662,7 +673,7 @@ describe("CodePreview", () => {
       );
       trigger().focus();
       fireEvent.click(resetButton());
-      expect(trigger()).toHaveFocus();
+      expect(resetButton()).toHaveFocus();
     });
 
     it("fires onReset once per reset", async () => {
@@ -686,6 +697,20 @@ describe("CodePreview", () => {
         </CodePreview>,
       );
       expect(resetButton()).toHaveClass("reset");
+    });
+
+    it("is named by a caller's string tooltip, so the name matches the text shown", () => {
+      render(
+        <CodePreview resettable ResetButtonProps={{ tooltip: "Start over" }}>
+          x
+        </CodePreview>,
+      );
+      expect(
+        screen.getByRole("button", { name: "Start over" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Reset preview" }),
+      ).not.toBeInTheDocument();
     });
 
     it("keeps its name when ResetButtonProps replaces the tooltip or the shape", () => {

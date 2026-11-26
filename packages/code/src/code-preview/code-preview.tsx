@@ -72,14 +72,11 @@ export const CodePreview = ({
   const [resetKey, setResetKey] = React.useState(0);
   const cornerRef = React.useRef<HTMLDivElement>(null);
   const handleReset = () => {
-    // Focus held inside the example would drop to the body as it remounts,
-    // which is where it is when a click does not focus the button (Safari).
-    // Move it to the reset button first.
-    const corner = cornerRef.current;
-    const canvas = corner?.previousElementSibling;
-    if (canvas?.contains(document.activeElement)) {
-      corner?.querySelector("button")?.focus();
-    }
+    // Focus held by the example, or by a popover or dialog it opened, would
+    // drop to the body as the example remounts. A click leaves it there when
+    // it does not focus the button (Safari), so move it to the button first.
+    const button = cornerRef.current?.querySelector("button");
+    if (button && document.activeElement !== button) button.focus();
     setResetKey((key) => key + 1);
     onReset?.();
   };
@@ -87,9 +84,9 @@ export const CodePreview = ({
   // The button covers the canvas's top-right corner, so at the default
   // padding the canvas makes room for it above the example, and as much below
   // so the example stays centred. A caller's padding replaces this.
-  const padded = ["p", "py", "pt", "pb"].some(
-    (key) => CanvasProps?.[key as keyof typeof CanvasProps] !== undefined,
-  );
+  const { p, py, pt, pb } = CanvasProps ?? {};
+  const padded =
+    p !== undefined || py !== undefined || pt !== undefined || pb !== undefined;
   const reserve = resettable && !padded ? RESET_RESERVE : undefined;
 
   const hasCode = !!code;
