@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Stack, Text, CodeEditor } from "@uiid/design-system";
+import { CodeBlock, CodeEditor, Group, Stack, Text } from "@uiid/design-system";
 import { useState } from "react";
 
 const meta = {
@@ -94,14 +94,107 @@ const sampleJSON = `{
   }
 }`;
 
+/** With no filename there is no bar: the copy button floats in the top-right corner, as on CodeBlock. */
 export const Default: Story = {
   args: {
     defaultValue: sampleTypeScript,
     language: "tsx",
-    filename: "counter.tsx",
     showLineNumbers: false,
     copyable: true,
   },
+};
+
+export const WithFilename: Story = {
+  args: {
+    defaultValue: sampleTypeScript,
+    language: "tsx",
+    filename: "counter.tsx",
+    copyable: true,
+  },
+};
+
+/** Capped at six rows; the code scrolls inside the frame and the floating copy button stays put. */
+export const Rows: Story = {
+  args: {
+    defaultValue: sampleTypeScript,
+    language: "tsx",
+    rows: 6,
+  },
+};
+
+/** Disabled dims the whole frame and takes no input. */
+export const Disabled: Story = {
+  args: {
+    defaultValue: sampleTypeScript,
+    language: "tsx",
+    filename: "counter.tsx",
+    disabled: true,
+  },
+};
+
+/** Default, read-only and disabled side by side: read-only sits on the bar's surface, disabled is dimmed. */
+export const States: Story = {
+  args: { defaultValue: sampleTypeScript },
+  render: () => (
+    <Stack gap={4} w="full">
+      <CodeEditor defaultValue={sampleTypeScript} language="tsx" />
+      <CodeEditor defaultValue={sampleTypeScript} language="tsx" readOnly />
+      <CodeEditor defaultValue={sampleTypeScript} language="tsx" disabled />
+    </Stack>
+  ),
+};
+
+/** A CodeBlock above an editor with the same code: frame, header, padding, gutter and text line up. */
+export const StackedUnderCodeBlock: Story = {
+  args: { defaultValue: sampleTypeScript },
+  render: () => (
+    <Stack gap={4} w="full">
+      <CodeBlock
+        code={sampleTypeScript}
+        language="tsx"
+        filename="counter.tsx"
+      />
+      <CodeEditor
+        defaultValue={sampleTypeScript}
+        language="tsx"
+        filename="counter.tsx"
+      />
+      <CodeBlock code={sampleTypeScript} language="tsx" showLineNumbers />
+      <CodeEditor
+        defaultValue={sampleTypeScript}
+        language="tsx"
+        showLineNumbers
+      />
+    </Stack>
+  ),
+};
+
+/* Each container's [data-theme] picks the colors, with no re-highlight. */
+export const Themes: Story = {
+  args: { defaultValue: sampleTypeScript },
+  render: () => (
+    <Group gap={4} evenly w="full" ay="start">
+      {(["light", "dark"] as const).map((theme) => (
+        <Stack key={theme} data-theme={theme} gap={4} p={4} w="full">
+          <CodeBlock code={sampleTypeScript} language="tsx" />
+          <CodeEditor defaultValue={sampleTypeScript} language="tsx" />
+          <CodeEditor
+            defaultValue={sampleTypeScript}
+            language="tsx"
+            filename="counter.tsx"
+            showLineNumbers
+          />
+          <CodeEditor
+            defaultValue={sampleTypeScript}
+            language="tsx"
+            filename="counter.tsx"
+            readOnly
+          />
+          <CodeEditor defaultValue={sampleTypeScript} language="tsx" disabled />
+        </Stack>
+      ))}
+    </Group>
+  ),
 };
 
 export const WithLineNumbers: Story = {
@@ -141,7 +234,7 @@ export const ReadOnly: Story = {
   },
 };
 
-/** Keyboard focus on the textarea draws the form-control focus ring around the editor. */
+/** Focus on the textarea draws the form-control focus ring around the frame, not inside it. */
 export const Focused: Story = {
   args: {
     defaultValue: sampleTypeScript,

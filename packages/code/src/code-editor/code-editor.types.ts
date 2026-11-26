@@ -8,7 +8,7 @@ import type { CodeLanguage } from "../highlighter/highlighter.types";
 
 export type CodeEditorTextareaProps = Omit<
   React.ComponentProps<"textarea">,
-  "value" | "defaultValue" | "readOnly" | "disabled" | "placeholder"
+  "value" | "defaultValue" | "readOnly" | "disabled" | "placeholder" | "rows"
 >;
 
 export type CodeEditorProps = Omit<StackProps, "defaultValue" | "onChange"> & {

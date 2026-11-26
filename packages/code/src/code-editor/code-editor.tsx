@@ -4,7 +4,7 @@ import { Stack, Layer } from "@uiid/layout";
 import { cx, definedProps, useComposedRefs } from "@uiid/utils";
 import { useState, useCallback, useRef } from "react";
 
-import { CodeBlockHeaderBase } from "../code-block/subcomponents/code-block-header-base";
+import { CodeBlockHeader } from "../code-block/subcomponents/code-block-header";
 import {
   DEFAULT_LANGUAGE,
   DEFAULT_SHOW_LINE_NUMBERS,
@@ -15,6 +15,7 @@ import { codeTypographyVariant, shikiVariants } from "../code.variants";
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import type { CodeEditorProps } from "./code-editor.types";
 
+import blockStyles from "../code-block/code-block.module.css";
 import styles from "./code-editor.module.css";
 
 export const CodeEditor = ({
@@ -91,28 +92,30 @@ export const CodeEditor = ({
     [readOnly, isControlled, onValueChange, onTextareaChange],
   );
 
-  const showHeader = !!filename || copyable;
-
   return (
     <Stack
       data-slot="code-editor"
       data-disabled={disabled || undefined}
-      className={cx(styles["code-editor"], className)}
+      data-readonly={readOnly || undefined}
+      // CodeBlock's frame, so a block and an editor share one border, radius and surface
+      className={cx(
+        blockStyles["code-block"],
+        styles["code-editor"],
+        className,
+      )}
       w="full"
       {...props}
     >
-      {/* As before UI-486: a bar whenever there is a filename or copying is on, even while the
-          value is empty, so the textarea never moves as the first character is typed */}
-      {showHeader && (
-        <CodeBlockHeaderBase
-          {...HeaderProps}
-          {...definedProps({ filename })}
-          bar
-          copyable={copyable}
-          code={value}
-          CopyButtonProps={CopyButtonProps}
-        />
-      )}
+      {/* CodeBlock's header rule: a bar only with a filename (or a HeaderProps icon or
+          children). Otherwise the copy button floats in the top-right corner, out of the
+          flow, so the textarea never moves as the button comes and goes. */}
+      <CodeBlockHeader
+        {...HeaderProps}
+        {...definedProps({ filename })}
+        copyable={copyable}
+        code={value}
+        CopyButtonProps={CopyButtonProps}
+      />
 
       {/* Typography on parent so both children inherit */}
       <Layer
@@ -158,6 +161,8 @@ export const CodeEditor = ({
           placeholder={placeholder}
           readOnly={readOnly}
           disabled={disabled}
+          // `rows` is the editor's own cap above, never the textarea's native height
+          rows={undefined}
         />
       </Layer>
     </Stack>

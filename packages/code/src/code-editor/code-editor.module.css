@@ -1,10 +1,8 @@
+/* The frame (border, radius, clip and the editor theme's surface) is CodeBlock's
+   `.code-block`, which the root also carries, so a block and an editor stacked
+   together are one family. Only the editor's own states live here. */
 .code-editor {
   composes: composes-disabled from global;
-
-  border: var(--globals-border-width) solid var(--globals-border-color);
-  border-radius: var(--globals-border-radius);
-  overflow: hidden;
-  position: relative;
 
   /* The focus ring form controls draw (composes-field-surface), on the editor
      because the textarea resets its own outline. Scoped to the textarea so a
@@ -14,6 +12,25 @@
 
   &:has(.code-editor-textarea:focus-visible) {
     outline-style: var(--globals-outline-style);
+  }
+}
+
+/* Read-only sits on the theme's surface, the header bar's colour, instead of the
+   editor theme's, so it reads as not editable while staying at full contrast.
+   Disabled dims the whole frame instead (composes-disabled). The floating copy
+   button's plate reads the same variable, so it follows. */
+.code-editor[data-readonly] {
+  --code-block-surface: var(--shade-surface);
+}
+
+/* With no bar the copy button floats over the top-right corner. The editor scrolls
+   vertically, so any line can pass beneath it: every line of both layers keeps its
+   width clear, the button and its gap plus the inset, as CodeBlock does in fullscreen.
+   Both layers take the same padding, so they still wrap at the same point. */
+.code-editor:has(> [data-slot="code-block-header"][data-floating]) {
+  & .code-editor-textarea,
+  & .code-editor-highlight :global(pre) {
+    padding-inline-end: calc(var(--forms-size-xs-height) + var(--code-actions-gap) + var(--code-actions-inset));
   }
 }
 
