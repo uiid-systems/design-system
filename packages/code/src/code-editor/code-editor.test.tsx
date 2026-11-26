@@ -170,7 +170,8 @@ describe("CodeEditor", () => {
     expect(frame()).not.toHaveAttribute("data-readonly");
   });
 
-  it("wears CodeBlock's frame class, so the two share one border, radius and surface", () => {
+  // The browser test measures that the two line up; this pins where the frame comes from
+  it("carries CodeBlock's frame class", () => {
     render(<CodeEditor defaultValue="test" />);
     const frame = screen
       .getByRole("textbox")
@@ -598,6 +599,19 @@ describe("CodeEditor HeaderProps precedence", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders only the copy button, whatever HeaderProps asks for", async () => {
+    render(
+      <CodeEditor
+        defaultValue="real"
+        HeaderProps={untyped({ wrappable: true, fullscreenable: true })}
+      />,
+    );
+    await act(async () => {});
+
+    expect(screen.getAllByRole("button")).toHaveLength(1);
+    expect(screen.getByRole("button", { name: "Copy code" })).toBeEnabled();
+  });
+
   it("copies the editor's value, not HeaderProps.code", async () => {
     const user = userEvent.setup();
     const onCopy = vi.fn();
@@ -685,6 +699,14 @@ describe("CodeEditor slot props", () => {
         <CodeEditor
           // @ts-expect-error -- `CopyButtonProps` is set on CodeEditor itself
           HeaderProps={{ CopyButtonProps: {} }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- the editor has no wrap button
+          HeaderProps={{ wrappable: true }}
+        />
+        <CodeEditor
+          // @ts-expect-error -- the editor has no fullscreen button
+          HeaderProps={{ fullscreenable: true }}
         />
       </>
     );

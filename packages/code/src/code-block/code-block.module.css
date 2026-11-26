@@ -34,7 +34,7 @@
 }
 
 /* One button tall even with no buttons, so a bar keeps its height as a button
-   comes or goes, such as CodeEditor's copy button when its value empties. */
+   comes or goes, such as a filename editor's copy button when its value empties. */
 .code-block-title {
   min-block-size: var(--forms-size-xs-height);
 }
@@ -273,7 +273,7 @@
 /* Under reduced motion the block's buttons do not scale on press. Their colour
    changes stay, since a fade is not motion. */
 @media (prefers-reduced-motion: reduce) {
-  /* No `.code-block` ancestor, so CodeEditor's copy button is reached too. The
+  /* No `.code-block` ancestor, so a header built from the parts is reached too. The
      `:active` pseudo-class outranks Button's own `.button:where(:active)` only
      while both modules sit in the same cascade layer, as they do in the build
      (and unlayered, in tests); a later layer for Button would win instead. */

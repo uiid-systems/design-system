@@ -115,6 +115,9 @@ export const CodeEditor = ({
         copyable={copyable}
         code={value}
         CopyButtonProps={CopyButtonProps}
+        // The editor keeps only the copy button's width clear, so no other button floats
+        wrappable={false}
+        fullscreenable={false}
       />
 
       {/* Typography on parent so both children inherit */}

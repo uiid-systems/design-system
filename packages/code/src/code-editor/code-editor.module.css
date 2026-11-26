@@ -16,17 +16,19 @@
 }
 
 /* Read-only sits on the theme's surface, the header bar's colour, instead of the
-   editor theme's, so it reads as not editable while staying at full contrast.
+   editor theme's, so it reads as not editable. The shift is small (about 1.2:1
+   against the default surface) and lowers the contrast of already faint tokens.
    Disabled dims the whole frame instead (composes-disabled). The floating copy
    button's plate reads the same variable, so it follows. */
 .code-editor[data-readonly] {
   --code-block-surface: var(--shade-surface);
 }
 
-/* With no bar the copy button floats over the top-right corner. The editor scrolls
-   vertically, so any line can pass beneath it: every line of both layers keeps its
-   width clear, the button and its gap plus the inset, as CodeBlock does in fullscreen.
-   Both layers take the same padding, so they still wrap at the same point. */
+/* With no bar the copy button floats over the top-right corner. CodeBlock keeps only
+   its first line clear of it, but a textarea cannot pad one line, so every line of
+   both layers keeps the button, its gap and the inset clear. Both layers take the
+   same padding, so they still wrap at the same point; under a stacked CodeBlock the
+   editor's later lines wrap one button's width sooner. */
 .code-editor:has(> [data-slot="code-block-header"][data-floating]) {
   & .code-editor-textarea,
   & .code-editor-highlight :global(pre) {
@@ -38,6 +40,16 @@
 .code-editor-layer[data-rows] {
   max-height: calc(var(--code-rows) * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding));
   overflow: auto;
+}
+
+/* The highlight paints no background of its own, so the frame's surface shows behind
+   the code in every state. Shiki's theme rule (`.shiki-theme`, `!important`) paints its
+   theme background on the <pre> and every token span; the extra `.code-editor` class
+   outranks it. CodeBlock instead repaints its <pre> in its surface, which equals the
+   theme background, but the editor's surface changes when it is read-only. */
+.code-editor .code-editor-highlight :global(.shiki),
+.code-editor .code-editor-highlight :global(.shiki span) {
+  background-color: transparent !important;
 }
 
 /* Highlighted code backdrop */

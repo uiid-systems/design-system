@@ -40,11 +40,24 @@ export type CodeEditorProps = Omit<StackProps, "defaultValue" | "onChange"> & {
   /**
    * Reaches the header element. `filename`, `copyable`, the copied code and
    * `CopyButtonProps` are set on CodeEditor itself. `language` here shows a
-   * language icon in the header, apart from the top-level `language`.
+   * language icon in the header, apart from the top-level `language`. The
+   * editor has no wrap or fullscreen button, so those keys are left out too.
    */
   HeaderProps?: Omit<
     CodeBlockHeaderProps,
-    "filename" | "copyable" | "code" | "CopyButtonProps"
+    | "filename"
+    | "copyable"
+    | "code"
+    | "CopyButtonProps"
+    | "wrappable"
+    | "wrap"
+    | "defaultWrap"
+    | "onWrapChange"
+    | "WrapButtonProps"
+    | "fullscreenable"
+    | "fullscreen"
+    | "onFullscreenChange"
+    | "FullscreenButtonProps"
   >;
   /** Props for the copy button */
   CopyButtonProps?: Omit<CodeBlockCopyButtonProps, "code">;
