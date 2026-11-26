@@ -8,6 +8,13 @@
      reads apart from the code's surface below it and from the bar between. */
   --code-preview-canvas-surface: color-mix(in oklab, var(--shade-surface) 40%, var(--shade-background));
 
+  /* One column that may shrink to nothing: the frame is as wide as its widest
+     zone, the code included, but adds nothing to a parent's min-content
+     width. A parent that sizes to fit, such as a Card, then stops at the
+     width it has, and a long line or a wide example scrolls inside its zone
+     instead of widening the frame, as in CodeBlock. */
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr);
   position: relative;
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);

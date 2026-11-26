@@ -1,11 +1,18 @@
 import { render } from "@testing-library/react";
+import { Card } from "@uiid/cards";
+import { Dialog, Popover } from "@uiid/overlays";
+// Types `cdp().send`, which the Playwright provider adds to vitest/browser.
+import type {} from "@vitest/browser-playwright";
 import { describe, expect, it } from "vitest";
-import { page, userEvent } from "vitest/browser";
+import { cdp, page, server, userEvent } from "vitest/browser";
 
 import { CodeBlock } from "../code-block";
 import {
+  boxesDelta,
   getBlock,
+  isHighlighted,
   mountSized,
+  readBoxes,
   waitForHighlight,
 } from "../code-block/code-block.browser.test.helpers";
 import { CodePreview } from "./code-preview";
@@ -375,3 +382,293 @@ describe("CodePreview closed panel", () => {
       .not.toBeInTheDocument();
   });
 });
+
+const SOURCE = [
+  'import { useState } from "react";',
+  "",
+  "export function Counter({ start = 0 }: { start?: number }) {",
+  "  const [count, setCount] = useState(start);",
+  "  return <button onClick={() => setCount(count + 1)}>{count}</button>;",
+  "}",
+].join("\n");
+
+describe("CodePreview when highlighting lands", () => {
+  for (const showLineNumbers of [false, true]) {
+    it(`moves nothing in the frame${showLineNumbers ? " with line numbers" : ""}`, async () => {
+      const container = mountSized(
+        <CodePreview
+          code={SOURCE}
+          language="tsx"
+          showLineNumbers={showLineNumbers}
+          defaultOpen
+        >
+          <Example />
+        </CodePreview>,
+      );
+      const frame = query(container, '[data-slot="code-preview"]');
+      // The first paint is the fallback: Shiki has not answered yet.
+      expect(isHighlighted(container)).toBe(false);
+      const before = readBoxes(frame);
+      expect(before.lines).toHaveLength(SOURCE.split("\n").length);
+
+      await waitForHighlight(container);
+      const after = readBoxes(frame);
+      const delta = boxesDelta(before, after);
+      const detail = JSON.stringify({ before, after });
+      expect(delta.y, detail).toBe(0);
+      // Shiki's token spans snap to the layout grid, so a line's end can
+      // drift by a fraction of a pixel; a lost indent would be several.
+      expect(delta.x, detail).toBeLessThan(0.5);
+    });
+  }
+});
+
+describe("CodePreview at a 320px viewport", () => {
+  it("causes no horizontal page scroll, open or closed", async () => {
+    const { innerWidth, innerHeight } = window;
+    await page.viewport(320, 640);
+    try {
+      expect(window.innerWidth).toBe(320);
+      const container = document.createElement("div");
+      document.body.append(container);
+      render(
+        <CodePreview code={`${WIDE_LINE}\n${SOURCE}`} language="tsx" resettable>
+          <div style={{ width: 600, height: 40 }} />
+        </CodePreview>,
+        { container },
+      );
+      const frame = query(container, '[data-slot="code-preview"]');
+      const root = document.documentElement;
+      const check = () => {
+        expect(root.scrollWidth).toBe(root.clientWidth);
+        const right = frame.getBoundingClientRect().right;
+        expect(right).toBeLessThanOrEqual(320);
+        // The frame clips, so hold every button to it too.
+        for (const button of frame.querySelectorAll("button")) {
+          expect(button.getBoundingClientRect().right).toBeLessThanOrEqual(
+            right,
+          );
+        }
+      };
+
+      check();
+      await userEvent.click(page.getByRole("button", { name: "Show code" }));
+      await waitForHighlight(container);
+      check();
+      // The long line scrolls inside the code, and the wide example inside
+      // the canvas.
+      const content = query(frame, '[data-slot="code-block-content"]');
+      expect(content.scrollWidth).toBeGreaterThan(content.clientWidth);
+      const canvas = query(frame, '[data-slot="code-preview-canvas"]');
+      expect(canvas.scrollWidth).toBeGreaterThan(canvas.clientWidth);
+    } finally {
+      await page.viewport(innerWidth, innerHeight);
+    }
+  });
+});
+
+describe("CodePreview under a theme change", () => {
+  it("recolours every zone in place when data-theme changes", async () => {
+    const container = mountSized(
+      <div data-theme="light">
+        <CodePreview code={SOURCE} language="tsx" defaultOpen resettable>
+          <Example />
+        </CodePreview>
+      </div>,
+    );
+    const themed = query(container, "[data-theme]");
+    await waitForHighlight(container);
+    const frame = query(container, '[data-slot="code-preview"]');
+    const markup = frame.innerHTML;
+    const read = () => ({
+      ...readLook(container),
+      token: getComputedStyle(query(frame, ".line span")).color,
+      reset: getComputedStyle(
+        query(frame, '[data-slot="code-preview-reset-button"]'),
+      ).backgroundColor,
+    });
+    const light = read();
+
+    themed.dataset.theme = "dark";
+    await frames();
+    const dark = read();
+
+    for (const key of ["canvas", "bar", "panel", "code", "token", "reset"]) {
+      expect(dark[key as keyof typeof dark], key).not.toBe(
+        light[key as keyof typeof light],
+      );
+    }
+    // CSS did all of it: not one node changed.
+    expect(frame.innerHTML).toBe(markup);
+  });
+});
+
+describe("CodePreview inside UIID containers", () => {
+  /** The frame fits `container`, and only its own boxes scroll sideways. */
+  const expectContained = (frame: HTMLElement, container: HTMLElement) => {
+    const outer = container.getBoundingClientRect();
+    const rect = frame.getBoundingClientRect();
+    expect(rect.width).toBeGreaterThan(0);
+    expect(rect.left).toBeGreaterThanOrEqual(outer.left - 0.5);
+    expect(rect.right).toBeLessThanOrEqual(outer.right + 0.5);
+    expect(container.scrollWidth).toBeLessThanOrEqual(container.clientWidth);
+    const content = query(frame, '[data-slot="code-block-content"]');
+    expect(content.scrollWidth).toBeGreaterThan(content.clientWidth);
+  };
+
+  it("renders inside a Card, fitting its body", async () => {
+    const container = mountSized(
+      <Card title="Example" data-testid="card">
+        <CodePreview code={`${WIDE_LINE} ${WIDE_LINE}`} defaultOpen>
+          <Example />
+        </CodePreview>
+      </Card>,
+      { width: 360 },
+    );
+    await waitForHighlight(container);
+    const card = query(container, '[data-testid="card"]');
+    expectContained(query(card, '[data-slot="code-preview"]'), card);
+  });
+
+  it("scrolls a wide example inside the canvas in a Card", () => {
+    const container = mountSized(
+      <Card title="Example" data-testid="card">
+        <CodePreview code="const a = 1;">
+          <div style={{ width: 900, height: 40 }} />
+        </CodePreview>
+      </Card>,
+      { width: 360 },
+    );
+    const card = query(container, '[data-testid="card"]');
+    const frame = query(card, '[data-slot="code-preview"]');
+    expect(card.getBoundingClientRect().right).toBeLessThanOrEqual(
+      container.getBoundingClientRect().right + 0.5,
+    );
+    expect(frame.getBoundingClientRect().right).toBeLessThanOrEqual(
+      card.getBoundingClientRect().right,
+    );
+    const canvas = query(frame, '[data-slot="code-preview-canvas"]');
+    expect(canvas.scrollWidth).toBeGreaterThan(canvas.clientWidth);
+  });
+
+  it("renders inside a Dialog, fitting its popup", async () => {
+    mountSized(
+      <Dialog title="Example" size="small" RootProps={{ defaultOpen: true }}>
+        <CodePreview code={`${WIDE_LINE} ${WIDE_LINE}`} defaultOpen>
+          <Example />
+        </CodePreview>
+      </Dialog>,
+    );
+    const dialog = page.getByRole("dialog", { name: "Example" });
+    await expect.element(dialog).toBeVisible();
+    const popup = dialog.element() as HTMLElement;
+    await waitForHighlight(popup);
+    const frame = query(popup, '[data-slot="code-preview"]');
+    // The open transition scales the popup, so compare unscaled boxes.
+    expect(frame.offsetWidth).toBeGreaterThan(0);
+    expect(frame.offsetWidth).toBeLessThanOrEqual(popup.clientWidth);
+    expect(popup.scrollWidth).toBeLessThanOrEqual(popup.clientWidth);
+    const content = query(frame, '[data-slot="code-block-content"]');
+    expect(content.scrollWidth).toBeGreaterThan(content.clientWidth);
+  });
+});
+
+describe("CodePreview with an example that opens a portal", () => {
+  it("opens a popover from the example, and reset closes it", async () => {
+    mountSized(
+      <CodePreview code="const a = 1;" resettable>
+        <Popover trigger="Open popover" title="Details">
+          Inside the popover
+        </Popover>
+      </CodePreview>,
+    );
+    await userEvent.click(page.getByRole("button", { name: "Open popover" }));
+    const popover = page.getByRole("dialog", { name: "Details" });
+    await expect.element(popover).toBeVisible();
+
+    await userEvent.click(page.getByRole("button", { name: "Reset preview" }));
+    await expect.element(popover).not.toBeInTheDocument();
+    await expect
+      .element(page.getByRole("button", { name: "Open popover" }))
+      .toBeVisible();
+  });
+
+  it("opens a dialog from the example outside the frame's clip, and closes it", async () => {
+    const container = mountSized(
+      <CodePreview code="const a = 1;" resettable>
+        <Dialog trigger="Open dialog" title="Details">
+          Inside the dialog
+        </Dialog>
+      </CodePreview>,
+    );
+    await userEvent.click(page.getByRole("button", { name: "Open dialog" }));
+    const dialog = page.getByRole("dialog", { name: "Details" });
+    await expect.element(dialog).toBeVisible();
+    // Portalled out of the frame, so its `overflow: hidden` cannot clip it.
+    expect(container.contains(dialog.element())).toBe(false);
+    await userEvent.keyboard("{Escape}");
+    await expect.element(dialog).not.toBeInTheDocument();
+  });
+
+  it("closes a non-modal dialog left open when reset is pressed from the keyboard", async () => {
+    mountSized(
+      <CodePreview code="const a = 1;" resettable>
+        <Dialog trigger="Open dialog" title="Details" modal={false}>
+          Inside the dialog
+        </Dialog>
+      </CodePreview>,
+    );
+    await userEvent.click(page.getByRole("button", { name: "Open dialog" }));
+    const dialog = page.getByRole("dialog", { name: "Details" });
+    await expect.element(dialog).toBeVisible();
+
+    // The dialog's backdrop takes the pointer, but a non-modal dialog lets
+    // focus leave it, so the keyboard reaches reset.
+    const reset = page
+      .getByRole("button", { name: "Reset preview" })
+      .element() as HTMLElement;
+    reset.focus();
+    expect(reset).toHaveFocus();
+    await userEvent.keyboard("{Enter}");
+    await expect.element(dialog).not.toBeInTheDocument();
+    expect(reset).toHaveFocus();
+  });
+});
+
+describe.skipIf(server.browser !== "chromium")(
+  "CodePreview under reduced motion",
+  () => {
+    const setReducedMotion = (value: "reduce" | "no-preference") =>
+      cdp().send("Emulation.setEmulatedMedia", {
+        features: [{ name: "prefers-reduced-motion", value }],
+      });
+
+    it("animates the panel open, and snaps it open under reduced motion", async () => {
+      const container = mountSized(
+        <CodePreview code={SOURCE}>
+          <Example />
+        </CodePreview>,
+      );
+      const panel = query(container, '[data-slot="code-preview-panel"]');
+      const icon = query(container, '[data-slot="code-preview-trigger"] svg');
+      try {
+        await setReducedMotion("no-preference");
+        expect(getComputedStyle(panel).transitionProperty).toContain("height");
+        expect(getComputedStyle(icon).transitionProperty).toContain("rotate");
+
+        await setReducedMotion("reduce");
+        expect(matchMedia("(prefers-reduced-motion: reduce)").matches).toBe(
+          true,
+        );
+        const durations = (el: Element) =>
+          getComputedStyle(el)
+            .transitionDuration.split(",")
+            .map((d) => Number.parseFloat(d));
+        expect(Math.max(...durations(panel))).toBe(0);
+        expect(Math.max(...durations(icon))).toBe(0);
+      } finally {
+        await setReducedMotion("no-preference");
+      }
+    });
+  },
+);
