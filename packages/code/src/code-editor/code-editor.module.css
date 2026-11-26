@@ -15,13 +15,13 @@
   }
 }
 
-/* Read-only sits on the theme's surface, the header bar's colour, instead of the
-   editor theme's, so it reads as not editable. The shift is small (about 1.2:1
-   against the default surface) and lowers the contrast of already faint tokens.
-   Disabled dims the whole frame instead (composes-disabled). The floating copy
-   button's plate reads the same variable, so it follows. */
+/* Read-only dashes the frame's border. The code keeps the editor theme's surface in
+   every state, since the token colours are tuned for it; a lighter or darker surface
+   behind them drops common tokens below 4.5:1. Disabled dims the whole frame instead
+   (composes-disabled). The cue is visual only: assistive technology reads the
+   textarea's native `readonly`. */
 .code-editor[data-readonly] {
-  --code-block-surface: var(--shade-surface);
+  border-style: dashed;
 }
 
 /* With no bar the copy button floats over the top-right corner. CodeBlock keeps only
@@ -40,16 +40,6 @@
 .code-editor-layer[data-rows] {
   max-height: calc(var(--code-rows) * var(--code-font-size) * var(--code-line-height) + 2 * var(--code-padding));
   overflow: auto;
-}
-
-/* The highlight paints no background of its own, so the frame's surface shows behind
-   the code in every state. Shiki's theme rule (`.shiki-theme`, `!important`) paints its
-   theme background on the <pre> and every token span; the extra `.code-editor` class
-   outranks it. CodeBlock instead repaints its <pre> in its surface, which equals the
-   theme background, but the editor's surface changes when it is read-only. */
-.code-editor .code-editor-highlight :global(.shiki),
-.code-editor .code-editor-highlight :global(.shiki span) {
-  background-color: transparent !important;
 }
 
 /* Highlighted code backdrop */

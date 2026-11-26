@@ -35,7 +35,7 @@ const highlighted = (roots: Element[]) =>
 const CODE = 'const greeting = "hello";\nconsole.log(greeting);';
 
 describe.each(["light", "dark"] as const)("CodeEditor states (%s)", (theme) => {
-  it("paints the code area in the frame's colour, which read-only changes and disabled dims", async () => {
+  it("keeps the code on the editor theme's surface in every state; read-only dashes the border, disabled dims", async () => {
     const { container } = render(
       <div data-theme={theme}>
         <CodeEditor defaultValue={CODE} />
@@ -43,67 +43,70 @@ describe.each(["light", "dark"] as const)("CodeEditor states (%s)", (theme) => {
         <CodeEditor defaultValue={CODE} disabled />
       </div>,
     );
-    const themed = container.firstElementChild!;
     const roots = [
       ...container.querySelectorAll<HTMLElement>('[data-slot="code-editor"]'),
     ];
     await highlighted(roots);
-    const [base, readOnly, disabled] = roots.map((root) => ({
-      root,
-      frame: getComputedStyle(root).backgroundColor,
-      opacity: getComputedStyle(root).opacity,
-    }));
+    // The token colours are tuned for this surface, so nothing behind them may change.
+    const codeSurface = toColor(
+      "light-dark(var(--code-surface-light), var(--code-surface-dark))",
+      container.firstElementChild!,
+    );
+    expect(TRANSPARENT.has(codeSurface)).toBe(false);
 
-    // The highlight's <pre> and its token spans paint nothing, so what shows
-    // behind the code is the frame, in every state.
-    for (const { root } of roots.map((r) => ({ root: r }))) {
+    for (const root of roots) {
+      const pre = root.querySelector<HTMLElement>("pre")!;
+      // The premise: Shiki writes its theme backgrounds onto the <pre>, so a
+      // surface change anywhere behind the code would show.
+      expect(pre.style.getPropertyValue("--shiki-light-bg")).not.toBe("");
+      expect(pre.style.getPropertyValue("--shiki-dark-bg")).not.toBe("");
+
       const painted = [
-        root.querySelector("pre")!,
+        root,
+        pre,
+        // The floating copy button's plate, so no square of another colour sits on the code
+        root.querySelector('[data-slot="code-block-header"]')!,
         ...root.querySelectorAll(".shiki span"),
       ];
       for (const el of painted) {
         const background = getComputedStyle(el).backgroundColor;
-        expect(TRANSPARENT.has(background), `${el.tagName} ${background}`).toBe(
-          true,
-        );
+        expect(
+          background === codeSurface || TRANSPARENT.has(background),
+          `${(el as HTMLElement).dataset.slot ?? el.tagName} ${background}`,
+        ).toBe(true);
       }
-      // The floating copy button's plate is the same surface as the frame.
-      expect(
-        getComputedStyle(root.querySelector('[data-slot="code-block-header"]')!)
-          .backgroundColor,
-      ).toBe(getComputedStyle(root).backgroundColor);
+      expect(getComputedStyle(root).backgroundColor).toBe(codeSurface);
     }
 
-    expect(base!.frame).toBe(
-      toColor(
-        `light-dark(var(--code-surface-light), var(--code-surface-dark))`,
-        themed,
-      ),
-    );
-    expect(readOnly!.frame).toBe(toColor("var(--shade-surface)", themed));
-    expect(readOnly!.frame).not.toBe(base!.frame);
-    expect(readOnly!.opacity).toBe("1");
-
-    // Disabled keeps the default surface and dims the whole frame instead.
-    expect(disabled!.frame).toBe(base!.frame);
+    const [base, readOnly, disabled] = roots.map((root) => {
+      const style = getComputedStyle(root);
+      return { border: style.borderTopStyle, opacity: style.opacity };
+    });
+    expect(base).toEqual({ border: "solid", opacity: "1" });
+    expect(readOnly).toEqual({ border: "dashed", opacity: "1" });
+    expect(disabled!.border).toBe("solid");
     expect(Number(disabled!.opacity)).toBeLessThan(1);
   });
 });
 
 describe("CodeEditor frame", () => {
-  it.each([false, true])(
-    "lines up with a CodeBlock stacked above it (line numbers: %s)",
-    async (showLineNumbers) => {
+  it.each([
+    { filename: "a.ts", showLineNumbers: false },
+    { filename: "a.ts", showLineNumbers: true },
+    { filename: undefined, showLineNumbers: false },
+  ])(
+    "lines up with a CodeBlock stacked above it ($filename, line numbers: $showLineNumbers)",
+    async ({ filename, showLineNumbers }) => {
       const { container } = render(
         <div style={{ width: 600 }}>
           <CodeBlock
             code={CODE}
-            filename="a.ts"
+            filename={filename}
             showLineNumbers={showLineNumbers}
           />
           <CodeEditor
             defaultValue={CODE}
-            filename="a.ts"
+            filename={filename}
             showLineNumbers={showLineNumbers}
           />
         </div>,
@@ -160,8 +163,11 @@ describe("CodeEditor frame", () => {
 
     const [textarea, pre] = ends(floating!);
     expect(textarea).toBe(pre);
-    expect(Number.parseFloat(textarea!)).toBeGreaterThan(
-      Number.parseFloat(padding),
+    // At least the run from the button's start edge to the frame's end edge
+    const button = floating!.querySelector("button")!.getBoundingClientRect();
+    const frame = floating!.getBoundingClientRect();
+    expect(Number.parseFloat(textarea!)).toBeGreaterThanOrEqual(
+      frame.right - button.left,
     );
     expect(ends(barred!)).toEqual([padding, padding]);
   });

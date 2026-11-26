@@ -132,7 +132,7 @@ export const Disabled: Story = {
   },
 };
 
-/** Default, read-only and disabled side by side: read-only sits on the bar's surface, disabled is dimmed. */
+/** Default, read-only and disabled side by side: read-only dashes the frame's border (a visual cue; screen readers read the native `readonly`), disabled is dimmed. The code keeps the same surface in all three. */
 export const States: Story = {
   args: { defaultValue: sampleTypeScript },
   render: () => (
@@ -224,6 +224,7 @@ export const LongLines: Story = {
   },
 };
 
+/** Read-only dashes the frame's border, a visual cue only; assistive technology reads the textarea's native `readonly`. */
 export const ReadOnly: Story = {
   args: {
     defaultValue: sampleTypeScript,
