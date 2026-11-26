@@ -388,6 +388,9 @@ importers:
       '@types/react-dom':
         specifier: 19.2.3
         version: 19.2.3(@types/react@19.2.8)
+      '@uiid/cards':
+        specifier: workspace:*
+        version: link:../cards
       '@uiid/config':
         specifier: workspace:*
         version: link:../config

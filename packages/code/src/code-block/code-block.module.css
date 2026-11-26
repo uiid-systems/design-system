@@ -89,6 +89,15 @@
   position: relative;
 }
 
+/* One column that may shrink to nothing, so the longest unwrapped line adds
+   nothing to the block's min-content width. A container that sizes to fit its
+   content, such as a Card or a Collapsible, then stops at the width it has and
+   the code scrolls sideways inside it, instead of growing to the line. */
+.code-block-scroll {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
 /* `rows` writes --code-rows; collapsed, the area is that many lines tall. It
    clips rather than scrolls: "Show more" is the one way to the rest, so the area
    is no scroll container and no tab stop. Long unwrapped lines still scroll
