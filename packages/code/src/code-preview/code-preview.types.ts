@@ -76,7 +76,7 @@ export type CodePreviewProps = Omit<
      * @default false
      */
     resettable?: boolean;
-    /** Fires each time the reset button is pressed */
+    /** Fires on each press of the reset button, before the example remounts */
     onReset?: () => void;
     /**
      * The trigger's text while the code is hidden

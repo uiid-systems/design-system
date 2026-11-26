@@ -1,8 +1,17 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CollapsibleRoot } from "@uiid/interactive";
 import { useState } from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  onTestFinished,
+  vi,
+  type MockInstance,
+} from "vitest";
 
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import { CodePreview } from "./code-preview";
@@ -480,7 +489,7 @@ describe("CodePreview", () => {
     // A server component reaches a client component as already-rendered
     // nodes: host elements and client-component elements, never a function.
     // Reset must remount those nodes as they are, by key.
-    it("remounts already-rendered host elements without calling into children", async () => {
+    it("remounts already-rendered host elements", async () => {
       const user = userEvent.setup();
       const { container } = render(
         <CodePreview resettable>
@@ -529,11 +538,13 @@ describe("CodePreview", () => {
         </CodePreview>,
       );
       await user.click(resetButton());
+      expect(screen.getByText("Mount 2")).toBeInTheDocument();
       expect(trigger()).toHaveAttribute("aria-expanded", "true");
       expect(onOpenChange).not.toHaveBeenCalled();
 
       await user.click(trigger());
       await user.click(resetButton());
+      expect(screen.getByText("Mount 3")).toBeInTheDocument();
       expect(trigger()).toHaveAttribute("aria-expanded", "false");
       expect(onOpenChange).toHaveBeenCalledTimes(1);
     });
@@ -555,6 +566,33 @@ describe("CodePreview", () => {
       await user.keyboard("{Enter}");
       expect(screen.getByText("Mount 3")).toBeInTheDocument();
       expect(button).toHaveFocus();
+    });
+
+    // Safari does not focus a button on click, so focus can still sit on a
+    // control in the example when reset is pressed. fireEvent clicks without
+    // moving focus, as Safari does.
+    it("moves focus from inside the example to the reset button", () => {
+      render(
+        <CodePreview resettable>
+          <input aria-label="Name" />
+        </CodePreview>,
+      );
+      const input = screen.getByRole("textbox", { name: "Name" });
+      input.focus();
+      fireEvent.click(resetButton());
+      expect(resetButton()).toHaveFocus();
+      expect(screen.getByRole("textbox", { name: "Name" })).not.toBe(input);
+    });
+
+    it("leaves focus alone when it is outside the canvas", () => {
+      render(
+        <CodePreview code={CODE} resettable>
+          x
+        </CodePreview>,
+      );
+      trigger().focus();
+      fireEvent.click(resetButton());
+      expect(trigger()).toHaveFocus();
     });
 
     it("fires onReset once per reset", async () => {
@@ -582,29 +620,33 @@ describe("CodePreview", () => {
   });
 
   describe("error boundary", () => {
+    const failure = new Error("<b>Example exploded</b>");
     let broken = true;
     const Fragile = () => {
-      if (broken) throw new Error("<b>Example exploded</b>");
+      if (broken) throw failure;
       return <span>Recovered</span>;
     };
 
+    const MESSAGE = "This example failed to render.";
+
+    // React reports a caught render error to console.error. Each test that
+    // throws checks the report carried the thrown error.
+    let consoleError: MockInstance<typeof console.error>;
+    const expectReported = () =>
+      expect(
+        consoleError.mock.calls.some((call) => call.includes(failure)),
+      ).toBe(true);
+
     beforeEach(() => {
       broken = true;
+      consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
     });
 
-    // React reports a caught render error to console.error in development.
-    const expectReportedError = () => {
-      const consoleError = vi
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
-      return () => {
-        expect(consoleError).toHaveBeenCalled();
-        consoleError.mockRestore();
-      };
-    };
+    afterEach(() => {
+      consoleError.mockRestore();
+    });
 
     it("shows a short message in the canvas and keeps the frame, bar and code", () => {
-      const done = expectReportedError();
       const { container } = render(
         <CodePreview code={CODE} defaultOpen>
           <Fragile />
@@ -622,11 +664,20 @@ describe("CodePreview", () => {
         screen.getByRole("button", { name: "Copy code" }),
       ).toBeInTheDocument();
       expect(screen.getByText(`hl:${CODE}`)).toBeInTheDocument();
-      done();
+      expectReported();
+    });
+
+    it("shows the message as a status", () => {
+      render(
+        <CodePreview code={CODE}>
+          <Fragile />
+        </CodePreview>,
+      );
+      expect(screen.getByRole("status")).toHaveTextContent(MESSAGE);
+      expectReported();
     });
 
     it("never renders the thrown value as markup", () => {
-      const done = expectReportedError();
       const { container } = render(
         <CodePreview code={CODE}>
           <Fragile />
@@ -634,27 +685,55 @@ describe("CodePreview", () => {
       );
       expect(container.querySelector("b")).not.toBeInTheDocument();
       expect(container).not.toHaveTextContent("Example exploded");
-      done();
+      expectReported();
     });
 
     it("retries on reset", async () => {
       const user = userEvent.setup();
-      const done = expectReportedError();
       render(
         <CodePreview code={CODE} resettable>
           <Fragile />
         </CodePreview>,
       );
-      expect(
-        screen.getByText("This example failed to render."),
-      ).toBeInTheDocument();
+      expect(screen.getByText(MESSAGE)).toBeInTheDocument();
       broken = false;
       await user.click(screen.getByRole("button", { name: "Reset preview" }));
       expect(screen.getByText("Recovered")).toBeInTheDocument();
-      expect(
-        screen.queryByText("This example failed to render."),
-      ).not.toBeInTheDocument();
-      done();
+      expect(screen.queryByText(MESSAGE)).not.toBeInTheDocument();
+      expectReported();
+    });
+
+    it("shows the message again when a retry still throws, with focus on reset", async () => {
+      const user = userEvent.setup();
+      render(
+        <CodePreview code={CODE} resettable>
+          <Fragile />
+        </CodePreview>,
+      );
+      const button = screen.getByRole("button", { name: "Reset preview" });
+      await user.click(button);
+      expect(screen.getByText(MESSAGE)).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Reset preview" })).toBe(
+        button,
+      );
+      expect(button).toHaveFocus();
+      expectReported();
+    });
+
+    it("still catches an example that throws after a reset", async () => {
+      const user = userEvent.setup();
+      broken = false;
+      render(
+        <CodePreview code={CODE} resettable>
+          <Fragile />
+        </CodePreview>,
+      );
+      expect(screen.getByText("Recovered")).toBeInTheDocument();
+      broken = true;
+      await user.click(screen.getByRole("button", { name: "Reset preview" }));
+      expect(screen.getByText(MESSAGE)).toBeInTheDocument();
+      expect(trigger()).toBeInTheDocument();
+      expectReported();
     });
   });
 
@@ -720,17 +799,25 @@ describe("CodePreview examples", () => {
   });
 
   it("catches the Throws example inside the canvas", () => {
-    // React reports the caught error to console.error in development.
+    // React reports the caught error to console.error.
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
+    onTestFinished(() => consoleError.mockRestore());
     const { container } = render(<Throws />);
     expect(
       container.querySelector('[data-slot="code-preview-canvas"]'),
     ).toHaveTextContent("This example failed to render.");
     expect(trigger()).toBeInTheDocument();
-    expect(consoleError).toHaveBeenCalled();
-    consoleError.mockRestore();
+    expect(
+      consoleError.mock.calls.some((call) =>
+        call.some(
+          (arg) =>
+            arg instanceof Error &&
+            arg.message === "This example throws while rendering.",
+        ),
+      ),
+    ).toBe(true);
   });
 
   it("resets the Resettable example's state", async () => {

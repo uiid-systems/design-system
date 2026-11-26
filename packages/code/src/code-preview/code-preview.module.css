@@ -19,9 +19,13 @@
 }
 
 /* The reset button sits in the canvas's top-right corner, out of the flow so
-   it does not shift the example. */
-.code-preview-reset-button {
+   it does not shift the example. The box around the button is what moves:
+   Button wraps itself in its tooltip's trigger and the tooltip anchors there,
+   so positioning the button alone would leave the tooltip on an empty box.
+   The z-index keeps it above an example with its own stacking context. */
+.code-preview-reset {
   position: absolute;
+  z-index: 1;
   inset-block-start: calc(var(--spacing-unit) * 2);
   inset-inline-end: calc(var(--spacing-unit) * 2);
 }

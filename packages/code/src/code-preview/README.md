@@ -41,13 +41,13 @@ The panel is closed by default. `defaultOpen` starts it open. Set `open` to cont
 
 ## Reset
 
-`resettable` adds a reset button, named "Reset preview", in the canvas's top-right corner. It is off by default, and off it is not in the DOM. Pressing it remounts `children`: load animations replay and any state inside the example returns to its start. It does not open or close the code, and focus stays on the button. `onReset` fires on each press.
+`resettable` adds a reset button, named "Reset preview", in the canvas's top-right corner. It is off by default, and off it is not in the DOM. Pressing it remounts `children`: load animations replay and any state inside the example returns to its start. It does not open or close the code, and focus stays on the button, or moves to it if it was inside the example. `onReset` fires on each press, before the example remounts.
 
-The remount is a `key` change on a wrapper around `children`, so it works with whatever nodes it was given, including `children` rendered by a server component.
+The remount is a `key` change on a wrapper around `children`. It remounts the elements it was given and never calls `children`, which is the shape `children` take when a server component renders them.
 
 ## Errors
 
-An example that throws while rendering does not take the page down. The canvas shows "This example failed to render." in place of the example, and the frame, bar and code still render. With `resettable` on, reset is the retry. The message is fixed: the thrown error is not shown, and React reports it to the console in development.
+An example that throws while rendering does not take the page down. The canvas shows "This example failed to render." in place of the example, and the frame, bar and code still render. With `resettable` on, reset is the retry. The message is fixed and announced as a status: the thrown error is not shown, and React reports it to the console by default.
 
 ## Slots
 
@@ -55,7 +55,7 @@ Each part takes its own props through a slot on CodePreview: `CanvasProps`, `Bar
 
 ## Parts
 
-`CodePreviewCanvas`, `CodePreviewBar`, `CodePreviewTrigger`, `CodePreviewPanel` and `CodePreviewResetButton` are exported for composition. Composed, the reset button is only a button: remounting the example on its `onClick` is up to you. The trigger and the panel need a `CollapsibleRoot` from `@uiid/interactive` around them; the copy button is `CodeBlockCopyButton` and the code is `CodeBlockContent`. Composed this way there is no frame and no highlighting, which CodePreview adds.
+`CodePreviewCanvas`, `CodePreviewBar`, `CodePreviewTrigger`, `CodePreviewPanel` and `CodePreviewResetButton` are exported for composition. Composed, the reset button is only a button in the flow: placing it and remounting the example on its `onClick` are up to you. The trigger and the panel need a `CollapsibleRoot` from `@uiid/interactive` around them; the copy button is `CodeBlockCopyButton` and the code is `CodeBlockContent`. Composed this way there is no frame and no highlighting, which CodePreview adds.
 
 ```tsx
 <CollapsibleRoot>

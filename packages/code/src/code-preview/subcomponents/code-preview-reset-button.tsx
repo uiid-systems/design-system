@@ -15,7 +15,7 @@ export const CodePreviewResetButton = ({
   <Button
     type="button"
     data-slot="code-preview-reset-button"
-    aria-label="Reset preview"
+    // A string tooltip on a square Button is also its name.
     tooltip="Reset preview"
     className={cx(styles["code-preview-reset-button"], className)}
     size="small"

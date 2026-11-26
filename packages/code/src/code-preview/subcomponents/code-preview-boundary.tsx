@@ -19,7 +19,8 @@ type CodePreviewBoundaryState = {
  *
  * The message is a fixed sentence. A thrown value can be anything, its text
  * is written for developers, and React already reports the full error to the
- * console in development.
+ * console. It is a status, so it is announced when it replaces an example
+ * that was already running.
  */
 export class CodePreviewBoundary extends React.Component<
   CodePreviewBoundaryProps,
@@ -36,7 +37,12 @@ export class CodePreviewBoundary extends React.Component<
   override render() {
     if (this.state.failed) {
       return (
-        <Text data-slot="code-preview-error" emphasis="muted" size={-1}>
+        <Text
+          data-slot="code-preview-error"
+          role="status"
+          emphasis="muted"
+          size={-1}
+        >
           This example failed to render.
         </Text>
       );

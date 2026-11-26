@@ -70,7 +70,16 @@ export const CodePreview = ({
   // hands over, and a caught error clears with it. The reset button sits
   // outside the keyed subtree, so it keeps focus across the remount.
   const [resetKey, setResetKey] = React.useState(0);
+  const cornerRef = React.useRef<HTMLDivElement>(null);
   const handleReset = () => {
+    // Focus held inside the example would drop to the body as it remounts,
+    // which is where it is when a click does not focus the button (Safari).
+    // Move it to the reset button first.
+    const corner = cornerRef.current;
+    const active = document.activeElement;
+    if (corner?.parentElement?.contains(active) && !corner.contains(active)) {
+      corner.querySelector("button")?.focus();
+    }
     setResetKey((key) => key + 1);
     onReset?.();
   };
@@ -92,7 +101,18 @@ export const CodePreview = ({
       <CodePreviewCanvas {...CanvasProps}>
         <CodePreviewBoundary key={resetKey}>{children}</CodePreviewBoundary>
         {resettable && (
-          <CodePreviewResetButton {...ResetButtonProps} onClick={handleReset} />
+          // Places the button in the corner. The button stays in this box's
+          // flow, so its tooltip anchors to the button.
+          <div
+            ref={cornerRef}
+            data-slot="code-preview-reset"
+            className={styles["code-preview-reset"]}
+          >
+            <CodePreviewResetButton
+              {...ResetButtonProps}
+              onClick={handleReset}
+            />
+          </div>
         )}
       </CodePreviewCanvas>
 
