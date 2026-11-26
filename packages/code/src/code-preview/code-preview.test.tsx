@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import { CodePreview } from "./code-preview";
+import * as Examples from "./code-preview.examples";
 import type { CodePreviewProps } from "./code-preview.types";
 import {
   CodePreviewBar,
@@ -427,5 +428,23 @@ describe("CodePreview", () => {
         container.querySelector('[data-slot="code-preview-bar"]'),
       ).toHaveAttribute("data-ui-px", "8");
     });
+  });
+});
+
+describe("CodePreview examples", () => {
+  it.each(Object.entries(Examples))("renders %s", (_name, Example) => {
+    const { container } = render(<Example />);
+    expect(
+      container.querySelector('[data-slot="code-preview-canvas"]'),
+    ).toBeInTheDocument();
+  });
+
+  it("drives a controlled preview from outside", async () => {
+    const user = userEvent.setup();
+    render(<Examples.Controlled />);
+    expect(screen.getByText("Code hidden")).toBeInTheDocument();
+    await user.click(trigger());
+    expect(screen.getByText("Code shown")).toBeInTheDocument();
+    expect(trigger()).toHaveAttribute("aria-expanded", "true");
   });
 });
