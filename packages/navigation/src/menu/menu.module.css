@@ -66,19 +66,14 @@
      once, so both switch together instead. */
   transition: none;
 
-  &[data-popup-open] {
-    z-index: 0;
-    position: relative;
-  }
-
-  &[data-popup-open]:not([data-highlighted])::before {
-    content: "";
-    z-index: -1;
-    position: absolute;
-    inset-block: 0;
-    inset-inline: 0.25rem;
-    border-radius: 0.25rem;
-    background-color: var(--shade-accent);
+  /*
+   * A trigger whose submenu is open, once the pointer or focus has moved into
+   * the submenu. It wears `composes-option`'s tint, on the row's own radius:
+   * lighter than the inverted highlight below, and still marked against a
+   * resting row, so the path into the submenu stays visible.
+   */
+  &[data-popup-open]:not([data-highlighted]) {
+    background-color: var(--palette-tint-hover, var(--shade-accent));
   }
 
   /*
@@ -103,4 +98,21 @@
 .submenu-trigger > [data-slot="list-item"] {
   flex: 1;
   min-width: 0;
+}
+
+/*
+ * The trigger's own chevron, pinned to the far edge by the content beside it
+ * taking the free space. Sized and colored like a row's icon, so it inverts
+ * with the highlight and tracks the popup's hue. In a right-to-left menu the
+ * submenu opens to the left, so the chevron points that way.
+ */
+.submenu-chevron {
+  flex-shrink: 0;
+  width: var(--list-icon-size);
+  height: var(--list-icon-size);
+  color: var(--list-icon-color);
+
+  &:dir(rtl) {
+    transform: scaleX(-1);
+  }
 }

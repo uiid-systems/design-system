@@ -310,6 +310,18 @@ describe("Menu parts", () => {
     expect(chevron(screen.getByRole("menuitem"))).toBeInTheDocument();
   });
 
+  it("draws a chevron for a trigger composed from text alone", () => {
+    renderParts(
+      <SubmenuRoot>
+        <SubmenuTrigger>Move to</SubmenuTrigger>
+      </SubmenuRoot>,
+    );
+
+    const trigger = screen.getByRole("menuitem", { name: "Move to" });
+    expect(chevron(trigger)).toHaveClass(styles["submenu-chevron"]);
+    expect(chevron(trigger)).toHaveAttribute("aria-hidden", "true");
+  });
+
   /* With `children` in place of the row, `label` is the only typeahead text. */
   it("keys typeahead on a MenuItem's label when children replace its row", async () => {
     const user = userEvent.setup();
@@ -934,7 +946,15 @@ describe("Menu slot precedence", () => {
     render(
       <Menu
         trigger="Open"
-        items={MOCK_ITEMS}
+        items={[
+          { label: "Lorem", value: "item-1", icon: PencilIcon },
+          {
+            label: "Lorem ipsum",
+            value: "item-2",
+            icon: PencilIcon,
+            items: [{ label: "Item 2.1", value: "item-2.1" }],
+          },
+        ]}
         ItemProps={untyped<MenuProps["ItemProps"]>({
           label: "Slot label",
           icon: StarIcon,
@@ -960,8 +980,13 @@ describe("Menu slot precedence", () => {
       screen.queryByText("Slot trigger description"),
     ).not.toBeInTheDocument();
     expect(screen.queryByText("Slot trigger content")).not.toBeInTheDocument();
-    expect(
-      document.querySelector("[data-slot='list-item-icon']"),
-    ).not.toBeInTheDocument();
+
+    // Both rows draw the entry's own icon, never the slot's.
+    const icons = document.querySelectorAll("[data-slot='list-item-icon']");
+    expect(icons).toHaveLength(2);
+    for (const icon of icons) {
+      expect(icon).toHaveClass("lucide-pencil");
+      expect(icon).not.toHaveClass("lucide-star");
+    }
   });
 });
