@@ -1944,6 +1944,7 @@ describe("CodeBlock fullscreen focus return", () => {
         />
       );
     };
+    expect(document.activeElement).toBe(document.body);
     render(<Block />);
     await screen.findByRole("dialog");
 
@@ -1986,10 +1987,97 @@ describe("CodeBlock fullscreen focus return", () => {
     render(<Opener />);
 
     fireEvent.click(screen.getByRole("button", { name: "Open" }));
+    // fireEvent does not focus the button, as Safari does not.
+    expect(document.activeElement).toBe(document.body);
     await screen.findByRole("dialog");
 
     await closeWithEscape(user);
     await waitFor(() => expect(inlineToggle()).toHaveFocus());
+  });
+
+  it("returns focus to the toggle when the opener is removed while the view is open", async () => {
+    const user = userEvent.setup();
+    let focusedAtClick: Element | null = null;
+    const Opener = ({ showOpener }: { showOpener: boolean }) => {
+      const [fullscreen, setFullscreen] = React.useState(false);
+      return (
+        <>
+          {showOpener && (
+            <button
+              type="button"
+              onClick={() => {
+                focusedAtClick = document.activeElement;
+                setFullscreen(true);
+              }}
+            >
+              Open
+            </button>
+          )}
+          <CodeBlock
+            code="const x = 1;"
+            fullscreenable
+            fullscreen={fullscreen}
+            onFullscreenChange={setFullscreen}
+          />
+        </>
+      );
+    };
+    const { rerender } = render(<Opener showOpener />);
+    const opener = screen.getByRole("button", { name: "Open" });
+
+    // user.click focuses the opener, so it is what had focus at open.
+    await user.click(opener);
+    expect(focusedAtClick).toBe(opener);
+    await screen.findByRole("dialog");
+
+    rerender(<Opener showOpener={false} />);
+    expect(opener).not.toBeInTheDocument();
+
+    await closeWithEscape(user);
+    await waitFor(() => expect(inlineToggle()).toHaveFocus());
+  });
+
+  it("returns focus to a focused opener on a second open after a fallback", async () => {
+    const user = userEvent.setup();
+    let focusedAtClick: Element | null = null;
+    const Opener = () => {
+      const [fullscreen, setFullscreen] = React.useState(false);
+      return (
+        <>
+          <button
+            type="button"
+            onClick={() => {
+              focusedAtClick = document.activeElement;
+              setFullscreen(true);
+            }}
+          >
+            Open
+          </button>
+          <CodeBlock
+            code="const x = 1;"
+            fullscreenable
+            fullscreen={fullscreen}
+            onFullscreenChange={setFullscreen}
+          />
+        </>
+      );
+    };
+    render(<Opener />);
+    const opener = screen.getByRole("button", { name: "Open" });
+
+    // First open with the body focused: the toggle takes focus back.
+    fireEvent.click(opener);
+    expect(focusedAtClick).toBe(document.body);
+    await screen.findByRole("dialog");
+    await closeWithEscape(user);
+    await waitFor(() => expect(inlineToggle()).toHaveFocus());
+
+    // Second open from the focused opener: focus returns to it, not the toggle.
+    await user.click(opener);
+    expect(focusedAtClick).toBe(opener);
+    await screen.findByRole("dialog");
+    await closeWithEscape(user);
+    await waitFor(() => expect(opener).toHaveFocus());
   });
 
   it("returns focus to the caller's finalFocus target", async () => {
@@ -2021,6 +2109,7 @@ describe("CodeBlock fullscreen focus return", () => {
 
     // A click that leaves focus on the body, as in Safari.
     fireEvent.click(opener);
+    expect(document.activeElement).toBe(document.body);
     await screen.findByRole("dialog");
 
     await closeWithEscape(user);
@@ -2040,7 +2129,8 @@ describe("CodeBlock fullscreen focus return", () => {
     await closeWithEscape(user);
 
     expect(finalFocus).toHaveBeenCalledWith("keyboard");
-    // `false` leaves focus alone, so the toggle does not take it back.
+    // `false` moves no focus: it was inside the closed view, so the body has it.
+    expect(document.activeElement).toBe(document.body);
     expect(toggle).not.toHaveFocus();
   });
 

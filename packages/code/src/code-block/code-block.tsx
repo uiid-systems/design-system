@@ -105,8 +105,10 @@ export const CodeBlock = ({
   );
 
   // Closing returns focus to whatever had it when the view opened. When that
-  // was nothing or the body (an open on mount, or a click in Safari, which does
-  // not focus the clicked button), the inline toggle takes it instead.
+  // was nothing, the body, or an element since removed (an open on mount, or a
+  // click in Safari, which does not focus the clicked button), the inline
+  // toggle takes it instead. Base UI treats a function as an explicit return,
+  // so focus moves on close even if the caller moved it outside the view first.
   const fullscreenButtonRef = React.useRef<HTMLButtonElement>(null);
   const inlineFullscreenButtonRef = useComposedRefs(
     FullscreenButtonProps?.ref,
@@ -114,7 +116,9 @@ export const CodeBlock = ({
   );
   const focusedAtOpenRef = React.useRef<Element | null>(null);
   React.useLayoutEffect(() => {
-    if (fullscreen) focusedAtOpenRef.current = document.activeElement;
+    if (!fullscreen) return;
+    const doc = fullscreenButtonRef.current?.ownerDocument ?? document;
+    focusedAtOpenRef.current = doc.activeElement;
   }, [fullscreen]);
   const returnFocus = React.useCallback(() => {
     const focused = focusedAtOpenRef.current;

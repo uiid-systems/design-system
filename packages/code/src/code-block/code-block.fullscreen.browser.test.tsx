@@ -237,15 +237,24 @@ const keepFocus = (event: React.MouseEvent) => event.preventDefault();
 
 describe("CodeBlock fullscreen focus return without a focused opener", () => {
   it("returns focus to the toggle after a click that left the body focused, and Tab continues from it", async () => {
+    // Read in the capture phase, before the click opens the view, to show the
+    // simulation took effect.
+    let focusedAtClick: Element | null = null;
     render(
       <>
-        <CodeBlock
-          code="x"
-          html={toHtml("x")}
-          filename="a.ts"
-          fullscreenable
-          FullscreenButtonProps={{ onMouseDown: keepFocus }}
-        />
+        <div
+          onClickCapture={() => {
+            focusedAtClick = document.activeElement;
+          }}
+        >
+          <CodeBlock
+            code="x"
+            html={toHtml("x")}
+            filename="a.ts"
+            fullscreenable
+            FullscreenButtonProps={{ onMouseDown: keepFocus }}
+          />
+        </div>
         <button type="button">After</button>
       </>,
     );
@@ -254,6 +263,7 @@ describe("CodeBlock fullscreen focus return without a focused opener", () => {
       .element() as HTMLElement;
 
     await userEvent.click(toggle);
+    expect(focusedAtClick).toBe(document.body);
     const fullscreen = page.getByRole("dialog", { name: "a.ts" });
     await expect.element(fullscreen).toBeInTheDocument();
 
@@ -281,6 +291,7 @@ describe("CodeBlock fullscreen focus return without a focused opener", () => {
         />
       );
     };
+    expect(document.activeElement).toBe(document.body);
     render(<Block />);
     const fullscreen = page.getByRole("dialog", { name: "a.ts" });
     await expect.element(fullscreen).toHaveFocus();
@@ -293,6 +304,7 @@ describe("CodeBlock fullscreen focus return without a focused opener", () => {
   });
 
   it("returns focus to the caller's own control through finalFocus", async () => {
+    let focusedAtClick: Element | null = null;
     const Opener = () => {
       const [fullscreen, setFullscreen] = React.useState(false);
       const openerRef = React.useRef<HTMLButtonElement>(null);
@@ -302,7 +314,10 @@ describe("CodeBlock fullscreen focus return without a focused opener", () => {
             ref={openerRef}
             type="button"
             onMouseDown={keepFocus}
-            onClick={() => setFullscreen(true)}
+            onClick={() => {
+              focusedAtClick = document.activeElement;
+              setFullscreen(true);
+            }}
           >
             Open
           </button>
@@ -325,6 +340,8 @@ describe("CodeBlock fullscreen focus return without a focused opener", () => {
       .element() as HTMLElement;
 
     await userEvent.click(opener);
+    // The opener was never focused, so only finalFocus can bring focus to it.
+    expect(focusedAtClick).toBe(document.body);
     const fullscreen = page.getByRole("dialog", { name: "a.ts" });
     await expect.element(fullscreen).toHaveFocus();
 
