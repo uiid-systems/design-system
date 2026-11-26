@@ -13,8 +13,17 @@
 /* An example wider than the frame scrolls inside the canvas rather than
    widening the frame. */
 .code-preview-canvas {
+  position: relative;
   min-width: 0;
   overflow: auto;
+}
+
+/* The reset button sits in the canvas's top-right corner, out of the flow so
+   it does not shift the example. */
+.code-preview-reset-button {
+  position: absolute;
+  inset-block-start: calc(var(--spacing-unit) * 2);
+  inset-inline-end: calc(var(--spacing-unit) * 2);
 }
 
 .code-preview-bar {
