@@ -1,7 +1,14 @@
-import { render } from "@testing-library/react";
-import { act } from "react";
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { page } from "vitest/browser";
+import { flushSync } from "react-dom";
+import { createRoot, type Root } from "react-dom/client";
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 import { highlight } from "../highlighter/highlighter";
 import { CodeBlock } from "./code-block";
@@ -15,10 +22,55 @@ import type { CodeBlockProps } from "./code-block.types";
 import "@uiid/tokens/globals.css";
 
 /* A CodeBlock whose `code` grows a chunk at a time, as in a chat response.
-   Each chunk is one render followed by one animation frame, so the real
-   highlighter's passes land between chunks wherever they finish. Nothing waits
-   for a fixed time: the stream advances a frame at a time, and the end waits on
-   the markup. */
+   Each chunk is one synchronous render followed by one animation frame, and
+   each frame is checked right after its render, which is what it paints.
+   Nothing waits for a fixed time: the stream advances a frame at a time, and
+   the end waits on the markup a frame at a time.
+
+   Rendering goes through `flushSync` rather than `act()`, as a real stream's
+   updates would, so passes landing between frames are not reported as updates
+   outside `act()`. */
+
+/**
+ * Holds each highlight pass, while `active`, until the stream has moved
+ * `lag` chunks past the chunk it started on. A warm highlighter otherwise
+ * finishes each pass before the next chunk, and the stream never outruns it.
+ * Inactive, `highlight` is the real one.
+ */
+const gate = vi.hoisted(() => ({
+  active: false,
+  lag: 3,
+  chunk: 0,
+  held: [] as { until: number; release: () => void }[],
+  advance() {
+    this.chunk++;
+    const ready = this.held.filter((pass) => pass.until <= this.chunk);
+    this.held = this.held.filter((pass) => pass.until > this.chunk);
+    for (const pass of ready) pass.release();
+  },
+  open() {
+    this.active = false;
+    for (const pass of this.held.splice(0)) pass.release();
+  },
+}));
+
+vi.mock("../highlighter/highlighter", async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import("../highlighter/highlighter")>();
+  return {
+    ...actual,
+    highlight: async (...args: Parameters<typeof actual.highlight>) => {
+      const until = gate.chunk + gate.lag;
+      const html = await actual.highlight(...args);
+      if (gate.active && gate.chunk < until) {
+        await new Promise<void>((release) =>
+          gate.held.push({ until, release }),
+        );
+      }
+      return html;
+    },
+  };
+});
 
 /** A 200-line `tsx` file: components with strings, comments and JSX. */
 const FILE = Array.from({ length: 20 }, (_, i) =>
@@ -36,13 +88,17 @@ const FILE = Array.from({ length: 20 }, (_, i) =>
   ].join("\n"),
 ).join("\n");
 
-/** `text` cut into `count` chunks of near-equal length. */
-const chunk = (text: string, count: number) => {
-  const size = Math.ceil(text.length / count);
-  return Array.from({ length: count }, (_, i) =>
-    text.slice(i * size, (i + 1) * size),
+const firstLines = (count: number) =>
+  FILE.split("\n").slice(0, count).join("\n");
+
+/** `text` cut into `count` non-empty chunks of near-equal length. */
+const chunk = (text: string, count: number) =>
+  Array.from({ length: count }, (_, i) =>
+    text.slice(
+      Math.round((i * text.length) / count),
+      Math.round(((i + 1) * text.length) / count),
+    ),
   );
-};
 
 const nextFrame = () =>
   new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
@@ -69,21 +125,25 @@ const warmUp = () => highlight("const a = 1;", "tsx");
 
 type BlockProps = Omit<CodeBlockProps, "code">;
 
+const mounted: { root: Root; container: HTMLElement }[] = [];
+
 /**
  * Mount an empty block in a 480px container. `setCode` renders it with new
- * code; the DOM it leaves is what the next frame paints.
+ * code synchronously; the DOM it leaves is what the next frame paints.
  */
 const mountBlock = (props: BlockProps) => {
-  const root = document.createElement("div");
-  root.style.width = "480px";
-  document.body.append(root);
-  const { rerender } = render(<CodeBlock code="" {...props} />, {
-    container: root,
-  });
+  const container = document.createElement("div");
+  container.style.width = "480px";
+  document.body.append(container);
+  const root = createRoot(container);
+  mounted.push({ root, container });
   const setCode = (code: string) =>
-    act(() => rerender(<CodeBlock code={code} {...props} />));
-  return { root, setCode };
+    flushSync(() => root.render(<CodeBlock code={code} {...props} />));
+  setCode("");
+  return { root: container, setCode };
 };
+
+type Frame = { code: string; root: HTMLElement; i: number };
 
 /**
  * Stream `text` into a new block in `count` chunks, one frame apart. `onFrame`
@@ -93,50 +153,80 @@ const stream = async (
   text: string,
   count: number,
   props: BlockProps,
-  onFrame: (frame: { code: string; root: HTMLElement; i: number }) => void,
+  onFrame: (frame: Frame) => void,
 ) => {
   const { root, setCode } = mountBlock(props);
   let code = "";
   for (const [i, piece] of chunk(text, count).entries()) {
     code += piece;
     setCode(code);
+    gate.advance();
     onFrame({ code, root, i });
     await nextFrame();
   }
   return root;
 };
 
+/**
+ * After the stream, check each frame with `onFrame` until the markup is a
+ * one-shot highlight of `text`, for at most `maxFrames` frames.
+ */
+const settle = async (
+  root: HTMLElement,
+  text: string,
+  onFrame: () => void,
+  maxFrames = 600,
+) => {
+  const oneShot = serialized(await highlight(text, "tsx"));
+  for (let i = 0; i < maxFrames && content(root).innerHTML !== oneShot; i++) {
+    onFrame();
+    await nextFrame();
+  }
+  expect(content(root).innerHTML).toBe(oneShot);
+};
+
+let actEnvironment: unknown;
+beforeAll(() => {
+  actEnvironment = Reflect.get(globalThis, "IS_REACT_ACT_ENVIRONMENT");
+  Reflect.set(globalThis, "IS_REACT_ACT_ENVIRONMENT", false);
+});
+afterAll(() => {
+  Reflect.set(globalThis, "IS_REACT_ACT_ENVIRONMENT", actEnvironment);
+});
+
 afterEach(() => {
+  gate.open();
+  gate.chunk = 0;
+  for (const { root, container } of mounted.splice(0)) {
+    root.unmount();
+    container.remove();
+  }
   vi.restoreAllMocks();
 });
 
 describe("CodeBlock while its code streams in", () => {
-  it("stays highlighted, shows every character and only grows by lines", async () => {
-    await warmUp();
-    let highlighted = false;
-    let plainAfterHighlight = 0;
-    let passesShown = 0;
-    let lastPre: Element | null = null;
-    let last = { lines: 0, height: 0 };
-    const failures: string[] = [];
+  it(
+    "stays highlighted, shows every character and only grows by lines",
+    { timeout: 30_000 },
+    async () => {
+      await warmUp();
+      gate.active = true;
+      let highlighted = false;
+      let plainAfterHighlight = 0;
+      let passesDuringStream = 0;
+      let lastPre: Element | null = null;
+      let last = { lines: 0, height: 0 };
+      const failures: string[] = [];
 
-    const root = await stream(
-      FILE,
-      400,
-      { language: "tsx", showLineNumbers: true },
-      ({ code, root, i }) => {
+      const check = (code: string, at: string) => {
+        const root = mounted[0].container;
         const now = isHighlighted(root);
         if (highlighted && !now) plainAfterHighlight++;
         highlighted ||= now;
 
-        const pre = content(root).querySelector("pre");
-        if (now && pre !== lastPre) passesShown++;
-        lastPre = pre;
-
-        if (shownText(root) !== code) {
-          failures.push(
-            `text at ${i} is ${shownText(root)?.length} of ${code.length} characters`,
-          );
+        const shown = shownText(root);
+        if (shown !== code) {
+          failures.push(`${at}: ${shown?.length} of ${code.length} characters`);
         }
 
         // The block's height moves only with its line count, and both only
@@ -144,53 +234,65 @@ describe("CodeBlock while its code streams in", () => {
         const lines = lineCount(root);
         const { height } = getBlock(root).getBoundingClientRect();
         if (lines !== code.split("\n").length) {
-          failures.push(`${lines} lines at ${i}`);
+          failures.push(`${at}: ${lines} lines`);
         }
         if (lines === last.lines && height !== last.height) {
-          failures.push(`height ${last.height} -> ${height} at ${i}`);
+          failures.push(`${at}: height ${last.height} -> ${height}`);
         }
-        if (height < last.height) failures.push(`height shrank at ${i}`);
+        if (height < last.height) failures.push(`${at}: height shrank`);
         last = { lines, height };
-      },
-    );
+      };
 
-    expect(failures).toEqual([]);
-    expect(highlighted).toBe(true);
-    expect(plainAfterHighlight).toBe(0);
-    // Several passes landed mid-stream, so the remainder path was exercised.
-    expect(passesShown).toBeGreaterThan(1);
+      const root = await stream(
+        FILE,
+        400,
+        { language: "tsx", showLineNumbers: true },
+        ({ code, root, i }) => {
+          check(code, `chunk ${i}`);
+          // Every pass is held until the stream is three chunks past it, so a
+          // new <pre> here is a pass for a value the stream has left behind.
+          const pre = content(root).querySelector("pre.shiki");
+          if (pre && pre !== lastPre) passesDuringStream++;
+          lastPre = pre;
+        },
+      );
 
-    // Once the stream stops, the markup is a one-shot highlight of the file.
-    const oneShot = serialized(await highlight(FILE, "tsx"));
-    await expect
-      .poll(() => content(root).innerHTML, { timeout: 10_000 })
-      .toBe(oneShot);
-    root.remove();
-  });
+      gate.open();
+      let frame = 0;
+      await settle(root, FILE, () => check(FILE, `settle ${frame++}`));
+
+      expect(failures).toEqual([]);
+      expect(highlighted).toBe(true);
+      expect(plainAfterHighlight).toBe(0);
+      // Stale passes were shown as they landed, rather than dropped until the
+      // stream stopped.
+      expect(passesDuringStream).toBeGreaterThan(50);
+    },
+  );
 
   it("keeps every line in place when a pass lands", async () => {
     await warmUp();
-    const { root: container, setCode } = mountBlock({ language: "tsx" });
-    setCode(FILE.split("\n").slice(0, 12).join("\n"));
-    await waitForHighlight(container);
+    const { root, setCode } = mountBlock({ language: "tsx" });
+    setCode(firstLines(12));
+    await waitForHighlight(root);
 
     // Grow past the highlighted text, so a pass is pending for the new end.
-    const more = FILE.split("\n").slice(0, 30).join("\n");
+    const more = firstLines(30);
     setCode(more);
-    const pending = content(container).querySelector("pre");
+    const pending = content(root).querySelector("pre");
     const tops = () =>
-      [...content(container).querySelectorAll(".line")].map(
+      [...content(root).querySelectorAll(".line")].map(
         (line) => line.getBoundingClientRect().top,
       );
     const before = tops();
-    const height = getBlock(container).getBoundingClientRect().height;
+    const height = getBlock(root).getBoundingClientRect().height;
 
     await expect
-      .poll(() => content(container).querySelector("pre") !== pending)
+      .poll(() => content(root).querySelector("pre") !== pending)
       .toBe(true);
     expect(tops()).toEqual(before);
-    expect(getBlock(container).getBoundingClientRect().height).toBe(height);
-    expect(shownText(container)).toBe(more);
+    expect(getBlock(root).getBoundingClientRect().height).toBe(height);
+    expect(shownText(root)).toBe(more);
   });
 
   it("shows the toggle once the code passes its rows, and stays expanded", async () => {
@@ -203,8 +305,8 @@ describe("CodeBlock while its code streams in", () => {
     let expandedAt = -1;
     let collapsedAfterExpand = 0;
 
-    const root = await stream(
-      FILE.split("\n").slice(0, 40).join("\n"),
+    await stream(
+      firstLines(40),
       80,
       { language: "tsx", rows },
       ({ code, root, i }) => {
@@ -218,7 +320,7 @@ describe("CodeBlock while its code streams in", () => {
 
         // Expand part-way through, then it must stay expanded.
         if (toggle && expandedAt < 0 && i > 40) {
-          act(() => toggle.click());
+          flushSync(() => toggle.click());
           expandedAt = i;
         }
         if (expandedAt >= 0 && !getBlock(root).hasAttribute("data-expanded")) {
@@ -235,7 +337,6 @@ describe("CodeBlock while its code streams in", () => {
     expect(toggleAt - exceededAt).toBeLessThanOrEqual(1);
     expect(expandedAt).toBeGreaterThan(0);
     expect(collapsedAfterExpand).toBe(0);
-    root.remove();
   });
 
   it("copies the text at the moment the button is pressed", async () => {
@@ -245,26 +346,23 @@ describe("CodeBlock while its code streams in", () => {
       .mockResolvedValue(undefined);
     let pressedWith = "";
 
-    const root = await stream(
-      FILE.split("\n").slice(0, 20).join("\n"),
+    await stream(
+      firstLines(20),
       40,
       { language: "tsx" },
       ({ code, root, i }) => {
         if (i !== 25) return;
         pressedWith = code;
-        act(() =>
-          root
-            .querySelector<HTMLButtonElement>(
-              '[data-slot="code-block-copy-button"]',
-            )!
-            .click(),
-        );
+        root
+          .querySelector<HTMLButtonElement>(
+            '[data-slot="code-block-copy-button"]',
+          )!
+          .click();
       },
     );
 
     expect(writeText).toHaveBeenCalledTimes(1);
     expect(writeText).toHaveBeenCalledWith(pressedWith);
-    root.remove();
   });
 
   for (const [what, tail] of [
@@ -276,23 +374,12 @@ describe("CodeBlock while its code streams in", () => {
     it(`renders an unterminated ${what} at the end`, async () => {
       await warmUp();
       const errors = vi.spyOn(console, "error");
-      const text = `${FILE.split("\n").slice(0, 10).join("\n")}\n${tail}`;
+      const text = `${firstLines(10)}\n${tail}`;
       const root = await stream(text, 30, { language: "tsx" }, () => {});
 
-      const oneShot = serialized(await highlight(text, "tsx"));
-      await expect
-        .poll(() => content(root).innerHTML, { timeout: 10_000 })
-        .toBe(oneShot);
+      await settle(root, text, () => {});
       expect(shownText(root)).toBe(text);
-      await expect
-        .element(page.getByText("[Error:", { exact: false }))
-        .not.toBeInTheDocument();
-      // Passes land outside act(), which React reports; nothing else may log.
-      const logged = errors.mock.calls.filter(
-        ([message]) => !String(message).includes("not wrapped in act"),
-      );
-      expect(logged).toEqual([]);
-      root.remove();
+      expect(errors).not.toHaveBeenCalled();
     });
   }
 });

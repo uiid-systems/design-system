@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { DEFAULT_SHOW_LINE_NUMBERS, DEFAULT_WRAP } from "../../code.constants";
 import { codeContentVariants } from "../../code.variants";
+import { HighlightedCodeContext } from "../code-block.context";
 import type { CodeBlockContentProps } from "../code-block.types";
 
 import styles from "../code-block.module.css";
@@ -27,11 +28,16 @@ export const CodeBlockContent = ({
   // A stream can outrun the highlighter, leaving `html` for an earlier start
   // of `code`. Show the rest uncolored, before paint, so every character is
   // visible and nothing moves when the next pass lands.
+  const highlighted = React.useContext(HighlightedCodeContext);
+  const remainder =
+    html && code && highlighted !== undefined && code.startsWith(highlighted)
+      ? code.slice(highlighted.length)
+      : "";
   React.useLayoutEffect(() => {
-    const el = html ? ownRef.current?.querySelector("pre code") : null;
-    if (!el || !code) return;
-    return appendRemainder(el, code);
-  }, [html, code]);
+    const el = remainder ? ownRef.current?.querySelector("pre code") : null;
+    if (!el) return;
+    return appendRemainder(el, remainder);
+  }, [html, remainder]);
   const sharedClass = cx(
     styles["code-block-content"],
     wrap && styles["code-block-content-wrap"],
@@ -88,20 +94,15 @@ export const CodeBlockContent = ({
 CodeBlockContent.displayName = "CodeBlockContent";
 
 /**
- * Append the part of `code` past the highlighted text in `el` (Shiki's
- * `<code>`) as text nodes, in Shiki's line layout: the rest of the last line
- * joins its `.line` span, and each further line is a newline and a new one.
- * Does nothing unless the highlighted text starts `code`. Returns a cleanup
- * that removes what it added. React never reconciles inside `innerHTML`, so
- * these nodes are ours to add and remove.
+ * Append `remainder` to `el` (Shiki's `<code>`) as text nodes, in Shiki's line
+ * layout: the rest of the last line joins its `.line` span, and each further
+ * line is a newline and a new one. Lines split on `\r\n` as well as `\n`, as
+ * Shiki splits them. Returns a cleanup that removes what it added. React never
+ * reconciles inside `innerHTML`, so these nodes are ours to add and remove.
  */
-const appendRemainder = (el: Element, code: string) => {
-  const highlighted = el.textContent;
-  if (code.length <= highlighted.length || !code.startsWith(highlighted)) {
-    return;
-  }
+const appendRemainder = (el: Element, remainder: string) => {
   const doc = el.ownerDocument;
-  const [rest, ...lines] = code.slice(highlighted.length).split("\n");
+  const [rest, ...lines] = remainder.split(/\r?\n/);
   const added: Node[] = [];
   const append = (parent: Element, node: Node) => {
     parent.append(node);

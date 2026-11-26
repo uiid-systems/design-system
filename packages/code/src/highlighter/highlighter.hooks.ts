@@ -31,8 +31,15 @@ type HighlightRequest = {
   highlightLines: number[] | undefined;
 };
 
+const NO_PASS = { html: "", code: "" };
+
 /**
- * Hook to highlight code
+ * Hook to highlight code.
+ *
+ * `html` is the newest highlight that has finished, which can be for an
+ * earlier value of `code` while a newer one is pending (`loading` is true
+ * then). The returned `code` is the text that `html` was highlighted from, so
+ * a caller can show what `html` does not cover yet.
  */
 export function useHighlight(
   code: string,
@@ -40,7 +47,8 @@ export function useHighlight(
   options: UseHighlightOptions = {},
 ): HighlightResult {
   const enabled = options.enabled ?? true;
-  const [html, setHtml] = useState("");
+  // The markup and the text it is for change together.
+  const [pass, setPass] = useState(NO_PASS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -65,7 +73,7 @@ export function useHighlight(
       generationRef.current++;
       waitingRef.current = null;
       // Clear the last result so re-enabling never shows stale markup.
-      setHtml("");
+      setPass(NO_PASS);
       setLoading(true);
       setError(null);
       return;
@@ -91,14 +99,14 @@ export function useHighlight(
         .then(
           (result) => {
             if (isLatest(next)) {
-              setHtml(result);
+              setPass({ html: result, code: next.code });
               setLoading(false);
               setError(null);
             } else if (
               latestRef.current &&
               next.generation === generationRef.current
             ) {
-              setHtml(result);
+              setPass({ html: result, code: next.code });
             }
           },
           (err) => {
@@ -136,6 +144,6 @@ export function useHighlight(
     [],
   );
 
-  if (!enabled) return { html: "", loading: false, error: null };
-  return { html, loading, error };
+  if (!enabled) return { html: "", code: "", loading: false, error: null };
+  return { html: pass.html, code: pass.code, loading, error };
 }

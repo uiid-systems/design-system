@@ -23,7 +23,17 @@ export type HighlightOptions = {
 };
 
 export type HighlightResult = {
+  /**
+   * The newest finished highlight. While `loading`, it can be for an earlier
+   * value than the one passed in.
+   */
   html: string;
+  /**
+   * The text `html` was highlighted from: the value passed in once `loading`
+   * is false, an earlier one while a newer value is pending, and empty when
+   * there is no `html`.
+   */
+  code: string;
   loading: boolean;
   error: Error | null;
 };

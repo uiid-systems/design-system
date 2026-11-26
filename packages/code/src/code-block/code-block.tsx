@@ -18,6 +18,7 @@ import {
   DEFAULT_WRAPPABLE,
 } from "../code.constants";
 import { useHighlight } from "../highlighter/highlighter.hooks";
+import { HighlightedCodeContext } from "./code-block.context";
 import type { CodeBlockProps } from "./code-block.types";
 import {
   CodeBlockHeader,
@@ -86,11 +87,17 @@ export const CodeBlock = ({
     [fullscreenControlled, onFullscreenChange],
   );
 
-  const { html, error } = useHighlight(code, language, {
+  const {
+    html,
+    code: highlightedCode,
+    error,
+  } = useHighlight(code, language, {
     highlightLines,
     enabled: !prerenderedHtml,
   });
   const displayHtml = prerenderedHtml || html || undefined;
+  // Prerendered html is taken as covering all of `code`.
+  const displayHtmlCode = prerenderedHtml ? undefined : highlightedCode;
 
   const [expandedState, setExpandedState] = React.useState(defaultExpanded);
   const expandedControlled = expandedProp !== undefined;
@@ -179,13 +186,15 @@ export const CodeBlock = ({
         >
           {/* Line numbers are CodeBlock's with its own default, so an unset one
               is not routed through definedProps() as filename is above. */}
-          <CodeBlockContent
-            {...withoutContent(slot(ContentProps))}
-            html={displayHtml}
-            code={code}
-            showLineNumbers={showLineNumbers}
-            wrap={wrap}
-          />
+          <HighlightedCodeContext value={displayHtmlCode}>
+            <CodeBlockContent
+              {...withoutContent(slot(ContentProps))}
+              html={displayHtml}
+              code={code}
+              showLineNumbers={showLineNumbers}
+              wrap={wrap}
+            />
+          </HighlightedCodeContext>
         </div>
 
         {error && !prerenderedHtml && (

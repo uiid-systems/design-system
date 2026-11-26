@@ -43,7 +43,12 @@ describe("useHighlight", () => {
       useHighlight("const x = 1;", "typescript", { enabled: false }),
     );
     expect(highlight).not.toHaveBeenCalled();
-    expect(result.current).toEqual({ html: "", loading: false, error: null });
+    expect(result.current).toEqual({
+      html: "",
+      code: "",
+      loading: false,
+      error: null,
+    });
   });
 
   it("drops an in-flight result when enabled turns false", async () => {
@@ -136,6 +141,7 @@ describe("useHighlight request race", () => {
 
     expect(result.current).toEqual({
       html: "<pre>second</pre>",
+      code: "second",
       loading: false,
       error: null,
     });
@@ -165,7 +171,28 @@ describe("useHighlight request race", () => {
     await first.resolve("<pre>first</pre>");
 
     expect(result.current.html).toBe("<pre>first</pre>");
+    // `code` says which value the markup is for.
+    expect(result.current.code).toBe("first");
     expect(result.current.loading).toBe(true);
+  });
+
+  it("keeps a shown stale result when a later stale pass rejects", async () => {
+    const first = deferHighlight();
+    const second = deferHighlight();
+    deferHighlight();
+    const { result, rerender } = renderCode("a");
+    rerender({ code: "ab" });
+
+    await first.resolve("<pre>a</pre>");
+    rerender({ code: "abc" });
+    await second.reject(new Error("stale"));
+
+    expect(result.current).toEqual({
+      html: "<pre>a</pre>",
+      code: "a",
+      loading: true,
+      error: null,
+    });
   });
 
   it("never shows a result from before it was disabled", async () => {
@@ -304,6 +331,7 @@ describe("useHighlight scheduling", () => {
         const pass = control.calls.at(-1)!.code;
         await control.resolveCurrent();
         expect(result.current.html).toBe(markupFor(pass));
+        expect(result.current.code).toBe(pass);
         expect(result.current.loading).toBe(true);
       }
     }
@@ -316,6 +344,7 @@ describe("useHighlight scheduling", () => {
     expect(control.maxRunning).toBe(1);
     expect(result.current).toEqual({
       html: markupFor(code),
+      code,
       loading: false,
       error: null,
     });
@@ -425,6 +454,7 @@ describe("useHighlight scheduling", () => {
     await control.resolveCurrent();
     expect(result.current).toEqual({
       html: markupFor("ab"),
+      code: "ab",
       loading: false,
       error: null,
     });
@@ -438,12 +468,18 @@ describe("useHighlight scheduling", () => {
     });
 
     await control.rejectCurrent(error);
-    expect(result.current).toEqual({ html: "", loading: false, error });
+    expect(result.current).toEqual({
+      html: "",
+      code: "",
+      loading: false,
+      error,
+    });
 
     rerender({ code: "ab" });
     await control.resolveCurrent();
     expect(result.current).toEqual({
       html: markupFor("ab"),
+      code: "ab",
       loading: false,
       error: null,
     });
@@ -460,15 +496,30 @@ describe("useHighlight scheduling", () => {
     rerender({ code: "abc", enabled: true });
 
     rerender({ code: "abc", enabled: false });
-    expect(result.current).toEqual({ html: "", loading: false, error: null });
+    expect(result.current).toEqual({
+      html: "",
+      code: "",
+      loading: false,
+      error: null,
+    });
 
     await control.resolveCurrent();
     // Neither the late result nor the skipped waiting value comes back
     expect(control.calls).toHaveLength(2);
-    expect(result.current).toEqual({ html: "", loading: false, error: null });
+    expect(result.current).toEqual({
+      html: "",
+      code: "",
+      loading: false,
+      error: null,
+    });
 
     rerender({ code: "abc", enabled: true });
-    expect(result.current).toEqual({ html: "", loading: true, error: null });
+    expect(result.current).toEqual({
+      html: "",
+      code: "",
+      loading: true,
+      error: null,
+    });
     await control.resolveCurrent();
     expect(result.current.html).toBe(markupFor("abc"));
   });
@@ -512,6 +563,7 @@ describe("useHighlight scheduling", () => {
     expect(control.calls).toHaveLength(1);
     expect(result.current).toEqual({
       html: markupFor("a"),
+      code: "a",
       loading: false,
       error: null,
     });
