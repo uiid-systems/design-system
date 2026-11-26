@@ -61,6 +61,38 @@ export const LongCode = () => (
   </CodePreview>
 );
 
+const STEPS = Array.from({ length: 12 }, (_, i) => `Step ${i + 1}`);
+
+/**
+ * An example wider than the frame scrolls inside the canvas. The frame keeps
+ * its width, and the reset button stays in its corner while the example
+ * scrolls beneath it.
+ */
+export const WideChild = () => (
+  <CodePreview code={SAMPLE} language="tsx" resettable>
+    <Group gap={2}>
+      {STEPS.map((step) => (
+        <Button key={step} variant="subtle">
+          {step}
+        </Button>
+      ))}
+    </Group>
+  </CodePreview>
+);
+
+/** A tall example grows the canvas; the code stays beneath it. */
+export const TallChild = () => (
+  <CodePreview code={SAMPLE} language="tsx" resettable>
+    <Stack gap={2} ax="stretch">
+      {STEPS.map((step) => (
+        <Button key={step} variant="subtle">
+          {step}
+        </Button>
+      ))}
+    </Stack>
+  </CodePreview>
+);
+
 export const Labels = () => (
   <CodePreview
     code={SAMPLE}

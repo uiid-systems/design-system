@@ -1,5 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CodePreview } from "@uiid/design-system";
+import {
+  Button,
+  Card,
+  CodePreview,
+  Group,
+  Stack,
+  Text,
+} from "@uiid/design-system";
 
 import * as Examples from "../../../../packages/code/src/code-preview/code-preview.examples";
 
@@ -21,7 +28,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/* Closed by default: the example on top, "Show code" and copy beneath it. */
+const SAMPLE = `import { Button, Group } from "@uiid/design-system";
+
+export const Actions = () => (
+  <Group gap={2}>
+    <Button variant="subtle">Cancel</Button>
+    <Button>Save</Button>
+  </Group>
+);`;
+
+const Actions = () => (
+  <Group gap={2}>
+    <Button variant="subtle">Cancel</Button>
+    <Button>Save</Button>
+  </Group>
+);
+
+/* Closed by default: the example on top, "Show code" and copy beneath it. The
+   code is mounted while closed, so the frame is as wide open as closed. */
 export const Default: Story = {
   render: () => <Examples.Default />,
 };
@@ -40,9 +64,57 @@ export const LongCode: Story = {
   render: () => <Examples.LongCode />,
 };
 
-/* Reset remounts the example: the words reveal again and the count clears. */
+/* Reset remounts the example: the words reveal again and the count clears.
+   The subtle reset button sits in the top-right corner, with room kept for it
+   above and below the example. */
 export const Resettable: Story = {
   render: () => <Examples.Resettable />,
+};
+
+/* Wider than the frame: the example scrolls inside the canvas, and the reset
+   button stays in its corner. */
+export const WideChild: Story = {
+  render: () => <Examples.WideChild />,
+};
+
+/* Taller than usual: the canvas grows with the example. */
+export const TallChild: Story = {
+  render: () => <Examples.TallChild />,
+};
+
+/* Inside a Card, the preview takes the card's width and its long line scrolls
+   inside the code. */
+export const InCard: Story = {
+  render: () => (
+    <Card title="Actions" description="A cancel and a save button.">
+      <CodePreview
+        code={`${SAMPLE}\n// ${"a comment long enough to scroll sideways ".repeat(3)}`}
+        language="tsx"
+        resettable
+      >
+        <Actions />
+      </CodePreview>
+    </Card>
+  ),
+};
+
+/* Each container's [data-theme] picks the colors, with no re-highlight. */
+export const Themes: Story = {
+  render: () => (
+    <Group gap={4} evenly w="full" ay="start">
+      {(["light", "dark"] as const).map((theme) => (
+        <Stack key={theme} data-theme={theme} gap={4} p={4} w="full">
+          <Text emphasis="muted">{theme}</Text>
+          <CodePreview code={SAMPLE} language="tsx" resettable defaultOpen>
+            <Actions />
+          </CodePreview>
+          <CodePreview code={SAMPLE} language="tsx">
+            <Actions />
+          </CodePreview>
+        </Stack>
+      ))}
+    </Group>
+  ),
 };
 
 /* An example that throws: a short message in the canvas, the rest intact. */
@@ -58,7 +130,8 @@ export const Controlled: Story = {
   render: () => <Examples.Controlled />,
 };
 
-/* The exported parts under a CollapsibleRoot, without CodePreview's frame. */
+/* The exported parts under CodePreviewRoot: the same frame and zones, with
+   the code colored by useHighlight. */
 export const Composed: Story = {
   render: () => <Examples.Composed />,
 };
