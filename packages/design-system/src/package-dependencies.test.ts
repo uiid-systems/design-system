@@ -21,7 +21,9 @@ const PACKAGES_DIR = fileURLToPath(new URL("../../", import.meta.url));
 
 // Tests, examples and stories are not shipped, so their imports belong in
 // devDependencies (or come from the workspace root) and are not checked here.
-const NOT_SHIPPED = /\.(test|examples|stories)\.[jt]sx?$|\.d\.ts$/;
+// The package build leaves out `*.test.*`, so a test helper such as
+// `code-block.browser.test.helpers.ts` counts as a test too.
+const NOT_SHIPPED = /\.(test|examples|stories)\.([\w-]+\.)?[jt]sx?$|\.d\.ts$/;
 const SOURCE = /\.(m?[jt]sx?|css)$/;
 
 // Declared on purpose without a direct source import.

@@ -1,10 +1,22 @@
 import { render } from "@testing-library/react";
 // Types `cdp().send`, which the Playwright provider adds to vitest/browser.
 import type {} from "@vitest/browser-playwright";
+import { act } from "react";
+import { hydrateRoot } from "react-dom/client";
+import { renderToString } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { cdp, page, server, userEvent } from "vitest/browser";
 
+import { highlight } from "../highlighter/highlighter";
 import { CodeBlock } from "./code-block";
+import {
+  boxesDelta,
+  getBlock,
+  isHighlighted,
+  mountSized,
+  readBoxes,
+  waitForHighlight,
+} from "./code-block.browser.test.helpers";
 
 // The outline, spacing and form-size tokens come from the global sheet.
 import "@uiid/tokens/globals.css";
@@ -581,3 +593,99 @@ describe.skipIf(server.browser !== "chromium")(
     });
   },
 );
+
+/* Real Shiki output, loaded on first use, against the plain fallback it
+   replaces. Indentation, a blank line and a long-ish line cover the markup the
+   two paths could disagree on. */
+const SOURCE = [
+  'import { useState } from "react";',
+  "",
+  "export function Counter({ start = 0 }: { start?: number }) {",
+  "  const [count, setCount] = useState(start);",
+  "  return <button onClick={() => setCount(count + 1)}>{count}</button>;",
+  "}",
+].join("\n");
+
+describe("CodeBlock when highlighting lands", () => {
+  for (const showLineNumbers of [false, true]) {
+    it(`keeps its height and every line in place${showLineNumbers ? " with line numbers" : ""}`, async () => {
+      const container = mountSized(
+        <CodeBlock
+          code={SOURCE}
+          language="tsx"
+          showLineNumbers={showLineNumbers}
+        />,
+      );
+      // The first paint is the fallback: Shiki has not answered yet.
+      expect(isHighlighted(container)).toBe(false);
+      const before = readBoxes(getBlock(container));
+      expect(before.lines).toHaveLength(SOURCE.split("\n").length);
+
+      await waitForHighlight(container);
+      const after = readBoxes(getBlock(container));
+      const delta = boxesDelta(before, after);
+      const detail = JSON.stringify({ before, after });
+      // Vertically nothing moves at all: the block's height, every row's top
+      // and height.
+      expect(delta.y, detail).toBe(0);
+      // Across, Shiki's token spans each snap to the layout grid (1/64px), so
+      // a line's end can drift by a fraction of a pixel. Under half a pixel
+      // is no visible shift; a lost gutter or indent would be several.
+      expect(delta.x, detail).toBeLessThan(0.5);
+    });
+  }
+});
+
+describe("CodeBlock with server html", () => {
+  it("paints highlighted code first and changes nothing on hydration", async () => {
+    const html = await highlight(SOURCE, "tsx");
+    const ui = <CodeBlock code={SOURCE} language="tsx" html={html} />;
+
+    const container = document.createElement("div");
+    container.style.width = "480px";
+    document.body.append(container);
+    container.innerHTML = renderToString(ui);
+
+    try {
+      // Before any script runs, the server markup is the highlighted code, in
+      // more than one colour.
+      expect(isHighlighted(container)).toBe(true);
+      const colours = new Set(
+        [...container.querySelectorAll(".line span")].map(
+          (span) => getComputedStyle(span).color,
+        ),
+      );
+      expect(colours.size).toBeGreaterThan(1);
+      const before = readBoxes(getBlock(container));
+      const markup = container.innerHTML;
+
+      const mutations: MutationRecord[] = [];
+      const observer = new MutationObserver((records) =>
+        mutations.push(...records),
+      );
+      observer.observe(container, {
+        subtree: true,
+        childList: true,
+        attributes: true,
+        characterData: true,
+      });
+      const errors: unknown[] = [];
+      let root: ReturnType<typeof hydrateRoot> | undefined;
+      await act(async () => {
+        root = hydrateRoot(container, ui, {
+          onRecoverableError: (error) => errors.push(error),
+        });
+      });
+      mutations.push(...observer.takeRecords());
+      observer.disconnect();
+
+      expect(errors).toEqual([]);
+      expect(mutations).toEqual([]);
+      expect(container.innerHTML).toBe(markup);
+      expect(readBoxes(getBlock(container))).toEqual(before);
+      act(() => root?.unmount());
+    } finally {
+      container.remove();
+    }
+  });
+});
