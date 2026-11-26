@@ -354,6 +354,9 @@ importers:
       '@uiid/icons':
         specifier: workspace:*
         version: link:../icons
+      '@uiid/interactive':
+        specifier: workspace:*
+        version: link:../interactive
       '@uiid/layout':
         specifier: workspace:*
         version: link:../layout
