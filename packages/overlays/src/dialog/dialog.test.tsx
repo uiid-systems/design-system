@@ -8,8 +8,16 @@ import { afterEach, describe, it, expect, vi } from "vitest";
 
 import { Dialog } from "./dialog";
 import { Footer } from "./dialog.examples";
-import type { DialogProps } from "./dialog.types";
-import { DialogClose, DialogPopup } from "./subcomponents";
+import type { DialogPopupProps, DialogProps } from "./dialog.types";
+import {
+  DialogBackdrop,
+  DialogClose,
+  DialogPopup,
+  DialogPortal,
+  DialogRoot,
+  DialogTrigger,
+  DialogViewport,
+} from "./subcomponents";
 
 import styles from "./dialog.module.css";
 
@@ -1660,6 +1668,211 @@ describe("Dialog slot props", () => {
         trigger="Open"
         // @ts-expect-error -- the trigger's content is `trigger`
         TriggerProps={{ children: "Other" }}
+      />
+    );
+  });
+});
+
+/*
+ * An unstyled popup is the bare Base UI popup: no Card, so no surface, slots
+ * or scrolling body. It keeps the dialog's own class, the size variant and the
+ * popup transition. happy-dom has no layout; dialog.browser.test.tsx measures
+ * the boxes in Chromium.
+ */
+describe("DialogPopup unstyled", () => {
+  const Unstyled = ({
+    children = <p>Frame content</p>,
+    ...props
+  }: Omit<Extract<DialogPopupProps, { unstyled: true }>, "unstyled">) => (
+    <DialogRoot open>
+      <DialogPortal>
+        <DialogBackdrop />
+        <DialogViewport>
+          <DialogPopup unstyled aria-label="Viewer" {...props}>
+            {children}
+          </DialogPopup>
+        </DialogViewport>
+      </DialogPortal>
+    </DialogRoot>
+  );
+
+  it("renders no Card and passes its children straight through", () => {
+    render(
+      <Unstyled>
+        <p>First</p>
+        <p>Second</p>
+      </Unstyled>,
+    );
+
+    const popup = screen.getByRole("dialog", { name: "Viewer" });
+    for (const slot of [
+      "card-container",
+      "card-header",
+      "card-inner-container",
+    ]) {
+      expect(document.querySelector(`[data-slot="${slot}"]`)).toBeNull();
+    }
+    expect(screen.getByText("First").parentElement).toBe(popup);
+    expect(screen.getByText("Second").parentElement).toBe(popup);
+    expect(
+      screen.queryByRole("button", { name: "Close" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("keeps the popup slot, its class, the size variant and the open state", () => {
+    render(<Unstyled size="full" />);
+
+    const popup = screen.getByRole("dialog", { name: "Viewer" });
+    expect(popup).toHaveAttribute("data-slot", "dialog-popup");
+    expect(popup).toHaveClass(styles["dialog-popup"], styles["size-full"]);
+    expect(popup).toHaveClass("composes-popup");
+    expect(popup).toHaveAttribute("data-open");
+  });
+
+  it("defaults to the medium size, as the Card popup does", () => {
+    render(<Unstyled />);
+
+    expect(screen.getByRole("dialog", { name: "Viewer" })).toHaveClass(
+      styles["size-medium"],
+    );
+  });
+
+  it("leaves out the scroll-body composition the Card popup carries", () => {
+    render(<Unstyled />);
+
+    const popup = screen.getByRole("dialog", { name: "Viewer" });
+    expect(popup).not.toHaveClass("composes-popup-scroll-body");
+    expect(popup).not.toHaveClass(styles["dialog-popup-card"]);
+    expect(popup.querySelector("[tabindex], [role='region']")).toBeNull();
+  });
+
+  it("keeps the scroll-body composition on the Card popup", () => {
+    render(
+      <Dialog open title="Settings">
+        Dialog content
+      </Dialog>,
+    );
+
+    expect(screen.getByRole("dialog", { name: "Settings" })).toHaveClass(
+      "composes-popup-scroll-body",
+      styles["dialog-popup-card"],
+    );
+  });
+
+  it("does not write unstyled to the DOM", () => {
+    render(<Unstyled />);
+
+    const popup = screen.getByRole("dialog", { name: "Viewer" });
+    expect(popup).not.toHaveAttribute("unstyled");
+    expect(popup).not.toHaveAttribute("data-unstyled");
+  });
+
+  it("passes className, data and aria attributes and the ref to the popup", () => {
+    const ref = { current: null as HTMLDivElement | null };
+    render(
+      <Unstyled
+        ref={ref}
+        className="caller"
+        data-testid="frame"
+        aria-describedby="hint"
+      />,
+    );
+
+    const popup = screen.getByRole("dialog", { name: "Viewer" });
+    expect(popup).toHaveClass("caller", styles["dialog-popup"]);
+    expect(popup).toHaveAttribute("data-testid", "frame");
+    expect(popup).toHaveAttribute("aria-describedby", "hint");
+    expect(ref.current).toBe(popup);
+  });
+
+  it("is a dialog named by its aria-label", () => {
+    render(<Unstyled aria-label="Fullscreen code" />);
+
+    expect(
+      screen.getByRole("dialog", { name: "Fullscreen code" }),
+    ).toBeInTheDocument();
+  });
+
+  it("opens from inside a Dialog, after it, and returns focus to its trigger on close", async () => {
+    const user = userEvent.setup();
+    render(
+      <Dialog open title="Outer">
+        <DialogRoot>
+          <DialogTrigger>Fullscreen</DialogTrigger>
+          <DialogPortal>
+            <DialogViewport>
+              <DialogPopup unstyled size="full" aria-label="Viewer">
+                <button type="button">Inside</button>
+              </DialogPopup>
+            </DialogViewport>
+          </DialogPortal>
+        </DialogRoot>
+      </Dialog>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Fullscreen" });
+    await user.click(trigger);
+
+    const inner = await screen.findByRole("dialog", { name: "Viewer" });
+    // The open inner dialog hides the outer one from the accessibility tree.
+    const outer = screen.getByRole("dialog", { name: "Outer", hidden: true });
+    // A nested portal renders after the outer viewport, outside it, so the
+    // inner viewport paints above it at the same z-index. The browser test
+    // checks the painting itself.
+    const outerViewport = outer.closest('[data-slot="dialog-viewport"]')!;
+    const innerViewport = inner.closest('[data-slot="dialog-viewport"]')!;
+    expect(innerViewport).toHaveClass(styles["dialog-viewport"]);
+    expect(outerViewport.contains(innerViewport)).toBe(false);
+    expect(
+      outerViewport.compareDocumentPosition(innerViewport) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+
+    await user.keyboard("{Escape}");
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("dialog", { name: "Viewer" }),
+      ).not.toBeInTheDocument(),
+    );
+    expect(screen.getByRole("dialog", { name: "Outer" })).toBeInTheDocument();
+    expect(trigger).toHaveFocus();
+  });
+});
+
+/* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+describe("DialogPopup unstyled types", () => {
+  it("rejects the Card slots and the close button with unstyled", () => {
+    void (
+      <>
+        {/* @ts-expect-error -- an unstyled popup has no title slot */}
+        <DialogPopup unstyled title="Settings" />
+        {/* @ts-expect-error -- an unstyled popup has no description slot */}
+        <DialogPopup unstyled description="About" />
+        {/* @ts-expect-error -- an unstyled popup has no action slot */}
+        <DialogPopup unstyled action="Edit" />
+        {/* @ts-expect-error -- an unstyled popup has no footer slot */}
+        <DialogPopup unstyled footer="Done" />
+        {/* @ts-expect-error -- an unstyled popup has no close button to hide */}
+        <DialogPopup unstyled hideCloseButton />
+      </>
+    );
+  });
+
+  it("still takes the Card slots without unstyled", () => {
+    void (
+      <>
+        <DialogPopup title="Settings" description="About" hideCloseButton />
+        <DialogPopup unstyled={false} footer="Done" />
+        <DialogPopup unstyled size="full" aria-label="Viewer" />
+      </>
+    );
+  });
+
+  it("keeps unstyled out of Dialog's PopupProps", () => {
+    void (
+      <Dialog
+        // @ts-expect-error -- only the DialogPopup part takes unstyled
+        PopupProps={{ unstyled: true }}
       />
     );
   });
