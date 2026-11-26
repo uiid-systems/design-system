@@ -2,7 +2,9 @@ import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 
+import { CodeBlock } from "../code-block";
 import {
+  getBlock,
   mountSized,
   waitForHighlight,
 } from "../code-block/code-block.browser.test.helpers";
@@ -82,16 +84,109 @@ describe("CodePreview reset button", () => {
     expect(button.top - canvas.top).toBeLessThan(16);
   });
 
-  it("does not move the example or change the canvas's height", () => {
+  it("never overlaps an example that fills the canvas, at the default padding", () => {
+    const container = mountSized(
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <CodePreview code="const a = 1;" resettable>
+          <div data-example style={{ width: "100%", height: 40 }} />
+        </CodePreview>
+      </div>,
+    );
+    const canvas = query(
+      container,
+      '[data-slot="code-preview-canvas"]',
+    ).getBoundingClientRect();
+    const example = query(container, "[data-example]").getBoundingClientRect();
+    const button = query(
+      container,
+      '[data-slot="code-preview-reset-button"]',
+    ).getBoundingClientRect();
+    expect(example.width).toBeGreaterThan(canvas.width / 2);
+    expect(gap(example, button).y).toBeGreaterThan(0);
+    // The room is reserved above and below alike, so the example stays centred.
+    expect(example.top - canvas.top).toBeCloseTo(
+      canvas.bottom - example.bottom,
+      1,
+    );
+  });
+
+  it("stays in the frame's corner while a wide example scrolls", async () => {
+    const container = mountSized(
+      <CodePreview code="const a = 1;" resettable>
+        <div data-example style={{ width: 1200, height: 40 }} />
+      </CodePreview>,
+      { width: 320 },
+    );
+    const frame = query(container, '[data-slot="code-preview"]');
+    const canvas = query(container, '[data-slot="code-preview-canvas"]');
+    const button = query(container, '[data-slot="code-preview-reset-button"]');
+    const before = button.getBoundingClientRect();
+    expect(canvas.scrollWidth).toBeGreaterThan(canvas.clientWidth);
+    expect(frame.getBoundingClientRect().width).toBeLessThanOrEqual(320);
+
+    canvas.scrollLeft = canvas.scrollWidth;
+    await frames();
+    const after = button.getBoundingClientRect();
+    expect(after.left).toBe(before.left);
+    expect(after.top).toBe(before.top);
+    expect(frame.getBoundingClientRect().right - after.right).toBeLessThan(16);
+  });
+
+  it("is a subtle button, set apart from the canvas behind it", () => {
+    const container = mountSized(
+      <CodePreview code="const a = 1;" resettable>
+        <Example />
+      </CodePreview>,
+    );
+    const button = query(container, '[data-slot="code-preview-reset-button"]');
+    const canvas = query(container, '[data-slot="code-preview-canvas"]');
+    const fill = getComputedStyle(button).backgroundColor;
+    expect(["rgba(0, 0, 0, 0)", "transparent"]).not.toContain(fill);
+    expect(fill).not.toBe(getComputedStyle(canvas).backgroundColor);
+    expect(button.getBoundingClientRect().height).toBe(32);
+  });
+
+  it("mutes its icon until hovered or focused", async () => {
+    const container = mountSized(
+      <CodePreview code="const a = 1;" resettable>
+        <Example />
+      </CodePreview>,
+    );
+    const button = query(container, '[data-slot="code-preview-reset-button"]');
+    const color = (value: string) => {
+      const probe = document.createElement("div");
+      probe.style.color = value;
+      container.append(probe);
+      const resolved = getComputedStyle(probe).color;
+      probe.remove();
+      return resolved;
+    };
+    const muted = color("var(--shade-muted)");
+    const strong = color("var(--shade-foreground)");
+    expect(muted).not.toBe(strong);
+    expect(getComputedStyle(button).color).toBe(muted);
+    await userEvent.hover(button);
+    await expect.poll(() => getComputedStyle(button).color).toBe(strong);
+    await userEvent.unhover(button);
+    await userEvent.tab();
+    expect(button).toHaveFocus();
+    await expect.poll(() => getComputedStyle(button).color).toBe(strong);
+  });
+
+  it("adds no room with a caller's padding, so the example does not move", () => {
     const { container } = render(
       <div>
         <div data-preview="plain">
-          <CodePreview code="const a = 1;" CanvasProps={{ gap: 8 }}>
+          <CodePreview code="const a = 1;" CanvasProps={{ gap: 8, p: 6 }}>
             <Example />
           </CodePreview>
         </div>
         <div data-preview="resettable">
-          <CodePreview code="const a = 1;" CanvasProps={{ gap: 8 }} resettable>
+          <CodePreview
+            code="const a = 1;"
+            CanvasProps={{ gap: 8, p: 6 }}
+            resettable
+          >
             <Example />
           </CodePreview>
         </div>
@@ -149,6 +244,35 @@ describe("CodePreview composed from its parts", () => {
     expect(look.canvas).not.toBe(look.code);
     expect(look.border).not.toMatch(/^0px/);
   });
+});
+
+describe("CodePreview zones", () => {
+  for (const theme of ["light", "dark"]) {
+    it(`paints the canvas apart from the code and the bar in the ${theme} theme`, async () => {
+      const container = mountSized(
+        <div data-theme={theme}>
+          <CodePreview code="const a = 1;" defaultOpen>
+            <Example />
+          </CodePreview>
+        </div>,
+      );
+      const look = readLook(container);
+      expect(["rgba(0, 0, 0, 0)", "transparent"]).not.toContain(look.canvas);
+      expect(look.canvas).not.toBe(look.panel);
+      expect(look.canvas).not.toBe(look.code);
+      expect(look.canvas).not.toBe(look.bar);
+      // The code surface is CodeBlock's, as the frame's border and radius are.
+      const block = mountSized(
+        <div data-theme={theme}>
+          <CodeBlock code="const a = 1;" />
+        </div>,
+      );
+      const frame = getBlock(block);
+      expect(look.panel).toBe(getComputedStyle(frame).backgroundColor);
+      expect(look.border).toBe(getComputedStyle(frame).borderTop);
+      expect(look.radius).toBe(getComputedStyle(frame).borderTopLeftRadius);
+    });
+  }
 });
 
 /** Two animation frames, so a style change and any work it schedules have run. */

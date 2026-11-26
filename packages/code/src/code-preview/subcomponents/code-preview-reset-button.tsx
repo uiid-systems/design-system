@@ -15,11 +15,13 @@ export const CodePreviewResetButton = ({
   <Button
     type="button"
     data-slot="code-preview-reset-button"
-    // A string tooltip on a square Button is also its name.
+    // The name is set as well as the tooltip, so a caller that replaces the
+    // tooltip or the shape through props leaves the button named.
+    aria-label="Reset preview"
     tooltip="Reset preview"
     className={cx(styles["code-preview-reset-button"], className)}
     size="small"
-    variant="ghost"
+    variant="subtle"
     shape="square"
     {...props}
   >

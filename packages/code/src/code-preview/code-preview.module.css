@@ -4,6 +4,11 @@
 .code-preview {
   --code-block-surface: light-dark(var(--code-surface-light), var(--code-surface-dark));
 
+  /* The example's zone: a step from the page toward the theme's surface, so it
+     reads apart from the code's surface below it and from the bar between. */
+  --code-preview-canvas-surface: color-mix(in oklab, var(--shade-surface) 40%, var(--shade-background));
+
+  position: relative;
   border: var(--globals-border-width) solid var(--globals-border-color);
   border-radius: var(--globals-border-radius);
   max-width: 100%;
@@ -13,21 +18,33 @@
 /* An example wider than the frame scrolls inside the canvas rather than
    widening the frame. */
 .code-preview-canvas {
-  position: relative;
   min-width: 0;
   overflow: auto;
+  background-color: var(--code-preview-canvas-surface);
 }
 
-/* The reset button sits in the canvas's top-right corner, out of the flow so
-   it does not shift the example. The box around the button is what moves:
-   Button wraps itself in its tooltip's trigger and the tooltip anchors there,
-   so positioning the button alone would leave the tooltip on an empty box.
-   The z-index keeps it above an example with its own stacking context. */
+/* The reset button sits in the frame's top-right corner, which is the
+   canvas's, out of the flow so it does not shift the example. It is placed
+   from the frame rather than the canvas, so it stays put while a wide example
+   scrolls. The box around the button is what moves: Button wraps itself in
+   its tooltip's trigger and the tooltip anchors there, so positioning the
+   button alone would leave the tooltip on an empty box. The z-index keeps it
+   above an example with its own stacking context. */
 .code-preview-reset {
   position: absolute;
   z-index: 1;
   inset-block-start: calc(var(--spacing-unit) * 2);
   inset-inline-end: calc(var(--spacing-unit) * 2);
+}
+
+/* A subtle button, so its fill and border set it apart from the example
+   behind it. Its icon is muted until the button is hovered or focused. */
+.code-preview-reset-button {
+  color: var(--shade-muted);
+
+  &:where(:hover, :focus-visible) {
+    color: var(--shade-foreground);
+  }
 }
 
 .code-preview-bar {

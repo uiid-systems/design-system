@@ -460,7 +460,30 @@ describe("CodePreview", () => {
       ).not.toBeInTheDocument();
     });
 
-    it("renders the reset button in the canvas with resettable", () => {
+    it("renders the reset button in the frame, between the example and the bar", () => {
+      const { container } = render(
+        <CodePreview code={CODE} resettable>
+          x
+        </CodePreview>,
+      );
+      // Outside the canvas, so it does not scroll away with a wide example.
+      const canvas = container.querySelector(
+        '[data-slot="code-preview-canvas"]',
+      )!;
+      expect(canvas).not.toContainElement(resetButton());
+      const corner = container.querySelector(
+        '[data-slot="code-preview-reset"]',
+      )!;
+      expect(corner.parentElement).toBe(canvas.parentElement);
+      expect(corner.previousElementSibling).toBe(canvas);
+      expect(corner.nextElementSibling).toHaveAttribute(
+        "data-slot",
+        "code-preview-bar",
+      );
+      expect(resetButton().tagName).toBe("BUTTON");
+    });
+
+    it("reserves room above and below the example at the default padding", () => {
       const { container } = render(
         <CodePreview code={CODE} resettable>
           x
@@ -469,8 +492,28 @@ describe("CodePreview", () => {
       const canvas = container.querySelector(
         '[data-slot="code-preview-canvas"]',
       );
-      expect(canvas).toContainElement(resetButton());
-      expect(resetButton().tagName).toBe("BUTTON");
+      expect(canvas).toHaveAttribute("data-ui-p", "6");
+      expect(canvas).toHaveAttribute("data-ui-py", "12");
+    });
+
+    it("reserves nothing without resettable or with a caller's padding", () => {
+      const { container } = render(
+        <>
+          <CodePreview code={CODE}>x</CodePreview>
+          <CodePreview code={CODE} resettable CanvasProps={{ p: 2 }}>
+            x
+          </CodePreview>
+          <CodePreview code={CODE} resettable CanvasProps={{ pt: 2 }}>
+            x
+          </CodePreview>
+        </>,
+      );
+      const canvases = container.querySelectorAll(
+        '[data-slot="code-preview-canvas"]',
+      );
+      for (const canvas of canvases) {
+        expect(canvas).not.toHaveAttribute("data-ui-py");
+      }
     });
 
     it("renders the reset button with no code", () => {
@@ -643,6 +686,36 @@ describe("CodePreview", () => {
         </CodePreview>,
       );
       expect(resetButton()).toHaveClass("reset");
+    });
+
+    it("keeps its name when ResetButtonProps replaces the tooltip or the shape", () => {
+      render(
+        <>
+          <CodePreview resettable ResetButtonProps={{ tooltip: <b>Again</b> }}>
+            x
+          </CodePreview>
+          <CodePreview resettable ResetButtonProps={{ shape: "pill" }}>
+            x
+          </CodePreview>
+        </>,
+      );
+      expect(
+        screen.getAllByRole("button", { name: "Reset preview" }),
+      ).toHaveLength(2);
+    });
+
+    it("takes a caller's name over its own", () => {
+      render(
+        <CodePreview
+          resettable
+          ResetButtonProps={{ "aria-label": "Replay animation" }}
+        >
+          x
+        </CodePreview>,
+      );
+      expect(
+        screen.getByRole("button", { name: "Replay animation" }),
+      ).toBeInTheDocument();
     });
   });
 

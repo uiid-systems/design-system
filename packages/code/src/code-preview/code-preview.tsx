@@ -5,6 +5,7 @@ import * as React from "react";
 import { CodeBlockContent, CodeBlockCopyButton } from "../code-block";
 import { DEFAULT_COPYABLE } from "../code.constants";
 import { useHighlight } from "../highlighter/highlighter.hooks";
+import { RESET_RESERVE } from "./code-preview.constants";
 import type { CodePreviewProps } from "./code-preview.types";
 import {
   CodePreviewBar,
@@ -75,13 +76,21 @@ export const CodePreview = ({
     // which is where it is when a click does not focus the button (Safari).
     // Move it to the reset button first.
     const corner = cornerRef.current;
-    const active = document.activeElement;
-    if (corner?.parentElement?.contains(active) && !corner.contains(active)) {
-      corner.querySelector("button")?.focus();
+    const canvas = corner?.previousElementSibling;
+    if (canvas?.contains(document.activeElement)) {
+      corner?.querySelector("button")?.focus();
     }
     setResetKey((key) => key + 1);
     onReset?.();
   };
+
+  // The button covers the canvas's top-right corner, so at the default
+  // padding the canvas makes room for it above the example, and as much below
+  // so the example stays centred. A caller's padding replaces this.
+  const padded = ["p", "py", "pt", "pb"].some(
+    (key) => CanvasProps?.[key as keyof typeof CanvasProps] !== undefined,
+  );
+  const reserve = resettable && !padded ? RESET_RESERVE : undefined;
 
   const hasCode = !!code;
   const { html } = useHighlight(code ?? "", language, {
@@ -96,23 +105,22 @@ export const CodePreview = ({
       open={open}
       onOpenChange={handleOpenChange}
     >
-      <CodePreviewCanvas {...CanvasProps}>
+      <CodePreviewCanvas py={reserve} {...CanvasProps}>
         <CodePreviewBoundary key={resetKey}>{children}</CodePreviewBoundary>
-        {resettable && (
-          // Places the button in the corner. The button stays in this box's
-          // flow, so its tooltip anchors to the button.
-          <div
-            ref={cornerRef}
-            data-slot="code-preview-reset"
-            className={styles["code-preview-reset"]}
-          >
-            <CodePreviewResetButton
-              {...ResetButtonProps}
-              onClick={handleReset}
-            />
-          </div>
-        )}
       </CodePreviewCanvas>
+      {resettable && (
+        // Places the button in the frame's top-right corner, which is the
+        // canvas's, outside the canvas so it stays put while a wide example
+        // scrolls. The button stays in this box's flow, so its tooltip
+        // anchors to the button.
+        <div
+          ref={cornerRef}
+          data-slot="code-preview-reset"
+          className={styles["code-preview-reset"]}
+        >
+          <CodePreviewResetButton {...ResetButtonProps} onClick={handleReset} />
+        </div>
+      )}
 
       {hasCode && (
         <>
