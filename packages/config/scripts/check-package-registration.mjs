@@ -31,9 +31,12 @@ const GENERATED_EXPORTS = new Set([
 const CLEAN_STEP = "node ../config/scripts/clean-build-output.mjs && ";
 const SHARED_TSCONFIG = "../config/tsconfig.package.json";
 
-/* The shared build, test and typecheck config. It is never built or
-   published, so none of the registration steps apply to it. */
-const INTERNAL = new Set(["config"]);
+/* Packages that are not component packages, so none of the component
+   registration steps apply to them. config is the shared build, test and
+   typecheck config; recipes holds recipe source that is copied into apps,
+   never imported. Neither is built or published, and both are private, so a
+   public package still may not depend on either (see privateNames below). */
+const INTERNAL = new Set(["config", "recipes"]);
 
 const hasCssModule = (dir) =>
   readdirSync(dir, { withFileTypes: true }).some((entry) =>
@@ -42,17 +45,17 @@ const hasCssModule = (dir) =>
       : entry.name.endsWith(".module.css"),
   );
 
-const packages = readdirSync(packagesDir, { withFileTypes: true })
+const allPackages = readdirSync(packagesDir, { withFileTypes: true })
   .filter(
     (entry) =>
       entry.isDirectory() &&
-      !INTERNAL.has(entry.name) &&
       existsSync(join(packagesDir, entry.name, "package.json")),
   )
   .map((entry) => ({
     folder: entry.name,
     pkg: readJson(`packages/${entry.name}/package.json`),
   }));
+const packages = allPackages.filter(({ folder }) => !INTERNAL.has(folder));
 
 const extraFiles = new Set(
   readJson("release-please-config.json").packages["."]["extra-files"].map(
@@ -70,8 +73,9 @@ const references = new Set(
 const cssLayers = createRequire(import.meta.url)("./css-layers.cjs");
 const umbrellaDeps = readJson(`packages/${UMBRELLA}/package.json`).dependencies;
 const barrel = read(`packages/${UMBRELLA}/src/index.ts`);
+// Every private package, exempt ones included: none may be depended on.
 const privateNames = new Set(
-  packages.filter(({ pkg }) => pkg.private).map(({ pkg }) => pkg.name),
+  allPackages.filter(({ pkg }) => pkg.private).map(({ pkg }) => pkg.name),
 );
 
 for (const { folder, pkg } of packages) {

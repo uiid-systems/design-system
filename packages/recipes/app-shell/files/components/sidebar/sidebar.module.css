@@ -1,0 +1,32 @@
+/*
+ * What the sidebar needs that a UIID prop doesn't cover: its scroll track,
+ * the hover underlines and the group chevron. Where the sidebar sits and how
+ * it slides belong to whatever lays it out; see shell.module.css.
+ */
+
+/* Long navigation scrolls here, not on the page. */
+.sidebar-nav {
+  overflow-y: auto;
+}
+
+.sidebar-group-trigger {
+  cursor: pointer;
+}
+
+.sidebar-group-trigger:hover .sidebar-group-label {
+  text-decoration-line: underline;
+}
+
+/* A sidebar link is underlined only while it is hovered. */
+.sidebar-link {
+  text-decoration-line: none;
+}
+
+.sidebar-link:hover {
+  text-decoration-line: underline;
+}
+
+/* `:where()` keeps this below the no-flash style, which must win before hydration. */
+:where(.sidebar-group-trigger[data-panel-open]) .sidebar-group-chevron {
+  rotate: 90deg;
+}

@@ -1,0 +1,9 @@
+{
+  "name": "app-shell",
+  "description": "A Next.js app shell with a sidebar, a header with breadcrumbs, and a main area, all driven by one nav config.",
+  "dependencies": {
+    "@uiid/design-system": "workspace:*",
+    "@uiid/icons": "workspace:*",
+    "jotai": "^3.0.2"
+  }
+}
