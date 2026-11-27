@@ -130,7 +130,10 @@ export type MenuProps = {
   >;
   /**
    * Reaches every link item: each entry with an `href`, at any depth. Each
-   * entry's `href`, `label`, `icon` and `description` are its own.
+   * entry's `href`, `label`, `icon` and `description` are its own. Link
+   * entries close the menu when clicked, as action rows do; pass
+   * `closeOnClick: false` to keep it open. A `target` set here opens every
+   * link in a new window, so add a visible cue for that yourself.
    */
   LinkItemProps?: Omit<
     MenuLinkItemProps,

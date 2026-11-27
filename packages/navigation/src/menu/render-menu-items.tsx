@@ -27,6 +27,10 @@ export type MenuItemSlots = Pick<
  * `ItemProps.onClick` or `LinkItemProps.onClick`. Rows are keyed by `value`,
  * so it must be unique among siblings.
  *
+ * A link entry closes the menu when clicked, as an action row does, so a
+ * router or hash link does not leave the modal menu open over the new view.
+ * Set before the slot spread, so `LinkItemProps.closeOnClick` can opt out.
+ *
  * Internal: not exported from the package.
  */
 export const renderMenuItems = (
@@ -61,6 +65,7 @@ export const renderMenuItems = (
       return (
         <MenuLinkItem
           key={item.value}
+          closeOnClick
           {...LinkItemProps}
           href={item.href}
           label={item.label}

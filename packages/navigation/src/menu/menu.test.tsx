@@ -898,32 +898,40 @@ describe("Menu descriptions and links", () => {
     }
   });
 
-  it("keeps each link entry's own href and content when a slot passes its own", async () => {
+  /* Like an action row, so a router or hash link does not leave the modal
+     menu open over the new view. */
+  it("closes the menu when a link entry is clicked", async () => {
     const user = userEvent.setup();
     render(
       <Menu
         trigger="Open"
-        items={[{ label: "Docs", value: "docs", href: "/docs" }]}
-        LinkItemProps={
-          {
-            href: "/slot",
-            label: "Slot label",
-            description: "Slot description",
-            children: "Slot content",
-          } as unknown as MenuProps["LinkItemProps"]
-        }
+        items={[{ label: "Settings", value: "settings", href: "#settings" }]}
       />,
     );
 
     await user.click(screen.getByText("Open"));
+    await user.click(screen.getByRole("menuitem", { name: "Settings" }));
 
-    expect(screen.getByRole("menuitem", { name: "Docs" })).toHaveAttribute(
-      "href",
-      "/docs",
+    expect(screen.getByText("Open")).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("keeps the menu open after a link click when LinkItemProps opts out", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[{ label: "Settings", value: "settings", href: "#settings" }]}
+        LinkItemProps={{ closeOnClick: false }}
+      />,
     );
-    expect(screen.queryByText("Slot label")).not.toBeInTheDocument();
-    expect(screen.queryByText("Slot description")).not.toBeInTheDocument();
-    expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByRole("menuitem", { name: "Settings" }));
+
+    expect(screen.getByText("Open")).toHaveAttribute("aria-expanded", "true");
+    expect(
+      screen.getByRole("menuitem", { name: "Settings" }),
+    ).toBeInTheDocument();
   });
 
   /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
@@ -931,6 +939,14 @@ describe("Menu descriptions and links", () => {
     const items: MenuItemType[] = [
       // @ts-expect-error -- a link cannot also open a submenu
       { label: "Docs", value: "docs", href: "/docs", items: [] },
+    ];
+    void items;
+  });
+
+  it("rejects an entry with both href and disabled", () => {
+    const items: MenuItemType[] = [
+      // @ts-expect-error -- Base UI's LinkItem takes no `disabled`
+      { label: "Docs", value: "docs", href: "/docs", disabled: true },
     ];
     void items;
   });
@@ -1368,6 +1384,45 @@ describe("Menu slot precedence", () => {
     expect(screen.queryByText("Slot trigger")).not.toBeInTheDocument();
     expect(screen.queryByText("Slot popup")).not.toBeInTheDocument();
     expect(screen.queryByText("Slot item")).not.toBeInTheDocument();
+  });
+
+  it("keeps each link entry's own href and content when a slot passes its own", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "Docs",
+            value: "docs",
+            href: "/docs",
+            icon: PencilIcon,
+            description: "Read the guides",
+          },
+        ]}
+        LinkItemProps={untyped<MenuProps["LinkItemProps"]>({
+          href: "/slot",
+          label: "Slot label",
+          icon: StarIcon,
+          description: "Slot description",
+          children: "Slot content",
+        })}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    const link = screen.getByRole("menuitem", { name: /^Docs/ });
+    expect(link).toHaveAttribute("href", "/docs");
+    expect(
+      link.querySelector("[data-slot='list-text-description']"),
+    ).toHaveTextContent("Read the guides");
+    const icon = link.querySelector("[data-slot='list-item-icon']");
+    expect(icon).toHaveClass("lucide-pencil");
+    expect(icon).not.toHaveClass("lucide-star");
+    expect(screen.queryByText("Slot label")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot description")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
   });
 
   it("keeps each entry's label and icon when a slot passes its own", async () => {
