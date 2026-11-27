@@ -1,9 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Card } from "@uiid/cards";
 import { PencilIcon } from "@uiid/icons/pencil";
 import { StarIcon } from "@uiid/icons/star";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, onTestFinished, vi } from "vitest";
 
 import { Menu } from "./menu";
 import { MOCK_ITEMS } from "./menu.mocks";
@@ -827,6 +827,72 @@ describe("Menu items", () => {
       const email = await openThirdLevel(user);
       expect(email).toHaveAttribute("aria-disabled", "true");
     });
+
+    it("reaches every submenu positioner with SubmenuPositionerProps", async () => {
+      const user = userEvent.setup();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels()}
+          SubmenuPositionerProps={{ sideOffset: 12 }}
+        />,
+      );
+
+      await openThirdLevel(user);
+      const positioners = document.querySelectorAll<HTMLElement>(
+        '[data-slot="menu-positioner"]',
+      );
+      expect(positioners).toHaveLength(3);
+      const [root, second, third] = positioners;
+      // Base UI offsets the floating element by sideOffset from its anchor.
+      // happy-dom's layout is zero-sized and limitShift holds the cross axis
+      // at 0, so only that offset is left. Positioning is async, so wait.
+      await waitFor(() => {
+        expect(root?.style.transform).toBe("translate(0px, 4px)");
+        expect(second?.style.transform).toBe("translate(12px, 0px)");
+        expect(third?.style.transform).toBe("translate(12px, 0px)");
+      });
+    });
+
+    it("merges SubmenuPopupProps onto every submenu popup and not the root's", async () => {
+      const user = userEvent.setup();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels()}
+          SubmenuPopupProps={{ className: "from-submenu-popup" }}
+        />,
+      );
+
+      await openThirdLevel(user);
+      const [root, second, third] = popups();
+      expect(root).not.toHaveClass("from-submenu-popup");
+      expect(second).toHaveClass("from-submenu-popup", styles["popup"]);
+      expect(third).toHaveClass("from-submenu-popup", styles["popup"]);
+    });
+
+    it("renders the menu and its submenus inside the PortalProps container", async () => {
+      const user = userEvent.setup();
+      const container = document.createElement("div");
+      document.body.appendChild(container);
+      onTestFinished(() => container.remove());
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels()}
+          PortalProps={{ container }}
+        />,
+      );
+
+      await openThirdLevel(user);
+      expect(popups()).toHaveLength(3);
+      // A submenu portal without the slot would still land inside `container`,
+      // nested in its parent's portal; with it, each one is a direct child.
+      for (const popup of popups()) {
+        const portal = popup.closest('[data-slot="menu-portal"]');
+        expect(portal?.parentElement).toBe(container);
+      }
+    });
   });
 });
 
@@ -1589,6 +1655,33 @@ describe("Menu slot props", () => {
       />
     );
   });
+
+  it("rejects children in the portal and submenu popup slots, which hold Menu's own parts", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- the portal holds Menu's positioners
+        PortalProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- the positioner holds the submenu's popup
+        SubmenuPositionerProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `items` fill its submenu's popup
+        SubmenuPopupProps={{ children: "Other" }}
+      />
+    );
+  });
 });
 
 describe("Menu slot precedence", () => {
@@ -1801,6 +1894,161 @@ describe("Menu groups", () => {
     expect(group).toHaveClass("custom-group");
     expect(group).toHaveAttribute("aria-labelledby", "label-id");
     expect(screen.getByText("Edit")).toHaveClass("custom-label");
+  });
+});
+
+/*
+ * The keyboard behaviour people rely on, from Base UI under Menu's trigger
+ * wrapper and item rendering. Asserted through roles, focus and
+ * `data-highlighted`, never console output: Base UI dedupes its dev warnings.
+ */
+describe("Menu keyboard", () => {
+  const ROWS: MenuProps["items"] = [
+    { label: "Edit", value: "edit" },
+    { label: "Duplicate", value: "duplicate", disabled: true },
+    {
+      label: "Move to",
+      value: "move",
+      items: [
+        { label: "Inbox", value: "inbox" },
+        { label: "Archive", value: "archive" },
+      ],
+    },
+    { label: "Delete", value: "delete" },
+  ];
+
+  const trigger = () => screen.getByRole("button", { name: "Open" });
+  const highlighted = () =>
+    screen
+      .getAllByRole("menuitem")
+      .filter((row) => row.hasAttribute("data-highlighted"))
+      .map((row) => row.textContent);
+
+  it.each([
+    ["Enter", "{Enter}"],
+    ["Space", " "],
+    ["ArrowDown", "{ArrowDown}"],
+  ])("opens the menu with %s from a focused trigger", async (_, key) => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={ROWS} />);
+
+    trigger().focus();
+    expect(screen.queryByRole("menu")).toBeNull();
+    await user.keyboard(key);
+
+    expect(await screen.findByRole("menu")).toBeInTheDocument();
+    expect(trigger()).toHaveAttribute("aria-expanded", "true");
+  });
+
+  /*
+   * Base UI lets the arrows land on a disabled row too (see "lets the keyboard
+   * highlight a disabled item" above), so no row is skipped, enabled or not.
+   */
+  it("moves the highlight through every row with the arrow keys", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={ROWS} />);
+
+    await user.click(trigger());
+    const seen: string[][] = [];
+    for (let step = 0; step < 4; step++) {
+      await user.keyboard("{ArrowDown}");
+      seen.push(highlighted());
+    }
+    expect(seen).toEqual([["Edit"], ["Duplicate"], ["Move to"], ["Delete"]]);
+
+    await user.keyboard("{ArrowUp}");
+    expect(highlighted()).toEqual(["Move to"]);
+  });
+
+  it("opens a submenu with ArrowRight and closes it with ArrowLeft", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={ROWS} />);
+
+    await user.click(trigger());
+    const moveTo = screen.getByRole("menuitem", { name: "Move to" });
+    moveTo.focus();
+    await user.keyboard("{ArrowRight}");
+
+    const inbox = await screen.findByRole("menuitem", { name: "Inbox" });
+    expect(screen.getAllByRole("menu")).toHaveLength(2);
+    expect(moveTo).toHaveAttribute("aria-expanded", "true");
+    expect(inbox).toHaveAttribute("data-highlighted");
+
+    await user.keyboard("{ArrowLeft}");
+
+    await waitFor(() =>
+      expect(screen.queryByRole("menuitem", { name: "Inbox" })).toBeNull(),
+    );
+    expect(screen.getAllByRole("menu")).toHaveLength(1);
+    expect(moveTo).toHaveAttribute("aria-expanded", "false");
+    expect(moveTo).toHaveFocus();
+  });
+
+  /* Typeahead, like the arrows, can land on a disabled row: "d" finds
+     "Duplicate" before "Delete". */
+  it.each([
+    ["e", "Edit"],
+    ["m", "Move to"],
+    ["d", "Duplicate"],
+  ])(
+    "moves the highlight to the row a typed %s starts",
+    async (letter, label) => {
+      const user = userEvent.setup();
+      render(<Menu trigger="Open" items={ROWS} />);
+
+      await user.click(trigger());
+      await user.keyboard(letter);
+
+      expect(highlighted()).toEqual([label]);
+    },
+  );
+
+  it("closes with Escape and returns focus to the trigger", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={ROWS} />);
+
+    trigger().focus();
+    await user.keyboard("{Enter}");
+    await screen.findByRole("menu");
+
+    await user.keyboard("{Escape}");
+
+    await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
+    expect(trigger()).toHaveAttribute("aria-expanded", "false");
+    expect(trigger()).toHaveFocus();
+  });
+
+  it("closes when an item is chosen by keyboard", async () => {
+    const user = userEvent.setup();
+    const onEdit = vi.fn();
+    render(
+      <Menu
+        trigger="Open"
+        items={ROWS.map((item) =>
+          item.value === "edit" ? { ...item, onClick: onEdit } : item,
+        )}
+      />,
+    );
+
+    trigger().focus();
+    await user.keyboard("{ArrowDown}");
+    await screen.findByRole("menu");
+    await waitFor(() => expect(highlighted()).toEqual(["Edit"]));
+    await user.keyboard("{Enter}");
+
+    expect(onEdit).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
+    expect(trigger()).toHaveFocus();
+  });
+
+  it("closes when an item is clicked", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={ROWS} />);
+
+    await user.click(trigger());
+    await user.click(screen.getByRole("menuitem", { name: "Delete" }));
+
+    await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
   });
 });
 
