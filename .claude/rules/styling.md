@@ -13,7 +13,7 @@ paths:
 
 Use `Stack` / `Group` / `Box` from `@uiid/layout` instead of raw flex or grid CSS, and `Text` from `@uiid/typography` instead of raw text elements. Read their `.types.ts` (and `.variants.ts`, where one exists) for current prop values — these change, so do not rely on memorized lists.
 
-No app or package loads a utility-class framework, so there are no utility classes to fall back on. A case no UIID component or prop covers goes to step 2 or step 3.
+No app or package loads a utility-class framework, so there are no utility classes to fall back on. Do not add one.
 
 Dogfood the design system everywhere, including docs, MDX, and examples. If a system component exists for the UI you are rendering, use it rather than hand-styled markup.
 
