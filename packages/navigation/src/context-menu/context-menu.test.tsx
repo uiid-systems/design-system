@@ -42,11 +42,11 @@ const Composed = ({
 }: Slots) => (
   <ContextMenuRoot {...RootProps}>
     <ContextMenuTrigger {...TriggerProps}>
-      <Card title="Project" data-testid="area" />
+      <Card title="Project" tabIndex={0} data-testid="area" />
     </ContextMenuTrigger>
     <MenuPortal>
       <ContextMenuPositioner {...PositionerProps}>
-        <MenuPopup>
+        <MenuPopup aria-label="Project actions">
           <MenuItem label="Edit" onClick={onEdit} />
           <MenuItem label="Duplicate" />
           <SubmenuRoot>
@@ -96,6 +96,26 @@ describe("ContextMenu parts", () => {
     );
   });
 
+  /* The keyboard path: Shift+F10 or the Menu key fires `contextmenu` on the
+     focused element, which is inside the area. */
+  it("opens from a focused child and returns focus to it on Escape", async () => {
+    const user = userEvent.setup();
+    render(<Composed />);
+
+    const area = screen.getByTestId("area");
+    area.focus();
+    fireEvent.contextMenu(area);
+    expect(
+      await screen.findByRole("menu", { name: "Project actions" }),
+    ).toBeInTheDocument();
+
+    await user.keyboard("{Escape}");
+    await waitFor(() =>
+      expect(screen.queryByRole("menu")).not.toBeInTheDocument(),
+    );
+    expect(area).toHaveFocus();
+  });
+
   it("runs a Menu item's onClick and closes", async () => {
     const user = userEvent.setup();
     const onEdit = vi.fn();
@@ -134,10 +154,11 @@ describe("ContextMenu parts", () => {
     expect(onOpenChange).toHaveBeenCalledWith(true, expect.anything());
   });
 
-  it("does not open while disabled", () => {
+  it("does not open while disabled and leaves the browser's own menu", () => {
     render(<Composed RootProps={{ disabled: true }} />);
 
-    fireEvent.contextMenu(screen.getByTestId("area"));
+    // `true` means the default was not prevented: the native menu still shows.
+    expect(fireEvent.contextMenu(screen.getByTestId("area"))).toBe(true);
 
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
   });

@@ -130,9 +130,15 @@ describe("ContextMenuTrigger box", () => {
  * popup once its open transition and its positioning have settled.
  */
 describe("ContextMenu placement", () => {
-  /* Base UI's own context menu offsets put the popup's corner a few pixels
-     from the pointer (`sideOffset` -5, `alignOffset` 2). */
-  const POINTER_TOLERANCE = 8;
+  /* Base UI's own context menu offsets, placed bottom-start against a
+     zero-size anchor at the pointer: the popup's top is 5px above the
+     pointer (`sideOffset` -5) and its left 2px right of it (`alignOffset` 2).
+     Menu's `sideOffset={4}` would put the top 4px below and fail. */
+  const SIDE_OFFSET = -5;
+  const ALIGN_OFFSET = 2;
+  const OFFSET_TOLERANCE = 2;
+  /* ContextMenuPositioner's `collisionPadding`; Base UI's default is 5. */
+  const COLLISION_PADDING = 16;
 
   let restore: [number, number];
 
@@ -152,7 +158,7 @@ describe("ContextMenu placement", () => {
         </ContextMenuTrigger>
         <MenuPortal>
           <ContextMenuPositioner>
-            <MenuPopup>
+            <MenuPopup aria-label="Project actions">
               <MenuItem label="Edit" />
               <MenuItem label="Duplicate" />
               <MenuItem label="Move to another project" />
@@ -216,8 +222,12 @@ describe("ContextMenu placement", () => {
     rightClick(x, y);
 
     const popup = await settled();
-    expect(Math.abs(popup.left - x)).toBeLessThanOrEqual(POINTER_TOLERANCE);
-    expect(Math.abs(popup.top - y)).toBeLessThanOrEqual(POINTER_TOLERANCE);
+    expect(Math.abs(popup.top - (y + SIDE_OFFSET))).toBeLessThanOrEqual(
+      OFFSET_TOLERANCE,
+    );
+    expect(Math.abs(popup.left - (x + ALIGN_OFFSET))).toBeLessThanOrEqual(
+      OFFSET_TOLERANCE,
+    );
   });
 
   /* The pointer is near the right edge, so a popup opened at it would
@@ -235,6 +245,10 @@ describe("ContextMenu placement", () => {
     expect(popup.width).toBeGreaterThan(0);
     expect(popup.left).toBeGreaterThanOrEqual(-TOLERANCE);
     expect(popup.right).toBeLessThanOrEqual(window.innerWidth + TOLERANCE);
+    // ...and held off the edge by the wrapper's padding, not Base UI's 5px.
+    expect(popup.right).toBeLessThanOrEqual(
+      window.innerWidth - COLLISION_PADDING + TOLERANCE,
+    );
     expect(popup.top).toBeGreaterThanOrEqual(-TOLERANCE);
     expect(popup.bottom).toBeLessThanOrEqual(window.innerHeight + TOLERANCE);
   });
