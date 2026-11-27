@@ -4,7 +4,7 @@ import type {
   CollapsibleRootProps,
   CollapsibleTriggerProps,
 } from "@uiid/interactive";
-import type { GroupProps, StackProps } from "@uiid/layout";
+import type { StackProps } from "@uiid/layout";
 import type { WithStringClassName } from "@uiid/utils";
 
 import type {
@@ -13,11 +13,14 @@ import type {
 } from "../code-block/code-block.types";
 import type { CodeLanguage } from "../highlighter/highlighter.types";
 
+/**
+ * The frame around the canvas, the code and the footer: a `CollapsibleRoot`
+ * that opens and closes the panel.
+ */
+export type CodePreviewRootProps = WithStringClassName<CollapsibleRootProps>;
+
 /** The area that holds the live example. */
 export type CodePreviewCanvasProps = StackProps;
-
-/** The row that holds the trigger and the copy button. */
-export type CodePreviewBarProps = GroupProps;
 
 export type CodePreviewTriggerProps = WithStringClassName<
   Omit<CollapsibleTriggerProps, "children" | "render">
@@ -64,7 +67,9 @@ export type CodePreviewProps = Omit<
     /** Lines to highlight (1-indexed) */
     highlightLines?: number[];
     /**
-     * Render the copy button. It is left out while `code` is empty.
+     * Render the copy button, floating in the code's top-right corner, so it
+     * is reachable while the code is open. It is left out while `code` is
+     * empty.
      * @default true
      */
     copyable?: boolean;
@@ -90,15 +95,19 @@ export type CodePreviewProps = Omit<
     hideLabel?: React.ReactNode;
     /** Reaches the canvas. Its content is `children`. */
     CanvasProps?: Omit<CodePreviewCanvasProps, "children">;
-    /** Reaches the bar. Its content is the trigger and the copy button. */
-    BarProps?: Omit<CodePreviewBarProps, "children">;
-    /** Reaches the trigger. Its labels are set on CodePreview itself. */
+    /**
+     * Reaches the footer toggle that opens and closes the code. Its labels
+     * are set on CodePreview itself.
+     */
     TriggerProps?: Omit<CodePreviewTriggerProps, "showLabel" | "hideLabel">;
     /** Reaches the reset button. Pressing it resets; listen with `onReset`. */
     ResetButtonProps?: Omit<CodePreviewResetButtonProps, "onClick">;
     /** Reaches the panel. Its content is the code. */
     PanelProps?: Omit<CodePreviewPanelProps, "children">;
-    /** Reaches the copy button. `code` and `onCopy` are set on CodePreview itself. */
+    /**
+     * Reaches the copy button, which floats in the code's top-right corner.
+     * `code` and `onCopy` are set on CodePreview itself.
+     */
     CopyButtonProps?: Omit<CodeBlockCopyButtonProps, "code" | "onCopy">;
     /**
      * Reaches the highlighted code. The code, its highlighting and line

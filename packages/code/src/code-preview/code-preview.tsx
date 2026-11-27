@@ -1,18 +1,17 @@
 "use client";
 
-import { CollapsibleRoot } from "@uiid/interactive";
-import { cx } from "@uiid/utils";
 import * as React from "react";
 
-import { CodeBlockContent, CodeBlockCopyButton } from "../code-block";
+import { CodeBlockContent, CodeBlockHeader } from "../code-block";
 import { DEFAULT_COPYABLE } from "../code.constants";
 import { useHighlight } from "../highlighter/highlighter.hooks";
+import { RESET_RESERVE } from "./code-preview.constants";
 import type { CodePreviewProps } from "./code-preview.types";
 import {
-  CodePreviewBar,
   CodePreviewCanvas,
   CodePreviewPanel,
   CodePreviewResetButton,
+  CodePreviewRoot,
   CodePreviewTrigger,
 } from "./subcomponents";
 import { CodePreviewBoundary } from "./subcomponents/code-preview-boundary";
@@ -39,7 +38,6 @@ export const CodePreview = ({
   hideLabel,
   className,
   CanvasProps,
-  BarProps,
   TriggerProps,
   PanelProps,
   ResetButtonProps,
@@ -72,17 +70,22 @@ export const CodePreview = ({
   const [resetKey, setResetKey] = React.useState(0);
   const cornerRef = React.useRef<HTMLDivElement>(null);
   const handleReset = () => {
-    // Focus held inside the example would drop to the body as it remounts,
-    // which is where it is when a click does not focus the button (Safari).
-    // Move it to the reset button first.
-    const corner = cornerRef.current;
-    const active = document.activeElement;
-    if (corner?.parentElement?.contains(active) && !corner.contains(active)) {
-      corner.querySelector("button")?.focus();
-    }
+    // Focus held by the example, or by a popover or dialog it opened, would
+    // drop to the body as the example remounts. A click leaves it there when
+    // it does not focus the button (Safari), so move it to the button first.
+    const button = cornerRef.current?.querySelector("button");
+    if (button && document.activeElement !== button) button.focus();
     setResetKey((key) => key + 1);
     onReset?.();
   };
+
+  // The button covers the canvas's top-right corner, so at the default
+  // padding the canvas makes room for it above the example, and as much below
+  // so the example stays centred. A caller's padding replaces this.
+  const { p, py, pt, pb } = CanvasProps ?? {};
+  const padded =
+    p !== undefined || py !== undefined || pt !== undefined || pb !== undefined;
+  const reserve = resettable && !padded ? RESET_RESERVE : undefined;
 
   const hasCode = !!code;
   const { html } = useHighlight(code ?? "", language, {
@@ -91,49 +94,40 @@ export const CodePreview = ({
   });
 
   return (
-    <CollapsibleRoot
-      data-slot="code-preview"
-      className={cx(styles["code-preview"], className)}
+    <CodePreviewRoot
+      className={className}
       {...props}
       open={open}
       onOpenChange={handleOpenChange}
     >
-      <CodePreviewCanvas {...CanvasProps}>
+      <CodePreviewCanvas py={reserve} {...CanvasProps}>
         <CodePreviewBoundary key={resetKey}>{children}</CodePreviewBoundary>
-        {resettable && (
-          // Places the button in the corner. The button stays in this box's
-          // flow, so its tooltip anchors to the button.
-          <div
-            ref={cornerRef}
-            data-slot="code-preview-reset"
-            className={styles["code-preview-reset"]}
-          >
-            <CodePreviewResetButton
-              {...ResetButtonProps}
-              onClick={handleReset}
-            />
-          </div>
-        )}
       </CodePreviewCanvas>
+      {resettable && (
+        // Places the button in the frame's top-right corner, which is the
+        // canvas's, outside the canvas so it stays put while a wide example
+        // scrolls. The button stays in this box's flow, so its tooltip
+        // anchors to the button.
+        <div
+          ref={cornerRef}
+          data-slot="code-preview-reset"
+          className={styles["code-preview-reset"]}
+        >
+          <CodePreviewResetButton {...ResetButtonProps} onClick={handleReset} />
+        </div>
+      )}
 
       {hasCode && (
         <>
-          <CodePreviewBar {...BarProps}>
-            <CodePreviewTrigger
-              {...TriggerProps}
-              showLabel={showLabel}
-              hideLabel={hideLabel}
-            />
-            {copyable && (
-              <CodeBlockCopyButton
-                {...CopyButtonProps}
-                code={code}
-                onCopy={onCopy}
-              />
-            )}
-          </CodePreviewBar>
-
           <CodePreviewPanel {...PanelProps}>
+            {/* A header with no filename floats its buttons over the code's
+                top-right corner, and the panel, a CodeBlock frame, keeps the
+                first line clear of them, as in a CodeBlock. */}
+            <CodeBlockHeader
+              code={code}
+              copyable={copyable}
+              CopyButtonProps={{ ...CopyButtonProps, onCopy }}
+            />
             <CodeBlockContent
               {...ContentProps}
               html={prerenderedHtml || html || undefined}
@@ -141,9 +135,16 @@ export const CodePreview = ({
               showLineNumbers={showLineNumbers}
             />
           </CodePreviewPanel>
+
+          {/* Below the code, as CodeBlock's expand toggle is. */}
+          <CodePreviewTrigger
+            {...TriggerProps}
+            showLabel={showLabel}
+            hideLabel={hideLabel}
+          />
         </>
       )}
-    </CollapsibleRoot>
+    </CodePreviewRoot>
   );
 };
 CodePreview.displayName = "CodePreview";

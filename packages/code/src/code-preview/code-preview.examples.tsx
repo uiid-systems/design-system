@@ -1,15 +1,15 @@
 import { Button } from "@uiid/buttons";
-import { CollapsibleRoot } from "@uiid/interactive";
 import { Group, Stack } from "@uiid/layout";
 import { Reveal, Text } from "@uiid/typography";
 import { useState } from "react";
 
-import { CodeBlockContent, CodeBlockCopyButton } from "../code-block";
+import { CodeBlockContent, CodeBlockHeader } from "../code-block";
+import { useHighlight } from "../highlighter/highlighter.hooks";
 import { CodePreview } from "./code-preview";
 import {
-  CodePreviewBar,
   CodePreviewCanvas,
   CodePreviewPanel,
+  CodePreviewRoot,
   CodePreviewTrigger,
 } from "./subcomponents";
 
@@ -47,7 +47,7 @@ export const OpenByDefault = () => (
   </CodePreview>
 );
 
-/** With no `code` there is no bar and no panel: a framed canvas only. */
+/** With no `code` there is no code and no footer: a framed canvas only. */
 export const NoCode = () => (
   <CodePreview>
     <Actions />
@@ -57,6 +57,38 @@ export const NoCode = () => (
 export const LongCode = () => (
   <CodePreview code={LONG_SAMPLE} showLineNumbers defaultOpen>
     <Text>A long file opens in full beneath the example.</Text>
+  </CodePreview>
+);
+
+const STEPS = Array.from({ length: 12 }, (_, i) => `Step ${i + 1}`);
+
+/**
+ * An example wider than the frame scrolls inside the canvas, starting at its
+ * start edge. The frame keeps its width, and the reset button stays in its
+ * corner while the example scrolls beneath it.
+ */
+export const WideChild = () => (
+  <CodePreview code={SAMPLE} language="tsx" resettable>
+    <Group gap={2}>
+      {STEPS.map((step) => (
+        <Button key={step} variant="subtle">
+          {step}
+        </Button>
+      ))}
+    </Group>
+  </CodePreview>
+);
+
+/** A tall example grows the canvas; the code stays beneath it. */
+export const TallChild = () => (
+  <CodePreview code={SAMPLE} language="tsx" resettable>
+    <Stack gap={2} ax="stretch">
+      {STEPS.map((step) => (
+        <Button key={step} variant="subtle">
+          {step}
+        </Button>
+      ))}
+    </Stack>
   </CodePreview>
 );
 
@@ -99,7 +131,7 @@ const Broken = (): React.ReactNode => {
 
 /**
  * An example that throws shows a short message in the canvas. The frame, the
- * bar and the code still render, and reset tries the example again.
+ * code and the footer still render, and reset tries the example again.
  */
 export const Throws = () => (
   <CodePreview code={SAMPLE} language="tsx" resettable>
@@ -126,20 +158,24 @@ export const Controlled = () => {
 };
 
 /**
- * The parts sit under a `CollapsibleRoot` from `@uiid/interactive`. The
- * monolithic CodePreview adds the frame, the highlighting and the copy button.
+ * The same preview from its parts. `CodePreviewRoot` is the frame, and
+ * `useHighlight` colors the code. Unlike CodePreview, this highlights on mount
+ * rather than waiting for the first open.
  */
-export const Composed = () => (
-  <CollapsibleRoot>
-    <CodePreviewCanvas>
-      <Actions />
-    </CodePreviewCanvas>
-    <CodePreviewBar>
+export const Composed = () => {
+  const { html } = useHighlight(SAMPLE, "tsx");
+
+  return (
+    <CodePreviewRoot>
+      <CodePreviewCanvas>
+        <Actions />
+      </CodePreviewCanvas>
+      <CodePreviewPanel>
+        {/* No filename, so the copy button floats over the code. */}
+        <CodeBlockHeader code={SAMPLE} />
+        <CodeBlockContent code={SAMPLE} html={html || undefined} />
+      </CodePreviewPanel>
       <CodePreviewTrigger />
-      <CodeBlockCopyButton code={SAMPLE} />
-    </CodePreviewBar>
-    <CodePreviewPanel>
-      <CodeBlockContent code={SAMPLE} />
-    </CodePreviewPanel>
-  </CollapsibleRoot>
-);
+    </CodePreviewRoot>
+  );
+};

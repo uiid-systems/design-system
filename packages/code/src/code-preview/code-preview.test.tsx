@@ -18,10 +18,10 @@ import { CodePreview } from "./code-preview";
 import * as Examples from "./code-preview.examples";
 import type { CodePreviewProps } from "./code-preview.types";
 import {
-  CodePreviewBar,
   CodePreviewCanvas,
   CodePreviewPanel,
   CodePreviewResetButton,
+  CodePreviewRoot,
   CodePreviewTrigger,
 } from "./subcomponents";
 
@@ -54,38 +54,111 @@ describe("CodePreview", () => {
   });
 
   describe("structure", () => {
-    it("renders one frame with a canvas, a bar and a closed panel", () => {
+    it("renders one frame with a canvas, a closed panel and a footer toggle, in that order", () => {
       const { container } = render(
         <CodePreview code={CODE}>
           <span>Example</span>
         </CodePreview>,
       );
-      const root = container.querySelector('[data-slot="code-preview"]');
+      const root = container.querySelector('[data-slot="code-preview"]')!;
       expect(root).toBeInTheDocument();
-
-      const canvas = root!.querySelector('[data-slot="code-preview-canvas"]');
-      expect(canvas).toHaveTextContent("Example");
-
-      const bar = root!.querySelector('[data-slot="code-preview-bar"]');
-      expect(bar).toBeInTheDocument();
-      expect(bar).toContainElement(trigger());
-      expect(bar).toContainElement(
-        screen.getByRole("button", { name: "Copy code" }),
-      );
-
-      // Closed by default, so the code is not in the DOM.
-      expect(trigger()).toHaveAttribute("aria-expanded", "false");
-      expect(screen.queryByText(CODE)).not.toBeInTheDocument();
       expect(
+        [...root.children].map((el) => el.getAttribute("data-slot")),
+      ).toEqual([
+        "code-preview-canvas",
+        "code-preview-panel",
+        "code-preview-trigger",
+      ]);
+      expect(
+        root.querySelector('[data-slot="code-preview-canvas"]'),
+      ).toHaveTextContent("Example");
+      expect(root.querySelector('[data-slot="code-preview-bar"]')).toBeNull();
+
+      // Closed by default. The code is mounted, so it sets the frame's width,
+      // inside a hidden panel the trigger points at.
+      expect(trigger()).toHaveAttribute("aria-expanded", "false");
+      const panel = root.querySelector('[data-slot="code-preview-panel"]');
+      expect(panel).toHaveAttribute("hidden");
+      expect(panel).toContainElement(
         container.querySelector('[data-slot="code-block-content"]'),
+      );
+      expect(panel).toHaveTextContent(CODE);
+    });
+
+    it("floats the copy button in the panel, through a header with no filename", () => {
+      const { container } = render(<CodePreview code={CODE}>x</CodePreview>);
+      const panel = container.querySelector(
+        '[data-slot="code-preview-panel"]',
+      )!;
+      const header = panel.querySelector('[data-slot="code-block-header"]');
+      expect(header).toHaveAttribute("data-floating");
+      expect(header).toContainElement(
+        panel.querySelector('[data-slot="code-block-copy-button"]'),
+      );
+      // Hidden with the closed panel.
+      expect(
+        screen.queryByRole("button", { name: "Copy code" }),
       ).not.toBeInTheDocument();
     });
 
-    it("puts the trigger before the copy button in the bar", () => {
+    it("renders the trigger as CodeBlock's expand toggle, with text and no icon", () => {
       render(<CodePreview code={CODE}>x</CodePreview>);
+      expect(trigger().className).toMatch(/code-block-expand-toggle/);
+      expect(trigger().querySelector("svg")).toBeNull();
+      expect(trigger()).toHaveAccessibleName("Show code");
+    });
+
+    it("keeps both labels in the trigger, the inactive one hidden from the name", async () => {
+      const user = userEvent.setup();
+      render(
+        <CodePreview code={CODE} hideLabel="Hide the source">
+          x
+        </CodePreview>,
+      );
+      const show = screen.getByText("Show code");
+      const hide = screen.getByText("Hide the source");
+      expect(trigger()).toContainElement(show);
+      expect(trigger()).toContainElement(hide);
+      expect(show).not.toHaveAttribute("aria-hidden");
+      expect(hide).toHaveAttribute("aria-hidden", "true");
+      await user.click(trigger());
+      expect(show).toHaveAttribute("aria-hidden", "true");
+      expect(hide).not.toHaveAttribute("aria-hidden");
+      expect(
+        screen.getByRole("button", { name: "Hide the source" }),
+      ).toHaveAttribute("aria-expanded", "true");
+    });
+
+    it("ties aria-expanded on the trigger to the panel", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<CodePreview code={CODE}>x</CodePreview>);
+      const panel = container.querySelector(
+        '[data-slot="code-preview-panel"]',
+      )!;
+      await user.click(trigger());
+      expect(trigger()).toHaveAttribute("aria-expanded", "true");
+      expect(trigger()).toHaveAttribute("aria-controls", panel.id);
+      expect(panel).not.toHaveAttribute("hidden");
+      await user.click(trigger());
+      expect(trigger()).toHaveAttribute("aria-expanded", "false");
+      expect(panel).toHaveAttribute("hidden");
+    });
+
+    it("names the trigger with the current label only", async () => {
+      const user = userEvent.setup();
+      render(<CodePreview code={CODE}>x</CodePreview>);
+      expect(trigger()).toHaveAccessibleName("Show code");
+      await user.click(trigger());
+      expect(trigger()).toHaveAccessibleName("Hide code");
+    });
+
+    it("puts the copy button before the trigger, with the code", async () => {
+      const user = userEvent.setup();
+      render(<CodePreview code={CODE}>x</CodePreview>);
+      await user.click(trigger());
       const copy = screen.getByRole("button", { name: "Copy code" });
       expect(
-        trigger().compareDocumentPosition(copy) &
+        copy.compareDocumentPosition(trigger()) &
           Node.DOCUMENT_POSITION_FOLLOWING,
       ).toBeTruthy();
     });
@@ -114,6 +187,20 @@ describe("CodePreview", () => {
       expect(
         container.querySelector('[data-slot="code-block"]'),
       ).not.toBeInTheDocument();
+      // The only header is the floating one holding the copy button: no bar.
+      const headers = container.querySelectorAll(
+        '[data-slot="code-block-header"]',
+      );
+      expect(headers).toHaveLength(1);
+      expect(headers[0]).toHaveAttribute("data-floating");
+    });
+
+    it("renders no header at all with copyable={false}", () => {
+      const { container } = render(
+        <CodePreview code={CODE} copyable={false}>
+          x
+        </CodePreview>,
+      );
       expect(
         container.querySelector('[data-slot="code-block-header"]'),
       ).not.toBeInTheDocument();
@@ -129,7 +216,7 @@ describe("CodePreview", () => {
         container.querySelector('[data-slot="code-preview-canvas"]'),
       ).toHaveTextContent("Example");
       expect(
-        container.querySelector('[data-slot="code-preview-bar"]'),
+        container.querySelector('[data-slot="code-preview-trigger"]'),
       ).not.toBeInTheDocument();
       expect(
         container.querySelector('[data-slot="code-preview-panel"]'),
@@ -140,7 +227,10 @@ describe("CodePreview", () => {
     it("treats empty code as no code", () => {
       const { container } = render(<CodePreview code="">x</CodePreview>);
       expect(
-        container.querySelector('[data-slot="code-preview-bar"]'),
+        container.querySelector('[data-slot="code-preview-trigger"]'),
+      ).not.toBeInTheDocument();
+      expect(
+        container.querySelector('[data-slot="code-preview-panel"]'),
       ).not.toBeInTheDocument();
     });
 
@@ -318,11 +408,11 @@ describe("CodePreview", () => {
   });
 
   describe("copy", () => {
-    it("copies while the code is closed and fires onCopy", async () => {
+    it("copies from the open code and fires onCopy", async () => {
       const user = userEvent.setup();
       const onCopy = vi.fn();
       render(
-        <CodePreview code={CODE} onCopy={onCopy}>
+        <CodePreview code={CODE} onCopy={onCopy} defaultOpen>
           x
         </CodePreview>,
       );
@@ -355,7 +445,6 @@ describe("CodePreview", () => {
           code={CODE}
           defaultOpen
           CanvasProps={{ className: "canvas", p: 2 }}
-          BarProps={{ className: "bar" }}
           TriggerProps={{ className: "trigger" }}
           PanelProps={{ className: "panel" }}
           CopyButtonProps={{ className: "copy" }}
@@ -368,7 +457,6 @@ describe("CodePreview", () => {
         container.querySelector(`[data-slot="${name}"]`);
       expect(slot("code-preview-canvas")).toHaveClass("canvas");
       expect(slot("code-preview-canvas")).toHaveAttribute("data-ui-p", "2");
-      expect(slot("code-preview-bar")).toHaveClass("bar");
       expect(slot("code-preview-trigger")).toHaveClass("trigger");
       expect(slot("code-preview-panel")).toHaveClass("panel");
       expect(slot("code-block-copy-button")).toHaveClass("copy");
@@ -379,8 +467,8 @@ describe("CodePreview", () => {
       const props: CodePreviewProps[] = [
         // @ts-expect-error The canvas content is `children`.
         { CanvasProps: { children: "x" } },
-        // @ts-expect-error The bar content is set by CodePreview.
-        { BarProps: { children: "x" } },
+        // @ts-expect-error There is no bar: the trigger is the footer.
+        { BarProps: {} },
         // @ts-expect-error Trigger labels are set on CodePreview.
         { TriggerProps: { showLabel: "x" } },
         // @ts-expect-error Trigger labels are set on CodePreview.
@@ -433,7 +521,30 @@ describe("CodePreview", () => {
       ).not.toBeInTheDocument();
     });
 
-    it("renders the reset button in the canvas with resettable", () => {
+    it("renders the reset button in the frame, between the example and the code", () => {
+      const { container } = render(
+        <CodePreview code={CODE} resettable>
+          x
+        </CodePreview>,
+      );
+      // Outside the canvas, so it does not scroll away with a wide example.
+      const canvas = container.querySelector(
+        '[data-slot="code-preview-canvas"]',
+      )!;
+      expect(canvas).not.toContainElement(resetButton());
+      const corner = container.querySelector(
+        '[data-slot="code-preview-reset"]',
+      )!;
+      expect(corner.parentElement).toBe(canvas.parentElement);
+      expect(corner.previousElementSibling).toBe(canvas);
+      expect(corner.nextElementSibling).toHaveAttribute(
+        "data-slot",
+        "code-preview-panel",
+      );
+      expect(resetButton().tagName).toBe("BUTTON");
+    });
+
+    it("reserves room above and below the example at the default padding", () => {
       const { container } = render(
         <CodePreview code={CODE} resettable>
           x
@@ -442,8 +553,37 @@ describe("CodePreview", () => {
       const canvas = container.querySelector(
         '[data-slot="code-preview-canvas"]',
       );
-      expect(canvas).toContainElement(resetButton());
-      expect(resetButton().tagName).toBe("BUTTON");
+      expect(canvas).toHaveAttribute("data-ui-p", "6");
+      expect(canvas).toHaveAttribute("data-ui-py", "12");
+    });
+
+    it("reserves nothing without resettable or with a caller's padding", () => {
+      const { container } = render(
+        <>
+          <CodePreview code={CODE}>x</CodePreview>
+          <CodePreview code={CODE} resettable CanvasProps={{ p: 2 }}>
+            x
+          </CodePreview>
+          <CodePreview code={CODE} resettable CanvasProps={{ pt: 2 }}>
+            x
+          </CodePreview>
+          <CodePreview code={CODE} resettable CanvasProps={{ pb: 2 }}>
+            x
+          </CodePreview>
+          <CodePreview code={CODE} resettable CanvasProps={{ py: 2 }}>
+            x
+          </CodePreview>
+        </>,
+      );
+      const canvases = container.querySelectorAll(
+        '[data-slot="code-preview-canvas"]',
+      );
+      expect(canvases).toHaveLength(5);
+      // Only the caller's own `py` is written.
+      expect(canvases[4]).toHaveAttribute("data-ui-py", "2");
+      for (const canvas of [...canvases].slice(0, 4)) {
+        expect(canvas).not.toHaveAttribute("data-ui-py");
+      }
     });
 
     it("renders the reset button with no code", () => {
@@ -584,7 +724,9 @@ describe("CodePreview", () => {
       expect(screen.getByRole("textbox", { name: "Name" })).not.toBe(input);
     });
 
-    it("leaves focus alone when it is outside the canvas", () => {
+    // Wherever focus was, a press of reset leaves it on the button, as a click
+    // does in browsers that focus a clicked button.
+    it("moves focus to the reset button from outside the canvas too", () => {
       render(
         <CodePreview code={CODE} resettable>
           x
@@ -592,7 +734,7 @@ describe("CodePreview", () => {
       );
       trigger().focus();
       fireEvent.click(resetButton());
-      expect(trigger()).toHaveFocus();
+      expect(resetButton()).toHaveFocus();
     });
 
     it("fires onReset once per reset", async () => {
@@ -616,6 +758,50 @@ describe("CodePreview", () => {
         </CodePreview>,
       );
       expect(resetButton()).toHaveClass("reset");
+    });
+
+    it("is named by a caller's string tooltip, so the name matches the text shown", () => {
+      render(
+        <CodePreview resettable ResetButtonProps={{ tooltip: "Start over" }}>
+          x
+        </CodePreview>,
+      );
+      expect(
+        screen.getByRole("button", { name: "Start over" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Reset preview" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("keeps its name when ResetButtonProps replaces the tooltip or the shape", () => {
+      render(
+        <>
+          <CodePreview resettable ResetButtonProps={{ tooltip: <b>Again</b> }}>
+            x
+          </CodePreview>
+          <CodePreview resettable ResetButtonProps={{ shape: "pill" }}>
+            x
+          </CodePreview>
+        </>,
+      );
+      expect(
+        screen.getAllByRole("button", { name: "Reset preview" }),
+      ).toHaveLength(2);
+    });
+
+    it("takes a caller's name over its own", () => {
+      render(
+        <CodePreview
+          resettable
+          ResetButtonProps={{ "aria-label": "Replay animation" }}
+        >
+          x
+        </CodePreview>,
+      );
+      expect(
+        screen.getByRole("button", { name: "Replay animation" }),
+      ).toBeInTheDocument();
     });
   });
 
@@ -646,7 +832,7 @@ describe("CodePreview", () => {
       consoleError.mockRestore();
     });
 
-    it("shows a short message in the canvas and keeps the frame, bar and code", () => {
+    it("shows a short message in the canvas and keeps the frame, code and footer", () => {
       const { container } = render(
         <CodePreview code={CODE} defaultOpen>
           <Fragile />
@@ -657,7 +843,7 @@ describe("CodePreview", () => {
       )!;
       expect(canvas).toHaveTextContent("This example failed to render.");
       expect(
-        container.querySelector('[data-slot="code-preview-bar"]'),
+        container.querySelector('[data-slot="code-preview"]'),
       ).toBeInTheDocument();
       expect(trigger()).toBeInTheDocument();
       expect(
@@ -754,36 +940,58 @@ describe("CodePreview", () => {
     it("composes from the exported parts", async () => {
       const user = userEvent.setup();
       const { container } = render(
-        <CollapsibleRoot>
+        <CodePreviewRoot>
           <CodePreviewCanvas>Example</CodePreviewCanvas>
-          <CodePreviewBar>
-            <CodePreviewTrigger showLabel="Open" hideLabel="Close" />
-          </CodePreviewBar>
           <CodePreviewPanel>Panel content</CodePreviewPanel>
-        </CollapsibleRoot>,
+          <CodePreviewTrigger showLabel="Open" hideLabel="Close" />
+        </CodePreviewRoot>,
       );
       expect(
         container.querySelector('[data-slot="code-preview-canvas"]'),
       ).toHaveTextContent("Example");
-      expect(screen.queryByText("Panel content")).not.toBeInTheDocument();
+      // The panel is kept mounted while closed, hidden.
+      const panel = container.querySelector('[data-slot="code-preview-panel"]');
+      expect(panel).toHaveTextContent("Panel content");
+      expect(panel).toHaveAttribute("hidden");
       await user.click(screen.getByRole("button", { name: "Open" }));
-      expect(screen.getByText("Panel content")).toBeInTheDocument();
+      expect(panel).not.toHaveAttribute("hidden");
       expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
     });
 
-    it("keeps a caller's layout props on the canvas and bar", () => {
+    it("renders the frame as CodePreviewRoot, the same root CodePreview draws", () => {
+      const { container } = render(
+        <>
+          <CodePreviewRoot className="custom" data-testid="composed" />
+          <CodePreview data-testid="assembled">x</CodePreview>
+        </>,
+      );
+      const composed = screen.getByTestId("composed");
+      const assembled = screen.getByTestId("assembled");
+      expect(composed).toHaveAttribute("data-slot", "code-preview");
+      expect(composed).toHaveClass("custom");
+      // The frame's own class is on both, so the look comes with the part.
+      const frameClass = [...assembled.classList].find((c) =>
+        c.includes("code-preview"),
+      );
+      expect(frameClass).toBeDefined();
+      expect(composed).toHaveClass(frameClass!);
+      expect(
+        container.querySelectorAll('[data-slot="code-preview"]'),
+      ).toHaveLength(2);
+    });
+
+    it("keeps a caller's layout props on the canvas", () => {
       const { container } = render(
         <CollapsibleRoot>
           <CodePreviewCanvas ax="start" p={1} />
-          <CodePreviewBar px={8} />
         </CollapsibleRoot>,
       );
-      expect(
-        container.querySelector('[data-slot="code-preview-canvas"]'),
-      ).toHaveAttribute("data-ui-p", "1");
-      expect(
-        container.querySelector('[data-slot="code-preview-bar"]'),
-      ).toHaveAttribute("data-ui-px", "8");
+      const canvas = container.querySelector(
+        '[data-slot="code-preview-canvas"]',
+      );
+      expect(canvas).toHaveAttribute("data-ui-p", "1");
+      // Stack writes its `ax` as align-items, under `data-ui-ay`.
+      expect(canvas).toHaveAttribute("data-ui-ay", "start");
     });
   });
 });
