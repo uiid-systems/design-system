@@ -58,12 +58,18 @@ If you are unsure, make it a component. Splitting later costs more than a small 
 This is the check that catches most structural mistakes. For each file, ask what it is responsible for and whether the directory it sits in is responsible for the same thing.
 
 - **Layout components take what they show.** A shell arranges a sidebar, a header and a page. It receives them as props or children and imports none of them. If a layout component imports its contents, or takes a prop only to pass it to one of them, the contents are in the wrong place.
-- **Content lives with the content.** Links to a repository, a sitemap, product copy and their constants belong to the component that shows them, not to the layout around it. `ShellLinks` holding GitHub and npm URLs is the mistake this rule exists for; they belong to the header.
+- **Content lives with the content.** Links to a repository, a sitemap, product copy and their constants belong to the component that shows them, not to the layout around it. `ShellLinks` holding GitHub and npm URLs is the mistake this rule exists for. Content that belongs to the app rather than to the recipe lives outside the recipe directories and is passed in: the docs app keeps its GitHub and npm links in `apps/docs/components/docs/header-links.tsx`, and its layout passes them to `Header` as children.
 - **Name a directory for what the thing is.** If the best name for a file is `{parent}-{something unrelated to parent}`, it is in the wrong directory.
 - **Imports between components run one way.** Draw the arrows before writing the code. A content component may import a layout primitive (a header renders through the shell's bar so the two line up); the layout never imports back. If two components need each other, one of them is holding something that belongs to the other, or to a third.
 - **The app's layout or page does the composing.** That is where the shell, sidebar, header and main meet.
 
 When a layout must style something it does not own, such as sliding a sidebar it was handed, it addresses that component by its `data-slot` from its own CSS module, and a comment in the module names the slots it depends on.
+
+## The nav config, `lib/` and imports
+
+- **The nav config is the only source of page names.** It is `nav.ts` at the app root, imported as `@/nav`, and exports `NAV`. The sidebar's groups and items and the breadcrumb labels all come from it. No recipe file names a page or turns a URL segment into a label. The config belongs to the app; the recipe only reads it.
+- **`lib/` holds a recipe's non-component code.** `lib/nav.ts` has the nav types and the pure helpers that read `NAV`, and imports nothing but types. Its unit tests sit beside it and may import `vitest`.
+- **A recipe file imports only these:** `react`, `next/*`, `jotai`, `@uiid/design-system`, `@uiid/icons/*`, `@/nav`, `@/lib/nav`, other recipe directories through `@/components/...`, and relative paths inside its own directory. A listed package's own entry points count as that package: `@uiid/design-system/utils`, which `components.md` requires for `cx`, and `jotai/vanilla` and `jotai/vanilla/utils`. Anything else, such as `@/components/docs` or another icon set, is app content: move it out of the recipe and pass it in as a prop or children.
 
 ## State
 
@@ -76,7 +82,7 @@ When a layout must style something it does not own, such as sliding a sidebar it
 
 Follow `.claude/rules/styling.md`. Two points come up in every recipe:
 
-- Layout comes from UIID components and style props. A CSS module is for what no prop covers: scroll tracks, sticky positioning, transforms, hover states. No Tailwind utility classes.
+- Layout comes from UIID components and style props. A CSS module is for what no prop covers: scroll tracks, sticky positioning, transforms, hover states. No app loads a utility-class framework, so there are no utility classes to use instead.
 - App CSS modules compile in pure mode, so every selector needs a local class. Write `:where(.local)[data-state]` or `.local [data-slot="x"]`, never a bare attribute selector.
 
 ## Before calling it done
