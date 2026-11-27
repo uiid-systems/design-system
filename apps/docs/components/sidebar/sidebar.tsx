@@ -3,7 +3,14 @@
 import { usePathname } from "next/navigation";
 import { useLayoutEffect, useRef, useState } from "react";
 
-import { SIDEBAR_GROUPS } from "./sidebar.constants";
+import {
+  findActiveGroup,
+  findActiveItem,
+  type NavItem,
+  toNavSections,
+} from "@/lib/nav";
+import { NAV } from "@/nav";
+
 import { useSidebarGroups } from "./sidebar.hooks";
 import type { SidebarProps } from "./sidebar.types";
 import { clearNoFlash } from "./sidebar.utils";
@@ -16,17 +23,26 @@ import {
   SidebarRoot,
 } from "./subcomponents";
 
+/** Consecutive top-level items share one list; each group stands alone. */
+const SECTIONS = toNavSections(NAV);
+
 /**
- * The docs sidebar, filled from the sitemap and driven by the current route.
+ * The sidebar, filled from the project's nav config (`@/nav`) in config order
+ * and driven by the current route.
  * Compose the parts in `subcomponents/` for a sidebar with other contents.
  */
 export const Sidebar = ({ title, ...props }: SidebarProps) => {
   const pathname = usePathname();
   const [groups, setGroups] = useSidebarGroups();
 
-  const activeGroup = SIDEBAR_GROUPS.find((group) =>
-    group.items.some((item) => item.value === pathname),
-  )?.id;
+  const activeItem = findActiveItem(NAV, pathname);
+  const activeGroup = findActiveGroup(NAV, pathname)?.label;
+
+  const renderItem = (item: NavItem) => (
+    <SidebarItem key={item.href} href={item.href} active={item === activeItem}>
+      {item.label}
+    </SidebarItem>
+  );
 
   // The current page's group is open on load and on navigation, whatever was
   // saved for it. That is derived rather than saved, so a group the reader
@@ -48,44 +64,36 @@ export const Sidebar = ({ title, ...props }: SidebarProps) => {
     <SidebarRoot {...props}>
       <SidebarHeader>{title}</SidebarHeader>
       <SidebarNav>
-        <SidebarItems>
-          <SidebarItem href="/" active={pathname === "/"}>
-            Home
-          </SidebarItem>
-          <SidebarItem href="/changelog" active={pathname === "/changelog"}>
-            Changelog
-          </SidebarItem>
-        </SidebarItems>
-        {SIDEBAR_GROUPS.map((group) => (
-          <SidebarGroup
-            key={group.id}
-            id={group.id}
-            label={group.id}
-            active={group.id === activeGroup}
-            open={
-              group.id === activeGroup
-                ? closedAt !== pathname
-                : groups[group.id] !== false
-            }
-            onOpenChange={(next) => {
-              clearNoFlash();
-              if (group.id === activeGroup) {
-                setClosedAt(next ? undefined : pathname);
-              }
-              setGroups((saved) => ({ ...saved, [group.id]: next }));
-            }}
-          >
-            {group.items.map((item) => (
-              <SidebarItem
-                key={item.value}
-                href={item.value}
-                active={item.value === pathname}
-              >
-                {item.label}
-              </SidebarItem>
-            ))}
-          </SidebarGroup>
-        ))}
+        {SECTIONS.map((section) => {
+          if (Array.isArray(section)) {
+            return (
+              <SidebarItems key={section[0].href}>
+                {section.map(renderItem)}
+              </SidebarItems>
+            );
+          }
+
+          // A group's saved open state is keyed by its label.
+          const id = section.label;
+          const active = id === activeGroup;
+
+          return (
+            <SidebarGroup
+              key={id}
+              id={id}
+              label={section.label}
+              active={active}
+              open={active ? closedAt !== pathname : groups[id] !== false}
+              onOpenChange={(next) => {
+                clearNoFlash();
+                if (active) setClosedAt(next ? undefined : pathname);
+                setGroups((saved) => ({ ...saved, [id]: next }));
+              }}
+            >
+              {section.items.map(renderItem)}
+            </SidebarGroup>
+          );
+        })}
       </SidebarNav>
     </SidebarRoot>
   );

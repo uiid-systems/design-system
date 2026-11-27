@@ -6,6 +6,7 @@ import {
   findActiveItem,
   listNavItems,
   type NavEntry,
+  toNavSections,
 } from "./nav";
 
 const home = { label: "Home", href: "/" };
@@ -153,6 +154,41 @@ describe("listNavItems", () => {
 
   it("returns an empty list for an empty config", () => {
     expect(listNavItems([])).toEqual([]);
+  });
+});
+
+describe("toNavSections", () => {
+  it("runs consecutive top-level items into one list, groups in place", () => {
+    expect(toNavSections(NAV)).toEqual([[home, changelog], layout, settings]);
+  });
+
+  it("starts a new list after each group", () => {
+    const about = { label: "About", href: "/about" };
+    expect(toNavSections([layout, home, settings, about, changelog])).toEqual([
+      layout,
+      [home],
+      settings,
+      [about, changelog],
+    ]);
+  });
+
+  it("returns the config's own item and group objects, not copies", () => {
+    // The sidebar compares items by identity against findActiveItem's result.
+    const [list, group] = toNavSections([home, layout]);
+    expect(Array.isArray(list) && list[0]).toBe(home);
+    expect(group).toBe(layout);
+  });
+
+  it("drops a group with no items, joining the lists either side of it", () => {
+    const empty = { label: "Empty", items: [] };
+    expect(toNavSections([empty])).toEqual([]);
+    expect(toNavSections([home, empty, changelog])).toEqual([
+      [home, changelog],
+    ]);
+  });
+
+  it("returns no sections for an empty config", () => {
+    expect(toNavSections([])).toEqual([]);
   });
 });
 
