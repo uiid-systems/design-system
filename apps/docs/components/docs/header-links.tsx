@@ -1,11 +1,17 @@
 import { SiGithub, SiNpm, SiStorybook } from "@icons-pack/react-simple-icons";
 import { Button } from "@uiid/design-system";
 
-import { NPM_URL, REPO_URL, STORYBOOK_URL } from "../header.constants";
-import type { HeaderLinksProps } from "../header.types";
-import { HeaderGroup } from "./header-group";
+import { HeaderGroup } from "@/components/header";
+import type { HeaderGroupProps } from "@/components/header";
 
-/** The project's links, at the trailing end of the header. */
+const REPO_URL = "https://github.com/uiid-systems/design-system";
+const NPM_URL = "https://www.npmjs.com/package/@uiid/design-system";
+/** @todo point at the deployed storybook once it has a home */
+const STORYBOOK_URL = "#";
+
+export type HeaderLinksProps = HeaderGroupProps;
+
+/** The project's links, passed to `Header` for its trailing end. */
 export const HeaderLinks = (props: HeaderLinksProps) => {
   return (
     <HeaderGroup data-slot="header-links" gap={0} {...props}>

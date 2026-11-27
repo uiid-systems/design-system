@@ -5,7 +5,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import { OnThisPage, Pager } from "@/components/docs";
+import { HeaderLinks, OnThisPage, Pager } from "@/components/docs";
 import { Header } from "@/components/header";
 import { Main } from "@/components/main";
 import { Shell, ShellBody } from "@/components/shell";
@@ -50,7 +50,14 @@ export default function RootLayout({
         />
       </head>
       <ShellBody className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Shell sidebar={<Sidebar title="uiid docs" />} header={<Header />}>
+        <Shell
+          sidebar={<Sidebar title="uiid docs" />}
+          header={
+            <Header>
+              <HeaderLinks />
+            </Header>
+          }
+        >
           <Main aside={<OnThisPage />}>
             {children}
             <Pager />

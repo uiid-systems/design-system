@@ -4,6 +4,6 @@ import type { ShellBarProps } from "@/components/shell";
 
 export type HeaderRootProps = ShellBarProps;
 export type HeaderGroupProps = GroupProps;
-export type HeaderLinksProps = HeaderGroupProps;
 
+/** `children` render at the header's trailing end. */
 export type HeaderProps = HeaderRootProps;

@@ -1,4 +1,5 @@
 export * from "./example";
+export * from "./header-links";
 export * from "./on-this-page";
 export * from "./pager";
 export * from "./props-table";
