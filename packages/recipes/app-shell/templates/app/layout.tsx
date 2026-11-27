@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 
 const APP_NAME = "My App";
 
-// Each page exports its own `title`, which fills the template.
+// Each page but home exports a `title` from its nav.ts label, which fills the template.
 export const metadata: Metadata = {
   title: { default: APP_NAME, template: `%s · ${APP_NAME}` },
   description: "A Next.js app built on the UIID app shell.",
