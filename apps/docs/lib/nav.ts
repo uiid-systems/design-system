@@ -7,7 +7,10 @@
 /** One page. */
 export type NavItem = {
   label: string;
-  /** A path such as `/layout/box`. A query string or hash is ignored when matching. */
+  /**
+   * A path from the root, such as `/layout/box`. A query string, hash or one
+   * trailing slash is ignored when matching; an href with no path never matches.
+   */
   href: string;
 };
 
@@ -41,15 +44,17 @@ export function listNavItems(entries: NavEntry[]): NavItem[] {
   );
 }
 
-/** The path part of an href or URL, without its query string or hash. */
+/** The path part of an href or URL, without its query string, hash or one trailing slash. */
 function toPath(href: string): string {
   const end = href.search(/[?#]/);
-  return end === -1 ? href : href.slice(0, end);
+  const path = end === -1 ? href : href.slice(0, end);
+  return path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
 }
 
 /** The length of `href`'s path when it matches `pathname`, or -1 when it does not. */
 function matchLength(href: string, pathname: string): number {
   const path = toPath(href);
+  if (!path.startsWith("/")) return -1;
   if (pathname === path) return path.length;
   if (path !== "/" && pathname.startsWith(`${path}/`)) return path.length;
   return -1;
@@ -59,20 +64,17 @@ type ActiveMatch = { item?: NavItem; group?: NavGroup };
 
 /**
  * The entry whose href best matches `pathname`: an equal path, or a path below
- * it. The longest href wins; on a tie between a group and one of its items,
- * the item wins. A match on a group's own href has a group and no item.
+ * it. The longest href wins; on a tie the first in config order wins, and a
+ * group comes before its items, so on a group's own href no item is active.
  */
 function findActive(entries: NavEntry[], pathname: string): ActiveMatch {
   const path = toPath(pathname);
   let best: ActiveMatch = {};
   let bestLength = -1;
 
-  const consider = (href: string, match: ActiveMatch, winsTie: boolean) => {
+  const consider = (href: string, match: ActiveMatch) => {
     const length = matchLength(href, path);
-    if (
-      length > bestLength ||
-      (winsTie && length >= 0 && length === bestLength)
-    ) {
+    if (length > bestLength) {
       best = match;
       bestLength = length;
     }
@@ -80,12 +82,12 @@ function findActive(entries: NavEntry[], pathname: string): ActiveMatch {
 
   for (const entry of entries) {
     if (!isNavGroup(entry)) {
-      consider(entry.href, { item: entry }, false);
+      consider(entry.href, { item: entry });
       continue;
     }
-    if (entry.href !== undefined) consider(entry.href, { group: entry }, false);
+    if (entry.href !== undefined) consider(entry.href, { group: entry });
     for (const item of entry.items) {
-      consider(item.href, { item, group: entry }, true);
+      consider(item.href, { item, group: entry });
     }
   }
 

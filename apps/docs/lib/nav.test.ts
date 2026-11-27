@@ -23,6 +23,15 @@ const layout = { label: "Layout", items: [box, stack] };
 
 const NAV: NavEntry[] = [home, changelog, layout, settings];
 
+/** A group whose own href is also one of its items' hrefs. */
+const SHARED: NavEntry[] = [
+  {
+    label: "Settings",
+    href: "/settings",
+    items: [{ label: "Overview", href: "/settings" }, profile],
+  },
+];
+
 describe("findActiveItem", () => {
   it("matches the pathname exactly", () => {
     expect(findActiveItem(NAV, "/changelog")).toBe(changelog);
@@ -52,6 +61,23 @@ describe("findActiveItem", () => {
   it('matches "/" only on itself', () => {
     expect(findActiveItem(NAV, "/")).toBe(home);
     expect(findActiveItem(NAV, "/nowhere")).toBeUndefined();
+    expect(findActiveItem(NAV, "//nowhere")).toBeUndefined();
+  });
+
+  it("never matches an href with no path", () => {
+    const nav: NavEntry[] = [
+      { label: "Empty", href: "" },
+      { label: "Query", href: "?tab=x" },
+      { label: "Hash", href: "#top" },
+    ];
+    expect(findActiveItem(nav, "/")).toBeUndefined();
+    expect(findActiveItem(nav, "/anything")).toBeUndefined();
+  });
+
+  it("ignores one trailing slash on an entry's href", () => {
+    const slashed = { label: "Settings", href: "/settings/" };
+    expect(findActiveItem([slashed], "/settings")).toBe(slashed);
+    expect(findActiveItem([slashed], "/settings/profile")).toBe(slashed);
   });
 
   it("strips a query string and hash from an entry's href", () => {
@@ -70,6 +96,24 @@ describe("findActiveItem", () => {
   it("returns no item on a group's own href", () => {
     expect(findActiveItem(NAV, "/settings")).toBeUndefined();
     expect(findActiveItem(NAV, "/settings/other")).toBeUndefined();
+  });
+
+  it("gives the group, not its item, a path they share", () => {
+    expect(findActiveItem(SHARED, "/settings")).toBeUndefined();
+    expect(findActiveGroup(SHARED, "/settings")).toBe(SHARED[0]);
+    expect(buildNavTrail(SHARED, "/settings")).toEqual([
+      { label: "Settings", href: "/settings" },
+    ]);
+  });
+
+  it("keeps the first entry in config order when two items share a path", () => {
+    const top = { label: "Reports", href: "/reports" };
+    const grouped = { label: "All reports", href: "/reports" };
+    const group = { label: "Data", items: [grouped] };
+    expect(findActiveItem([top, group], "/reports")).toBe(top);
+    expect(findActiveGroup([top, group], "/reports")).toBeUndefined();
+    expect(findActiveItem([group, top], "/reports")).toBe(grouped);
+    expect(findActiveGroup([group, top], "/reports")).toBe(group);
   });
 
   it("returns undefined when nothing matches", () => {
@@ -146,6 +190,13 @@ describe("buildNavTrail", () => {
     );
   });
 
+  it("ends with the group on a route below its own page", () => {
+    expect(buildNavTrail(NAV, "/settings/other")).toEqual([
+      home,
+      { label: "Settings", href: "/settings" },
+    ]);
+  });
+
   it('is the "/" item alone when nothing matches', () => {
     expect(buildNavTrail(NAV, "/missing")).toEqual([home]);
   });
@@ -161,7 +212,7 @@ describe("buildNavTrail", () => {
     expect(buildNavTrail(nav, "/changelog")).toEqual([home, changelog]);
   });
 
-  it("copies each crumb's label and href from its entry", () => {
+  it("keeps an entry's href, query string included, on its crumb", () => {
     const week = { label: "This week", href: "/reports?view=week" };
     expect(buildNavTrail([week], "/reports")).toEqual([week]);
   });
