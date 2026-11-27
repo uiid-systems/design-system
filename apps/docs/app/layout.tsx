@@ -1,6 +1,3 @@
-// First, so Tailwind's cascade layers are declared before any `uiid.*` layer.
-// A CSS module imported ahead of it would put the whole `uiid` layer under
-// Tailwind's reset, and every spacing and border prop would read as 0.
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
