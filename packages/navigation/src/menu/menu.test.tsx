@@ -584,6 +584,7 @@ describe("Menu items", () => {
     const threeLevels = (
       onEmail?: () => void,
       share?: Partial<MenuProps["items"][number]>,
+      email?: Partial<MenuProps["items"][number]>,
     ): MenuProps["items"] => [
       { label: "Edit", value: "edit" },
       {
@@ -595,7 +596,7 @@ describe("Menu items", () => {
             label: "Share",
             value: "share",
             items: [
-              { label: "Email", value: "email", onClick: onEmail },
+              { label: "Email", value: "email", onClick: onEmail, ...email },
               { label: "Copy link", value: "link" },
             ],
             ...share,
@@ -665,12 +666,45 @@ describe("Menu items", () => {
       await user.click(screen.getByText("Open"));
       await user.click(screen.getByText("More"));
       const share = await screen.findByRole("menuitem", { name: "Share" });
+      // A submenu trigger, not a plain row that dropped its `items`.
+      expect(share).toHaveAttribute("data-slot", "submenu-trigger");
+      expect(share).toHaveAttribute("aria-haspopup", "menu");
       expect(share).toHaveAttribute("aria-disabled", "true");
 
       share.focus();
       await user.keyboard("{ArrowRight}");
       expect(screen.queryByRole("menuitem", { name: "Email" })).toBeNull();
       expect(popups()).toHaveLength(2);
+    });
+
+    it("reaches every submenu root with SubmenuRootProps", async () => {
+      const user = userEvent.setup();
+      const onOpenChange = vi.fn();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels()}
+          SubmenuRootProps={{ onOpenChange }}
+        />,
+      );
+
+      await openThirdLevel(user);
+      const opened = onOpenChange.mock.calls.filter(([open]) => open === true);
+      expect(opened).toHaveLength(2);
+    });
+
+    it("lets a third-level entry's disabled win over ItemProps", async () => {
+      const user = userEvent.setup();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels(undefined, undefined, { disabled: true })}
+          ItemProps={{ disabled: false }}
+        />,
+      );
+
+      const email = await openThirdLevel(user);
+      expect(email).toHaveAttribute("aria-disabled", "true");
     });
   });
 });
