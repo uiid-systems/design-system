@@ -21,7 +21,9 @@
     "lint:fix": "oxlint --fix",
     "format:check": "oxfmt --check",
     "generate:props": "pnpm --filter @uiid/utils generate:props",
-    "npm:bootstrap": "node packages/config/scripts/check-npm-publishing.mjs --fix"
+    "npm:bootstrap": "node packages/config/scripts/check-npm-publishing.mjs --fix",
+    "recipes:check": "node packages/recipes/src/check.ts",
+    "recipes:sync": "node packages/recipes/src/sync.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
