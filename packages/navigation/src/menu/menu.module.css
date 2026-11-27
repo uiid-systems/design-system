@@ -59,7 +59,8 @@
 }
 
 .item,
-.submenu-trigger {
+.submenu-trigger,
+.checkbox-item {
   cursor: default;
   user-select: none;
   display: flex;
@@ -75,9 +76,43 @@
 }
 
 .item > [data-slot="list-item"],
-.submenu-trigger > [data-slot="list-item"] {
+.submenu-trigger > [data-slot="list-item"],
+.checkbox-item > [data-slot="list-item"] {
   flex: 1;
   min-width: 0;
+}
+
+/*
+ * The layout every choice row shares (checkbox items, and radio items next):
+ * the row's content, then its indicator at the end, set apart the way
+ * Select's check is. A row composes this beside `composes-option`.
+ */
+.choice-item {
+  align-items: center;
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+/*
+ * The indicator, sized like a row's icon and left in the row's own text color,
+ * as Select's check is. It stays mounted while unchecked and is only hidden,
+ * so an unchecked row holds the same space and labels stay aligned. A disabled
+ * row's opacity mutes a checked indicator with the rest of the row.
+ */
+.choice-indicator {
+  flex-shrink: 0;
+  width: var(--list-icon-size);
+  height: var(--list-icon-size);
+
+  &[data-unchecked] {
+    visibility: hidden;
+  }
+}
+
+/* Padding, radius, highlight and disabled look from `composes-option`, as on
+   `.item`; its layout from `choice-item`. */
+.checkbox-item {
+  composes: composes-option from global;
+  composes: choice-item;
 }
 
 /*

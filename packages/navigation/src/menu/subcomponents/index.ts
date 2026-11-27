@@ -7,6 +7,8 @@ export * from "./menu-popup";
 export * from "./menu-item";
 export * from "./menu-group";
 export * from "./menu-group-label";
+export * from "./menu-checkbox-item";
+export * from "./menu-checkbox-item-indicator";
 
 export * from "./submenu-root";
 export * from "./submenu-trigger";

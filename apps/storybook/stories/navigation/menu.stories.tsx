@@ -96,6 +96,8 @@ export const LongLabels: Story = { render: () => <Examples.LongLabels /> };
 
 export const Groups: Story = { render: () => <Examples.Groups /> };
 
+export const ViewToggles: Story = { render: () => <Examples.ViewToggles /> };
+
 /* Open each in turn to compare: the popups and rows should read as one kind. */
 export const BesideSelect: Story = {
   render: () => (

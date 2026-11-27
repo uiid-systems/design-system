@@ -66,6 +66,27 @@ export type MenuGroupLabelProps = BaseMenu.GroupLabel.Props;
 
 export type MenuItemProps = WithStringClassName<BaseMenu.Item.Props> &
   MenuRowContentProps;
+
+/*
+ * Base UI's `checked`, `defaultChecked`, `onCheckedChange`, `closeOnClick`
+ * (`false` by default, so the menu stays open after a toggle) and `disabled`
+ * pass through unchanged.
+ */
+export type MenuCheckboxItemProps =
+  WithStringClassName<BaseMenu.CheckboxItem.Props> &
+    Omit<MenuRowContentProps, "children"> & {
+      /**
+       * Draws the row in place of the `icon` / `label` / `description` block and
+       * the indicator. Place a `MenuCheckboxItemIndicator` among them to keep it.
+       */
+      children?: React.ReactNode;
+    };
+/*
+ * Base UI's indicator. `keepMounted` defaults to `true` here, so an unchecked
+ * row holds the indicator's space and labels in a mixed list stay aligned.
+ */
+export type MenuCheckboxItemIndicatorProps =
+  WithStringClassName<BaseMenu.CheckboxItemIndicator.Props>;
 export type SubmenuRootProps = BaseMenu.SubmenuRoot.Props;
 export type SubmenuTriggerProps = WithLayoutProps<
   WithStringClassName<BaseMenu.SubmenuTrigger.Props>,
