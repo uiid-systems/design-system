@@ -32,9 +32,10 @@ export type ContextMenuProps = {
   children: React.ReactNode;
   /**
    * Dims the page behind the open popup, as Menu's does. Visual only: a
-   * context menu is always modal, so page scroll is locked and outside
-   * pointers are blocked whether or not this is drawn. Base UI's context
-   * menu root takes no `modal`, so this is the only switch.
+   * context menu is always modal, so outside pointers are blocked whether or
+   * not this is drawn, and page scroll is locked except when the menu was
+   * opened by long-press. Base UI's context menu root takes no `modal`, so
+   * this is the only switch.
    * Only the root menu draws one, never a submenu.
    * @default true
    */

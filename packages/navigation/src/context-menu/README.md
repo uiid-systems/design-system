@@ -13,17 +13,17 @@ Use ContextMenu when you want to:
 </ContextMenu>
 ```
 
-`items` is the same `MenuItemType[]` array `Menu` takes, and the rows render through the same function, so everything Menu's README says about entries holds here: an entry with `items` opens a submenu beside it, to any depth; an entry with `href` is a real link; `{ type: "separator" }` draws a line; `description` is a second line under the label; an entry's `onClick` runs after `ItemProps.onClick` and the menu closes.
+`items` is the same `MenuItemType[]` array `Menu` takes, and the rows render through the same function, so everything Menu's README says about entries holds here: an entry with `items` opens a submenu beside it, to any depth; an entry with `href` is a real link; `{ type: "separator" }` draws a line; `description` is a second line under the label; an action entry's `onClick` runs after `ItemProps.onClick` and the menu closes; a link entry's `onClick` runs after `LinkItemProps.onClick`, the link navigates, and the menu closes through `closeOnClick`, which `LinkItemProps={{ closeOnClick: false }}` turns off.
 
 `children` is the area that opens the menu. It is wrapped in `ContextMenuTrigger`, whose `<div>` is `display: contents`, so the area keeps the size and place it has in its parent's layout. Where a `<div>` cannot go, such as around a table row, make the area the trigger itself with `TriggerProps={{ render: <TableRow tabIndex={0} /> }}`; `children` then render inside that element.
 
 There is no `trigger`, `side` or `align`: the popup opens at the pointer. A context menu has no trigger button to name its popup, so pass an accessible name through `PopupProps`, as above.
 
-The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed. Only the root menu draws one, never a submenu. A context menu is always modal: Base UI's `ContextMenu.Root` takes no `modal`, so page scroll is locked and outside pointers are blocked whether or not the page is dimmed, and `backdrop` is the only switch. `RootProps={{ modal: false }}` is a type error.
+The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed. Only the root menu draws one, never a submenu. A context menu is always modal: Base UI's `ContextMenu.Root` takes no `modal`, so outside pointers are blocked whether or not the page is dimmed, and `backdrop` is the only switch. Page scroll is locked too, except when the menu was opened by long-press: Base UI leaves the page scrollable after a touch open unless the popup spans nearly the full viewport width, matching native iOS behavior. `RootProps={{ modal: false }}` is a type error.
 
 ## Slots
 
-Anything not set on ContextMenu itself is forwarded to Base UI through a slot prop. Each slot except `RootProps` omits the keys ContextMenu fills itself, so passing one there is a type error: the trigger's content is `children`, every row's content comes from `items`, and ContextMenu fills every portal, positioner and popup itself.
+Anything not set on ContextMenu itself is forwarded to Base UI through a slot prop. A slot for an element ContextMenu fills omits the keys it fills, so passing one there is a type error: the trigger's content is `children`, every row's content comes from `items`, and ContextMenu fills every portal, positioner and popup itself. `RootProps` stays wide, and `BackdropProps` omits nothing, since the backdrop has no content.
 
 | Slot                     | Reaches                                                          | Takes no                                           |
 | ------------------------ | ---------------------------------------------------------------- | -------------------------------------------------- |
@@ -88,3 +88,5 @@ A context menu has no trigger button to name its popup, so `MenuPopup` renders `
 The menu opens on a `contextmenu` event, which fires on the focused element, so a keyboard opens it only when focus is inside the area. Make the area focusable, or put a focusable element inside it: a `Card` with no link takes `tabIndex={0}`, and so does a `TableRow` rendered as the trigger. Focus returns to that element when the menu closes. On Windows and Linux, Shift+F10 or the Menu key sends the event. macOS browsers have no such key; there, only VoiceOver's VO+Shift+M opens the menu from the keyboard.
 
 That is why a context menu should not be the only way to reach an action: put the same actions behind a visible control beside the area, such as a `Menu` button given the same `items`. Keep that control outside `ContextMenu` (or `ContextMenuTrigger` and `ContextMenuRoot`): React events bubble through portals, so a right-click in a dropdown opened from inside the area would also open the context menu over it. For table rows, one button beside the table with a submenu per row keeps the control outside every row.
+
+Focusable table rows have two costs. Each row is a tab stop, so a long table puts many stops between the user and what follows it; there, rely on the control beside the table and leave the rows unfocusable. And Table has no row focus style, so a focused row shows only the browser's default outline, which some browsers clip or do not draw on a table row.

@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Card } from "@uiid/cards";
 import { StarIcon } from "@uiid/icons/star";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, onTestFinished, vi } from "vitest";
 
 import { Menu } from "../menu/menu";
 import type { MenuItemType } from "../menu/menu.types";
@@ -272,11 +272,14 @@ const itemsWith = (onRename?: () => void): MenuItemType[] => [
     ],
   },
   { type: "separator" },
+  { label: "Delete", value: "delete", disabled: true },
   { label: "Open docs", value: "docs", href: "/docs" },
 ];
 const ITEMS = itemsWith();
 
-/* Each row of a popup as one line: its element, slot, role, text and link. */
+/* Each row of a popup as one line: its element, slot, role, text, link,
+   whether it draws an icon (any svg but the submenu chevron), whether it
+   opens a submenu, and whether it is disabled. */
 const rows = (popup: HTMLElement) =>
   [
     ...popup.querySelectorAll<HTMLElement>(
@@ -289,6 +292,11 @@ const rows = (popup: HTMLElement) =>
       row.getAttribute("role"),
       row.textContent,
       row.getAttribute("href"),
+      row.querySelector('svg:not([data-slot="submenu-chevron"])')
+        ? "icon"
+        : "no-icon",
+      row.getAttribute("aria-haspopup"),
+      row.getAttribute("aria-disabled"),
     ].join(" | "),
   );
 
@@ -344,14 +352,20 @@ describe("ContextMenu", () => {
     await screen.findByRole("menuitem", { name: "2025" });
     actual.push(rows(screen.getAllByRole("menu")[2]!));
 
-    // The fixture really holds a separator, a link and a description.
+    // The fixture really holds an icon, a description, a submenu, a
+    // separator, a disabled row and a link, and the helper sees each.
     expect(expected[0]).toEqual([
-      expect.stringContaining(
-        "menu-item | menuitem | RenameGive it a new name",
+      expect.stringMatching(
+        /menu-item \| menuitem \| RenameGive it a new name \| {2}\| icon \| {2}\| $/,
       ),
-      expect.stringContaining("submenu-trigger | menuitem | Move to"),
+      expect.stringMatching(
+        /submenu-trigger \| menuitem \| Move to \| {2}\| no-icon \| menu \| $/,
+      ),
       expect.stringContaining("menu-separator | separator"),
-      "A | menu-link-item | menuitem | Open docs | /docs",
+      expect.stringMatching(
+        /menu-item \| menuitem \| Delete \| {2}\| no-icon \| {2}\| true$/,
+      ),
+      "A | menu-link-item | menuitem | Open docs | /docs | no-icon |  | ",
     ]);
     expect(actual).toEqual(expected);
   });
@@ -552,6 +566,7 @@ describe("ContextMenu slots", () => {
     const user = userEvent.setup();
     const container = document.createElement("div");
     document.body.append(container);
+    onTestFinished(() => container.remove());
     render(
       <ContextMenu items={ITEMS} PortalProps={{ container }}>
         <Area />
@@ -565,7 +580,6 @@ describe("ContextMenu slots", () => {
     expect(container).toContainElement(
       await screen.findByRole("menuitem", { name: "Archive" }),
     );
-    container.remove();
   });
 
   it("reaches every row with the item, link, separator and submenu slots", async () => {

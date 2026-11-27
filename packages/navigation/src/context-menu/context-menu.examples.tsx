@@ -6,7 +6,7 @@ import { ArchiveIcon } from "@uiid/icons/archive";
 import { CopyIcon } from "@uiid/icons/copy";
 import { DownloadIcon } from "@uiid/icons/download";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
-import { ExternalLinkIcon } from "@uiid/icons/external-link";
+import { EyeIcon } from "@uiid/icons/eye";
 import { FolderInputIcon } from "@uiid/icons/folder-input";
 import { PencilIcon } from "@uiid/icons/pencil";
 import { Share2Icon } from "@uiid/icons/share-2";
@@ -119,7 +119,7 @@ const FILE_ACTIONS: MenuItemType[] = [
   {
     label: "Open in the viewer",
     value: "viewer",
-    icon: ExternalLinkIcon,
+    icon: EyeIcon,
     href: "#viewer",
   },
 ];
@@ -133,7 +133,7 @@ export const WithSubmenus = () => (
       <Card
         tabIndex={0}
         title="brand-guidelines.pdf"
-        description="Right-click for nested actions."
+        description="Right-click, or use the actions button."
       />
     </ContextMenu>
     <Menu
