@@ -12,13 +12,18 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+// Not preloaded: nothing in the starter renders monospace text.
 const geistMono = Geist_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
+  preload: false,
 });
 
+const APP_NAME = "My App";
+
+// Each page exports its own `title`, which fills the template.
 export const metadata: Metadata = {
-  title: "My App",
+  title: { default: APP_NAME, template: `%s · ${APP_NAME}` },
   description: "A Next.js app built on the UIID app shell.",
 };
 
@@ -28,10 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Under a CSP, pass the request's nonce and allow the style it adds. */}
         <SidebarScript />
       </head>
       <ShellBody className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Shell sidebar={<Sidebar title="My App" />} header={<Header />}>
+        <Shell sidebar={<Sidebar title={APP_NAME} />} header={<Header />}>
           <Main>{children}</Main>
         </Shell>
       </ShellBody>

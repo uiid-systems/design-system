@@ -37,15 +37,18 @@ What a new project gets once and then owns: a starter `nav.ts`, an `app/layout.t
 
 The templates import the recipe through the `@/` alias, as `files/` does, so nothing in this repo typechecks them. Keep them plain, and read each UIID component's `.types.ts` before using it in a starter page.
 
+The starter layout loads Geist through `next/font/google`, as a new Next.js app does. Next downloads the font files when the app builds, so a build that cannot reach Google Fonts fails; visitors' browsers never contact Google.
+
 ## The manifest
 
-`recipe.json` describes a recipe. It does not list files: everything under `files/` is the recipe.
+`recipe.json` describes a recipe. It does not list the recipe's files, because everything under `files/` is the recipe. It does list the templates, each with its destination.
 
 | Field          | Meaning                                                                                                  |
 | -------------- | -------------------------------------------------------------------------------------------------------- |
 | `name`         | The recipe's id, matching its directory name                                                             |
 | `description`  | One line saying what the recipe gives a project                                                          |
 | `dependencies` | The npm packages the files import, with version ranges, beyond the `react` and `next` an app already has |
+| `templates`    | Each path under `templates/`, mapped to its destination relative to the project root                     |
 
 ```json
 {
@@ -55,6 +58,15 @@ The templates import the recipe through the `@/` alias, as `files/` does, so not
     "@uiid/design-system": "workspace:*",
     "@uiid/icons": "workspace:*",
     "jotai": "^3.0.2"
+  },
+  "templates": {
+    "nav.ts": "nav.ts",
+    "app/layout.tsx": "app/layout.tsx",
+    "app/globals.css": "app/globals.css",
+    "app/page.tsx": "app/page.tsx",
+    "app/guides/page.tsx": "app/guides/page.tsx",
+    "app/guides/getting-started/page.tsx": "app/guides/getting-started/page.tsx",
+    "app/guides/next-steps/page.tsx": "app/guides/next-steps/page.tsx"
   }
 }
 ```

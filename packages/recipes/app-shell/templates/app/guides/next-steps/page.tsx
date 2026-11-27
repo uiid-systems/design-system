@@ -1,4 +1,9 @@
 import { Stack, Text } from "@uiid/design-system";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Next Steps",
+};
 
 export default function NextStepsPage() {
   return (
