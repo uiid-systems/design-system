@@ -122,3 +122,5 @@ export const BesideSelect: Story = {
     </Group>
   ),
 };
+
+export const NonModal: Story = { render: () => <Examples.NonModal /> };

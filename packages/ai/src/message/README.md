@@ -50,7 +50,40 @@ The body. All `Stack` props, with `gap={2}` as the default. It never widens the 
 
 ### MessageResponse
 
-A markdown reply. All [`Markdown`](../../../markdown/src/markdown/README.md) props, including `streaming`. Renders `data-slot="message-response"`.
+A markdown reply. All [`Markdown`](../../../markdown/src/markdown/README.md) props, including `streaming` and `overrides`. Renders `data-slot="message-response"`.
+
+## Code blocks
+
+A fenced block in a reply renders as `Markdown`'s plain `<pre>`, styled by `Prose`. For highlighted, copyable code, pass a [`CodeBlock`](../../../code/src/code-block/README.md) through `overrides.codeBlock`. `@uiid/ai` does not depend on `@uiid/code`, so add it to your own app's dependencies.
+
+Define the component and the object once, outside render, so each block keeps its instance while the reply streams:
+
+```tsx
+import { MessageResponse } from "@uiid/ai";
+import { CodeBlock } from "@uiid/code";
+import type { MarkdownCodeBlockProps, MarkdownOverrides } from "@uiid/markdown";
+
+const ChatCodeBlock = ({ code, language }: MarkdownCodeBlockProps) => (
+  <CodeBlock
+    code={code}
+    language={language ?? "text"}
+    notations={false}
+    hideLanguageIcon
+  />
+);
+
+const overrides: MarkdownOverrides = { codeBlock: ChatCodeBlock };
+
+<MessageResponse overrides={overrides}>{message.text}</MessageResponse>;
+```
+
+- `language ?? "text"`: a bare `CodeBlock` reads a missing language as TypeScript, so a fence with none would be colored as TypeScript. A language the highlighter does not know already renders plain.
+- `notations={false}`: the model's text is not yours, so a `// [!code --]` in it renders as written instead of marking a line removed that the copy button still copies.
+- `hideLanguageIcon`: no bar above the code; the copy button floats in its corner, the only button a `CodeBlock` shows by default.
+- The highlighter loads on the first code block, so a reply with no code downloads none of it.
+- While the reply streams, an open fence renders through `ChatCodeBlock` from its first line, and the same instance receives the text as it grows.
+
+`Reasoning` takes the same `overrides`.
 
 ## Actions
 
@@ -87,4 +120,4 @@ A toolbar with metadata on the other side is the same `Group` with `ax="space-be
 - The bubble is a CSS rule keyed on the root's `data-from`; `MessageContent` does not take `from` and there is no context between the parts.
 - A turn is capped at 95% of the column, so a bubble never touches the far edge. Any `maxw`, a pixel width or `"full"`, replaces the cap.
 - `MessageResponse` is `Markdown`, which is memoized on all of its props. Pass a stable `render` element or none, or the memo never hits.
-- No part holds state or uses a hook, so all three render on the server.
+- No part holds state or uses a hook, so all three render on the server. A `CodeBlock` passed through `overrides` is a client component and highlights on the client.

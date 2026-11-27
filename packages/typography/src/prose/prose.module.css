@@ -202,6 +202,16 @@
     margin-block-start: 0;
   }
 
+  /* Block code nested in a list item or a quote, as a pre or a CodeBlock in
+     its place, steps down from the text above it as a paragraph does there.
+     In a tight list item that text is a bare text node, so the block is the
+     item's first element and the step applies without a first-child guard.
+     A quote's text is always in a paragraph, so there the guard stays. */
+  & li > :is(pre, div),
+  & blockquote > :is(pre, div):not(:first-child) {
+    margin-block-start: 0.5em;
+  }
+
   /* Blockquotes ---------------------------------------------------------- */
 
   & blockquote {

@@ -1,20 +1,36 @@
 import type { ProseProps } from "@uiid/typography";
 import type { ComponentPropsWithoutRef, ComponentType } from "react";
 
+/** What the `codeBlock` override receives for each code block. */
+export type MarkdownCodeBlockProps = {
+  /** The block's text, as written. Raw HTML in it is never parsed. */
+  code: string;
+  /**
+   * The first word of the fence's info string, such as `ts` for a block
+   * opened with ```` ```ts ````. Absent when the fence has none.
+   */
+  language?: string;
+};
+
 /**
- * Components that render markdown's links and images in place of `<a>` and
- * `<img>`. Each gets the element's props. `Markdown` drops `javascript:`,
- * `vbscript:` and non-image `data:` URLs, including forms split by tabs or
- * newlines, but that is a blocklist: before reusing a URL anywhere a browser
- * navigates (an `href`, `window.open`), allowlist its scheme, for example
- * `new URL(url, location.href).protocol` in `http:`/`https:` (plus `mailto:`
- * for links).
+ * Components that render markdown's links, images and code blocks.
+ *
+ * `a` and `img` replace `<a>` and `<img>` and get the element's props.
+ * `Markdown` drops `javascript:`, `vbscript:` and non-image `data:` URLs,
+ * including forms split by tabs or newlines, but that is a blocklist: before
+ * reusing a URL anywhere a browser navigates (an `href`, `window.open`),
+ * allowlist its scheme, for example `new URL(url, location.href).protocol` in
+ * `http:`/`https:` (plus `mailto:` for links).
+ *
+ * `codeBlock` replaces a whole code block, `<pre>` and all, and gets its text
+ * and language instead of element props.
  */
 export type MarkdownOverrides = {
   a?: ComponentType<ComponentPropsWithoutRef<"a">>;
   img?: ComponentType<
     Omit<ComponentPropsWithoutRef<"img">, "src"> & { src?: string }
   >;
+  codeBlock?: ComponentType<MarkdownCodeBlockProps>;
 };
 
 export type MarkdownProps = Omit<ProseProps, "children"> & {
@@ -36,9 +52,10 @@ export type MarkdownProps = Omit<ProseProps, "children"> & {
    */
   reveal?: boolean;
   /**
-   * Render links and images with your own components, such as a link policy
-   * for untrusted text. Define the object and its components once, outside
-   * render: a new component each render remounts every link and image.
+   * Render links, images and code blocks with your own components, such as a
+   * link policy for untrusted text or a highlighted code block. Define the
+   * object and its components once, outside render: a new component each
+   * render remounts every link, image and code block.
    */
   overrides?: MarkdownOverrides;
 };
