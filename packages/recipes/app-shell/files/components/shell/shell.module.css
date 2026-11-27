@@ -1,0 +1,89 @@
+/*
+ * What the shell needs that a UIID prop doesn't cover: a viewport that never
+ * scrolls, and the sidebar's slide.
+ */
+
+.shell-root {
+  --shell-sidebar-width: 280px;
+  --shell-transition: var(--globals-transition-duration) var(--globals-transition-easing);
+
+  position: relative;
+}
+
+/* The viewport never scrolls; the sidebar and the main row do. */
+.shell-body {
+  overflow: hidden;
+}
+
+/*
+ * Opening and closing the sidebar.
+ *
+ * The shell arranges three components it doesn't own, so it addresses them by
+ * their `data-slot`: `sidebar`, `header` and `main`.
+ *
+ * The sidebar sits over the inner column's leading edge, out of the flow.
+ * The column itself never moves or resizes, so the header's trailing side
+ * and the main row's scrollbar stay exactly where they are. Only what sits
+ * against the sidebar slides, by a transform: the sidebar, the header's
+ * leading group, and the main row's children.
+ *
+ * The one layout change is the main row's padding, which makes room for the
+ * sidebar in a single step. The page is laid out once per toggle rather than
+ * on every frame, as an animated width would have it. The row clips sideways
+ * so its children can slide without a scrollbar appearing.
+ *
+ * `visibility` flips once the slide ends, which takes a closed sidebar's
+ * links out of the tab order and away from screen readers.
+ *
+ * The state is `data-sidebar="closed"` on `<html>`, which the sidebar owns;
+ * see sidebar.hooks.ts.
+ *
+ * The slide assumes a left-to-right page: `translateX` is physical, so a
+ * right-to-left shell would need its direction flipped.
+ */
+.shell-root [data-slot="sidebar"] {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--shell-sidebar-width);
+}
+
+.shell-root [data-slot="main"] {
+  overflow-x: hidden;
+  padding-inline-end: var(--shell-sidebar-width);
+}
+
+.shell-root [data-slot="header"] > :first-child,
+.shell-root [data-slot="main"] > * {
+  transform: translateX(var(--shell-sidebar-width));
+}
+
+:root[data-sidebar="closed"] .shell-root {
+  [data-slot="sidebar"] {
+    transform: translateX(-100%);
+    visibility: hidden;
+  }
+
+  [data-slot="main"] {
+    padding-inline-end: 0;
+  }
+
+  [data-slot="header"] > :first-child,
+  [data-slot="main"] > * {
+    transform: none;
+  }
+}
+
+/* Under reduced motion the sidebar snaps. */
+@media (prefers-reduced-motion: no-preference) {
+  .shell-root [data-slot="sidebar"] {
+    transition:
+      transform var(--shell-transition),
+      visibility var(--globals-transition-duration);
+  }
+
+  .shell-root [data-slot="header"] > :first-child,
+  .shell-root [data-slot="main"] > * {
+    transition: transform var(--shell-transition);
+  }
+}
