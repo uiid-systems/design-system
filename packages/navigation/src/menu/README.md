@@ -14,14 +14,14 @@ Menu wraps Base UI's [Menu](https://base-ui.com/react/components/menu) and takes
 
 ## Items or parts
 
-Reach for `items` first. It covers action rows, links, separators, descriptions and submenus at any depth, and every slot prop reaches every level at once, so one `ItemProps` styles every row.
+Reach for `items` first. It covers action rows, links, separators, descriptions and submenus at any depth, and the slots for rows and submenus (`ItemProps`, `LinkItemProps`, `SubmenuTriggerProps` and the rest) reach every level at once, so one `ItemProps` styles every action row at any depth.
 
 Compose the parts when the menu needs something the array has no entry for:
 
 - Groups under a label — `MenuGroup` and `MenuGroupLabel`. In `items`, an entry with its own `items` is a submenu, not a group
 - Toggles and one-of-many choices — `MenuCheckboxItem`, `MenuRadioGroup` and `MenuRadioItem`
 - Per-submenu state — `SubmenuRootProps` reaches every submenu at once, so an `open` passed there controls all of them together
-- A row drawn from your own `children` in place of its `icon` / `label` / `description` block, or a link drawn by a router's component through `render`
+- A row drawn from your own `children` in place of its `icon` / `label` / `description` block, or a link drawn by its own router component
 
 ## Entries
 
@@ -115,7 +115,7 @@ The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed
 
 ## Slots
 
-Anything not set on Menu itself is forwarded to Base UI through a slot prop. Each slot omits the keys Menu fills itself, so passing one there is a type error: `side` and `align` are top-level props, the content of the trigger and of every row comes from `trigger` and `items`, and Menu fills every portal, positioner and popup itself.
+Anything not set on Menu itself is forwarded to Base UI through a slot prop. Each slot except `RootProps` omits the keys Menu fills itself, so passing one there is a type error: `side` and `align` are top-level props, the content of the trigger and of every row comes from `trigger` and `items`, and Menu fills every portal, positioner and popup itself.
 
 | Slot                     | Reaches                                                          | Takes no                                           |
 | ------------------------ | ---------------------------------------------------------------- | -------------------------------------------------- |

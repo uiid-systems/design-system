@@ -71,14 +71,14 @@ export const ViewOptions: Story = { render: () => <Examples.ViewOptions /> };
 export const BesideSelect: Story = {
   render: () => (
     <Group gap={4} ay="start">
-      <Examples.Default />
+      <Examples.Icons />
       <Select
         aria-label="Action"
         placeholder="Choose an action"
         items={[
           { label: "Edit", value: "edit" },
           { label: "Duplicate", value: "duplicate" },
-          { label: "Delete", value: "delete" },
+          { label: "Delete", value: "delete", disabled: true },
         ]}
       />
     </Group>
