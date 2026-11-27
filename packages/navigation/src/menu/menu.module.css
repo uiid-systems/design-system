@@ -69,7 +69,8 @@
 .item,
 .link-item,
 .submenu-trigger,
-.checkbox-item {
+.checkbox-item,
+.radio-item {
   cursor: default;
   user-select: none;
   display: flex;
@@ -87,13 +88,14 @@
 .item > [data-slot="list-item"],
 .link-item > [data-slot="list-item"],
 .submenu-trigger > [data-slot="list-item"],
-.checkbox-item > [data-slot="list-item"] {
+.checkbox-item > [data-slot="list-item"],
+.radio-item > [data-slot="list-item"] {
   flex: 1;
   min-width: 0;
 }
 
 /*
- * The layout every choice row shares (checkbox items, and radio items next):
+ * The layout every choice row shares (checkbox items and radio items):
  * the row's content, then its indicator at the end, set apart the way
  * Select's check is. A row composes this beside `composes-option`.
  */
@@ -121,6 +123,12 @@
 /* Padding, radius, highlight and disabled look from `composes-option`, as on
    `.item`; its layout from `choice-item`. */
 .checkbox-item {
+  composes: composes-option from global;
+  composes: choice-item;
+}
+
+/* The same row and indicator as `.checkbox-item`, so the two line up. */
+.radio-item {
   composes: composes-option from global;
   composes: choice-item;
 }

@@ -9,6 +9,9 @@ export * from "./menu-group";
 export * from "./menu-group-label";
 export * from "./menu-checkbox-item";
 export * from "./menu-checkbox-item-indicator";
+export * from "./menu-radio-group";
+export * from "./menu-radio-item";
+export * from "./menu-radio-item-indicator";
 export * from "./menu-link-item";
 export * from "./menu-separator";
 

@@ -139,6 +139,37 @@ export type MenuCheckboxItemIndicatorProps = Omit<
   keepMounted?: boolean;
 };
 
+/*
+ * Base UI's `value`, `defaultValue`, `onValueChange` and `disabled` pass
+ * through unchanged.
+ */
+export type MenuRadioGroupProps = BaseMenu.RadioGroup.Props;
+/*
+ * Base UI's `value`, `closeOnClick` (`false` by default, so the menu stays
+ * open after a choice) and `disabled` pass through unchanged.
+ */
+export type MenuRadioItemProps = WithStringClassName<BaseMenu.RadioItem.Props> &
+  Omit<MenuRowContentProps, "children"> & {
+    /**
+     * Replaces the `icon` / `label` / `description` block inside the row's
+     * `ListItem` wrapper, and drops the indicator after it. Place a
+     * `MenuRadioItemIndicator` among them to keep the check.
+     */
+    children?: React.ReactNode;
+  };
+export type MenuRadioItemIndicatorProps = Omit<
+  WithStringClassName<BaseMenu.RadioItemIndicator.Props>,
+  "keepMounted"
+> & {
+  /**
+   * Whether to keep the indicator in the DOM while the item is not selected.
+   * Kept, it is only hidden, so an unselected row holds the indicator's space
+   * and labels in a mixed list stay aligned.
+   * @default true
+   */
+  keepMounted?: boolean;
+};
+
 export type MenuLinkItemProps = WithStringClassName<BaseMenu.LinkItem.Props> &
   MenuRowContentProps;
 export type MenuSeparatorProps = WithStringClassName<BaseMenu.Separator.Props>;
