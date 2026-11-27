@@ -64,7 +64,7 @@ Pass `label` to replace the English, as a string or as a function of `{ streamin
 
 - The trigger is a muted row that lifts to the foreground color on hover. It is not a `Button`, which would bring a surface and padding to turn off.
 - `streaming` is forwarded to `Markdown`, so half-typed syntax is held back while the text arrives and shown as written once it is done.
-- A fenced block renders as `Markdown`'s plain `<pre>`. For highlighted, copyable code, pass the same `overrides` as `MessageResponse`, with a `CodeBlock` from `@uiid/code` (your own dependency, not one of `@uiid/ai`'s) as `codeBlock`; the highlighter loads on the first code block. See [Message's code blocks](../message/README.md#code-blocks) for the component to pass:
+- A fenced block renders as `Markdown`'s plain `<pre>`. For highlighted, copyable code, pass the same `overrides` as `MessageResponse`, with the recipe's `ChatCodeBlock` as `codeBlock`: a wrapper around `CodeBlock` from `@uiid/code` (your own dependency, not one of `@uiid/ai`'s) that sets `notations={false}`, so a notation comment in the model's text renders as written; the highlighter loads on the first code block. See [Message's code blocks](../message/README.md#code-blocks) for the component to pass:
 
   ```tsx
   <Reasoning streaming={streaming} overrides={overrides}>

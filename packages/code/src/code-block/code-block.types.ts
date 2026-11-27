@@ -114,7 +114,9 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
    * Set to `false` to render notation comments such as `// [!code --]` as
    * written, instead of turning them into diff and highlight lines. Turn it off
    * for text you did not write, such as a model's reply, where such a comment
-   * would show a line as removed that the copy button still copies.
+   * would show a line as removed that the copy button still copies. With
+   * `html`, nothing is highlighted on the client and this has no effect: pass
+   * `{ notations: false }` to `highlight()` instead.
    * @default true
    */
   notations?: boolean;

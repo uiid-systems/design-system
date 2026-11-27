@@ -107,17 +107,25 @@ A code block renders as a plain `<pre><code>` styled by `Prose`. To render it wi
 
 ```tsx
 import { CodeBlock } from "@uiid/code";
-import { Markdown, type MarkdownOverrides } from "@uiid/markdown";
+import {
+  Markdown,
+  type MarkdownCodeBlockProps,
+  type MarkdownOverrides,
+} from "@uiid/markdown";
 
 // Once, outside render, so the block keeps its instance as the text grows.
-const overrides: MarkdownOverrides = { codeBlock: CodeBlock };
+const ModelCodeBlock = ({ code, language }: MarkdownCodeBlockProps) => (
+  <CodeBlock code={code} language={language ?? "text"} notations={false} />
+);
+
+const overrides: MarkdownOverrides = { codeBlock: ModelCodeBlock };
 
 <Markdown streaming={status === "streaming"} overrides={overrides}>
   {message.text}
 </Markdown>;
 ```
 
-- `@uiid/markdown` does not depend on `@uiid/code`. `CodeBlock` takes `code` and `language`, so it fits the override as it is.
+- `@uiid/markdown` does not depend on `@uiid/code`. The wrapper sets `language ?? "text"` because a bare `CodeBlock` colors a fence with no language as TypeScript, and `notations={false}` because model text is untrusted: with notations on, a line ending in `// [!code --]` shows as removed while the copy button still copies it. Add `hideLanguageIcon` for no header bar above the code.
 - `language` is the fence as the model wrote it. It is not checked against any list, so only use it for lookup, such as picking a highlighter grammar, and fall back to plain text for a name you do not know.
 - While `streaming`, an open fence renders through the override from its first line, and the same instance receives the text as it grows: it does not remount per chunk, and it stays mounted when the closing fence lands and when `streaming` turns off.
 - `reveal` does not animate code: the block's text appears as it arrives, with or without the override, and the words after it reveal as they would otherwise.

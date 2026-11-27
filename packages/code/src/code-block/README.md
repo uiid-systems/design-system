@@ -19,7 +19,7 @@ While the code overflows, sideways or (in fullscreen) downwards, the code itself
 
 One trailing newline (LF or CRLF) ends the last line rather than adding a blank one, so it is left out of the display; the copy button still copies `code` exactly. Server `html` highlighted from the same `code` drops the empty last line Shiki renders for it, so pass `highlight` the same `code` as the block: html from already trimmed code, with untrimmed `code`, would lose a real blank last line.
 
-Notation comments such as `// [!code ++]`, `// [!code --]` and `// [!code highlight]` turn their line into a diff or highlighted line and are left out of the display. Pass `notations={false}` to render them as written. Turn them off for text you did not write, such as a model's reply: a stray `// [!code --]` there would show a line as removed while the copy button still copies it.
+Notation comments such as `// [!code ++]`, `// [!code --]` and `// [!code highlight]` turn their line into a diff or highlighted line and are left out of the display. Pass `notations={false}` to render them as written. Turn them off for text you did not write, such as a model's reply: a stray `// [!code --]` there would show a line as removed while the copy button still copies it. With prerendered `html` nothing is highlighted on the client, so the prop has no effect; pass `{ notations: false }` to `highlight()` instead.
 
 If highlighting fails, the block shows the plain code with the error message below it, so no line moves.
 
@@ -104,22 +104,22 @@ The frame, the row cap and the scroll area around the code are not parts, so a c
 
 ## Data Slots
 
-| Slot                           | Element                                  |
-| ------------------------------ | ---------------------------------------- |
-| `code-block`                   | Root container, and the fullscreen popup |
-| `code-block-header`            | Header bar, or the floating buttons' box |
-| `code-block-title`             | Language icon and filename in the bar    |
-| `code-block-actions`           | The header's buttons                     |
-| `code-block-copy-button`       | Copy button                              |
-| `code-block-wrap-button`       | Line-wrap toggle                         |
-| `code-block-fullscreen-button` | Fullscreen toggle                        |
-| `language-icon`                | Language icon, when `language` is set    |
-| `code-block-scroll`            | Scroll area around the code              |
-| `code-block-content`           | Highlighted code                         |
-| `code-block-expand-toggle`     | "Show more" / "Show less" button         |
-| `code-block-fullscreen`        | Fullscreen portal on the body            |
-| `code-block-backdrop`          | Fullscreen backdrop, closes on click     |
-| `code-block-error`             | Highlighting error message               |
+| Slot                           | Element                                                                  |
+| ------------------------------ | ------------------------------------------------------------------------ |
+| `code-block`                   | Root container, and the fullscreen popup                                 |
+| `code-block-header`            | Header bar, or the floating buttons' box                                 |
+| `code-block-title`             | Language icon and filename in the bar                                    |
+| `code-block-actions`           | The header's buttons                                                     |
+| `code-block-copy-button`       | Copy button                                                              |
+| `code-block-wrap-button`       | Line-wrap toggle                                                         |
+| `code-block-fullscreen-button` | Fullscreen toggle                                                        |
+| `language-icon`                | Language icon, when `language` has an icon and `hideLanguageIcon` is off |
+| `code-block-scroll`            | Scroll area around the code                                              |
+| `code-block-content`           | Highlighted code                                                         |
+| `code-block-expand-toggle`     | "Show more" / "Show less" button                                         |
+| `code-block-fullscreen`        | Fullscreen portal on the body                                            |
+| `code-block-backdrop`          | Fullscreen backdrop, closes on click                                     |
+| `code-block-error`             | Highlighting error message                                               |
 
 The root carries each state attribute only while that state is on: `data-wrap` while lines wrap, and `data-expanded` only when `rows` is set and the block is expanded. `data-fullscreen` marks the fullscreen popup, not the inline root. The header carries `data-floating` when it has no bar and its buttons float.
 
