@@ -1,9 +1,9 @@
 import type { NavEntry } from "@/lib/nav";
 
 /**
- * Every page the docs app names, in order. The sidebar and the pager are
- * filled from it. A group's label is also its saved open state's id, so
- * renaming a group resets that state for returning readers.
+ * Every page the docs app names, in order. The sidebar, the breadcrumbs and
+ * the pager are filled from it. A group's label is also its saved open
+ * state's id, so renaming a group resets that state for returning readers.
  */
 export const NAV: NavEntry[] = [
   { label: "Home", href: "/" },
