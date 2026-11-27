@@ -5,10 +5,9 @@
 import { relative } from "node:path";
 
 import { APP_SHELL_FILES, DOCS_APP, REPO_ROOT } from "./paths.ts";
-import { gitLister, runCheck } from "./recipes.ts";
+import { runCheck } from "./recipes.ts";
 
 process.exitCode = runCheck(APP_SHELL_FILES, DOCS_APP, {
-  lister: gitLister(REPO_ROOT),
   labels: {
     files: relative(REPO_ROOT, APP_SHELL_FILES),
     dest: relative(REPO_ROOT, DOCS_APP),

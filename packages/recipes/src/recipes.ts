@@ -4,23 +4,20 @@
  * Plain Node with no dependencies: Node runs this TypeScript directly by
  * stripping its types, so it uses erasable syntax only and imports with `.ts`.
  *
+ * A file or directory whose name starts with `.` is never part of the recipe
+ * or of the project's copy: the walk skips it on both sides.
+ *
  * Ownership: a recipe owns the topmost directories under `files/` that
  * directly hold a file (today `components/shell`, `components/sidebar`,
  * `components/header`, `components/main`, `components/breadcrumbs` and `lib`).
  * A directory the recipe only passes through, such as `components/` or the
- * root, is never owned, so its other contents are never reported or touched. A
- * file directly under `files/` is compared on its own.
+ * root, is never owned. A file directly under `files/` is compared on its own.
  *
  * Inside an owned directory of the project's copy, a file the recipe does not
  * have is extra when its directory is one the recipe has, and sync deletes it.
  * A directory the recipe does not have is reported instead, and sync refuses
- * to run while one exists: a person deletes it. So a stray file in the recipe
- * can never make sync delete a whole directory of the project's.
- *
- * Which files exist comes from a `Lister`. The commands use `gitLister`, which
- * leaves out what git ignores; tests use `walkFiles`.
+ * to run while one exists: a person deletes it.
  */
-import { execFileSync } from "node:child_process";
 import {
   lstatSync,
   mkdirSync,
@@ -59,13 +56,6 @@ export type SyncResult = {
 };
 
 export type ImportViolation = { file: string; specifier: string };
-
-/**
- * Lists the files under a directory as sorted POSIX paths relative to it,
- * without following symlinks: a symlink is listed as an entry of its own. A
- * missing directory has no files.
- */
-export type Lister = (dir: string) => string[];
 
 export type Labels = { files: string; dest: string };
 export type Log = (line: string) => void;
@@ -127,11 +117,17 @@ function safeTarget(root: string, path: string, { leaf = true } = {}): string {
   return target;
 }
 
-/** The plain file-system `Lister`: every entry that is not a directory. */
-export const walkFiles: Lister = (dir) => {
+/**
+ * Every entry under `dir` that is not a directory, as sorted POSIX paths
+ * relative to it. Skips any file or directory whose name starts with `.`, and
+ * never follows a symlink: a symlink is listed as an entry of its own. A
+ * missing directory has no files.
+ */
+function walkFiles(dir: string): string[] {
   const found: string[] = [];
   const walk = (rel: string) => {
     for (const entry of readdirSync(join(dir, rel), { withFileTypes: true })) {
+      if (entry.name.startsWith(".")) continue;
       const path = rel ? `${rel}/${entry.name}` : entry.name;
       if (entry.isDirectory()) walk(path);
       else found.push(path);
@@ -139,45 +135,20 @@ export const walkFiles: Lister = (dir) => {
   };
   if (lstatSync(resolve(dir), NO_THROW)?.isDirectory()) walk("");
   return found.sort();
-};
-
-/**
- * A `Lister` that asks git: tracked and untracked files, leaving out what git
- * ignores, and only those that exist on disk. Runs git at `repoRoot`, so a
- * directory outside that repository is an error.
- */
-export function gitLister(repoRoot: string): Lister {
-  return (dir) => {
-    const prefix = relative(resolve(repoRoot), resolve(dir))
-      .split(sep)
-      .join("/");
-    const output = execFileSync(
-      "git",
-      [
-        "ls-files",
-        "--cached",
-        "--others",
-        "--exclude-standard",
-        "-z",
-        "--",
-        prefix || ".",
-      ],
-      { cwd: repoRoot, encoding: "utf8" },
-    );
-    const files = new Set<string>();
-    for (const path of output.split("\0")) {
-      if (!path) continue;
-      const rel = prefix ? path.slice(prefix.length + 1) : path;
-      if (lstatSync(join(dir, rel), NO_THROW)) files.add(rel);
-    }
-    return [...files].sort();
-  };
 }
 
-/** The recipe's files, refusing a symlinked `files/` or any non-regular file. */
-function listRecipeFiles(filesDir: string, lister: Lister): string[] {
+/**
+ * The recipe's files. Refuses a symlinked `files/`, any file that is not a
+ * regular file, and a recipe with no files, which is missing or misplaced.
+ */
+function listRecipeFiles(filesDir: string): string[] {
   refuseSymlink(filesDir);
-  const files = lister(filesDir);
+  const files = walkFiles(filesDir);
+  if (files.length === 0) {
+    throw new Error(
+      `The recipe at ${JSON.stringify(resolve(filesDir))} holds no files: it is missing, empty or misplaced`,
+    );
+  }
   for (const file of files) {
     if (!lstatSync(join(filesDir, file)).isFile()) {
       throw new Error(
@@ -210,6 +181,28 @@ function recipeDirectories(files: string[]): Set<string> {
   return dirs;
 }
 
+/**
+ * For `path`, an entry strictly inside the owned directory `owned`, the
+ * topmost directory between them that is not in `dirs`, the recipe's
+ * directories. Undefined when every directory on the way is the recipe's.
+ */
+export function extraDirectoryOf(
+  path: string,
+  owned: string,
+  dirs: Set<string>,
+): string | undefined {
+  if (!path.startsWith(`${owned}/`)) {
+    throw new Error(
+      `${JSON.stringify(path)} is not inside ${JSON.stringify(owned)}`,
+    );
+  }
+  let extra: string | undefined;
+  for (let dir = posix.dirname(path); dir !== owned; dir = posix.dirname(dir)) {
+    if (!dirs.has(dir)) extra = dir;
+  }
+  return extra;
+}
+
 /** Whether `path` exists under exactly its own name, whatever the file system's case rules. */
 function existsExactly(path: string) {
   if (!lstatSync(path, NO_THROW)) return false;
@@ -221,12 +214,8 @@ function existsExactly(path: string) {
  * destination file that is a symlink, or not a file, counts as changed; a
  * symlinked directory on the way to one is refused.
  */
-export function compareRecipe(
-  filesDir: string,
-  destDir: string,
-  lister: Lister = walkFiles,
-): RecipeDiff {
-  const recipe = listRecipeFiles(filesDir, lister);
+export function compareRecipe(filesDir: string, destDir: string): RecipeDiff {
+  const recipe = listRecipeFiles(filesDir);
   const inRecipe = new Set(recipe);
   const dirs = recipeDirectories(recipe);
   const diff: RecipeDiff = {
@@ -249,19 +238,11 @@ export function compareRecipe(
 
   const extraDirectories = new Set<string>();
   for (const owned of ownedDirectories(recipe)) {
-    for (const entry of lister(safeTarget(destDir, owned))) {
+    for (const entry of walkFiles(safeTarget(destDir, owned))) {
       const path = `${owned}/${entry}`;
       if (inRecipe.has(path)) continue;
-      // The topmost directory on the way to this file that the recipe lacks.
-      let missingDir: string | undefined;
-      for (
-        let dir = posix.dirname(path);
-        dir !== owned;
-        dir = posix.dirname(dir)
-      ) {
-        if (!dirs.has(dir)) missingDir = dir;
-      }
-      if (missingDir) extraDirectories.add(missingDir);
+      const extraDir = extraDirectoryOf(path, owned, dirs);
+      if (extraDir) extraDirectories.add(extraDir);
       else diff.extra.push(path);
     }
   }
@@ -277,12 +258,8 @@ export function compareRecipe(
  * before anything changes, and a symlink anywhere on a target's path stops the
  * sync.
  */
-export function syncRecipe(
-  filesDir: string,
-  destDir: string,
-  lister: Lister = walkFiles,
-): SyncResult {
-  const diff = compareRecipe(filesDir, destDir, lister);
+export function syncRecipe(filesDir: string, destDir: string): SyncResult {
+  const diff = compareRecipe(filesDir, destDir);
   if (diff.extraDirectories.length > 0) {
     const names = diff.extraDirectories.map((dir) => JSON.stringify(`${dir}/`));
     throw new Error(
@@ -308,26 +285,37 @@ export function syncRecipe(
   return { written, removed: diff.extra };
 }
 
+/** `from "x"`, and a side-effect `import "x"`. */
+const STATIC = /\b(?:from|import)\s*(["'`])([^"'`\n]*)\1/g;
+/** The start of an `import(` or `require(` call. */
+const CALL = /\b(import|require)\s*\(/g;
+/** A call's argument when it is one string literal and nothing else. */
+const CALL_LITERAL = /\s*(["'`])([^"'`\n]*)\1\s*\)/y;
+
 /**
  * The module specifiers a source file names: static, type-only and
  * side-effect imports, re-exports, `import()` and `require()`. A specifier in
  * a comment or a string is found too, which can only make the check stricter.
- * An `import()` or `require()` whose argument is not a string literal comes
- * back as the call's text, such as `import(name`, which no rule allows.
+ * A call whose argument is not one string literal, such as `import(name)` or
+ * `import("./" + name)`, comes back as the call's text, such as
+ * `import("./" + name`, which no rule allows.
  */
 export function importSpecifiers(source: string): string[] {
-  const literal = /\b(?:from|import|require)\s*(?:\(\s*)?(["'`])([^"'`\n]*)\1/g;
-  const computed = /\b(import|require)\s*\((?!\s*["'`])\s*([^)\n]{0,40})/g;
-  const found = [
-    ...[...source.matchAll(literal)].map((match) => ({
+  const found: { at: number; specifier: string }[] = [];
+  for (const match of source.matchAll(STATIC)) {
+    found.push({ at: match.index, specifier: match[2] });
+  }
+  for (const match of source.matchAll(CALL)) {
+    const after = match.index + match[0].length;
+    CALL_LITERAL.lastIndex = after;
+    const literal = CALL_LITERAL.exec(source);
+    found.push({
       at: match.index,
-      specifier: match[2],
-    })),
-    ...[...source.matchAll(computed)].map((match) => ({
-      at: match.index,
-      specifier: `${match[1]}(${match[2]}`,
-    })),
-  ];
+      specifier: literal
+        ? literal[2]
+        : `${match[1]}(${source.slice(after, after + 40).split("\n")[0]}`,
+    });
+  }
   return found.sort((a, b) => a.at - b.at).map(({ specifier }) => specifier);
 }
 
@@ -389,12 +377,9 @@ export function isAllowedImport(
 export function checkRecipe(
   filesDir: string,
   destDir: string,
-  {
-    lister = walkFiles,
-    labels = { files: filesDir, dest: destDir },
-  }: { lister?: Lister; labels?: Labels } = {},
+  { labels = { files: filesDir, dest: destDir } }: { labels?: Labels } = {},
 ): string[] {
-  const diff = compareRecipe(filesDir, destDir, lister);
+  const diff = compareRecipe(filesDir, destDir);
   const at = (file: string) => JSON.stringify(posix.join(labels.dest, file));
   return [
     ...diff.changed.map((file) => `changed  ${at(file)}`),
@@ -404,24 +389,24 @@ export function checkRecipe(
       (dir) =>
         `extra    ${at(`${dir}/`)}, a directory the recipe does not have`,
     ),
-    ...findDisallowedImports(filesDir, lister).map(
+    ...findDisallowedImports(filesDir).map(
       ({ file, specifier }) =>
         `import   ${JSON.stringify(posix.join(labels.files, file))} imports ${JSON.stringify(specifier)}, which a recipe file may not import`,
     ),
   ];
 }
 
-type RunOptions = { lister?: Lister; labels?: Labels; log: Log };
+type RunOptions = { labels?: Labels; log: Log };
 
 /** `recipes:check`: logs the result and returns the exit code, 0 or 1. */
 export function runCheck(
   filesDir: string,
   destDir: string,
-  { lister, labels = { files: filesDir, dest: destDir }, log }: RunOptions,
+  { labels = { files: filesDir, dest: destDir }, log }: RunOptions,
 ): number {
   let problems: string[];
   try {
-    problems = checkRecipe(filesDir, destDir, { lister, labels });
+    problems = checkRecipe(filesDir, destDir, { labels });
   } catch (error) {
     log(`recipes:check: ${(error as Error).message}`);
     return 1;
@@ -443,11 +428,11 @@ export function runCheck(
 export function runSync(
   filesDir: string,
   destDir: string,
-  { lister, labels = { files: filesDir, dest: destDir }, log }: RunOptions,
+  { labels = { files: filesDir, dest: destDir }, log }: RunOptions,
 ): number {
   let result: SyncResult;
   try {
-    result = syncRecipe(filesDir, destDir, lister);
+    result = syncRecipe(filesDir, destDir);
   } catch (error) {
     log(`recipes:sync: ${(error as Error).message}`);
     return 1;
@@ -466,11 +451,8 @@ export function runSync(
 const SCRIPT = /\.[cm]?[jt]sx?$/;
 
 /** Every import in the recipe's script files that `isAllowedImport` refuses. */
-export function findDisallowedImports(
-  filesDir: string,
-  lister: Lister = walkFiles,
-): ImportViolation[] {
-  const files = listRecipeFiles(filesDir, lister);
+export function findDisallowedImports(filesDir: string): ImportViolation[] {
+  const files = listRecipeFiles(filesDir);
   const directories = ownedDirectories(files);
   const violations: ImportViolation[] = [];
   for (const file of files.filter((name) => SCRIPT.test(name))) {

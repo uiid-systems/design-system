@@ -5,10 +5,9 @@
 import { relative } from "node:path";
 
 import { APP_SHELL_FILES, DOCS_APP, REPO_ROOT } from "./paths.ts";
-import { gitLister, runSync } from "./recipes.ts";
+import { runSync } from "./recipes.ts";
 
 process.exitCode = runSync(APP_SHELL_FILES, DOCS_APP, {
-  lister: gitLister(REPO_ROOT),
   labels: {
     files: relative(REPO_ROOT, APP_SHELL_FILES),
     dest: relative(REPO_ROOT, DOCS_APP),
