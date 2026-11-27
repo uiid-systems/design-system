@@ -108,6 +108,8 @@ export const NestedSubmenus: Story = {
   render: () => <Examples.NestedSubmenus />,
 };
 
+export const ViewToggles: Story = { render: () => <Examples.ViewToggles /> };
+
 /* Open each in turn to compare: the popups and rows should read as one kind. */
 export const BesideSelect: Story = {
   render: () => (

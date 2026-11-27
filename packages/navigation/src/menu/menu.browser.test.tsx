@@ -17,6 +17,7 @@ import {
 import { Menu } from "./menu";
 import type { MenuItemType } from "./menu.types";
 import {
+  MenuCheckboxItem,
   MenuGroup,
   MenuGroupLabel,
   MenuItem,
@@ -595,5 +596,113 @@ describe("Menu submenu placement", () => {
     expect(Math.abs(submenu!.top - trigger.top)).toBeLessThanOrEqual(
       ALIGN_TOLERANCE,
     );
+  });
+});
+
+describe("Menu checkbox items", () => {
+  /* One popup, no hover: every assertion reads layout and computed style of
+     rows that are already checked or not, so none depends on timing beyond
+     the popup's own open animation, which is awaited. */
+  const renderChoices = async () => {
+    render(
+      <MenuRoot open modal={false}>
+        <MenuTrigger>View</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuCheckboxItem label="Status" defaultChecked />
+              <MenuCheckboxItem label="Owner" />
+              <MenuCheckboxItem label="Name" defaultChecked disabled />
+              <MenuItem label="Reset" disabled />
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+    const popup = await find('[data-slot="menu-popup"]');
+    await expect
+      .poll(() => popup.hasAttribute("data-starting-style"))
+      .toBe(false);
+    await Promise.all(
+      popup.getAnimations().map((animation) => animation.finished),
+    );
+  };
+
+  const parts = (element: HTMLElement) => ({
+    label: element.querySelector('[data-slot="list-text-label"]')!,
+    content: element.querySelector('[data-slot="list-item"]')!,
+    indicator: element.querySelector(
+      '[data-slot="menu-checkbox-item-indicator"]',
+    )!,
+  });
+
+  /* Drawn: shown, displayed, opaque in itself and with a size. A disabled
+     row's opacity mutes it from the row, not from the indicator. */
+  const expectDrawn = (indicator: Element) => {
+    const computed = style(indicator);
+    const box = indicator.getBoundingClientRect();
+    expect(computed.visibility).toBe("visible");
+    expect(computed.display).not.toBe("none");
+    expect(Number(computed.opacity)).toBe(1);
+    expect(box.width).toBeGreaterThan(0);
+    expect(box.height).toBeGreaterThan(0);
+  };
+
+  it("lines up a checked and an unchecked row's labels", async () => {
+    await renderChoices();
+    const checked = parts(await row("menu-checkbox-item", "Status"));
+    const unchecked = parts(await row("menu-checkbox-item", "Owner"));
+
+    const box = (element: Element) => element.getBoundingClientRect();
+
+    expect(box(checked.label).left).toBeCloseTo(box(unchecked.label).left, 1);
+    // The indicator is drawn after the content, so the label's left edge
+    // matches whether or not an unchecked row reserves its space. The real
+    // guard is below: the unchecked row reserves the indicator's space, so
+    // its content ends at the same edge and its indicator has the same
+    // width. Keep these when tidying this test.
+    expect(box(checked.content).right).toBeCloseTo(
+      box(unchecked.content).right,
+      1,
+    );
+    expect(box(unchecked.indicator).width).toBeGreaterThan(0);
+    expect(box(unchecked.indicator).width).toBeCloseTo(
+      box(checked.indicator).width,
+      1,
+    );
+  });
+
+  it("shows only a checked row's indicator", async () => {
+    await renderChoices();
+    const checked = parts(await row("menu-checkbox-item", "Status"));
+    const unchecked = parts(await row("menu-checkbox-item", "Owner"));
+
+    // `visibility` alone reads "visible" for an element that is undisplayed,
+    // transparent or zero-sized, so each of those is ruled out too.
+    expectDrawn(checked.indicator);
+    expect(style(unchecked.indicator).visibility).toBe("hidden");
+  });
+
+  it("shows a checked, disabled row's indicator, muted with the row", async () => {
+    await renderChoices();
+    const enabled = await row("menu-checkbox-item", "Status");
+    const disabled = await row("menu-checkbox-item", "Name");
+    const disabledItem = await row("menu-item", "Reset");
+
+    expectDrawn(parts(disabled).indicator);
+    expect(Number(style(disabled).opacity)).toBeLessThan(
+      Number(style(enabled).opacity),
+    );
+    // Dimmed exactly as a disabled MenuItem is.
+    expect(style(disabled).opacity).toBe(style(disabledItem).opacity);
+  });
+
+  it("pads and rounds a checkbox row like a plain row", async () => {
+    await renderChoices();
+    const checkbox = await row("menu-checkbox-item", "Owner");
+    const plain = await row("menu-item", "Reset");
+
+    expect(pick(checkbox, ROW)).toEqual(pick(plain, ROW));
   });
 });

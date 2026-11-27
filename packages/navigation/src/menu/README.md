@@ -57,9 +57,19 @@ An entry `{ type: "separator" }` draws a line between sets of entries, at any de
 
 The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed. Base UI's Root is modal by default, so page scroll is locked and outside pointers are blocked whether or not the page is dimmed. A non-modal menu, `RootProps={{ modal: false }}`, blocks nothing and draws no backdrop, whatever `backdrop` is set to.
 
-Menu wraps Base UI's [Menu](https://base-ui.com/react/components/menu) and takes its props unchanged — anything not listed above is forwarded through `RootProps`, `TriggerProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps`, and `SubmenuTriggerProps`, except what Menu sets itself: `PositionerProps` takes no `side` or `align`, and `TriggerProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps` and `SubmenuTriggerProps` take no `children`, since their content comes from `trigger` and `items`. For the same reason `ItemProps` and `SubmenuTriggerProps` take no `label`, `icon` or `description`. `MenuRoot`, `MenuTrigger`, `MenuPortal`, `MenuBackdrop`, `MenuPositioner`, `MenuPopup`, `MenuItem`, `MenuGroup`, `MenuGroupLabel`, `SubmenuRoot`, and `SubmenuTrigger` are exported for menus the simple component can't express.
+Menu wraps Base UI's [Menu](https://base-ui.com/react/components/menu) and takes its props unchanged — anything not listed above is forwarded through `RootProps`, `TriggerProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps`, and `SubmenuTriggerProps`, except what Menu sets itself: `PositionerProps` takes no `side` or `align`, and `TriggerProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps` and `SubmenuTriggerProps` take no `children`, since their content comes from `trigger` and `items`. For the same reason `ItemProps` and `SubmenuTriggerProps` take no `label`, `icon` or `description`. `MenuRoot`, `MenuTrigger`, `MenuPortal`, `MenuBackdrop`, `MenuPositioner`, `MenuPopup`, `MenuItem`, `MenuGroup`, `MenuGroupLabel`, `MenuCheckboxItem`, `MenuCheckboxItemIndicator`, `SubmenuRoot`, and `SubmenuTrigger` are exported for menus the simple component can't express.
 
 `MenuGroup` and `MenuGroupLabel` wrap Base UI's `Group` and `GroupLabel` and take their props unchanged. A group renders `role="group"`, named by its label, which is painted like Select's group label. Groups are composed only: in `items`, an entry with its own `items` is a submenu, not a group.
+
+`MenuCheckboxItem` wraps Base UI's `CheckboxItem` and takes its props unchanged (`checked`, `defaultChecked`, `onCheckedChange`, `closeOnClick`, `disabled`). It renders `role="menuitemcheckbox"`, a row with `label`, `description` and `icon` like `MenuItem`, and Select's check at the end of the row. As in Base UI, `closeOnClick` is `false`, so the menu stays open after a toggle. An unchecked row keeps its indicator's space, so labels in a mixed list stay aligned, and a checked, disabled row keeps its check, dimmed with the row. `children` replace the `icon` / `label` / `description` block inside the row's `ListItem` wrapper, which stays, and drop the check drawn after it; place a `MenuCheckboxItemIndicator` among them to keep the check, laid out with the rest of `children` inside that wrapper. The indicator wraps Base UI's `CheckboxItemIndicator` and defaults `keepMounted` to `true`, which is what holds the space. Checkbox items are composed only; `items` does not express them.
+
+```tsx
+<MenuCheckboxItem
+  label="Status"
+  checked={showStatus}
+  onCheckedChange={setShowStatus}
+/>
+```
 
 Three more slots forward Base UI's props the same way. `PortalProps` reaches the root portal and every submenu's portal, so `PortalProps={{ container }}` renders the whole menu inside that container. `SubmenuPositionerProps` and `SubmenuPopupProps` reach every submenu's positioner and popup at every depth, and never the root's, which `PositionerProps` and `PopupProps` cover. All three take no `children`, since Menu fills them itself.
 

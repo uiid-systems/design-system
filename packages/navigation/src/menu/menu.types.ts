@@ -110,6 +110,35 @@ export type MenuGroupLabelProps = BaseMenu.GroupLabel.Props;
 
 export type MenuItemProps = WithStringClassName<BaseMenu.Item.Props> &
   MenuRowContentProps;
+
+/*
+ * Base UI's `checked`, `defaultChecked`, `onCheckedChange`, `closeOnClick`
+ * (`false` by default, so the menu stays open after a toggle) and `disabled`
+ * pass through unchanged.
+ */
+export type MenuCheckboxItemProps =
+  WithStringClassName<BaseMenu.CheckboxItem.Props> &
+    Omit<MenuRowContentProps, "children"> & {
+      /**
+       * Replaces the `icon` / `label` / `description` block inside the row's
+       * `ListItem` wrapper, and drops the indicator after it. Place a
+       * `MenuCheckboxItemIndicator` among them to keep the check.
+       */
+      children?: React.ReactNode;
+    };
+export type MenuCheckboxItemIndicatorProps = Omit<
+  WithStringClassName<BaseMenu.CheckboxItemIndicator.Props>,
+  "keepMounted"
+> & {
+  /**
+   * Whether to keep the indicator in the DOM while the item is unchecked.
+   * Kept, it is only hidden, so an unchecked row holds the indicator's space
+   * and labels in a mixed list stay aligned.
+   * @default true
+   */
+  keepMounted?: boolean;
+};
+
 export type MenuLinkItemProps = WithStringClassName<BaseMenu.LinkItem.Props> &
   MenuRowContentProps;
 export type MenuSeparatorProps = WithStringClassName<BaseMenu.Separator.Props>;

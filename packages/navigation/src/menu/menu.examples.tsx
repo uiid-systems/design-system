@@ -22,6 +22,7 @@ import { Menu } from "./menu";
 import type { MenuItemType } from "./menu.types";
 import {
   MenuBackdrop,
+  MenuCheckboxItem,
   MenuGroup,
   MenuGroupLabel,
   MenuItem,
@@ -378,6 +379,58 @@ export const Groups = () => (
     </MenuPortal>
   </MenuRoot>
 );
+
+const COLUMNS = ["Status", "Owner", "Updated"] as const;
+
+/*
+ * `MenuCheckboxItem` toggles a setting, here which table columns show. The
+ * menu stays open after each toggle, so several can be set at once. Name is
+ * always shown, so its row is checked and disabled.
+ */
+export const ViewToggles = () => {
+  const [shown, setShown] = useState<string[]>(["Status", "Owner"]);
+
+  return (
+    <Stack gap={3} ax="start">
+      <MenuRoot>
+        <MenuTrigger>
+          <Button variant="subtle">Columns</Button>
+        </MenuTrigger>
+        <MenuPortal>
+          <MenuBackdrop />
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuGroup>
+                <MenuGroupLabel>Show columns</MenuGroupLabel>
+                <MenuCheckboxItem label="Name" checked disabled />
+                {COLUMNS.map((column) => (
+                  <MenuCheckboxItem
+                    key={column}
+                    label={column}
+                    checked={shown.includes(column)}
+                    onCheckedChange={(checked) =>
+                      setShown((current) =>
+                        checked
+                          ? [...current, column]
+                          : current.filter((entry) => entry !== column),
+                      )
+                    }
+                  />
+                ))}
+              </MenuGroup>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>
+      <Text size={-1} emphasis="muted" role="status">
+        Showing Name
+        {COLUMNS.filter((column) => shown.includes(column)).map(
+          (column) => `, ${column}`,
+        )}
+      </Text>
+    </Stack>
+  );
+};
 
 /* A submenu entry with its own `items` opens a further submenu, at any depth. */
 export const NestedSubmenus = () => (

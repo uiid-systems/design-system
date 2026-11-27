@@ -10,6 +10,8 @@ import { MOCK_ITEMS } from "./menu.mocks";
 import type { MenuItemType, MenuProps } from "./menu.types";
 import { renderMenuItems } from "./render-menu-items";
 import {
+  MenuCheckboxItem,
+  MenuCheckboxItemIndicator,
   MenuGroup,
   MenuGroupLabel,
   MenuItem,
@@ -2047,5 +2049,361 @@ describe("Menu keyboard", () => {
     await user.click(screen.getByRole("menuitem", { name: "Delete" }));
 
     await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
+  });
+});
+
+describe("Menu checkbox items", () => {
+  const renderChoices = (children: React.ReactNode) =>
+    render(
+      <MenuRoot open>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>{children}</MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+  const indicatorOf = (row: HTMLElement) =>
+    row.querySelector<HTMLElement>(
+      "[data-slot='menu-checkbox-item-indicator']",
+    );
+
+  it("renders a menuitemcheckbox row with its label, description and icon", () => {
+    renderChoices(
+      <MenuCheckboxItem
+        label="Status"
+        description="Shown beside the name"
+        icon={StarIcon}
+      />,
+    );
+
+    const row = screen.getByRole("menuitemcheckbox", { name: /Status/ });
+    expect(row).toHaveAttribute("data-slot", "menu-checkbox-item");
+    expect(row).toHaveClass(styles["checkbox-item"]);
+    expect(row.querySelector("[data-slot='list-item']")).toHaveTextContent(
+      "Status",
+    );
+    expect(
+      row.querySelector("[data-slot='list-text-description']"),
+    ).toHaveTextContent("Shown beside the name");
+    expect(
+      row.querySelector("[data-slot='list-item-icon']"),
+    ).toBeInTheDocument();
+  });
+
+  it("flips aria-checked and calls onCheckedChange when chosen", async () => {
+    const user = userEvent.setup();
+    const onCheckedChange = vi.fn();
+    renderChoices(
+      <MenuCheckboxItem label="Status" onCheckedChange={onCheckedChange} />,
+    );
+
+    const row = screen.getByRole("menuitemcheckbox", { name: "Status" });
+    expect(row).toHaveAttribute("aria-checked", "false");
+
+    await user.click(row);
+
+    expect(row).toHaveAttribute("aria-checked", "true");
+    expect(onCheckedChange).toHaveBeenCalledTimes(1);
+    expect(onCheckedChange.mock.calls[0]?.[0]).toBe(true);
+
+    await user.click(row);
+
+    expect(row).toHaveAttribute("aria-checked", "false");
+    expect(onCheckedChange.mock.calls[1]?.[0]).toBe(false);
+  });
+
+  it.each([
+    ["Enter", "{Enter}"],
+    ["Space", " "],
+  ])("toggles from the keyboard with %s", async (_, key) => {
+    const user = userEvent.setup();
+    render(
+      <MenuRoot>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuCheckboxItem label="Status" />
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+    await user.click(screen.getByText("Open"));
+    const row = await screen.findByRole("menuitemcheckbox", { name: "Status" });
+    await user.keyboard("{ArrowDown}");
+    expect(row).toHaveAttribute("data-highlighted");
+
+    await user.keyboard(key);
+
+    expect(row).toHaveAttribute("aria-checked", "true");
+  });
+
+  it("starts from defaultChecked when uncontrolled", () => {
+    renderChoices(<MenuCheckboxItem label="Status" defaultChecked />);
+
+    expect(
+      screen.getByRole("menuitemcheckbox", { name: "Status" }),
+    ).toHaveAttribute("aria-checked", "true");
+  });
+
+  it("follows checked when controlled", async () => {
+    const user = userEvent.setup();
+    const onCheckedChange = vi.fn();
+    const renderControlled = (checked: boolean) => (
+      <MenuRoot open>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuCheckboxItem
+                label="Status"
+                checked={checked}
+                onCheckedChange={onCheckedChange}
+              />
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>
+    );
+    const { rerender } = render(renderControlled(false));
+
+    const row = screen.getByRole("menuitemcheckbox", { name: "Status" });
+    await user.click(row);
+
+    // The caller has not taken the new value, so the row stays unchecked.
+    expect(onCheckedChange.mock.calls[0]?.[0]).toBe(true);
+    expect(row).toHaveAttribute("aria-checked", "false");
+
+    rerender(renderControlled(true));
+
+    expect(row).toHaveAttribute("aria-checked", "true");
+  });
+
+  it("keeps the menu open after a toggle by default, as Base UI does", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    render(
+      <MenuRoot onOpenChange={onOpenChange}>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuCheckboxItem label="Status" />
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+    await user.click(screen.getByText("Open"));
+    const row = await screen.findByRole("menuitemcheckbox", { name: "Status" });
+    await user.click(row);
+
+    expect(row).toHaveAttribute("aria-checked", "true");
+    expect(onOpenChange).not.toHaveBeenCalledWith(false, expect.anything());
+    expect(screen.getByText("Open")).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("closes the menu after a toggle with closeOnClick", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    render(
+      <MenuRoot onOpenChange={onOpenChange}>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuCheckboxItem label="Status" closeOnClick />
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(
+      await screen.findByRole("menuitemcheckbox", { name: "Status" }),
+    );
+
+    expect(onOpenChange).toHaveBeenLastCalledWith(false, expect.anything());
+  });
+
+  it("draws the indicator after the row's content, checked or not", () => {
+    renderChoices(
+      <>
+        <MenuCheckboxItem label="Name" defaultChecked />
+        <MenuCheckboxItem label="Owner" />
+      </>,
+    );
+
+    const checked = screen.getByRole("menuitemcheckbox", { name: "Name" });
+    const unchecked = screen.getByRole("menuitemcheckbox", { name: "Owner" });
+
+    for (const row of [checked, unchecked]) {
+      const indicator = indicatorOf(row);
+      expect(indicator).toBeInTheDocument();
+      expect(indicator).toHaveClass(styles["choice-indicator"]);
+      expect(indicator).toHaveAttribute("aria-hidden", "true");
+      expect(row.lastElementChild).toBe(indicator);
+    }
+
+    // An unchecked row keeps its indicator mounted, so it holds the space.
+    expect(indicatorOf(checked)).toHaveAttribute("data-checked");
+    expect(indicatorOf(unchecked)).toHaveAttribute("data-unchecked");
+  });
+
+  it("keeps a checked, disabled row's indicator, dimmed with the row", async () => {
+    const user = userEvent.setup();
+    const onCheckedChange = vi.fn();
+    renderChoices(
+      <MenuCheckboxItem
+        label="Name"
+        defaultChecked
+        disabled
+        onCheckedChange={onCheckedChange}
+      />,
+    );
+
+    const row = screen.getByRole("menuitemcheckbox", { name: "Name" });
+    const indicator = indicatorOf(row);
+
+    expect(row).toHaveAttribute("data-disabled");
+    expect(row).toHaveAttribute("aria-disabled", "true");
+    expect(indicator).toHaveAttribute("data-checked");
+    expect(indicator).toHaveAttribute("data-disabled");
+
+    await user.click(row);
+
+    expect(onCheckedChange).not.toHaveBeenCalled();
+    expect(row).toHaveAttribute("aria-checked", "true");
+  });
+
+  it("lets children take over the row, indicator included", () => {
+    renderChoices(
+      <MenuCheckboxItem label="Status" defaultChecked>
+        <span data-testid="custom-row">Status</span>
+        <MenuCheckboxItemIndicator data-testid="custom-indicator" />
+      </MenuCheckboxItem>,
+    );
+
+    const row = screen.getByRole("menuitemcheckbox", { name: "Status" });
+    expect(screen.getByTestId("custom-row")).toBeInTheDocument();
+    expect(row.querySelectorAll("[data-slot='list-text-label']")).toHaveLength(
+      0,
+    );
+    expect(
+      row.querySelectorAll("[data-slot='menu-checkbox-item-indicator']"),
+    ).toHaveLength(1);
+    expect(screen.getByTestId("custom-indicator")).toHaveAttribute(
+      "data-checked",
+    );
+  });
+
+  /* `ListItem` falls back to the label block for any falsy `children`, so the
+     row's own check must be drawn for the same values. */
+  it.each([
+    ["false", false],
+    ["null", null],
+    ["an empty string", ""],
+  ])("keeps the check when children are %s", (_, children) => {
+    renderChoices(
+      <MenuCheckboxItem label="Status" defaultChecked>
+        {children}
+      </MenuCheckboxItem>,
+    );
+
+    const row = screen.getByRole("menuitemcheckbox", { name: "Status" });
+    expect(
+      row.querySelector("[data-slot='list-text-label']"),
+    ).toHaveTextContent("Status");
+    expect(indicatorOf(row)).toHaveAttribute("data-checked");
+    expect(row.lastElementChild).toBe(indicatorOf(row));
+  });
+
+  it("forwards Base UI's keepMounted to the indicator", () => {
+    renderChoices(
+      <MenuCheckboxItem label="Status">
+        <span>Status</span>
+        <MenuCheckboxItemIndicator keepMounted={false} />
+      </MenuCheckboxItem>,
+    );
+
+    // Unchecked and not kept mounted, the indicator is gone.
+    expect(
+      document.querySelector("[data-slot='menu-checkbox-item-indicator']"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("merges a caller's className on the row and the indicator", () => {
+    renderChoices(
+      <MenuCheckboxItem label="Status" defaultChecked className="caller">
+        <span>Status</span>
+        <MenuCheckboxItemIndicator className="caller-indicator" />
+      </MenuCheckboxItem>,
+    );
+
+    const row = screen.getByRole("menuitemcheckbox", { name: "Status" });
+    expect(row).toHaveClass("caller", styles["checkbox-item"]);
+    expect(indicatorOf(row)).toHaveClass(
+      "caller-indicator",
+      styles["choice-indicator"],
+    );
+  });
+
+  it("works inside a MenuGroup and a submenu", async () => {
+    const user = userEvent.setup();
+    renderChoices(
+      <>
+        <MenuGroup>
+          <MenuGroupLabel>Columns</MenuGroupLabel>
+          <MenuCheckboxItem label="Status" />
+        </MenuGroup>
+        <SubmenuRoot>
+          <SubmenuTrigger label="More" />
+          <MenuPortal>
+            <MenuPositioner>
+              <MenuPopup>
+                <MenuCheckboxItem label="Updated" />
+              </MenuPopup>
+            </MenuPositioner>
+          </MenuPortal>
+        </SubmenuRoot>
+      </>,
+    );
+
+    expect(screen.getByRole("group", { name: "Columns" })).toContainElement(
+      screen.getByRole("menuitemcheckbox", { name: "Status" }),
+    );
+
+    await user.click(screen.getByText("More"));
+    const nested = await screen.findByRole("menuitemcheckbox", {
+      name: "Updated",
+    });
+    /* The keyboard, since an opening submenu briefly takes no pointer. */
+    nested.focus();
+    await user.keyboard("{Enter}");
+
+    expect(nested).toHaveAttribute("aria-checked", "true");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("takes a string className only", () => {
+    void (
+      (
+        // @ts-expect-error -- a state function has no `cx` to call it with
+        <MenuCheckboxItem label="Status" className={() => "caller"} />
+      )
+    );
+    void (
+      (
+        // @ts-expect-error -- a state function has no `cx` to call it with
+        <MenuCheckboxItemIndicator className={() => "caller"} />
+      )
+    );
   });
 });
