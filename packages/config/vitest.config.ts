@@ -46,9 +46,9 @@ export default defineConfig({
     include: [
       "packages/**/*.test.{ts,tsx}",
       "packages/config/scripts/*.test.mjs",
-      // The docs app's pure helpers and its nav config. The tests under
-      // apps/docs/components/ are not collected here.
-      "apps/docs/lib/**/*.test.ts",
+      // The docs app's nav config. The tests under apps/docs/components/ are
+      // not collected here. The recipe's nav helpers are tested in
+      // packages/recipes/src, which the first glob collects.
       "apps/docs/*.test.ts",
     ],
     // Real-browser tests run from vitest.browser.config.ts instead.

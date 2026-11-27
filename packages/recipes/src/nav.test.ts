@@ -7,7 +7,7 @@ import {
   listNavItems,
   type NavEntry,
   toNavSections,
-} from "./nav";
+} from "../app-shell/files/lib/nav";
 
 const home = { label: "Home", href: "/" };
 const changelog = { label: "Changelog", href: "/changelog" };

@@ -70,7 +70,7 @@ When a layout must style something it does not own, such as sliding a sidebar it
 ## The nav config, `lib/` and imports
 
 - **The nav config is the only source of page names.** It is `nav.ts` at the app root, imported as `@/nav`, and exports `NAV`. The sidebar's groups and items and the breadcrumb labels all come from it. No recipe file names a page or turns a URL segment into a label. The config belongs to the app; the recipe only reads it. A test of the config's own contents is app code too, and sits beside it as `nav.test.ts`.
-- **`lib/` holds a recipe's non-component code.** `lib/nav.ts` has the nav types and the pure helpers that read `NAV`, and imports nothing but types. Its unit tests sit beside it and may import `vitest`.
+- **`lib/` holds a recipe's non-component code.** `lib/nav.ts` has the nav types and the pure helpers that read `NAV`, and imports nothing but types. Its unit tests are in `packages/recipes/src/nav.test.ts`, not beside it: a test under `lib/` would be copied as part of the recipe.
 - **A recipe file imports only these:** `react`, `next/*`, `jotai`, `@uiid/design-system`, `@uiid/icons/*`, `@/nav`, `@/lib/nav`, other recipe directories through `@/components/...`, and relative paths inside its own directory. A listed package's own entry points count as that package: `@uiid/design-system/utils`, which `components.md` requires for `cx`, and `jotai/vanilla` and `jotai/vanilla/utils`. Anything else, such as `@/components/docs` or another icon set, is app content: move it out of the recipe and pass it in as a prop or children.
 
 ## State
