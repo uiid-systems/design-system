@@ -19,6 +19,10 @@ recipes/
     files/        the recipe, laid out as it lands in a project
       components/{shell,sidebar,header,main,breadcrumbs}/
       lib/nav.ts
+    templates/    a new project's starter files, written once and then the project's own
+      nav.ts
+      app/{layout.tsx,globals.css,page.tsx}
+      app/guides/{page.tsx,getting-started/page.tsx,next-steps/page.tsx}
 ```
 
 ### `files/`
@@ -26,6 +30,12 @@ recipes/
 Every file under `files/` is part of the recipe, and nothing else is. Paths are relative to the project root, so `files/components/sidebar/sidebar.tsx` lands at `components/sidebar/sidebar.tsx`. Files are copied verbatim: anything a project changes lives in a file the recipe reads, such as the project's own `nav.ts` at its root (imported as `@/nav`), or is passed in as a prop or children.
 
 The files import each other through the `@/` alias, which a Next.js app defines and this package does not. They sit outside `src/` so `pnpm typecheck`, which globs `packages/*/src`, never compiles them here. The recipe is typechecked through the docs copy. Lint and format cover both copies.
+
+### `templates/`
+
+What a new project gets once and then owns: a starter `nav.ts`, an `app/layout.tsx` that wires the shell, an `app/globals.css` that imports only `@uiid/design-system/globals.css`, and a page for every href in the starter `nav.ts`. The starter is a home page and one group, Guides, with a page of its own and two pages in it, so the sidebar, a group and a three-crumb trail all show on first run. Unlike `files/`, templates are not kept in step with anything: the docs app does not use them, and a project edits its copies freely. `recipe.json` lists each template with its destination, relative to the project root; the starter assumes an app with no `src/` directory.
+
+The templates import the recipe through the `@/` alias, as `files/` does, so nothing in this repo typechecks them. Keep them plain, and read each UIID component's `.types.ts` before using it in a starter page.
 
 ## The manifest
 
