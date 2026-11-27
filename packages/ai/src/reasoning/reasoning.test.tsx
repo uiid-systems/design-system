@@ -1,5 +1,6 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { MarkdownOverrides } from "@uiid/markdown";
 import { flushSync } from "react-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -176,6 +177,59 @@ describe("Reasoning", () => {
 
     rerender(<Reasoning defaultOpen>{"Hello **bold wor"}</Reasoning>);
     expect(getPanel()!.textContent).toContain("**");
+  });
+
+  describe("code blocks", () => {
+    const FENCE = "Check the type:\n\n```ts\nconst a: number = 1;\n```";
+    const getBlock = () =>
+      getPanel()!.querySelector<HTMLElement>("[data-slot='code-block']");
+
+    it("renders a fenced block as a CodeBlock with only a copy button", () => {
+      render(<Reasoning defaultOpen>{FENCE}</Reasoning>);
+
+      const block = getBlock()!;
+      expect(block).toBeInTheDocument();
+      expect(block).toHaveTextContent("const a: number = 1;");
+      expect(within(block).getAllByRole("button")).toHaveLength(1);
+      expect(
+        within(block).getByRole("button", { name: "Copy code" }),
+      ).toBeInTheDocument();
+    });
+
+    it("takes a caller's codeBlock override, and none removes it", () => {
+      const overrides: MarkdownOverrides = {
+        codeBlock: ({ code }) => <figure>{code}</figure>,
+      };
+      const { rerender } = render(
+        <Reasoning defaultOpen overrides={overrides}>
+          {FENCE}
+        </Reasoning>,
+      );
+      expect(getBlock()).toBeNull();
+      expect(getPanel()!.querySelector("figure")).toHaveTextContent(
+        "const a: number = 1;",
+      );
+
+      rerender(
+        <Reasoning defaultOpen overrides={{ codeBlock: undefined }}>
+          {FENCE}
+        </Reasoning>,
+      );
+      expect(getBlock()).toBeNull();
+      expect(getPanel()!.querySelector("pre > code")).toHaveTextContent(
+        "const a: number = 1;",
+      );
+    });
+
+    it("does not pass overrides to the root", () => {
+      render(
+        <Reasoning defaultOpen overrides={{}}>
+          {FENCE}
+        </Reasoning>,
+      );
+      expect(getRoot()).not.toHaveAttribute("overrides");
+      expect(getBlock()).toBeInTheDocument();
+    });
   });
 
   it("is closed by default when idle and opens from its trigger", async () => {

@@ -1,4 +1,5 @@
 import type { CollapsibleRootProps } from "@uiid/interactive";
+import type { MarkdownOverrides } from "@uiid/markdown";
 
 /** What a `label` function is called with. */
 export type ReasoningLabelState = {
@@ -32,4 +33,11 @@ export type ReasoningProps = Omit<CollapsibleRootProps, "children"> & {
    * streaming; any other node renders as itself. `null` keeps the default.
    */
   label?: React.ReactNode | ((state: ReasoningLabelState) => React.ReactNode);
+  /**
+   * Components for the text's links, images and code blocks, as `Markdown`
+   * takes them. A fenced block renders as a `CodeBlock` with a copy button by
+   * default; pass `codeBlock` to replace it, or `codeBlock: undefined` for a
+   * plain block. Define the object once, outside render.
+   */
+  overrides?: MarkdownOverrides;
 };

@@ -97,6 +97,48 @@ export const Streaming = () => {
   );
 };
 
+const CODE_QUESTION = "How do I keep a count in a React component?";
+const CODE_ANSWER = [
+  "Hold it in state with `useState`, and set it from the click handler:",
+  "",
+  "```tsx",
+  'import { useState } from "react";',
+  "",
+  "export const Counter = () => {",
+  "  const [count, setCount] = useState(0);",
+  "  return (",
+  '    <button type="button" onClick={() => setCount(count + 1)}>',
+  "      Clicked {count} times",
+  "    </button>",
+  "  );",
+  "};",
+  "```",
+  "",
+  "Then start the dev server:",
+  "",
+  "```",
+  "pnpm dev",
+  "```",
+  "",
+  "Each click re-renders the button with the new count.",
+].join("\n");
+
+/* A finished reply with code: each fence is a CodeBlock with a copy button. */
+export const WithCode = () => (
+  <Stack gap={4} w="full">
+    <Message from="user">
+      <MessageContent>
+        <MessageResponse>{CODE_QUESTION}</MessageResponse>
+      </MessageContent>
+    </Message>
+    <Message from="assistant">
+      <MessageContent>
+        <MessageResponse>{CODE_ANSWER}</MessageResponse>
+      </MessageContent>
+    </Message>
+  </Stack>
+);
+
 /*
  * An actions row is a Group of plain Buttons, not a part. Ghost, square and
  * xsmall is its register, and a string tooltip also names each icon button.
