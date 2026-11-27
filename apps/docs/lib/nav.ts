@@ -49,17 +49,19 @@ export type NavSection = NavItem[] | NavGroup;
 
 /**
  * The config as the sidebar lays it out, in order: each run of consecutive
- * top-level items as one list, and each group on its own.
+ * top-level items as one list, and each group on its own. A group with no
+ * items is left out, so it renders no toggle over nothing. The sections hold
+ * the config's own objects, so they compare by identity with `findActiveItem`.
  */
 export function toNavSections(entries: NavEntry[]): NavSection[] {
   const sections: NavSection[] = [];
 
   for (const entry of entries) {
     if (isNavGroup(entry)) {
-      sections.push(entry);
+      if (entry.items.length > 0) sections.push(entry);
       continue;
     }
-    const last = sections.at(-1);
+    const last = sections[sections.length - 1];
     if (Array.isArray(last)) last.push(entry);
     else sections.push([entry]);
   }

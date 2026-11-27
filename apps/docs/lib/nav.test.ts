@@ -172,9 +172,19 @@ describe("toNavSections", () => {
     ]);
   });
 
-  it("keeps an empty group", () => {
+  it("returns the config's own item and group objects, not copies", () => {
+    // The sidebar compares items by identity against findActiveItem's result.
+    const [list, group] = toNavSections([home, layout]);
+    expect(Array.isArray(list) && list[0]).toBe(home);
+    expect(group).toBe(layout);
+  });
+
+  it("drops a group with no items, joining the lists either side of it", () => {
     const empty = { label: "Empty", items: [] };
-    expect(toNavSections([empty])).toEqual([empty]);
+    expect(toNavSections([empty])).toEqual([]);
+    expect(toNavSections([home, empty, changelog])).toEqual([
+      [home, changelog],
+    ]);
   });
 
   it("returns no sections for an empty config", () => {

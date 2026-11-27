@@ -6,7 +6,7 @@ import { ArrowRightIcon } from "@uiid/icons/arrow-right";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { isNavGroup, listNavItems } from "@/lib/nav";
+import { findActiveItem, isNavGroup, listNavItems } from "@/lib/nav";
 import { NAV } from "@/nav";
 
 /**
@@ -19,7 +19,9 @@ const PAGES = listNavItems(NAV.filter(isNavGroup));
 /** Previous/next component links in nav order, shown on doc pages. */
 export const Pager = () => {
   const pathname = usePathname();
-  const index = PAGES.findIndex((page) => page.href === pathname);
+  // Matched the way the sidebar matches, so the two agree on the current page.
+  const current = findActiveItem(PAGES, pathname);
+  const index = current ? PAGES.indexOf(current) : -1;
   if (index === -1) return null;
 
   const prev = PAGES[index - 1];
