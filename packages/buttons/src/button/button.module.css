@@ -188,11 +188,10 @@
   composes: composes-popup-positioner from global;
 }
 
+/* The whole surface, box included, comes from `composes-tooltip`, the same
+   composition Tooltip in @uiid/overlays uses, so the two cannot drift. */
 .button-tooltip-popup {
   composes: composes-popup composes-tooltip from global;
-
-  border-radius: var(--globals-border-radius);
-  padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2);
 }
 
 .button-tooltip-wrapper {
