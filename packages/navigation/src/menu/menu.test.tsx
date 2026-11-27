@@ -1,9 +1,9 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Card } from "@uiid/cards";
 import { PencilIcon } from "@uiid/icons/pencil";
 import { StarIcon } from "@uiid/icons/star";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, onTestFinished, vi } from "vitest";
 
 import { Menu } from "./menu";
 import { MOCK_ITEMS } from "./menu.mocks";
@@ -723,11 +723,14 @@ describe("Menu items", () => {
       );
       expect(positioners).toHaveLength(3);
       const [root, second, third] = positioners;
-      // Base UI offsets the floating element by sideOffset from its anchor,
-      // and happy-dom's zero-sized layout leaves only that offset.
-      expect(root?.style.transform).toBe("translate(0px, 4px)");
-      expect(second?.style.transform).toBe("translate(12px, 0px)");
-      expect(third?.style.transform).toBe("translate(12px, 0px)");
+      // Base UI offsets the floating element by sideOffset from its anchor.
+      // happy-dom's layout is zero-sized and limitShift holds the cross axis
+      // at 0, so only that offset is left. Positioning is async, so wait.
+      await waitFor(() => {
+        expect(root?.style.transform).toBe("translate(0px, 4px)");
+        expect(second?.style.transform).toBe("translate(12px, 0px)");
+        expect(third?.style.transform).toBe("translate(12px, 0px)");
+      });
     });
 
     it("merges SubmenuPopupProps onto every submenu popup and not the root's", async () => {
@@ -751,6 +754,7 @@ describe("Menu items", () => {
       const user = userEvent.setup();
       const container = document.createElement("div");
       document.body.appendChild(container);
+      onTestFinished(() => container.remove());
       render(
         <Menu
           trigger="Open"
@@ -761,10 +765,12 @@ describe("Menu items", () => {
 
       await openThirdLevel(user);
       expect(popups()).toHaveLength(3);
+      // A submenu portal without the slot would still land inside `container`,
+      // nested in its parent's portal; with it, each one is a direct child.
       for (const popup of popups()) {
-        expect(container).toContainElement(popup as HTMLElement);
+        const portal = popup.closest('[data-slot="menu-portal"]');
+        expect(portal?.parentElement).toBe(container);
       }
-      container.remove();
     });
   });
 });

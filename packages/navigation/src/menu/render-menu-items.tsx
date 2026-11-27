@@ -8,7 +8,8 @@ import {
   SubmenuTrigger,
 } from "./subcomponents";
 
-/** The slot props that reach the rows of every popup, at every depth. */
+/** The slot props that reach every popup's rows and every submenu's portal,
+ * positioner and popup, at every depth. */
 export type MenuItemSlots = Pick<
   MenuProps,
   | "ItemProps"

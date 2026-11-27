@@ -87,8 +87,8 @@ export type MenuProps = {
    */
   backdrop?: boolean;
   RootProps?: MenuRootProps;
-  /** Reaches the root portal and every submenu's portal. Its content is the
-   * menu itself. */
+  /** Reaches the root portal and every submenu's portal. Each holds its own
+   * menu's positioner. */
   PortalProps?: Omit<MenuPortalProps, "children">;
   /** Reaches the trigger. Its content is `trigger`. */
   TriggerProps?: Omit<MenuTriggerProps, "children">;
