@@ -46,8 +46,10 @@
   --list-icon-color: var(--palette-on-tint);
 }
 
-/* Padding, radius and the disabled look come from `composes-option`, the
-   class Select's rows wear. The highlight stays Menu's own, below. */
+/* Padding, radius, the highlight and the disabled look all come from
+   `composes-option`, the class Select's rows wear, so the two cannot drift.
+   The highlight is the tint with the focus ring on top, and the keyboard can
+   land on a disabled row, which keeps both, dimmed with the row. */
 .item {
   composes: composes-option from global;
 }
@@ -58,39 +60,18 @@
 
 .item,
 .submenu-trigger {
-  outline: 0;
   cursor: default;
   user-select: none;
   display: flex;
-  /* `composes-option` fades the fill only; the inverted text switches at
-     once, so both switch together instead. */
-  transition: none;
 
   /*
    * A trigger whose submenu is open, once the pointer or focus has moved into
-   * the submenu. It wears `composes-option`'s tint, on the row's own radius:
-   * lighter than the inverted highlight below, and still marked against a
-   * resting row, so the path into the submenu stays visible.
+   * the submenu. It keeps `composes-option`'s tint without the ring, so the
+   * path into the submenu stays marked against a resting row and apart from
+   * the highlighted one.
    */
-  &[data-popup-open]:not([data-highlighted]) {
+  &[data-popup-open] {
     background-color: var(--palette-tint-hover, var(--shade-accent));
-  }
-
-  /*
-   * Rows draw no outline, so the highlight is the only sign of keyboard focus.
-   * `composes-option`'s tint is too faint against the popup for that (WCAG
-   * 1.4.11 asks 3:1), so Menu keeps its inverted fill until the shared class
-   * carries a stronger indicator. The label inherits `color`; the icon and
-   * description read the list names the popup publishes, so they invert too.
-   * The keyboard can land on a disabled row, so it keeps the fill, dimmed by
-   * `composes-option`'s disabled opacity, and focus never disappears.
-   */
-  &[data-highlighted] {
-    background-color: var(--shade-foreground);
-    color: var(--shade-surface);
-
-    --list-description-color: var(--shade-surface);
-    --list-icon-color: var(--shade-surface);
   }
 }
 
@@ -102,8 +83,8 @@
 
 /*
  * The trigger's own chevron, pinned to the far edge by the content beside it
- * taking the free space. Sized and colored like a row's icon, so it inverts
- * with the highlight and tracks the popup's hue. In a right-to-left menu the
+ * taking the free space. Sized and colored like a row's icon, so it tracks
+ * the popup's hue. In a right-to-left menu the
  * submenu opens to the left, so the chevron points that way.
  */
 .submenu-chevron {

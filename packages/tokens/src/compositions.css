@@ -285,14 +285,34 @@
     padding-inline: var(--forms-size-lg-padding-x);
   }
 
+  /*
+   * A row in a popup list: Select, Combobox, Autocomplete and Menu. Rows take
+   * no focus ring of their own, so the highlight is the only sign of keyboard
+   * focus, and WCAG 1.4.11 asks 3:1 of it. The tint alone is about 1.35:1
+   * against the popup, so the highlight adds the focus ring on top of it,
+   * inset by its own width so the popup's overflow cannot clip it. The ring is
+   * the foreground, about 16:1 or more against every hue's tint in both
+   * schemes. A disabled row the keyboard lands on keeps it, dimmed with the
+   * row, so focus never disappears. Forced colors drop the tint, and the ring
+   * takes the system highlight color there.
+   */
   .composes-option {
     padding: var(--list-item-padding-y) var(--list-item-padding-x);
     border-radius: var(--globals-border-radius);
+    outline: none;
     transition: background-color var(--globals-transition-duration) ease-in-out;
     cursor: pointer;
 
     &:where([data-highlighted], :focus-visible) {
       background-color: var(--palette-tint-hover, var(--shade-accent));
+      outline: var(--globals-outline-style) var(--globals-outline-width) var(--globals-outline-color);
+      outline-offset: calc(-1 * var(--globals-outline-width));
+    }
+
+    @media (forced-colors: active) {
+      &:where([data-highlighted], :focus-visible) {
+        outline-color: Highlight;
+      }
     }
 
     &:where([data-disabled]) {

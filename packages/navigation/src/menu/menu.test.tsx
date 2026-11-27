@@ -439,8 +439,8 @@ describe("Menu items", () => {
 
   /*
    * Pins Base UI's behaviour, not Menu's CSS: the keyboard can land on a
-   * disabled row, which is why `menu.module.css` keeps the highlight on it.
-   * Whether that row is visibly highlighted needs a browser test.
+   * disabled row, which is why `composes-option` keeps the highlight on it.
+   * That the row is visibly highlighted is checked in menu.browser.test.tsx.
    */
   it("lets the keyboard highlight a disabled item", async () => {
     const user = userEvent.setup();

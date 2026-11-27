@@ -60,10 +60,6 @@
   gap: var(--select-item-gap);
 }
 
-.select-item:focus {
-  outline: none;
-}
-
 .select-item > [data-slot="list-item"] {
   flex: 1;
   min-width: 0;

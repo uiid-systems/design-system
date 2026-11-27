@@ -32,3 +32,32 @@ describe("compositions.css", () => {
     expect(base).toMatch(/opacity: 0;/);
   });
 });
+
+/**
+ * The paint of a highlighted row is measured in menu.browser.test.tsx. Forced
+ * colors cannot be emulated there, so the stylesheet text is checked instead:
+ * the ring must name a system color, since forced colors drop the tint.
+ */
+describe("compositions.css .composes-option", () => {
+  const option =
+    /\.composes-option \{[\s\S]*?\n {2}\}\n/.exec(compositionsCss)?.[0] ?? "";
+  const [base, forced = ""] = option.split("@media (forced-colors: active)");
+
+  it("rings a highlighted or focused row inside its own edge", () => {
+    expect(base).toMatch(
+      /&:where\(\[data-highlighted\], :focus-visible\) \{[^}]*outline: var\(--globals-outline-style\) var\(--globals-outline-width\) var\(--globals-outline-color\);[^}]*outline-offset: calc\(-1 \* var\(--globals-outline-width\)\);/,
+    );
+  });
+
+  it("keeps the tint under the ring", () => {
+    expect(base).toMatch(
+      /&:where\(\[data-highlighted\], :focus-visible\) \{[^}]*background-color: var\(--palette-tint-hover/,
+    );
+  });
+
+  it("paints the ring in a system color under forced colors", () => {
+    expect(forced).toMatch(
+      /&:where\(\[data-highlighted\], :focus-visible\) \{[^}]*outline-color: Highlight;/,
+    );
+  });
+});
