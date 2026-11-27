@@ -103,6 +103,7 @@ export const Disabled: Story = { render: () => <Examples.Disabled /> };
 export const LongLabels: Story = { render: () => <Examples.LongLabels /> };
 
 export const Groups: Story = { render: () => <Examples.Groups /> };
+
 export const NestedSubmenus: Story = {
   render: () => <Examples.NestedSubmenus />,
 };

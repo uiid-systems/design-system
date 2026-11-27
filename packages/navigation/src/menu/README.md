@@ -80,6 +80,8 @@ Menu wraps Base UI's [Menu](https://base-ui.com/react/components/menu) and takes
 </MenuRadioGroup>
 ```
 
+Three more slots forward Base UI's props the same way. `PortalProps` reaches the root portal and every submenu's portal, so `PortalProps={{ container }}` renders the whole menu inside that container. `SubmenuPositionerProps` and `SubmenuPopupProps` reach every submenu's positioner and popup at every depth, and never the root's, which `PositionerProps` and `PopupProps` cover. All three take no `children`, since Menu fills them itself.
+
 `SubmenuTrigger` renders a `Group`, so `SubmenuTriggerProps` takes its layout props (`gap`, `p`, `ax`, `ay`, ...) alongside Base UI's. It defaults to `gap={4}`, `ay="center"`, and `ax="space-between"`, which holds the submenu's chevron at the far edge; pass any of them to change it. A `render` of your own replaces the `Group`, so layout props passed beside it reach your element as plain attributes.
 
 ## Triggers
