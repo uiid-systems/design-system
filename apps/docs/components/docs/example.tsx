@@ -72,6 +72,10 @@ export async function Example({
         html={html}
         language={LANGUAGE}
         resettable={resettable}
+        // Examples start at the canvas's start edge, as they did before
+        // CodePreview: a centred example wider than the canvas would overflow
+        // past the start edge, where its scroll cannot reach.
+        CanvasProps={{ ax: "start" }}
       >
         {children}
       </CodePreview>

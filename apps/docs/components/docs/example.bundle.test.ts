@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 // client bundle; without a build there is nothing to read and it skips.
 const NEXT_DIR = path.resolve(import.meta.dirname, "../../.next");
 const PAGES_DIR = path.join(NEXT_DIR, "server/app");
+const CHUNKS_DIR = path.join(NEXT_DIR, "static/chunks");
 const built = fs.existsSync(PAGES_DIR);
 
 // One example page from each area the docs are spot-checked on.
@@ -18,34 +19,80 @@ const PAGES = [
   "typography/text",
 ];
 
-// Shiki's own error class, defined in its core, so it is in any chunk that
-// carries the highlighter and in no chunk that only names Shiki's CSS classes.
+// Shiki sets this string as its error's `name`, so it survives minification,
+// which renames the class itself. It is in any chunk that carries Shiki's core
+// and in no chunk that only names Shiki's CSS classes.
 const SHIKI_MARKER = "ShikiError";
 
+const readPage = (page: string) =>
+  fs.readFileSync(path.join(PAGES_DIR, `${page}.html`), "utf-8");
+
 const pageChunks = (page: string) => {
-  const html = fs.readFileSync(path.join(PAGES_DIR, `${page}.html`), "utf-8");
   // Script tags and the inline RSC payload both name the page's chunks.
-  const srcs = html.match(/static\/chunks\/[^"\\]+\.js/g) ?? [];
+  const srcs = readPage(page).match(/static\/chunks\/[^"\\]+\.js/g) ?? [];
   return [...new Set(srcs)].map((src) => path.join(NEXT_DIR, src));
 };
 
+const hasMarker = (file: string) =>
+  fs.readFileSync(file, "utf-8").includes(SHIKI_MARKER);
+
 describe.skipIf(!built)("docs client bundle", () => {
+  it("finds Shiki by its marker in the build's chunks", () => {
+    // The client highlighter is still built as a lazy chunk, so the marker
+    // must turn up somewhere; if a Shiki upgrade renames it, this fails
+    // instead of the page checks passing for the wrong reason.
+    const chunks = fs
+      .readdirSync(CHUNKS_DIR)
+      .filter((file) => file.endsWith(".js"))
+      .map((file) => path.join(CHUNKS_DIR, file));
+    expect(chunks.some(hasMarker)).toBe(true);
+  });
+
   it.each(PAGES)("loads no Shiki chunk on %s", (page) => {
     const chunks = pageChunks(page);
     expect(chunks.length).toBeGreaterThan(0);
-
-    const withShiki = chunks.filter((chunk) =>
-      fs.readFileSync(chunk, "utf-8").includes(SHIKI_MARKER),
-    );
-    expect(withShiki).toEqual([]);
+    expect(chunks.filter(hasMarker)).toEqual([]);
   });
 
-  it("renders its examples through CodePreview", () => {
-    const html = fs.readFileSync(
-      path.join(PAGES_DIR, "buttons/button.html"),
-      "utf-8",
-    );
-    expect(html).toContain('data-slot="code-preview"');
+  it.each(PAGES)(
+    "highlights every example's code on the server on %s",
+    (page) => {
+      // Without server `html`, CodePreview would load Shiki lazily on first
+      // open and no eager chunk would change, so check the panels themselves.
+      // Each segment runs from a panel to the next example frame or README
+      // code block, so another block's highlighting cannot stand in for it.
+      const panels = readPage(page)
+        .split('data-slot="code-preview-panel"')
+        .slice(1)
+        .map(
+          (segment) => segment.split(/data-slot="(?:example|code-block)"/)[0],
+        );
+      expect(panels.length).toBeGreaterThan(0);
+      expect(panels.filter((panel) => !panel.includes('class="shiki'))).toEqual(
+        [],
+      );
+    },
+  );
+
+  it("keeps the example ids on buttons/button", () => {
+    const ids = [
+      ...readPage("buttons/button").matchAll(
+        /<div[^>]*data-slot="example"[^>]*\sid="([^"]+)"/g,
+      ),
+    ].map((match) => match[1]);
+    expect(ids).toEqual([
+      "variants",
+      "colors",
+      "sizes",
+      "shapes",
+      "with-icon",
+      "disabled",
+      "disabled-with-a-reason",
+      "loading",
+      "fullwidth",
+      "with-tooltip",
+      "polymorphic",
+    ]);
   });
 });
 

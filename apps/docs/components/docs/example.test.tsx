@@ -16,6 +16,10 @@ afterAll(() => {
 
 // The docs app type-checks this file under `next build`, which has no jest-dom
 // matcher types, so these assertions use Vitest's own matchers only.
+//
+// Calling the async component as a function renders it in one tree, against
+// package source. It does not cross the server-to-client prop boundary or use
+// built `dist`; `pnpm run build --filter=docs` and example.bundle.test.ts cover those.
 const renderExample = async (props: Parameters<typeof Example>[0]) =>
   render(await Example(props));
 
@@ -65,9 +69,23 @@ describe("Example", () => {
 
     expect(slot(container, "code-preview-canvas")?.textContent).toBe("live");
     expect(screen.getByRole("button", { name: /show code/i })).toBeTruthy();
-    // Highlighted on the server: the code is already Shiki's markup.
-    expect(container.querySelector(".shiki")).not.toBeNull();
-    expect(container.textContent).toContain("Travel the world");
+    // Highlighted on the server: the panel already holds Shiki's markup.
+    const panel = slot(container, "code-preview-panel");
+    expect(panel?.querySelector(".shiki")).not.toBeNull();
+  });
+
+  it("starts the example at the canvas's start edge", async () => {
+    const { container } = await renderExample({
+      title: "Default",
+      of: "buttons/button",
+      name: "Default",
+      children: <p>live</p>,
+    });
+
+    // The canvas is a column Stack, which writes its `ax` (the horizontal,
+    // cross axis) to Box's `ay`, so the start alignment shows as `data-ui-ay`.
+    const canvas = slot(container, "code-preview-canvas");
+    expect(canvas?.getAttribute("data-ui-ay")).toBe("start");
   });
 
   it("renders the framed canvas alone when there is no source", async () => {
@@ -76,9 +94,14 @@ describe("Example", () => {
       children: <p>live</p>,
     });
 
+    const heading = screen.getByRole("heading", { level: 3, name: "Plain" });
+    const frame = slot(container, "code-preview");
+    expect(frame).not.toBeNull();
     expect(
-      screen.getByRole("heading", { level: 3, name: "Plain" }),
+      heading.compareDocumentPosition(frame!) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
+    expect(frame!.contains(heading)).toBe(false);
     expect(slot(container, "code-preview-canvas")?.textContent).toBe("live");
     expect(screen.queryByRole("button", { name: /show code/i })).toBeNull();
     expect(container.querySelector("pre")).toBeNull();
