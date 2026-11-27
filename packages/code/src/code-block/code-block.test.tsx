@@ -10,6 +10,7 @@ import { Dialog } from "@uiid/overlays";
 import * as React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
+import { useHighlight } from "../highlighter/highlighter.hooks";
 import { CodeBlock } from "./code-block";
 import { Composed, Controlled } from "./code-block.examples";
 import type {
@@ -233,6 +234,68 @@ describe("CodeBlock", () => {
     render(<CodeBlock code="x" language="rust" />);
     expect(header()).toHaveAttribute("data-floating");
     expect(within(header()!).queryByRole("img")).not.toBeInTheDocument();
+  });
+
+  it("floats the buttons for a known language with hideLanguageIcon, and still highlights it", () => {
+    vi.mocked(useHighlight).mockClear();
+    render(<CodeBlock code="x" language="ts" hideLanguageIcon />);
+
+    expect(header()).toHaveAttribute("data-floating");
+    expect(header()).not.toHaveAttribute("data-ui-bb");
+    expect(within(header()!).queryByRole("img")).not.toBeInTheDocument();
+    expect(within(header()!).getAllByRole("button")).toHaveLength(1);
+    expect(useHighlight).toHaveBeenLastCalledWith(
+      "x",
+      "ts",
+      expect.any(Object),
+    );
+  });
+
+  it("keeps the filename bar with hideLanguageIcon, without the icon", () => {
+    render(
+      <CodeBlock code="x" language="ts" filename="a.ts" hideLanguageIcon />,
+    );
+
+    expect(header()).not.toHaveAttribute("data-floating");
+    expect(within(header()!).getByText("a.ts")).toBeInTheDocument();
+    expect(within(header()!).queryByRole("img")).not.toBeInTheDocument();
+  });
+
+  it("hides the icon in the fullscreen view too", async () => {
+    const user = userEvent.setup();
+    render(
+      <CodeBlock code="x" language="ts" hideLanguageIcon fullscreenable />,
+    );
+    await user.click(screen.getByRole("button", { name: "Enter fullscreen" }));
+
+    const dialog = await screen.findByRole("dialog");
+    const popupHeader = dialog.querySelector('[data-slot="code-block-header"]');
+    expect(popupHeader).toHaveAttribute("data-floating");
+    expect(dialog.querySelector('[data-slot="language-icon"]')).toBeNull();
+  });
+
+  // ============================================
+  // NOTATIONS
+  // ============================================
+
+  it("runs notations by default", () => {
+    vi.mocked(useHighlight).mockClear();
+    render(<CodeBlock code="x" />);
+    expect(useHighlight).toHaveBeenLastCalledWith(
+      "x",
+      "typescript",
+      expect.not.objectContaining({ notations: false }),
+    );
+  });
+
+  it("forwards notations={false} to the highlighter", () => {
+    vi.mocked(useHighlight).mockClear();
+    render(<CodeBlock code="x" notations={false} />);
+    expect(useHighlight).toHaveBeenLastCalledWith(
+      "x",
+      "typescript",
+      expect.objectContaining({ notations: false }),
+    );
   });
 
   it("renders no header at all with nothing to show", () => {

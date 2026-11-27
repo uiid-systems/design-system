@@ -7,7 +7,7 @@ import * as markdown from "./index";
 // The streaming hooks behind `reveal` live in this package and are not exported.
 const values = ["Markdown"];
 
-const types = ["MarkdownOverrides", "MarkdownProps"];
+const types = ["MarkdownCodeBlockProps", "MarkdownOverrides", "MarkdownProps"];
 
 describe("@uiid/markdown barrel", () => {
   it("exports exactly the component", () => {

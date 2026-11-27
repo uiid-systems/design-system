@@ -1,5 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { MarkdownOverrides } from "@uiid/markdown";
 import { flushSync } from "react-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -176,6 +177,40 @@ describe("Reasoning", () => {
 
     rerender(<Reasoning defaultOpen>{"Hello **bold wor"}</Reasoning>);
     expect(getPanel()!.textContent).toContain("**");
+  });
+
+  describe("code blocks", () => {
+    const FENCE = "Check the type:\n\n```ts\nconst a: number = 1;\n```";
+    /** Stands in for a code component; `@uiid/ai` does not depend on one. */
+    const overrides: MarkdownOverrides = {
+      codeBlock: ({ code, language }) => (
+        <figure data-language={language}>{code}</figure>
+      ),
+    };
+    const getBlock = () => getPanel()!.querySelector("figure");
+
+    it("renders a plain pre with no override", () => {
+      render(<Reasoning defaultOpen>{FENCE}</Reasoning>);
+
+      expect(getBlock()).toBeNull();
+      expect(getPanel()!.querySelector("pre > code")).toHaveTextContent(
+        "const a: number = 1;",
+      );
+    });
+
+    it("renders a fenced block through the caller's codeBlock with its code and language", () => {
+      render(
+        <Reasoning defaultOpen overrides={overrides}>
+          {FENCE}
+        </Reasoning>,
+      );
+
+      expect(getBlock()).toHaveAttribute("data-language", "ts");
+      expect(getBlock()).toHaveTextContent("const a: number = 1;");
+      expect(getPanel()!.querySelector("pre")).toBeNull();
+      // The overrides reach Markdown, not the root.
+      expect(getRoot()).not.toHaveAttribute("overrides");
+    });
   });
 
   it("is closed by default when idle and opens from its trigger", async () => {
