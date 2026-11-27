@@ -2,9 +2,9 @@
  * How the sidebar and its groups stay closed across a reload without
  * flashing open.
  *
- * The pages are static HTML, so the server always renders the sidebar and
- * every group open. The saved state lives in localStorage, which React only
- * reads after it hydrates. Left alone, anything the reader had closed would
+ * The server cannot read localStorage, so it always renders the sidebar and
+ * every group open. The saved state lives there, and React only reads it
+ * after it hydrates. Left alone, anything the reader had closed would
  * paint open, then close.
  *
  * The root layout renders `SidebarScript` in `<head>`, an inline `<script>`

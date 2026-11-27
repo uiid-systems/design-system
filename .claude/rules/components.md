@@ -59,7 +59,7 @@ When porting components from shadcn or Radix patterns, substitute:
 | `@radix-ui/react-slot`      | `renderWithProps` from `@uiid/utils`                    |
 | `@radix-ui/react-direction` | `useDirection` from `@base-ui/react/direction-provider` |
 | `class-variance-authority`  | `cva` from `@uiid/utils` (pre-configured)               |
-| `clsx` / `tailwind-merge`   | `cx` from `@uiid/utils`                                 |
+| `clsx` / `twMerge` / `cn()` | `cx` from `@uiid/utils`                                 |
 
 App components under `apps/*/components/` do not depend on `@uiid/utils`; they import its helpers from `@uiid/design-system/utils`, never from the `@uiid/design-system` root.
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { NAV } from "../nav";
-import { buildNavTrail, isNavGroup, listNavItems } from "./nav";
+import { buildNavTrail, isNavGroup, listNavItems } from "./lib/nav";
+import { NAV } from "./nav";
 
 /** Rules the docs app's own nav config must keep. */
 describe("NAV", () => {

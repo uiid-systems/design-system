@@ -83,11 +83,11 @@ describe("findActiveItem", () => {
 
   it("strips a query string and hash from an entry's href", () => {
     const week = { label: "This week", href: "/reports?view=week" };
-    const top = { label: "Top", href: "/docs#top" };
+    const top = { label: "Top", href: "/guide#top" };
     const nav: NavEntry[] = [week, top];
     expect(findActiveItem(nav, "/reports")).toBe(week);
     expect(findActiveItem(nav, "/reports/2026")).toBe(week);
-    expect(findActiveItem(nav, "/docs")).toBe(top);
+    expect(findActiveItem(nav, "/guide")).toBe(top);
   });
 
   it("ignores a query string and hash on the pathname", () => {
