@@ -337,8 +337,11 @@ describe("Menu submenu placement", () => {
     },
   ];
 
-  /* Subpixel layout and rounding; a real overlap is far wider. */
+  /* Subpixel layout and rounding. */
   const TOLERANCE = 1;
+  /* A submenu aligns its start with its trigger row's (Base UI's `align`
+     "start", no offset); this allows for rounding, not a different row. */
+  const ALIGN_TOLERANCE = 2;
 
   let restore: [number, number];
 
@@ -385,14 +388,23 @@ describe("Menu submenu placement", () => {
     return all.map((popup) => popup.getBoundingClientRect());
   };
 
-  /* Focuses a submenu trigger and opens its submenu with ArrowRight. */
+  /* Focuses a submenu trigger, opens its submenu with ArrowRight and returns
+     the trigger row. */
   const openSubmenu = async (name: string) => {
     const trigger = await row("submenu-trigger", name);
     trigger.focus();
     await userEvent.keyboard("{ArrowRight}");
+    return trigger;
   };
 
-  it("opens a three-level submenu beside its parent without overlapping it", async () => {
+  /*
+   * A submenu is anchored to its trigger row, which sits inside the parent
+   * popup's padding and border, and the gap to the row is smaller than that
+   * inset. So the submenu overlaps its parent popup by a few pixels, the
+   * accepted look: these tests assert the side it opens on and its alignment
+   * with the row, not that the two popups stay clear of each other.
+   */
+  it("opens each level of a three-level submenu beside its trigger row", async () => {
     await page.viewport(1280, 800);
     render(
       <Menu
@@ -404,20 +416,22 @@ describe("Menu submenu placement", () => {
     );
 
     await settled(1);
-    await openSubmenu("More");
+    const more = await openSubmenu("More");
     await settled(2);
-    await openSubmenu("Share");
+    const share = await openSubmenu("Share");
     const [root, second, third] = await settled(3);
 
-    for (const [parent, child] of [
-      [root!, second!],
-      [second!, third!],
+    for (const [parent, trigger, child] of [
+      [root!, more.getBoundingClientRect(), second!],
+      [second!, share.getBoundingClientRect(), third!],
     ] as const) {
-      // To the parent's inline end, with no horizontal overlap...
-      expect(child.left).toBeGreaterThanOrEqual(parent.right - TOLERANCE);
-      // ...and level with it, not stacked above or below.
-      expect(child.top).toBeLessThan(parent.bottom);
-      expect(child.bottom).toBeGreaterThan(parent.top);
+      // On the inline end: clear of the row, reaching past the parent popup...
+      expect(child.left).toBeGreaterThanOrEqual(trigger.right - TOLERANCE);
+      expect(child.right).toBeGreaterThan(parent.right);
+      // ...with its top level with the row's.
+      expect(Math.abs(child.top - trigger.top)).toBeLessThanOrEqual(
+        ALIGN_TOLERANCE,
+      );
     }
   });
 
@@ -438,12 +452,19 @@ describe("Menu submenu placement", () => {
     );
 
     await settled(1);
-    await openSubmenu("Move to");
+    const moveTo = await openSubmenu("Move to");
     const [root, submenu] = await settled(2);
+    const trigger = moveTo.getBoundingClientRect();
 
+    // Inside the viewport...
     expect(submenu!.left).toBeGreaterThanOrEqual(-TOLERANCE);
     expect(submenu!.right).toBeLessThanOrEqual(window.innerWidth + TOLERANCE);
-    // On the parent's inline start, clear of it.
-    expect(submenu!.right).toBeLessThanOrEqual(root!.left + TOLERANCE);
+    // ...on the inline start: clear of the row, reaching past the parent popup...
+    expect(submenu!.right).toBeLessThanOrEqual(trigger.left + TOLERANCE);
+    expect(submenu!.left).toBeLessThan(root!.left);
+    // ...with its top level with the row's.
+    expect(Math.abs(submenu!.top - trigger.top)).toBeLessThanOrEqual(
+      ALIGN_TOLERANCE,
+    );
   });
 });

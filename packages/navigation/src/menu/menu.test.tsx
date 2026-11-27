@@ -1277,7 +1277,9 @@ describe("Menu keyboard", () => {
     render(
       <Menu
         trigger="Open"
-        items={[{ label: "Edit", value: "edit", onClick: onEdit }, ...ROWS]}
+        items={ROWS.map((item) =>
+          item.value === "edit" ? { ...item, onClick: onEdit } : item,
+        )}
       />,
     );
 
