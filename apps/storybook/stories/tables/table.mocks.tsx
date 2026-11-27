@@ -76,3 +76,14 @@ export const TABLE_MOCK_MORE_ACTIONS: TableCellDropdownProps = {
     { label: "Delete", value: "delete" },
   ],
 };
+
+/* A row menu with a link and a separator before its destructive entry. */
+export const TABLE_MOCK_ROW_MENU: TableCellDropdownProps = {
+  tooltip: "Settings",
+  items: [
+    { label: "Edit", value: "edit" },
+    { label: "View profile", value: "profile", href: "#profile" },
+    { type: "separator" },
+    { label: "Delete", value: "delete" },
+  ],
+};

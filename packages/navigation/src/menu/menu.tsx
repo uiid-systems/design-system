@@ -28,6 +28,8 @@ export const Menu = ({
   ItemProps,
   SubmenuRootProps,
   SubmenuTriggerProps,
+  LinkItemProps,
+  SeparatorProps,
 }: MenuProps) => {
   return (
     <MenuRoot {...RootProps}>
@@ -42,6 +44,8 @@ export const Menu = ({
               ItemProps,
               SubmenuRootProps,
               SubmenuTriggerProps,
+              LinkItemProps,
+              SeparatorProps,
             })}
           </MenuPopup>
         </MenuPositioner>

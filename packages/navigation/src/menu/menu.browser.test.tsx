@@ -8,6 +8,10 @@ import { page, userEvent } from "vitest/browser";
    The test reaches its source by path, so the comparison costs the package
    no dependency and ships nowhere: package builds leave tests out. */
 import { Select } from "../../../forms/src/select/select";
+import {
+  SelectItem,
+  SelectSeparator,
+} from "../../../forms/src/select/subcomponents";
 import { Menu } from "./menu";
 import type { MenuItemType } from "./menu.types";
 
@@ -126,6 +130,21 @@ const toRgb = (color: string, backdrop = "white") => {
   return [r, g, b];
 };
 
+/* The alpha, 0 to 255, a computed color paints with on an empty canvas, so a
+   transparent color reads as 0 whatever form it is written in. */
+const toAlpha = (color: string) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 1;
+  const context = canvas.getContext("2d", { willReadFrequently: true })!;
+  context.fillStyle = SENTINEL;
+  context.fillStyle = color;
+  if (context.fillStyle === SENTINEL) {
+    throw new Error(`The canvas cannot parse the color "${color}"`);
+  }
+  context.fillRect(0, 0, 1, 1);
+  return context.getImageData(0, 0, 1, 1).data[3]!;
+};
+
 const SURFACE = [
   "background-color",
   "border-top-width",
@@ -214,6 +233,58 @@ describe("Menu beside Select", () => {
     await highlight(selectRow);
 
     expect(menuHighlight).toEqual(pick(selectRow, HIGHLIGHT));
+  });
+});
+
+/* The line's look: its fill is the color, its height the thickness, and its
+   margins the space it keeps from the rows around it. */
+const SEPARATOR = [
+  "background-color",
+  "height",
+  "margin-top",
+  "margin-bottom",
+  "border-top-width",
+  "border-bottom-width",
+];
+
+describe("Menu separator beside Select's", () => {
+  it("draws the same line", async () => {
+    render(
+      <Menu
+        trigger="Actions"
+        items={[
+          { label: "Edit", value: "edit" },
+          { type: "separator" },
+          { label: "Delete", value: "delete" },
+        ]}
+        backdrop={false}
+        RootProps={{ open: true, modal: false }}
+      />,
+    );
+    render(
+      <Select
+        aria-label="Action"
+        placeholder="Choose"
+        backdrop={false}
+        open
+        modal={false}
+      >
+        <SelectItem value="edit" label="Edit" />
+        <SelectSeparator />
+        <SelectItem value="delete" label="Delete" />
+      </Select>,
+    );
+
+    const menu = await find('[data-slot="menu-separator"]');
+    const select = await find('[data-slot="select-separator"]');
+
+    expect(menu.getAttribute("role")).toBe("separator");
+    expect(style(menu).height).toBe("1px");
+    // A visible line: neither white nor transparent, so the equality below
+    // cannot pass on two lines that both paint nothing.
+    expect(toRgb(style(menu).backgroundColor)).not.toEqual([255, 255, 255]);
+    expect(toAlpha(style(menu).backgroundColor)).toBeGreaterThan(0);
+    expect(pick(menu, SEPARATOR)).toEqual(pick(select, SEPARATOR));
   });
 });
 
