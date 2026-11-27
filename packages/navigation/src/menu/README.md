@@ -5,10 +5,10 @@
 Use Menu when you want to:
 
 - Put a set of actions behind one control — a row's overflow button, a toolbar's extra commands
-- Nest related actions a level deeper: an entry with `items` opens a submenu beside it
+- Nest related actions deeper: an entry with `items` opens a submenu beside it, and an entry in a submenu can have `items` of its own, to any depth
 - Place the popup with `side` and `align`
 
-Each entry takes a `label` and a `value` (its key), plus an optional `icon` drawn before the label, `disabled`, and `onClick`. `disabled` and `onClick` are Base UI's Item props; an entry's own `onClick` runs after `ItemProps.onClick`, which applies to every item, submenu items included. On an entry with `items`, `disabled` applies to the submenu's trigger and `onClick` is ignored.
+Each entry takes a `label` and a `value` (its key, so it must be unique among its siblings), plus an optional `icon` drawn before the label, `disabled`, and `onClick`. `disabled` and `onClick` are Base UI's Item props; an entry's own `onClick` runs after `ItemProps.onClick`, which applies to every item, submenu items at any depth included. On an entry with `items`, `disabled` applies to the submenu's trigger and `onClick` is ignored. `SubmenuRootProps` and `SubmenuTriggerProps` likewise reach every submenu at every depth at once, so an `open` passed there controls all of them together; for per-submenu state, compose the parts.
 
 ```tsx
 <Menu

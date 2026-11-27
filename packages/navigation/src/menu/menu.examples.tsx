@@ -255,6 +255,36 @@ export const LongLabels = () => (
   />
 );
 
+/* A submenu entry with its own `items` opens a further submenu, at any depth. */
+export const NestedSubmenus = () => (
+  <Menu
+    trigger={<Button>Actions</Button>}
+    items={[
+      { label: "Edit", value: "edit", icon: PencilIcon },
+      {
+        label: "Move to",
+        value: "move",
+        icon: FolderInputIcon,
+        items: [
+          { label: "Inbox", value: "inbox", icon: InboxIcon },
+          {
+            label: "Projects",
+            value: "projects",
+            icon: FolderInputIcon,
+            items: [
+              { label: "Design", value: "design" },
+              { label: "Engineering", value: "engineering" },
+              { label: "Marketing", value: "marketing" },
+            ],
+          },
+          { label: "Archive", value: "archive", icon: ArchiveIcon },
+        ],
+      },
+      { label: "Delete", value: "delete", icon: Trash2Icon },
+    ]}
+  />
+);
+
 /*
  * `RootProps={{ modal: false }}` leaves the page scrollable and clickable while
  * the menu is open, so no backdrop is drawn to dim it.
