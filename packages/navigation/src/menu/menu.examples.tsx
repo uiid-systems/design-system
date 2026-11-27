@@ -375,3 +375,15 @@ export const NestedSubmenus = () => (
     ]}
   />
 );
+
+/*
+ * `RootProps={{ modal: false }}` leaves the page scrollable and clickable while
+ * the menu is open, so no backdrop is drawn to dim it.
+ */
+export const NonModal = () => (
+  <Menu
+    trigger={<Button>Actions</Button>}
+    items={ITEMS}
+    RootProps={{ modal: false }}
+  />
+);

@@ -297,6 +297,32 @@ describe("CodeBlock with a fence language", () => {
     expect(error()).not.toBeInTheDocument();
   });
 
+  describe("notations", () => {
+    const CODE = "const a = 1; // [!code --]\nconst b = 2;";
+    const lines = () => [...document.querySelectorAll("pre.shiki .line")];
+
+    it("turns a notation comment into a diff line by default", async () => {
+      render(<CodeBlock code={CODE} language="ts" />);
+
+      await waitFor(() =>
+        expect(document.querySelector(".line.diff.remove")).not.toBeNull(),
+      );
+      expect(lines()[0]).not.toHaveTextContent("[!code --]");
+    });
+
+    it("renders the comment as written with notations={false}", async () => {
+      render(<CodeBlock code={CODE} language="ts" notations={false} />);
+
+      await waitFor(() =>
+        expect(document.querySelector(COLORED_TOKEN)).toBeInTheDocument(),
+      );
+      expect(lines()).toHaveLength(2);
+      expect(lines()[0]).toHaveTextContent("const a = 1; // [!code --]");
+      expect(lines()[1]).toHaveTextContent("const b = 2;");
+      expect(document.querySelector(".line.diff")).toBeNull();
+    });
+  });
+
   it("shows no error when the language changes to an unknown one", async () => {
     const { rerender } = render(
       <CodeBlock code={TS_CODE} language="typescript" />,

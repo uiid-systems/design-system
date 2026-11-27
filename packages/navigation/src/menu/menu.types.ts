@@ -126,6 +126,8 @@ export type MenuProps = {
    *
    * Visual only: Base UI's Root is already `modal` by default, so page scroll
    * is locked and outside pointers are blocked whether or not this is drawn.
+   * With `RootProps.modal` set to `false` nothing is blocked, so no backdrop is
+   * drawn, whatever this is set to.
    * Only the root menu draws one — a submenu opening over its parent must not
    * darken the page a second time.
    * @default true

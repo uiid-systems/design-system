@@ -11,13 +11,15 @@ Use CodeBlock when you want to:
 
 Only the copy button renders by default. Turn it off with `copyable={false}`, and opt in to the others with `wrappable` and `fullscreenable`. A button that is off is not rendered at all, and the copy button is also left out while `code` is empty, rather than shown disabled. Without `fullscreenable` no fullscreen dialog is mounted.
 
-The header bar renders from its content: a `filename`, a `language` that has an icon, or `HeaderProps.children`. With none of them there is no bar, and the buttons float in the top-right corner over the code, always visible, with the end of the first line kept clear for them. In fullscreen, where the code scrolls vertically, every line keeps that space clear, since any line can pass beneath them. A wrapped line breaks before the buttons; an unwrapped one longer than the block scrolls beneath them, and once any line overflows sideways even a short line that reserves the space (the first, or every line in fullscreen) can sit under them. The reserved space fits the buttons at their default size, so a `size` or text children passed through a button's slot props can overlap the code. With no bar and no buttons, nothing is rendered above the code. A long filename truncates with an ellipsis; the buttons never shrink or wrap. Its full text is kept as a native `title` tooltip, which only a mouse hover shows, so it is no way for keyboard, touch or screen reader users to read the name.
+The header bar renders from its content: a `filename`, a `language` that has an icon, or `HeaderProps.children`. `hideLanguageIcon` leaves the icon out while `language` still picks the grammar, so a block with a known language and no filename gets no bar, as in a chat reply. With none of them there is no bar, and the buttons float in the top-right corner over the code, always visible, with the end of the first line kept clear for them. In fullscreen, where the code scrolls vertically, every line keeps that space clear, since any line can pass beneath them. A wrapped line breaks before the buttons; an unwrapped one longer than the block scrolls beneath them, and once any line overflows sideways even a short line that reserves the space (the first, or every line in fullscreen) can sit under them. The reserved space fits the buttons at their default size, so a `size` or text children passed through a button's slot props can overlap the code. With no bar and no buttons, nothing is rendered above the code. A long filename truncates with an ellipsis; the buttons never shrink or wrap. Its full text is kept as a native `title` tooltip, which only a mouse hover shows, so it is no way for keyboard, touch or screen reader users to read the name.
 
 While `rows` caps the code, the code area clips at that height rather than scrolling, so "Show more" is the one way to see the rest, and the area is not a tab stop. Long unwrapped lines still scroll sideways, so the code inside it can still be a tab stop, as below. The collapsed area ends on its last row, which fades into the code's background, and the toggle runs the full width of the frame's bottom edge directly beneath it, muted until hovered or focused. When the code fits in its `rows`, there is no toggle and no fade, and nothing is clipped.
 
 While the code overflows, sideways or (in fullscreen) downwards, the code itself is a tab stop, so the arrow keys scroll it, with a focus ring drawn inside the frame. It is then a `group` named by `filename`, or "Code" without one; an `aria-label` or `aria-labelledby` passed through `ContentProps` replaces that name. A group rather than a region, so a page of code blocks adds no landmarks. When the code fits, it is no tab stop and has no role or name, and the tab stop Shiki puts on its `<pre>` is removed either way. That removal reads the start of the markup, so pass `html` as `highlight` returns it, not wrapped in another element. The tab stop follows the code as the block resizes, wraps or gets new code, and stays while focus is inside it.
 
 One trailing newline (LF or CRLF) ends the last line rather than adding a blank one, so it is left out of the display; the copy button still copies `code` exactly. Server `html` highlighted from the same `code` drops the empty last line Shiki renders for it, so pass `highlight` the same `code` as the block: html from already trimmed code, with untrimmed `code`, would lose a real blank last line.
+
+Notation comments such as `// [!code ++]`, `// [!code --]` and `// [!code highlight]` turn their line into a diff or highlighted line and are left out of the display. Pass `notations={false}` to render them as written. Turn them off for text you did not write, such as a model's reply: a stray `// [!code --]` there would show a line as removed while the copy button still copies it. With prerendered `html` nothing is highlighted on the client, so the prop has no effect; pass `{ notations: false }` to `highlight()` instead.
 
 If highlighting fails, the block shows the plain code with the error message below it, so no line moves.
 
@@ -102,22 +104,22 @@ The frame, the row cap and the scroll area around the code are not parts, so a c
 
 ## Data Slots
 
-| Slot                           | Element                                  |
-| ------------------------------ | ---------------------------------------- |
-| `code-block`                   | Root container, and the fullscreen popup |
-| `code-block-header`            | Header bar, or the floating buttons' box |
-| `code-block-title`             | Language icon and filename in the bar    |
-| `code-block-actions`           | The header's buttons                     |
-| `code-block-copy-button`       | Copy button                              |
-| `code-block-wrap-button`       | Line-wrap toggle                         |
-| `code-block-fullscreen-button` | Fullscreen toggle                        |
-| `language-icon`                | Language icon, when `language` is set    |
-| `code-block-scroll`            | Scroll area around the code              |
-| `code-block-content`           | Highlighted code                         |
-| `code-block-expand-toggle`     | "Show more" / "Show less" button         |
-| `code-block-fullscreen`        | Fullscreen portal on the body            |
-| `code-block-backdrop`          | Fullscreen backdrop, closes on click     |
-| `code-block-error`             | Highlighting error message               |
+| Slot                           | Element                                                                  |
+| ------------------------------ | ------------------------------------------------------------------------ |
+| `code-block`                   | Root container, and the fullscreen popup                                 |
+| `code-block-header`            | Header bar, or the floating buttons' box                                 |
+| `code-block-title`             | Language icon and filename in the bar                                    |
+| `code-block-actions`           | The header's buttons                                                     |
+| `code-block-copy-button`       | Copy button                                                              |
+| `code-block-wrap-button`       | Line-wrap toggle                                                         |
+| `code-block-fullscreen-button` | Fullscreen toggle                                                        |
+| `language-icon`                | Language icon, when `language` has an icon and `hideLanguageIcon` is off |
+| `code-block-scroll`            | Scroll area around the code                                              |
+| `code-block-content`           | Highlighted code                                                         |
+| `code-block-expand-toggle`     | "Show more" / "Show less" button                                         |
+| `code-block-fullscreen`        | Fullscreen portal on the body                                            |
+| `code-block-backdrop`          | Fullscreen backdrop, closes on click                                     |
+| `code-block-error`             | Highlighting error message                                               |
 
 The root carries each state attribute only while that state is on: `data-wrap` while lines wrap, and `data-expanded` only when `rows` is set and the block is expanded. `data-fullscreen` marks the fullscreen popup, not the inline root. The header carries `data-floating` when it has no bar and its buttons float.
 
