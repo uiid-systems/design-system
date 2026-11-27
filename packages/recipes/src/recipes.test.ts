@@ -1,15 +1,17 @@
+import { execFileSync } from "node:child_process";
 // @vitest-environment node
 import {
   existsSync,
   mkdirSync,
   mkdtempSync,
+  readdirSync,
   readFileSync,
   rmSync,
   symlinkSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { afterAll, describe, expect, it } from "vitest";
@@ -18,15 +20,23 @@ import {
   checkRecipe,
   compareRecipe,
   findDisallowedImports,
+  gitLister,
   importSpecifiers,
   isAllowedImport,
+  type Lister,
   ownedDirectories,
   resolveInside,
+  runCheck,
+  runSync,
   syncRecipe,
+  walkFiles,
 } from "./recipes.ts";
 
-// Every test builds its own recipe and destination under the OS temp
-// directory. Nothing here reads or writes the real docs app.
+// Almost every test builds its own recipe and destination in a new directory
+// under the OS temp directory, outside any git repo, and lists files with the
+// plain file-system walk. Two tests read this package's own app shell recipe
+// without writing to it: one checks its imports, one lists it through git.
+// Nothing here reads or writes the docs app.
 const dirs: string[] = [];
 const tempDir = () => {
   const dir = mkdtempSync(join(tmpdir(), "uiid-recipes-"));
@@ -51,10 +61,13 @@ const RECIPE = {
   "lib/nav.ts": "export type Nav = string;\n",
 };
 
-// The docs app beside the recipe: a sibling component directory and a file at
-// the app root, neither of which belongs to the recipe.
+// The docs app beside the recipe: sibling directories, including ones whose
+// names start with an owned directory's name, and files at the app root. None
+// of them belongs to the recipe.
 const APP = {
   "components/docs/header-links.tsx": "export const Links = 1;\n",
+  "components/sidebar-old/x.tsx": "old sidebar\n",
+  "lib-old/x.ts": "old lib\n",
   "nav.ts": "export const NAV = [];\n",
   "nav.test.ts": "// the app's own config test\n",
 };
@@ -67,7 +80,11 @@ const setup = (dest: Record<string, string> = { ...RECIPE, ...APP }) => {
   return { files, app };
 };
 
-const clean = { changed: [], missing: [], extra: [] };
+const clean = { changed: [], missing: [], extra: [], extraDirectories: [] };
+
+/** Lists like the plain walk but skips `.DS_Store`, as git's ignore rules would. */
+const ignoringDsStore: Lister = (dir) =>
+  walkFiles(dir).filter((file) => !file.endsWith(".DS_Store"));
 
 describe("ownedDirectories", () => {
   it("owns the topmost directories that directly hold a file", () => {
@@ -111,18 +128,30 @@ describe("compareRecipe", () => {
     });
   });
 
-  it("names an extra file anywhere inside an owned directory", () => {
+  it("names an extra file in a directory the recipe has", () => {
     const { files, app } = setup();
     write(app, {
       "lib/nav.test.ts": "// not in the recipe\n",
-      "components/shell/subcomponents/old/shell-old.tsx": "\n",
+      "components/shell/subcomponents/shell-old.tsx": "\n",
     });
     expect(compareRecipe(files, app)).toEqual({
       ...clean,
       extra: [
-        "components/shell/subcomponents/old/shell-old.tsx",
+        "components/shell/subcomponents/shell-old.tsx",
         "lib/nav.test.ts",
       ],
+    });
+  });
+
+  it("names a directory the recipe does not have, not the files in it", () => {
+    const { files, app } = setup();
+    write(app, {
+      "components/shell/subcomponents/old/a.tsx": "\n",
+      "components/shell/subcomponents/old/deeper/b.tsx": "\n",
+    });
+    expect(compareRecipe(files, app)).toEqual({
+      ...clean,
+      extraDirectories: ["components/shell/subcomponents/old"],
     });
   });
 
@@ -168,6 +197,116 @@ describe("compareRecipe", () => {
       "components/sidebar/sidebar.tsx",
     ]);
   });
+
+  it("counts a file as present only under its exact name", () => {
+    const { files, app } = setup();
+    rmSync(join(files, "lib/nav.ts"));
+    write(files, { "lib/Nav.ts": RECIPE["lib/nav.ts"] });
+    expect(compareRecipe(files, app)).toEqual({
+      ...clean,
+      missing: ["lib/Nav.ts"],
+      extra: ["lib/nav.ts"],
+    });
+  });
+
+  it("refuses a symlinked directory inside an owned directory", () => {
+    const { files, app } = setup();
+    const outside = tempDir();
+    write(outside, { "shell-root.tsx": "outside\n" });
+    rmSync(join(app, "components/shell/subcomponents"), { recursive: true });
+    symlinkSync(outside, join(app, "components/shell/subcomponents"));
+    expect(() => compareRecipe(files, app)).toThrow(/symlink/);
+  });
+
+  it("refuses a recipe file that is a symlink", () => {
+    const { files, app } = setup();
+    const outside = tempDir();
+    write(outside, { "a.ts": "outside\n" });
+    symlinkSync(join(outside, "a.ts"), join(files, "lib/linked.ts"));
+    expect(() => compareRecipe(files, app)).toThrow(/regular files/);
+  });
+
+  it("refuses a recipe directory that is a symlink, with or without a trailing slash", () => {
+    const { files, app } = setup();
+    const link = join(tempDir(), "files");
+    symlinkSync(files, link);
+    expect(() => compareRecipe(link, app)).toThrow(/symlink/);
+    expect(() => compareRecipe(`${link}/`, app)).toThrow(/symlink/);
+  });
+});
+
+describe("files the lister leaves out", () => {
+  it("does not count an ignored file in the recipe or in the destination", () => {
+    const { files, app } = setup();
+    write(files, { "components/.DS_Store": "finder\n" });
+    write(app, { "lib/.DS_Store": "finder\n" });
+    expect(compareRecipe(files, app, ignoringDsStore)).toEqual(clean);
+    expect(syncRecipe(files, app, ignoringDsStore)).toEqual({
+      written: [],
+      removed: [],
+    });
+    expect(existsSync(join(app, "lib/.DS_Store"))).toBe(true);
+    expect(existsSync(join(app, "components/docs/header-links.tsx"))).toBe(
+      true,
+    );
+  });
+});
+
+describe("a stray file in a directory the recipe passes through", () => {
+  // The recipe gains a file directly in `components/`, so it owns all of
+  // `components/`, and the docs app's own `components/docs/` sits inside it.
+  const stray = (name: string) => {
+    const files = tempDir();
+    const app = tempDir();
+    write(files, {
+      "components/sidebar/s.tsx": "export const S = 1;\n",
+      "lib/nav.ts": "export {};\n",
+      [`components/${name}`]: "stray\n",
+    });
+    write(app, { "components/docs/keep.tsx": "keep\n" });
+    return { files, app };
+  };
+
+  it.each(["notes.txt", ".DS_Store"])(
+    "fails the check naming components/docs when %s is not ignored",
+    (name) => {
+      const { files, app } = stray(name);
+      const lines: string[] = [];
+      expect(
+        runCheck(files, app, {
+          labels: { files: "files", dest: "apps/docs" },
+          log: (line) => lines.push(line),
+        }),
+      ).toBe(1);
+      expect(lines.join("\n")).toContain(
+        `extra    "apps/docs/components/docs/", a directory the recipe does not have`,
+      );
+    },
+  );
+
+  it.each(["notes.txt", ".DS_Store"])(
+    "refuses to sync and changes nothing when %s is not ignored",
+    (name) => {
+      const { files, app } = stray(name);
+      expect(() => syncRecipe(files, app)).toThrow(/components\/docs/);
+      expect(readFileSync(join(app, "components/docs/keep.tsx"), "utf8")).toBe(
+        "keep\n",
+      );
+      expect(readdirSync(app)).toEqual(["components"]);
+      expect(readdirSync(join(app, "components"))).toEqual(["docs"]);
+    },
+  );
+
+  it("leaves components/docs alone when git would ignore the stray file", () => {
+    const { files, app } = stray(".DS_Store");
+    expect(syncRecipe(files, app, ignoringDsStore)).toEqual({
+      written: ["components/sidebar/s.tsx", "lib/nav.ts"],
+      removed: [],
+    });
+    expect(readFileSync(join(app, "components/docs/keep.tsx"), "utf8")).toBe(
+      "keep\n",
+    );
+  });
 });
 
 describe("syncRecipe", () => {
@@ -175,19 +314,15 @@ describe("syncRecipe", () => {
     const { files, app } = setup();
     write(app, {
       "components/sidebar/sidebar.tsx": "changed\n",
-      "components/shell/subcomponents/old/shell-old.tsx": "\n",
+      "components/shell/subcomponents/shell-old.tsx": "\n",
     });
     rmSync(join(app, "lib/nav.ts"));
 
     expect(syncRecipe(files, app)).toEqual({
       written: ["components/sidebar/sidebar.tsx", "lib/nav.ts"],
-      removed: ["components/shell/subcomponents/old/shell-old.tsx"],
+      removed: ["components/shell/subcomponents/shell-old.tsx"],
     });
     expect(compareRecipe(files, app)).toEqual(clean);
-    // The directory the extra file left empty goes too.
-    expect(existsSync(join(app, "components/shell/subcomponents/old"))).toBe(
-      false,
-    );
   });
 
   it("copies into a destination that has none of the recipe yet", () => {
@@ -201,16 +336,55 @@ describe("syncRecipe", () => {
     expect(syncRecipe(files, app)).toEqual({ written: [], removed: [] });
   });
 
-  it("leaves sibling directories and app root files alone", () => {
+  it("leaves sibling directories and app root files alone while it fixes a drifted copy", () => {
     const { files, app } = setup();
-    write(app, { "components/loose.tsx": "loose\n" });
-    syncRecipe(files, app);
+    write(app, {
+      "components/loose.tsx": "loose\n",
+      "components/sidebar/sidebar.tsx": "changed\n",
+      "components/shell/subcomponents/shell-old.tsx": "\n",
+      "lib/extra.ts": "\n",
+    });
+    rmSync(join(app, "components/shell/shell.tsx"));
+
+    const result = syncRecipe(files, app);
+    expect(result.written).toHaveLength(2);
+    expect(result.removed).toHaveLength(2);
+    expect(compareRecipe(files, app)).toEqual(clean);
     for (const [name, source] of Object.entries(APP)) {
       expect(readFileSync(join(app, name), "utf8")).toBe(source);
     }
     expect(readFileSync(join(app, "components/loose.tsx"), "utf8")).toBe(
       "loose\n",
     );
+  });
+
+  it("refuses while the copy has a directory the recipe does not have, and changes nothing", () => {
+    const { files, app } = setup();
+    write(app, {
+      "components/shell/subcomponents/old/a.tsx": "\n",
+      "components/sidebar/sidebar.tsx": "changed\n",
+    });
+    expect(() => syncRecipe(files, app)).toThrow(
+      /components\/shell\/subcomponents\/old/,
+    );
+    expect(
+      readFileSync(join(app, "components/sidebar/sidebar.tsx"), "utf8"),
+    ).toBe("changed\n");
+    expect(
+      existsSync(join(app, "components/shell/subcomponents/old/a.tsx")),
+    ).toBe(true);
+  });
+
+  it("removes before it writes, so a case-only rename keeps the file", () => {
+    const { files, app } = setup();
+    rmSync(join(files, "lib/nav.ts"));
+    write(files, { "lib/Nav.ts": RECIPE["lib/nav.ts"] });
+    expect(syncRecipe(files, app)).toEqual({
+      written: ["lib/Nav.ts"],
+      removed: ["lib/nav.ts"],
+    });
+    expect(readdirSync(join(app, "lib"))).toEqual(["Nav.ts"]);
+    expect(compareRecipe(files, app)).toEqual(clean);
   });
 
   it("refuses an owned directory that is a symlink, and writes nothing through it", () => {
@@ -222,10 +396,13 @@ describe("syncRecipe", () => {
     expect(existsSync(join(outside, "sidebar.tsx"))).toBe(false);
   });
 
-  it("refuses a file that is a symlink, and leaves its target unchanged", () => {
+  it("checks every target before it changes anything", () => {
     const { files, app } = setup();
     const outside = tempDir();
     write(outside, { "target.tsx": "outside\n" });
+    // Sorts before the symlinked file, so a sync that checked as it went would
+    // write it first.
+    rmSync(join(app, "components/shell/shell.tsx"));
     rmSync(join(app, "components/sidebar/sidebar.tsx"));
     symlinkSync(
       join(outside, "target.tsx"),
@@ -233,6 +410,7 @@ describe("syncRecipe", () => {
     );
     expect(() => syncRecipe(files, app)).toThrow(/symlink/);
     expect(readFileSync(join(outside, "target.tsx"), "utf8")).toBe("outside\n");
+    expect(existsSync(join(app, "components/shell/shell.tsx"))).toBe(false);
   });
 
   it("refuses a destination root that is a symlink", () => {
@@ -250,12 +428,16 @@ describe("resolveInside", () => {
     );
   });
 
-  it.each(["../outside.ts", "components/../../outside.ts", "/etc/passwd", ""])(
-    "refuses %j, which does not stay inside the root",
-    (path) => {
-      expect(() => resolveInside("/root", path)).toThrow(/outside/);
-    },
-  );
+  it.each([
+    "../outside.ts",
+    "components/../../outside.ts",
+    "components/../..",
+    "/etc/passwd",
+    "/root/components/a.ts",
+    "",
+  ])("refuses %j, which is not a relative path inside the root", (path) => {
+    expect(() => resolveInside("/root", path)).toThrow(/outside/);
+  });
 });
 
 describe("importSpecifiers", () => {
@@ -270,6 +452,7 @@ describe("importSpecifiers", () => {
       `const g = () => import("g");`,
       "const h = import(`h`);",
       `const i = require("i");`,
+      `const j = import ( "j" );`,
     ].join("\n");
     expect(importSpecifiers(source)).toEqual([
       "a",
@@ -281,7 +464,28 @@ describe("importSpecifiers", () => {
       "g",
       "h",
       "i",
+      "j",
     ]);
+  });
+
+  it("reports an import() or require() whose argument is not a string literal", () => {
+    const source = [
+      `const a = import(name);`,
+      `const b = require( name );`,
+      "const c = import(`./${x}`);",
+    ].join("\n");
+    const found = importSpecifiers(source);
+    expect(found).toHaveLength(3);
+    for (const specifier of found) {
+      expect(isAllowedImport(specifier, "lib/nav.ts", ["lib"])).toBe(false);
+    }
+  });
+
+  it("finishes quickly on a long run of whitespace", () => {
+    const source = `import x from${" ".repeat(100_000)};`;
+    const start = performance.now();
+    expect(importSpecifiers(source)).toEqual([]);
+    expect(performance.now() - start).toBeLessThan(500);
   });
 });
 
@@ -335,6 +539,10 @@ describe("isAllowedImport", () => {
     "@/lib/other",
     "../shell/shell.types",
     "../../lib/nav",
+    "@/components/sidebar/../docs/x",
+    "@/components/sidebar/./x",
+    "@uiid/design-system/../../x",
+    "react/../fs",
   ])("refuses %j", (specifier) => {
     expect(allowed(specifier)).toBe(false);
   });
@@ -346,28 +554,62 @@ describe("checkRecipe", () => {
     expect(checkRecipe(files, app)).toEqual([]);
   });
 
-  it("names every problem by its path in the destination or the recipe", () => {
+  it("names every problem by its quoted path in the destination or the recipe", () => {
     const { files, app } = setup();
     write(files, { "components/shell/shell.tsx": `import "@/sitemap";\n` });
     write(app, {
       "components/shell/shell.tsx": `import "@/sitemap";\n`,
+      "components/shell/old/a.tsx": "\n",
       "lib/extra.ts": "\n",
+      "lib/bad\nname.ts": "\n",
     });
     rmSync(join(app, "lib/nav.ts"));
     write(app, { "components/sidebar/sidebar.tsx": "changed\n" });
     expect(
-      checkRecipe(files, app, { files: "recipe/files", dest: "apps/docs" }),
+      checkRecipe(files, app, {
+        labels: { files: "recipe/files", dest: "apps/docs" },
+      }),
     ).toEqual([
-      "changed  apps/docs/components/sidebar/sidebar.tsx",
-      "missing  apps/docs/lib/nav.ts",
-      "extra    apps/docs/lib/extra.ts",
-      `import   recipe/files/components/shell/shell.tsx imports "@/sitemap", which a recipe file may not import`,
+      `changed  "apps/docs/components/sidebar/sidebar.tsx"`,
+      `missing  "apps/docs/lib/nav.ts"`,
+      `extra    "apps/docs/lib/bad\\nname.ts"`,
+      `extra    "apps/docs/lib/extra.ts"`,
+      `extra    "apps/docs/components/shell/old/", a directory the recipe does not have`,
+      `import   "recipe/files/components/shell/shell.tsx" imports "@/sitemap", which a recipe file may not import`,
     ]);
   });
 });
 
+describe("runCheck and runSync", () => {
+  const quiet = { log: () => {} };
+
+  it("runCheck returns 0 for a matching copy and 1 when it differs", () => {
+    const { files, app } = setup();
+    expect(runCheck(files, app, quiet)).toBe(0);
+    write(app, { "components/sidebar/sidebar.tsx": "changed\n" });
+    expect(runCheck(files, app, quiet)).toBe(1);
+  });
+
+  it("runCheck returns 1 for a disallowed import alone", () => {
+    const { files, app } = setup();
+    write(files, { "lib/nav.ts": `import "fs";\n` });
+    write(app, { "lib/nav.ts": `import "fs";\n` });
+    expect(runCheck(files, app, quiet)).toBe(1);
+  });
+
+  it("runSync returns 0 when it syncs and 1 when it refuses", () => {
+    const { files, app } = setup();
+    write(app, { "components/sidebar/sidebar.tsx": "changed\n" });
+    expect(runSync(files, app, quiet)).toBe(0);
+    write(app, { "components/sidebar/old/a.tsx": "\n" });
+    const lines: string[] = [];
+    expect(runSync(files, app, { log: (line) => lines.push(line) })).toBe(1);
+    expect(lines.join("\n")).toContain("components/sidebar/old");
+  });
+});
+
 describe("findDisallowedImports", () => {
-  it("names each file and the import it may not make", () => {
+  it("names each script file and the import it may not make, and skips CSS", () => {
     const files = tempDir();
     write(files, {
       ...RECIPE,
@@ -377,7 +619,7 @@ describe("findDisallowedImports", () => {
         `import { Box } from "@uiid/design-system";`,
       ].join("\n"),
       "components/shell/shell.tsx": `import type { Nav } from "../../lib/nav";\n`,
-      "components/shell/shell.module.css": `.a { color: red; }\n`,
+      "components/shell/shell.module.css": `@import "@/components/docs/docs.css";\n`,
     });
     expect(findDisallowedImports(files)).toEqual([
       { file: "components/shell/shell.tsx", specifier: "../../lib/nav" },
@@ -389,9 +631,26 @@ describe("findDisallowedImports", () => {
   });
 
   it("finds nothing to refuse in the app shell recipe", () => {
-    const appShell = fileURLToPath(
-      new URL("../app-shell/files/", import.meta.url),
-    );
-    expect(findDisallowedImports(appShell)).toEqual([]);
+    expect(findDisallowedImports(APP_SHELL)).toEqual([]);
+  });
+});
+
+const APP_SHELL = resolve(
+  fileURLToPath(new URL(".", import.meta.url)),
+  "../app-shell/files",
+);
+const REPO_ROOT = resolve(APP_SHELL, "../../../..");
+
+describe("gitLister", () => {
+  it("lists exactly the files git tracks in the app shell recipe", () => {
+    const tracked = execFileSync("git", ["ls-files", "-z"], {
+      cwd: APP_SHELL,
+      encoding: "utf8",
+    })
+      .split("\0")
+      .filter(Boolean)
+      .sort();
+    expect(tracked).toContain("components/sidebar/sidebar.tsx");
+    expect(gitLister(REPO_ROOT)(APP_SHELL)).toEqual(tracked);
   });
 });

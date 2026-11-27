@@ -5,15 +5,13 @@
 import { relative } from "node:path";
 
 import { APP_SHELL_FILES, DOCS_APP, REPO_ROOT } from "./paths.ts";
-import { syncRecipe } from "./recipes.ts";
+import { gitLister, runSync } from "./recipes.ts";
 
-const dest = relative(REPO_ROOT, DOCS_APP);
-const { written, removed } = syncRecipe(APP_SHELL_FILES, DOCS_APP);
-
-for (const file of written) console.log(`  wrote    ${dest}/${file}`);
-for (const file of removed) console.log(`  removed  ${dest}/${file}`);
-console.log(
-  written.length + removed.length === 0
-    ? `recipes:sync: the docs copy already matches`
-    : `recipes:sync: wrote ${written.length}, removed ${removed.length}`,
-);
+process.exitCode = runSync(APP_SHELL_FILES, DOCS_APP, {
+  lister: gitLister(REPO_ROOT),
+  labels: {
+    files: relative(REPO_ROOT, APP_SHELL_FILES),
+    dest: relative(REPO_ROOT, DOCS_APP),
+  },
+  log: (line) => console.log(line),
+});
