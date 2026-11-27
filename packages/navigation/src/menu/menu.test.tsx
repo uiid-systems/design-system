@@ -8,6 +8,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Menu } from "./menu";
 import { MOCK_ITEMS } from "./menu.mocks";
 import type { MenuItemType, MenuProps } from "./menu.types";
+import { renderMenuItems } from "./render-menu-items";
 import {
   MenuItem,
   MenuLinkItem,
@@ -15,11 +16,15 @@ import {
   MenuPortal,
   MenuPositioner,
   MenuRoot,
+  MenuSeparator,
   MenuTrigger,
   SubmenuRoot,
   SubmenuTrigger,
 } from "./subcomponents";
 
+/* The layout Separator's classes, reached by path like Select in the browser
+   test: the test only checks MenuSeparator draws that line. */
+import separatorStyles from "../../../layout/src/separator/separator.module.css";
 import styles from "./menu.module.css";
 import menuCss from "./menu.module.css?raw";
 
@@ -344,6 +349,37 @@ describe("Menu parts", () => {
     const link = screen.getByRole("menuitem", { name: "Home" });
     expect(link).toHaveAttribute("data-router-link");
     expect(link).toHaveAttribute("href", "/home");
+  });
+
+  it("renders a MenuSeparator as a horizontal separator and keeps a caller's class", () => {
+    renderParts(
+      <>
+        <MenuItem label="Edit" />
+        <MenuSeparator className="custom" />
+        <MenuItem label="Delete" />
+      </>,
+    );
+
+    const separator = screen.getByRole("separator");
+    expect(separator).toHaveAttribute("data-slot", "menu-separator");
+    expect(separator).toHaveAttribute("aria-orientation", "horizontal");
+    // The caller's class merges with the layout line's own.
+    expect(separator).toHaveClass(
+      "custom",
+      separatorStyles["separator"]!,
+      separatorStyles["orientation-horizontal"]!,
+    );
+  });
+
+  it("gives a vertical MenuSeparator's line and its ARIA the same orientation", () => {
+    renderParts(<MenuSeparator orientation="vertical" />);
+
+    const separator = screen.getByRole("separator");
+    expect(separator).toHaveAttribute("aria-orientation", "vertical");
+    expect(separator).toHaveClass(separatorStyles["orientation-vertical"]!);
+    expect(separator).not.toHaveClass(
+      separatorStyles["orientation-horizontal"]!,
+    );
   });
 
   it("draws a SubmenuTrigger's icon, label and description", () => {
@@ -1031,6 +1067,181 @@ describe("Menu descriptions and links", () => {
         items={MOCK_ITEMS}
         // @ts-expect-error -- each entry's `label` and `icon` are its content
         LinkItemProps={{ children: "Other" }}
+      />
+    );
+  });
+});
+
+describe("Menu separators", () => {
+  const SEPARATED: MenuItemType[] = [
+    { label: "Edit", value: "edit" },
+    { label: "Duplicate", value: "duplicate" },
+    { type: "separator" },
+    { label: "Delete", value: "delete" },
+  ];
+
+  it("renders a separator entry as a separator between the rows", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={SEPARATED} />);
+
+    await user.click(screen.getByText("Open"));
+
+    const separator = screen.getByRole("separator");
+    expect(separator).toHaveAttribute("data-slot", "menu-separator");
+    expect(separator).toHaveAttribute("aria-orientation", "horizontal");
+    expect(separator).toBeEmptyDOMElement();
+    // Between Duplicate and Delete, in the order of `items`.
+    expect(separator.previousElementSibling).toHaveTextContent("Duplicate");
+    expect(separator.nextElementSibling).toHaveTextContent("Delete");
+  });
+
+  it("skips the separator with the arrow keys", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={SEPARATED} />);
+
+    await user.click(screen.getByText("Open"));
+    await user.keyboard("{ArrowDown}{ArrowDown}");
+    expect(screen.getByRole("menuitem", { name: "Duplicate" })).toHaveAttribute(
+      "data-highlighted",
+    );
+
+    await user.keyboard("{ArrowDown}");
+    expect(screen.getByRole("menuitem", { name: "Delete" })).toHaveAttribute(
+      "data-highlighted",
+    );
+    expect(screen.getByRole("separator")).not.toHaveAttribute(
+      "data-highlighted",
+    );
+  });
+
+  it("renders a separator entry inside a submenu", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "Move to",
+            value: "move",
+            items: [
+              { label: "Inbox", value: "inbox" },
+              { type: "separator" },
+              { label: "Archive", value: "archive" },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    expect(screen.queryByRole("separator")).not.toBeInTheDocument();
+    await user.click(screen.getByText("Move to"));
+
+    await screen.findByRole("menuitem", { name: "Archive" });
+    expect(screen.getByRole("separator")).toHaveAttribute(
+      "data-slot",
+      "menu-separator",
+    );
+  });
+
+  /* Asserts the keys themselves, not React's console warnings: a separator
+     keyed by its missing `value` would have no key at all, and React dedupes
+     those warnings within a run. */
+  it("keys every separator, so siblings never share or lack a key", () => {
+    const rows = renderMenuItems(
+      [
+        { label: "Edit", value: "edit" },
+        { type: "separator" },
+        { label: "Share", value: "share" },
+        { type: "separator" },
+        { label: "Delete", value: "delete" },
+      ],
+      {},
+    ) as React.ReactElement[];
+
+    const keys = rows.map((row) => row.key);
+    expect(keys).toHaveLength(5);
+    for (const key of keys) expect(key).toEqual(expect.any(String));
+    expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it("reaches every separator, at any depth, with SeparatorProps", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Edit", value: "edit" },
+          { type: "separator" },
+          {
+            label: "Move to",
+            value: "move",
+            items: [
+              { label: "Inbox", value: "inbox" },
+              { type: "separator" },
+              { label: "Archive", value: "archive" },
+            ],
+          },
+        ]}
+        SeparatorProps={{ className: "from-slot" }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByText("Move to"));
+    await screen.findByRole("menuitem", { name: "Archive" });
+
+    const separators = screen.getAllByRole("separator");
+    expect(separators).toHaveLength(2);
+    for (const separator of separators) {
+      expect(separator).toHaveClass("from-slot", separatorStyles["separator"]!);
+      expect(separator).toHaveAttribute("data-slot", "menu-separator");
+    }
+  });
+
+  it("keeps a separator empty when SeparatorProps passes children", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={SEPARATED}
+        SeparatorProps={
+          // Untyped callers can still pass them at runtime.
+          { children: "OR" } as unknown as MenuProps["SeparatorProps"]
+        }
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getByRole("separator")).toBeEmptyDOMElement();
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects a value or a label on a separator entry", () => {
+    const items: MenuItemType[] = [
+      // @ts-expect-error -- a separator is keyed by its index, not a value
+      { type: "separator", value: "line" },
+      // @ts-expect-error -- a separator draws no content
+      { type: "separator", label: "Line" },
+      // @ts-expect-error -- `separator` is the only entry kind with a type
+      { type: "item", label: "Edit", value: "edit" },
+    ];
+    void items;
+  });
+
+  it("still reads a field off every entry, as string | undefined", () => {
+    const labels: (string | undefined)[] = MOCK_ITEMS.map((item) => item.label);
+    void labels;
+  });
+
+  it("rejects a separator's children in SeparatorProps", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- a separator entry draws no content
+        SeparatorProps={{ children: "OR" }}
       />
     );
   });

@@ -96,6 +96,8 @@ export const ItemDescriptions: Story = {
 
 export const Links: Story = { render: () => <Examples.Links /> };
 
+export const Separators: Story = { render: () => <Examples.Separators /> };
+
 export const Disabled: Story = { render: () => <Examples.Disabled /> };
 
 export const LongLabels: Story = { render: () => <Examples.LongLabels /> };

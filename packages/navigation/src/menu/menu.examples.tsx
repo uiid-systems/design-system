@@ -270,6 +270,32 @@ export const Links = () => (
 );
 
 /*
+ * A `{ type: "separator" }` entry draws a line between sets of entries, in a
+ * submenu too. The arrow keys skip it.
+ */
+export const Separators = () => (
+  <Menu
+    trigger={<Button>Actions</Button>}
+    items={[
+      { label: "Edit", value: "edit", icon: PencilIcon },
+      { label: "Duplicate", value: "duplicate", icon: CopyIcon },
+      {
+        label: "Move to",
+        value: "move",
+        icon: FolderInputIcon,
+        items: [
+          { label: "Inbox", value: "inbox", icon: InboxIcon },
+          { type: "separator" },
+          { label: "Archive", value: "archive", icon: ArchiveIcon },
+        ],
+      },
+      { type: "separator" },
+      { label: "Delete", value: "delete", icon: Trash2Icon },
+    ]}
+  />
+);
+
+/*
  * A disabled row is dimmed and takes no pointer. The keyboard still lands on
  * it, so focus never disappears, but choosing it does nothing.
  */
