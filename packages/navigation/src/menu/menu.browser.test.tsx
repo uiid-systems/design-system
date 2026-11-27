@@ -129,6 +129,21 @@ const toRgb = (color: string, backdrop = "white") => {
   return [r, g, b];
 };
 
+/* The alpha, 0 to 255, a computed color paints with on an empty canvas, so a
+   transparent color reads as 0 whatever form it is written in. */
+const toAlpha = (color: string) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 1;
+  const context = canvas.getContext("2d", { willReadFrequently: true })!;
+  context.fillStyle = SENTINEL;
+  context.fillStyle = color;
+  if (context.fillStyle === SENTINEL) {
+    throw new Error(`The canvas cannot parse the color "${color}"`);
+  }
+  context.fillRect(0, 0, 1, 1);
+  return context.getImageData(0, 0, 1, 1).data[3]!;
+};
+
 const SURFACE = [
   "background-color",
   "border-top-width",
@@ -264,7 +279,10 @@ describe("Menu separator beside Select's", () => {
 
     expect(menu.getAttribute("role")).toBe("separator");
     expect(style(menu).height).toBe("1px");
+    // A visible line: neither white nor transparent, so the equality below
+    // cannot pass on two lines that both paint nothing.
     expect(toRgb(style(menu).backgroundColor)).not.toEqual([255, 255, 255]);
+    expect(toAlpha(style(menu).backgroundColor)).toBeGreaterThan(0);
     expect(pick(menu, SEPARATOR)).toEqual(pick(select, SEPARATOR));
   });
 });

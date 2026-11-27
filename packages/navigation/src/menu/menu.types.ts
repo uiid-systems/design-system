@@ -19,7 +19,7 @@ type MenuEntryContent = {
   description?: ListItemProps["description"];
   /** The entry's key. Must be unique among its siblings. */
   value: string;
-  /* Only a separator entry has a `type`. */
+  /** Only a separator entry has a `type`. */
   type?: never;
 };
 
