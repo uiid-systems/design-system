@@ -5,6 +5,9 @@ export * from "./accordion/subcomponents";
 export * from "./breadcrumbs/breadcrumbs";
 export * from "./breadcrumbs/breadcrumbs.types";
 
+export * from "./context-menu/context-menu.types";
+export * from "./context-menu/subcomponents";
+
 export * from "./menu/menu";
 export * from "./menu/menu.types";
 export * from "./menu/subcomponents";
