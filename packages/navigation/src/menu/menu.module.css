@@ -58,7 +58,16 @@
   composes: composes-option from global;
 }
 
+/* A link row looks and highlights exactly like an item row: no underline and
+   no link color, and `composes-option` already drops the focus outline. */
+.link-item {
+  composes: composes-option from global;
+  color: inherit;
+  text-decoration: none;
+}
+
 .item,
+.link-item,
 .submenu-trigger,
 .checkbox-item {
   cursor: default;
@@ -76,6 +85,7 @@
 }
 
 .item > [data-slot="list-item"],
+.link-item > [data-slot="list-item"],
 .submenu-trigger > [data-slot="list-item"],
 .checkbox-item > [data-slot="list-item"] {
   flex: 1;

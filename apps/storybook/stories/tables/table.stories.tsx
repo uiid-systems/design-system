@@ -7,6 +7,7 @@ import {
   type TableMockData,
   TABLE_MOCK_MORE_ACTIONS,
   TABLE_MOCK_ACTIONS,
+  TABLE_MOCK_ROW_MENU,
 } from "./table.mocks";
 
 const meta: Meta<typeof Table> = {
@@ -55,6 +56,22 @@ export const Sizes = { render: () => <Examples.Sizes /> };
 export const Selection = { render: () => <Examples.Selection /> };
 
 export const Actions = { render: () => <Examples.Actions /> };
+
+/* The row menu takes Menu's `items` as they are, separators and links
+   included. */
+export const RowMenu = {
+  name: "Row Menu",
+  render: () => (
+    <Stack gap={4} w="full">
+      <Table<TableMockData>
+        items={TABLE_MOCK_DATA}
+        columns={["name", "email", "status"]}
+        actions={{ secondary: TABLE_MOCK_ROW_MENU }}
+        bordered
+      />
+    </Stack>
+  ),
+};
 
 export const StickyHeader = {
   name: "Sticky Header + Footer",

@@ -7,22 +7,28 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Menu } from "./menu";
 import { MOCK_ITEMS } from "./menu.mocks";
-import type { MenuProps } from "./menu.types";
+import type { MenuItemType, MenuProps } from "./menu.types";
+import { renderMenuItems } from "./render-menu-items";
 import {
   MenuCheckboxItem,
   MenuCheckboxItemIndicator,
   MenuGroup,
   MenuGroupLabel,
   MenuItem,
+  MenuLinkItem,
   MenuPopup,
   MenuPortal,
   MenuPositioner,
   MenuRoot,
+  MenuSeparator,
   MenuTrigger,
   SubmenuRoot,
   SubmenuTrigger,
 } from "./subcomponents";
 
+/* The layout Separator's classes, reached by path like Select in the browser
+   test: the test only checks MenuSeparator draws that line. */
+import separatorStyles from "../../../layout/src/separator/separator.module.css";
 import styles from "./menu.module.css";
 import menuCss from "./menu.module.css?raw";
 
@@ -112,6 +118,47 @@ describe("Menu backdrop", () => {
       "data-slot",
       "menu-backdrop",
     );
+  });
+
+  /* A non-modal menu blocks nothing, so it draws no backdrop to say it does. */
+  it("draws no backdrop when the root is not modal", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu trigger="Open" items={MOCK_ITEMS} RootProps={{ modal: false }} />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getByRole("menu")).toBeInTheDocument();
+    expect(backdrops()).toHaveLength(0);
+  });
+
+  it("draws no backdrop when not modal even with backdrop set", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        backdrop
+        RootProps={{ modal: false }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getByRole("menu")).toBeInTheDocument();
+    expect(backdrops()).toHaveLength(0);
+  });
+
+  it("dims the page when the root is explicitly modal", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu trigger="Open" items={MOCK_ITEMS} RootProps={{ modal: true }} />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(backdrops()).toHaveLength(1);
   });
 });
 
@@ -267,6 +314,76 @@ describe("Menu parts", () => {
     expect(screen.getByTestId("custom-row")).toBeInTheDocument();
     expect(item.querySelector("[data-slot='list-item-icon']")).toBeNull();
     expect(item).not.toHaveTextContent("Edit");
+  });
+
+  it("renders a MenuLinkItem as a link row with its icon, label and description", () => {
+    renderParts(
+      <MenuLinkItem
+        href="/settings"
+        label="Settings"
+        description="Account and billing"
+        icon={PencilIcon}
+      />,
+    );
+
+    const link = screen.getByRole("menuitem");
+    expect(link.tagName).toBe("A");
+    expect(link).toHaveAttribute("href", "/settings");
+    expect(link).toHaveAttribute("data-slot", "menu-link-item");
+    expect(link).toHaveClass(styles["link-item"]!);
+    expect(
+      link.querySelector("[data-slot='list-item-icon']"),
+    ).toBeInTheDocument();
+    expect(
+      link.querySelector("[data-slot='list-text-description']"),
+    ).toHaveTextContent("Account and billing");
+  });
+
+  it("renders a MenuLinkItem through a router's link component", () => {
+    const RouterLink = ({
+      to,
+      ...props
+    }: React.ComponentProps<"a"> & { to: string }) => (
+      <a data-router-link="" href={to} {...props} />
+    );
+    renderParts(
+      <MenuLinkItem render={<RouterLink to="/home" />} label="Home" />,
+    );
+
+    const link = screen.getByRole("menuitem", { name: "Home" });
+    expect(link).toHaveAttribute("data-router-link");
+    expect(link).toHaveAttribute("href", "/home");
+  });
+
+  it("renders a MenuSeparator as a horizontal separator and keeps a caller's class", () => {
+    renderParts(
+      <>
+        <MenuItem label="Edit" />
+        <MenuSeparator className="custom" />
+        <MenuItem label="Delete" />
+      </>,
+    );
+
+    const separator = screen.getByRole("separator");
+    expect(separator).toHaveAttribute("data-slot", "menu-separator");
+    expect(separator).toHaveAttribute("aria-orientation", "horizontal");
+    // The caller's class merges with the layout line's own.
+    expect(separator).toHaveClass(
+      "custom",
+      separatorStyles["separator"]!,
+      separatorStyles["orientation-horizontal"]!,
+    );
+  });
+
+  it("gives a vertical MenuSeparator's line and its ARIA the same orientation", () => {
+    renderParts(<MenuSeparator orientation="vertical" />);
+
+    const separator = screen.getByRole("separator");
+    expect(separator).toHaveAttribute("aria-orientation", "vertical");
+    expect(separator).toHaveClass(separatorStyles["orientation-vertical"]!);
+    expect(separator).not.toHaveClass(
+      separatorStyles["orientation-horizontal"]!,
+    );
   });
 
   it("draws a SubmenuTrigger's icon, label and description", () => {
@@ -568,6 +685,568 @@ describe("Menu items", () => {
     expect(screen.getByRole("menuitem", { name: "More" })).toHaveAttribute(
       "aria-disabled",
       "true",
+    );
+  });
+
+  describe("at depth", () => {
+    const popups = () => document.querySelectorAll('[data-slot="menu-popup"]');
+
+    /* Opens "More", then its "Share" submenu, by keyboard: happy-dom reports a
+       submenu's rows as pointer-events: none while it enters. */
+    const openThirdLevel = async (user: ReturnType<typeof userEvent.setup>) => {
+      await user.click(screen.getByText("Open"));
+      await user.click(screen.getByText("More"));
+      const share = await screen.findByRole("menuitem", { name: "Share" });
+      share.focus();
+      await user.keyboard("{ArrowRight}");
+      return screen.findByRole("menuitem", { name: "Email" });
+    };
+
+    const threeLevels = (
+      onEmail?: () => void,
+      share?: Pick<MenuProps["items"][number], "disabled">,
+      email?: Pick<MenuProps["items"][number], "disabled">,
+    ): MenuProps["items"] => [
+      { label: "Edit", value: "edit" },
+      {
+        label: "More",
+        value: "more",
+        items: [
+          { label: "Archive", value: "archive" },
+          {
+            label: "Share",
+            value: "share",
+            items: [
+              { label: "Email", value: "email", onClick: onEmail, ...email },
+              { label: "Copy link", value: "link" },
+            ],
+            ...share,
+          },
+        ],
+      },
+    ];
+
+    it("opens a submenu inside a submenu, and its leaf's onClick fires", async () => {
+      const user = userEvent.setup();
+      const onEmail = vi.fn();
+      render(<Menu trigger="Open" items={threeLevels(onEmail)} />);
+
+      const email = await openThirdLevel(user);
+      expect(popups()).toHaveLength(3);
+
+      email.focus();
+      await user.keyboard("{Enter}");
+      expect(onEmail).toHaveBeenCalledTimes(1);
+    });
+
+    it("calls ItemProps.onClick at the third level, before the item's own", async () => {
+      const user = userEvent.setup();
+      const calls: string[] = [];
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels(() => calls.push("item"))}
+          ItemProps={{ onClick: () => calls.push("slot") }}
+        />,
+      );
+
+      const email = await openThirdLevel(user);
+      email.focus();
+      await user.keyboard("{Enter}");
+      expect(calls).toEqual(["slot", "item"]);
+    });
+
+    it("reaches every level with the submenu slots", async () => {
+      const user = userEvent.setup();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels()}
+          ItemProps={{ className: "from-item-props" }}
+          SubmenuTriggerProps={{ className: "from-trigger-props" }}
+        />,
+      );
+
+      const email = await openThirdLevel(user);
+      expect(email).toHaveClass("from-item-props");
+      expect(screen.getByRole("menuitem", { name: "Share" })).toHaveClass(
+        "from-trigger-props",
+      );
+    });
+
+    it("lets a second-level entry's disabled win over SubmenuTriggerProps", async () => {
+      const user = userEvent.setup();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels(undefined, { disabled: true })}
+          SubmenuTriggerProps={{ disabled: false }}
+        />,
+      );
+
+      await user.click(screen.getByText("Open"));
+      await user.click(screen.getByText("More"));
+      const share = await screen.findByRole("menuitem", { name: "Share" });
+      // A submenu trigger, not a plain row that dropped its `items`.
+      expect(share).toHaveAttribute("data-slot", "submenu-trigger");
+      expect(share).toHaveAttribute("aria-haspopup", "menu");
+      expect(share).toHaveAttribute("aria-disabled", "true");
+
+      share.focus();
+      await user.keyboard("{ArrowRight}");
+      expect(screen.queryByRole("menuitem", { name: "Email" })).toBeNull();
+      expect(popups()).toHaveLength(2);
+    });
+
+    it("reaches every submenu root with SubmenuRootProps", async () => {
+      const user = userEvent.setup();
+      const onOpenChange = vi.fn();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels()}
+          SubmenuRootProps={{ onOpenChange }}
+        />,
+      );
+
+      await openThirdLevel(user);
+      const opened = onOpenChange.mock.calls.filter(([open]) => open === true);
+      expect(opened).toHaveLength(2);
+    });
+
+    it("lets a third-level entry's disabled win over ItemProps", async () => {
+      const user = userEvent.setup();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels(undefined, undefined, { disabled: true })}
+          ItemProps={{ disabled: false }}
+        />,
+      );
+
+      const email = await openThirdLevel(user);
+      expect(email).toHaveAttribute("aria-disabled", "true");
+    });
+  });
+});
+
+describe("Menu descriptions and links", () => {
+  it("draws an entry's description under its label", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "Copy link",
+            value: "copy",
+            description: "Anyone with the link can view",
+          },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    // The description is text inside the row, so it joins the row's name.
+    const row = screen.getByRole("menuitem", {
+      name: "Copy link Anyone with the link can view",
+    });
+    expect(
+      row.querySelector("[data-slot='list-text-description']"),
+    ).toHaveTextContent("Anyone with the link can view");
+  });
+
+  it("draws a submenu entry's description on its trigger", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "Share",
+            value: "share",
+            description: "Send a copy",
+            items: [{ label: "Email", value: "email" }],
+          },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(
+      document.querySelector(
+        "[data-slot='submenu-trigger'] [data-slot='list-text-description']",
+      ),
+    ).toHaveTextContent("Send a copy");
+  });
+
+  it("renders an href entry as a link menu item", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Edit", value: "edit" },
+          { label: "Settings", value: "settings", href: "/settings" },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    const link = screen.getByRole("menuitem", { name: "Settings" });
+    expect(link.tagName).toBe("A");
+    expect(link).toHaveAttribute("href", "/settings");
+    expect(screen.getByRole("menuitem", { name: "Edit" }).tagName).not.toBe(
+      "A",
+    );
+  });
+
+  it("renders an href entry inside a submenu as a link menu item", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "More",
+            value: "more",
+            items: [{ label: "Docs", value: "docs", href: "/docs" }],
+          },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByText("More"));
+
+    const link = await screen.findByRole("menuitem", { name: "Docs" });
+    expect(link.tagName).toBe("A");
+    expect(link).toHaveAttribute("href", "/docs");
+  });
+
+  it("calls LinkItemProps.onClick, then the link entry's own onClick", async () => {
+    const user = userEvent.setup();
+    const calls: string[] = [];
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "Settings",
+            value: "settings",
+            // A fragment link keeps happy-dom from navigating away.
+            href: "#settings",
+            onClick: () => calls.push("entry"),
+          },
+        ]}
+        LinkItemProps={{ onClick: () => calls.push("slot") }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByRole("menuitem", { name: "Settings" }));
+
+    expect(calls).toEqual(["slot", "entry"]);
+  });
+
+  it("reaches every link item with LinkItemProps", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Docs", value: "docs", href: "/docs" },
+          {
+            label: "More",
+            value: "more",
+            items: [{ label: "Blog", value: "blog", href: "/blog" }],
+          },
+        ]}
+        LinkItemProps={{ target: "_blank", className: "from-slot" }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByText("More"));
+
+    for (const name of ["Docs", "Blog"]) {
+      const link = await screen.findByRole("menuitem", { name });
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveClass("from-slot", styles["link-item"]!);
+    }
+  });
+
+  /* Like an action row, so a router or hash link does not leave the modal
+     menu open over the new view. */
+  it("closes the menu when a link entry is clicked", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[{ label: "Settings", value: "settings", href: "#settings" }]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByRole("menuitem", { name: "Settings" }));
+
+    expect(screen.getByText("Open")).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("keeps the menu open after a link click when LinkItemProps opts out", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[{ label: "Settings", value: "settings", href: "#settings" }]}
+        LinkItemProps={{ closeOnClick: false }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByRole("menuitem", { name: "Settings" }));
+
+    expect(screen.getByText("Open")).toHaveAttribute("aria-expanded", "true");
+    expect(
+      screen.getByRole("menuitem", { name: "Settings" }),
+    ).toBeInTheDocument();
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects an entry with both href and items", () => {
+    const items: MenuItemType[] = [
+      // @ts-expect-error -- a link cannot also open a submenu
+      { label: "Docs", value: "docs", href: "/docs", items: [] },
+    ];
+    void items;
+  });
+
+  it("rejects an entry with both href and disabled", () => {
+    const items: MenuItemType[] = [
+      // @ts-expect-error -- Base UI's LinkItem takes no `disabled`
+      { label: "Docs", value: "docs", href: "/docs", disabled: true },
+    ];
+    void items;
+  });
+
+  it("rejects the keys each link entry owns in LinkItemProps", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each link entry's `href` is its own
+        LinkItemProps={{ href: "/other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `label` is its content
+        LinkItemProps={{ label: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `icon` is its content
+        LinkItemProps={{ icon: StarIcon }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- a row's second line belongs to its entry
+        LinkItemProps={{ description: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `label` and `icon` are its content
+        LinkItemProps={{ children: "Other" }}
+      />
+    );
+  });
+});
+
+describe("Menu separators", () => {
+  const SEPARATED: MenuItemType[] = [
+    { label: "Edit", value: "edit" },
+    { label: "Duplicate", value: "duplicate" },
+    { type: "separator" },
+    { label: "Delete", value: "delete" },
+  ];
+
+  it("renders a separator entry as a separator between the rows", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={SEPARATED} />);
+
+    await user.click(screen.getByText("Open"));
+
+    const separator = screen.getByRole("separator");
+    expect(separator).toHaveAttribute("data-slot", "menu-separator");
+    expect(separator).toHaveAttribute("aria-orientation", "horizontal");
+    expect(separator).toBeEmptyDOMElement();
+    // Between Duplicate and Delete, in the order of `items`.
+    expect(separator.previousElementSibling).toHaveTextContent("Duplicate");
+    expect(separator.nextElementSibling).toHaveTextContent("Delete");
+  });
+
+  it("skips the separator with the arrow keys", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={SEPARATED} />);
+
+    await user.click(screen.getByText("Open"));
+    await user.keyboard("{ArrowDown}{ArrowDown}");
+    expect(screen.getByRole("menuitem", { name: "Duplicate" })).toHaveAttribute(
+      "data-highlighted",
+    );
+
+    await user.keyboard("{ArrowDown}");
+    expect(screen.getByRole("menuitem", { name: "Delete" })).toHaveAttribute(
+      "data-highlighted",
+    );
+    expect(screen.getByRole("separator")).not.toHaveAttribute(
+      "data-highlighted",
+    );
+  });
+
+  it("renders a separator entry inside a submenu", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "Move to",
+            value: "move",
+            items: [
+              { label: "Inbox", value: "inbox" },
+              { type: "separator" },
+              { label: "Archive", value: "archive" },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    expect(screen.queryByRole("separator")).not.toBeInTheDocument();
+    await user.click(screen.getByText("Move to"));
+
+    await screen.findByRole("menuitem", { name: "Archive" });
+    expect(screen.getByRole("separator")).toHaveAttribute(
+      "data-slot",
+      "menu-separator",
+    );
+  });
+
+  /* Asserts the keys themselves, not React's console warnings: a separator
+     keyed by its missing `value` would have no key at all, and React dedupes
+     those warnings within a run. */
+  it("keys every separator, so siblings never share or lack a key", () => {
+    const rows = renderMenuItems(
+      [
+        { label: "Edit", value: "edit" },
+        { type: "separator" },
+        { label: "Share", value: "share" },
+        { type: "separator" },
+        { label: "Delete", value: "delete" },
+      ],
+      {},
+    ) as React.ReactElement[];
+
+    const keys = rows.map((row) => row.key);
+    expect(keys).toHaveLength(5);
+    for (const key of keys) expect(key).toEqual(expect.any(String));
+    expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it("reaches every separator, at any depth, with SeparatorProps", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Edit", value: "edit" },
+          { type: "separator" },
+          {
+            label: "Move to",
+            value: "move",
+            items: [
+              { label: "Inbox", value: "inbox" },
+              { type: "separator" },
+              { label: "Archive", value: "archive" },
+            ],
+          },
+        ]}
+        SeparatorProps={{ className: "from-slot" }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByText("Move to"));
+    await screen.findByRole("menuitem", { name: "Archive" });
+
+    const separators = screen.getAllByRole("separator");
+    expect(separators).toHaveLength(2);
+    for (const separator of separators) {
+      expect(separator).toHaveClass("from-slot", separatorStyles["separator"]!);
+      expect(separator).toHaveAttribute("data-slot", "menu-separator");
+    }
+  });
+
+  it("keeps a separator empty when SeparatorProps passes children", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={SEPARATED}
+        SeparatorProps={
+          // Untyped callers can still pass them at runtime.
+          { children: "OR" } as unknown as MenuProps["SeparatorProps"]
+        }
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getByRole("separator")).toBeEmptyDOMElement();
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects a value or a label on a separator entry", () => {
+    const items: MenuItemType[] = [
+      // @ts-expect-error -- a separator is keyed by its index, not a value
+      { type: "separator", value: "line" },
+      // @ts-expect-error -- a separator draws no content
+      { type: "separator", label: "Line" },
+      // @ts-expect-error -- `separator` is the only entry kind with a type
+      { type: "item", label: "Edit", value: "edit" },
+    ];
+    void items;
+  });
+
+  it("still reads a field off every entry, as string | undefined", () => {
+    const labels: (string | undefined)[] = MOCK_ITEMS.map((item) => item.label);
+    void labels;
+  });
+
+  it("rejects a separator's children in SeparatorProps", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- a separator entry draws no content
+        SeparatorProps={{ children: "OR" }}
+      />
     );
   });
 });
@@ -961,6 +1640,45 @@ describe("Menu slot precedence", () => {
     expect(screen.queryByText("Slot trigger")).not.toBeInTheDocument();
     expect(screen.queryByText("Slot popup")).not.toBeInTheDocument();
     expect(screen.queryByText("Slot item")).not.toBeInTheDocument();
+  });
+
+  it("keeps each link entry's own href and content when a slot passes its own", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "Docs",
+            value: "docs",
+            href: "/docs",
+            icon: PencilIcon,
+            description: "Read the guides",
+          },
+        ]}
+        LinkItemProps={untyped<MenuProps["LinkItemProps"]>({
+          href: "/slot",
+          label: "Slot label",
+          icon: StarIcon,
+          description: "Slot description",
+          children: "Slot content",
+        })}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    const link = screen.getByRole("menuitem", { name: /^Docs/ });
+    expect(link).toHaveAttribute("href", "/docs");
+    expect(
+      link.querySelector("[data-slot='list-text-description']"),
+    ).toHaveTextContent("Read the guides");
+    const icon = link.querySelector("[data-slot='list-item-icon']");
+    expect(icon).toHaveClass("lucide-pencil");
+    expect(icon).not.toHaveClass("lucide-star");
+    expect(screen.queryByText("Slot label")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot description")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
   });
 
   it("keeps each entry's label and icon when a slot passes its own", async () => {

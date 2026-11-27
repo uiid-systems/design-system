@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { useState } from "react";
+import type { MarkdownCodeBlockProps, MarkdownOverrides } from "@uiid/markdown";
+import { useEffect, useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import { Message } from "./message";
@@ -15,6 +16,25 @@ vi.mock("markdown-to-jsx/react", async (importOriginal) => {
   compiler.mockImplementation(actual.compiler);
   return { ...actual, compiler };
 });
+
+const TS_CODE = "const x: number = 1;";
+
+/** One entry per mount of the stub, so a remount shows as a second entry. */
+const mounts: number[] = [];
+
+/** Stands in for a code component; `@uiid/ai` does not depend on one. */
+const StubCode = ({ code, language }: MarkdownCodeBlockProps) => {
+  useEffect(() => {
+    mounts.push(mounts.length);
+  }, []);
+  return (
+    <figure data-slot="stub-code" data-language={language}>
+      {code}
+    </figure>
+  );
+};
+
+const STUB_OVERRIDES: MarkdownOverrides = { codeBlock: StubCode };
 
 describe("Message", () => {
   it("renders a full-width Stack with the slot, the author and the default gap", () => {
@@ -206,6 +226,78 @@ describe("MessageResponse", () => {
     expect(root.tagName).toBe("ARTICLE");
     expect(root).toHaveClass("custom");
     expect(ref.current).toBe(root);
+  });
+
+  describe("code blocks", () => {
+    const fence = (language: string, code = TS_CODE) =>
+      `Before\n\n\`\`\`${language}\n${code}\n\`\`\`\n\nAfter`;
+    const getBlock = () =>
+      document.querySelector<HTMLElement>("[data-slot='stub-code']");
+
+    it("renders a plain pre between the prose with no override", () => {
+      const { container } = render(
+        <MessageResponse>{fence("ts")}</MessageResponse>,
+      );
+
+      const pre = container.querySelector("pre")!;
+      expect(pre.parentElement).toBe(container.firstElementChild);
+      expect(pre.querySelector("code")).toHaveTextContent(TS_CODE);
+      expect(container.firstElementChild).toHaveTextContent(
+        /^Before.*const x: number = 1;.*After$/,
+      );
+    });
+
+    it("renders a fenced block through the caller's codeBlock with its code and language", () => {
+      const { container } = render(
+        <MessageResponse overrides={STUB_OVERRIDES}>
+          {fence("ts")}
+        </MessageResponse>,
+      );
+
+      const block = getBlock()!;
+      expect(block.parentElement).toBe(container.firstElementChild);
+      expect(block).toHaveAttribute("data-language", "ts");
+      expect(block).toHaveTextContent(TS_CODE);
+      expect(container.querySelector("pre")).toBeNull();
+    });
+
+    it("gives the caller's codeBlock no language for a bare fence", () => {
+      render(
+        <MessageResponse overrides={STUB_OVERRIDES}>
+          {fence("")}
+        </MessageResponse>,
+      );
+
+      expect(getBlock()).not.toHaveAttribute("data-language");
+      expect(getBlock()).toHaveTextContent(TS_CODE);
+    });
+
+    it("keeps one instance of the caller's codeBlock while the fence streams in", () => {
+      mounts.length = 0;
+      const source = fence("ts", "const a = 1;\nconst b = 2;");
+      const { rerender } = render(
+        <MessageResponse streaming overrides={STUB_OVERRIDES}>
+          {source.slice(0, 20)}
+        </MessageResponse>,
+      );
+      const first = getBlock();
+      expect(first).toBeInTheDocument();
+
+      for (let end = 21; end <= source.length; end++) {
+        rerender(
+          <MessageResponse streaming overrides={STUB_OVERRIDES}>
+            {source.slice(0, end)}
+          </MessageResponse>,
+        );
+      }
+      rerender(
+        <MessageResponse overrides={STUB_OVERRIDES}>{source}</MessageResponse>,
+      );
+
+      expect(getBlock()).toBe(first);
+      expect(first).toHaveTextContent("const b = 2;");
+      expect(mounts).toHaveLength(1);
+    });
   });
 
   it("does not recompile when a parent re-renders with the same props", () => {
