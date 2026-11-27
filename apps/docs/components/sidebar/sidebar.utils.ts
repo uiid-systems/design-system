@@ -7,8 +7,9 @@
  * reads after it hydrates. Left alone, anything the reader had closed would
  * paint open, then close.
  *
- * The root layout puts `noFlashScript()` in an inline `<script>` in `<head>`,
- * so it runs before the first paint. It handles the two differently:
+ * The root layout renders `SidebarScript` in `<head>`, an inline `<script>`
+ * holding `noFlashScript()`, so it runs before the first paint. It handles the
+ * two differently:
  *
  * - The sidebar's state is an attribute on `<html>` that CSS reads (see
  *   sidebar.hooks.ts). The script sets it, and that is the whole job: there is

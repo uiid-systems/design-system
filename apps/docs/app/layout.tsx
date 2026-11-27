@@ -9,13 +9,7 @@ import { HeaderLinks, OnThisPage, Pager } from "@/components/docs";
 import { Header } from "@/components/header";
 import { Main } from "@/components/main";
 import { Shell, ShellBody } from "@/components/shell";
-import {
-  noFlashScript,
-  Sidebar,
-  SIDEBAR_ATTRIBUTE,
-  SIDEBAR_GROUPS_STORAGE_KEY,
-  SIDEBAR_STORAGE_KEY,
-} from "@/components/sidebar";
+import { Sidebar, SidebarScript } from "@/components/sidebar";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/constants";
 
 const geistSans = Geist({
@@ -39,15 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: noFlashScript({
-              sidebarKey: SIDEBAR_STORAGE_KEY,
-              sidebarAttribute: SIDEBAR_ATTRIBUTE,
-              groupsKey: SIDEBAR_GROUPS_STORAGE_KEY,
-            }),
-          }}
-        />
+        <SidebarScript />
       </head>
       <ShellBody className={`${geistSans.variable} ${geistMono.variable}`}>
         <Shell

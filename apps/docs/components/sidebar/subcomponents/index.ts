@@ -5,3 +5,4 @@ export * from "./sidebar-items";
 export * from "./sidebar-item";
 export * from "./sidebar-group";
 export * from "./sidebar-toggle";
+export * from "./sidebar-script";
