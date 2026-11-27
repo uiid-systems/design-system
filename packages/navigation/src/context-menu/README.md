@@ -19,7 +19,7 @@ Use ContextMenu when you want to:
 
 There is no `trigger`, `side` or `align`: the popup opens at the pointer. A context menu has no trigger button to name its popup, so pass an accessible name through `PopupProps`, as above.
 
-The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed. Only the root menu draws one, never a submenu. A context menu is always modal: Base UI's `ContextMenu.Root` takes no `modal`, so outside pointers are blocked whether or not the page is dimmed, and `backdrop` is the only switch. Page scroll is locked too, except when the menu was opened by long-press: Base UI leaves the page scrollable after a touch open unless the popup spans nearly the full viewport width, matching native iOS behavior. `RootProps={{ modal: false }}` is a type error.
+The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed. Only the root menu draws one, never a submenu. A context menu is always modal: Base UI's `ContextMenu.Root` takes no `modal`, so outside pointers are blocked and page scroll is locked whether or not the page is dimmed, and `backdrop` is the only switch. `RootProps={{ modal: false }}` is a type error.
 
 ## Slots
 
