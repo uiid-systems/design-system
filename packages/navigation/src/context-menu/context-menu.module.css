@@ -1,0 +1,14 @@
+/*
+ * The trigger's own `<div>` draws no box, so the area it wraps keeps the size
+ * and place it has in its parent's layout. Right-click and long-press still
+ * reach the trigger: events bubble through the DOM, which `display: contents`
+ * leaves in place. A trigger given `render` is that element, so it does not
+ * take this class.
+ */
+.trigger {
+  display: contents;
+}
+
+.positioner {
+  composes: composes-popup-positioner from global;
+}
