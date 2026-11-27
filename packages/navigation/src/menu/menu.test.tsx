@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Card } from "@uiid/cards";
 import { PencilIcon } from "@uiid/icons/pencil";
@@ -1147,5 +1147,158 @@ describe("Menu slot precedence", () => {
       expect(icon).toHaveClass("lucide-pencil");
       expect(icon).not.toHaveClass("lucide-star");
     }
+  });
+});
+
+/*
+ * The keyboard behaviour people rely on, from Base UI under Menu's trigger
+ * wrapper and item rendering. Asserted through roles, focus and
+ * `data-highlighted`, never console output: Base UI dedupes its dev warnings.
+ */
+describe("Menu keyboard", () => {
+  const ROWS: MenuProps["items"] = [
+    { label: "Edit", value: "edit" },
+    { label: "Duplicate", value: "duplicate", disabled: true },
+    {
+      label: "Move to",
+      value: "move",
+      items: [
+        { label: "Inbox", value: "inbox" },
+        { label: "Archive", value: "archive" },
+      ],
+    },
+    { label: "Delete", value: "delete" },
+  ];
+
+  const trigger = () => screen.getByRole("button", { name: "Open" });
+  const highlighted = () =>
+    screen
+      .getAllByRole("menuitem")
+      .filter((row) => row.hasAttribute("data-highlighted"))
+      .map((row) => row.textContent);
+
+  it.each([
+    ["Enter", "{Enter}"],
+    ["Space", " "],
+    ["ArrowDown", "{ArrowDown}"],
+  ])("opens the menu with %s from a focused trigger", async (_, key) => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={ROWS} />);
+
+    trigger().focus();
+    expect(screen.queryByRole("menu")).toBeNull();
+    await user.keyboard(key);
+
+    expect(await screen.findByRole("menu")).toBeInTheDocument();
+    expect(trigger()).toHaveAttribute("aria-expanded", "true");
+  });
+
+  /*
+   * Base UI lets the arrows land on a disabled row too (see "lets the keyboard
+   * highlight a disabled item" above), so no row is skipped, enabled or not.
+   */
+  it("moves the highlight through every row with the arrow keys", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={ROWS} />);
+
+    await user.click(trigger());
+    const seen: string[][] = [];
+    for (let step = 0; step < 4; step++) {
+      await user.keyboard("{ArrowDown}");
+      seen.push(highlighted());
+    }
+    expect(seen).toEqual([["Edit"], ["Duplicate"], ["Move to"], ["Delete"]]);
+
+    await user.keyboard("{ArrowUp}");
+    expect(highlighted()).toEqual(["Move to"]);
+  });
+
+  it("opens a submenu with ArrowRight and closes it with ArrowLeft", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={ROWS} />);
+
+    await user.click(trigger());
+    const moveTo = screen.getByRole("menuitem", { name: "Move to" });
+    moveTo.focus();
+    await user.keyboard("{ArrowRight}");
+
+    const inbox = await screen.findByRole("menuitem", { name: "Inbox" });
+    expect(screen.getAllByRole("menu")).toHaveLength(2);
+    expect(moveTo).toHaveAttribute("aria-expanded", "true");
+    expect(inbox).toHaveAttribute("data-highlighted");
+
+    await user.keyboard("{ArrowLeft}");
+
+    await waitFor(() =>
+      expect(screen.queryByRole("menuitem", { name: "Inbox" })).toBeNull(),
+    );
+    expect(screen.getAllByRole("menu")).toHaveLength(1);
+    expect(moveTo).toHaveAttribute("aria-expanded", "false");
+    expect(moveTo).toHaveFocus();
+  });
+
+  /* Typeahead, like the arrows, can land on a disabled row: "d" finds
+     "Duplicate" before "Delete". */
+  it.each([
+    ["e", "Edit"],
+    ["m", "Move to"],
+    ["d", "Duplicate"],
+  ])(
+    "moves the highlight to the row a typed %s starts",
+    async (letter, label) => {
+      const user = userEvent.setup();
+      render(<Menu trigger="Open" items={ROWS} />);
+
+      await user.click(trigger());
+      await user.keyboard(letter);
+
+      expect(highlighted()).toEqual([label]);
+    },
+  );
+
+  it("closes with Escape and returns focus to the trigger", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={ROWS} />);
+
+    trigger().focus();
+    await user.keyboard("{Enter}");
+    await screen.findByRole("menu");
+
+    await user.keyboard("{Escape}");
+
+    await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
+    expect(trigger()).toHaveAttribute("aria-expanded", "false");
+    expect(trigger()).toHaveFocus();
+  });
+
+  it("closes when an item is chosen by keyboard", async () => {
+    const user = userEvent.setup();
+    const onEdit = vi.fn();
+    render(
+      <Menu
+        trigger="Open"
+        items={[{ label: "Edit", value: "edit", onClick: onEdit }, ...ROWS]}
+      />,
+    );
+
+    trigger().focus();
+    await user.keyboard("{ArrowDown}");
+    await screen.findByRole("menu");
+    await waitFor(() => expect(highlighted()).toEqual(["Edit"]));
+    await user.keyboard("{Enter}");
+
+    expect(onEdit).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
+    expect(trigger()).toHaveFocus();
+  });
+
+  it("closes when an item is clicked", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={ROWS} />);
+
+    await user.click(trigger());
+    await user.click(screen.getByRole("menuitem", { name: "Delete" }));
+
+    await waitFor(() => expect(screen.queryByRole("menu")).toBeNull());
   });
 });

@@ -1,7 +1,8 @@
 import "@uiid/tokens/globals.css";
 import { render } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
-import { userEvent } from "vitest/browser";
+import { Group } from "@uiid/layout";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { page, userEvent } from "vitest/browser";
 
 /* Select lives in @uiid/forms, which @uiid/navigation must not depend on.
    The test reaches its source by path, so the comparison costs the package
@@ -308,5 +309,141 @@ describe("Menu row states", () => {
 
     expect(chevronBox.width).toBeGreaterThan(0);
     expect(rowBox.right - chevronBox.right).toBeCloseTo(paddingEnd, 0);
+  });
+});
+
+/*
+ * Where a submenu lands, which happy-dom cannot lay out. Each test renders one
+ * menu tree, opens its submenus by keyboard and measures each popup once its
+ * open transition and its positioning have settled.
+ */
+describe("Menu submenu placement", () => {
+  const THREE_LEVELS: MenuItemType[] = [
+    { label: "Edit", value: "edit" },
+    {
+      label: "More",
+      value: "more",
+      items: [
+        { label: "Archive", value: "archive" },
+        {
+          label: "Share",
+          value: "share",
+          items: [
+            { label: "Email", value: "email" },
+            { label: "Copy link", value: "link" },
+          ],
+        },
+      ],
+    },
+  ];
+
+  /* Subpixel layout and rounding; a real overlap is far wider. */
+  const TOLERANCE = 1;
+
+  let restore: [number, number];
+
+  beforeEach(() => {
+    restore = [window.innerWidth, window.innerHeight];
+  });
+
+  afterEach(async () => {
+    await page.viewport(...restore);
+  });
+
+  const popups = () => [
+    ...document.querySelectorAll<HTMLElement>('[data-slot="menu-popup"]'),
+  ];
+
+  /* Resolves once `count` popups are open, each past its scale-in and no
+     longer moving between two frames. */
+  const settled = async (count: number) => {
+    await expect.poll(() => popups().length).toBe(count);
+    const all = popups();
+    await expect
+      .poll(() =>
+        all.some((popup) => popup.hasAttribute("data-starting-style")),
+      )
+      .toBe(false);
+    await Promise.all(
+      all.flatMap((popup) =>
+        popup.getAnimations().map((animation) => animation.finished),
+      ),
+    );
+
+    const boxes = () =>
+      JSON.stringify(all.map((popup) => popup.getBoundingClientRect()));
+    const frame = () =>
+      new Promise((resolve) => requestAnimationFrame(resolve));
+    await expect
+      .poll(async () => {
+        const before = boxes();
+        await frame();
+        return boxes() === before;
+      })
+      .toBe(true);
+
+    return all.map((popup) => popup.getBoundingClientRect());
+  };
+
+  /* Focuses a submenu trigger and opens its submenu with ArrowRight. */
+  const openSubmenu = async (name: string) => {
+    const trigger = await row("submenu-trigger", name);
+    trigger.focus();
+    await userEvent.keyboard("{ArrowRight}");
+  };
+
+  it("opens a three-level submenu beside its parent without overlapping it", async () => {
+    await page.viewport(1280, 800);
+    render(
+      <Menu
+        trigger="Actions"
+        items={THREE_LEVELS}
+        backdrop={false}
+        RootProps={{ open: true, modal: false }}
+      />,
+    );
+
+    await settled(1);
+    await openSubmenu("More");
+    await settled(2);
+    await openSubmenu("Share");
+    const [root, second, third] = await settled(3);
+
+    for (const [parent, child] of [
+      [root!, second!],
+      [second!, third!],
+    ] as const) {
+      // To the parent's inline end, with no horizontal overlap...
+      expect(child.left).toBeGreaterThanOrEqual(parent.right - TOLERANCE);
+      // ...and level with it, not stacked above or below.
+      expect(child.top).toBeLessThan(parent.bottom);
+      expect(child.bottom).toBeGreaterThan(parent.top);
+    }
+  });
+
+  /* The trigger sits at the right edge, so the submenu has no room at its
+     parent's inline end and must open on the other side. */
+  it("flips a submenu at a 320px viewport rather than overflowing", async () => {
+    await page.viewport(320, 640);
+    render(
+      <Group ax="end" w="full">
+        <Menu
+          trigger="Actions"
+          items={MENU_ITEMS}
+          align="end"
+          backdrop={false}
+          RootProps={{ open: true, modal: false }}
+        />
+      </Group>,
+    );
+
+    await settled(1);
+    await openSubmenu("Move to");
+    const [root, submenu] = await settled(2);
+
+    expect(submenu!.left).toBeGreaterThanOrEqual(-TOLERANCE);
+    expect(submenu!.right).toBeLessThanOrEqual(window.innerWidth + TOLERANCE);
+    // On the parent's inline start, clear of it.
+    expect(submenu!.right).toBeLessThanOrEqual(root!.left + TOLERANCE);
   });
 });
