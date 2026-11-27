@@ -13,6 +13,11 @@ export type SidebarHeaderProps = ShellBarProps;
 export type SidebarNavProps = StackProps;
 export type SidebarItemsProps = ListProps;
 export type SidebarToggleProps = ButtonProps;
+/** The script's source is the part's own, so it takes no children or `src`. */
+export type SidebarScriptProps = Omit<
+  React.ComponentProps<"script">,
+  "children" | "dangerouslySetInnerHTML" | "src"
+>;
 
 export type SidebarItemProps = Omit<ListItemProps, "label"> & {
   href: string;
