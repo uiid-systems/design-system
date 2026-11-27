@@ -608,12 +608,34 @@ describe("Markdown", () => {
         "const a = 1;",
       );
       expect(code("> ```ts\n> const a = 1;\n> `")).toBe("const a = 1;");
+      // A tilde fence, and a run with a space or tab after it.
+      expect(code("~~~ts\nconst a = 1;\n~~")).toBe("const a = 1;");
+      expect(code("```ts\nconst a = 1;\n`` ")).toBe("const a = 1;");
+      expect(code("```ts\nconst a = 1;\n`\t")).toBe("const a = 1;");
       // A fence whose only line so far is the backticks shows no code yet.
       expect(code("```ts\n``")).toBe("");
       // A line that goes on past the backticks is code, as is one the stream
       // has finished.
       expect(code("```ts\nconst s = `\nhi\n`;")).toBe("const s = `\nhi\n`;");
       expect(code("```md\n``", false)).toBe("``");
+    });
+
+    it("leaves a closed block whole when the source ends on a run that matches its last line", () => {
+      const codes: string[] = [];
+      const Spy: NonNullable<MarkdownOverrides["codeBlock"]> = (props) => {
+        codes.push(props.code);
+        return null;
+      };
+      // A closed js block ending in a template literal's closing backtick,
+      // then prose whose last line so far is a lone backtick.
+      const closed = "const s = `\nhi\n`";
+      render(
+        <Markdown streaming overrides={{ codeBlock: Spy }}>
+          {`\`\`\`js\n${closed}\n\`\`\`\n\nThen\n\``}
+        </Markdown>,
+      );
+
+      expect(codes).toEqual([closed]);
     });
 
     describe("with reveal", () => {
