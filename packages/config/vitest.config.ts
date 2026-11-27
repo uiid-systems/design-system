@@ -46,8 +46,8 @@ export default defineConfig({
     include: [
       "packages/**/*.test.{ts,tsx}",
       "packages/config/scripts/*.test.mjs",
-      // The docs app's pure helpers and its nav config. The rest of the app
-      // has no unit tests.
+      // The docs app's pure helpers and its nav config. The tests under
+      // apps/docs/components/ are not collected here.
       "apps/docs/lib/**/*.test.ts",
       "apps/docs/*.test.ts",
     ],
