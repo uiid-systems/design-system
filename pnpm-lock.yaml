@@ -198,9 +198,6 @@ importers:
       '@uiid/buttons':
         specifier: workspace:*
         version: link:../buttons
-      '@uiid/code':
-        specifier: workspace:*
-        version: link:../code
       '@uiid/forms':
         specifier: workspace:*
         version: link:../forms

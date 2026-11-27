@@ -6,7 +6,6 @@ import { Markdown } from "@uiid/markdown";
 import { Shimmer, Text } from "@uiid/typography";
 import { useEffect, useLayoutEffect, useState } from "react";
 
-import { withChatOverrides } from "../shared/chat-overrides/chat-overrides";
 import { CollapsibleTrigger } from "../shared/collapsible-trigger/collapsible-trigger";
 import { REASONING_AUTO_CLOSE_DELAY } from "./reasoning.constants";
 import type { ReasoningLabelState, ReasoningProps } from "./reasoning.types";
@@ -101,10 +100,7 @@ export const Reasoning = ({
         )}
       </CollapsibleTrigger>
       <CollapsiblePanel data-slot="reasoning-panel" w="full" instant={false}>
-        <Markdown
-          streaming={streaming}
-          overrides={withChatOverrides(overrides)}
-        >
+        <Markdown streaming={streaming} overrides={overrides}>
           {children}
         </Markdown>
       </CollapsiblePanel>

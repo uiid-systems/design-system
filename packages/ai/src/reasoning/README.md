@@ -39,7 +39,7 @@ All `Collapsible` root props, which are Base UI's `open`, `defaultOpen`, `onOpen
 | `streaming` | `boolean`                           | `false` | Whether the text is still arriving. Shimmers the label and opens the panel |
 | `duration`  | `number`                            | —       | How long the model thought, in whole seconds. Overrides the measured time  |
 | `label`     | `ReactNode \| (state) => ReactNode` | English | The trigger's text. A function gets `{ streaming, duration }`              |
-| `overrides` | `MarkdownOverrides`                 | —       | Components for links, images and code blocks, merged over the code default |
+| `overrides` | `MarkdownOverrides`                 | —       | Components for links, images and code blocks, passed to `Markdown`         |
 
 Defaults: `gap={2}` and `ax="start"`, so the trigger hugs its label; the panel takes `w="full"` so the text spans the block. Renders `data-slot="reasoning"` on the root, with `data-streaming` while `streaming`, `data-slot="reasoning-trigger"` on the trigger and `data-slot="reasoning-panel"` on the panel.
 
@@ -64,5 +64,12 @@ Pass `label` to replace the English, as a string or as a function of `{ streamin
 
 - The trigger is a muted row that lifts to the foreground color on hover. It is not a `Button`, which would bring a surface and padding to turn off.
 - `streaming` is forwarded to `Markdown`, so half-typed syntax is held back while the text arrives and shown as written once it is done.
-- A fenced block renders as a `CodeBlock` with only a copy button, as in `MessageResponse`. Pass `overrides={{ codeBlock: MyBlock }}` to replace it or `overrides={{ codeBlock: undefined }}` for a plain block; see [Message's code blocks](../message/README.md#code-blocks).
+- A fenced block renders as `Markdown`'s plain `<pre>`. For highlighted, copyable code, pass the same `overrides` as `MessageResponse`, with a `CodeBlock` from `@uiid/code` (your own dependency, not one of `@uiid/ai`'s) as `codeBlock`; the highlighter loads on the first code block. See [Message's code blocks](../message/README.md#code-blocks) for the component to pass:
+
+  ```tsx
+  <Reasoning streaming={streaming} overrides={overrides}>
+    {part.text}
+  </Reasoning>
+  ```
+
 - The measured duration is wall-clock time in the browser between the two renders, rounded up. Pass `duration` when the server knows better.

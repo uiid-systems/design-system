@@ -59,7 +59,6 @@
   },
   "dependencies": {
     "@uiid/buttons": "workspace:*",
-    "@uiid/code": "workspace:*",
     "@uiid/forms": "workspace:*",
     "@uiid/icons": "workspace:*",
     "@uiid/indicators": "workspace:*",

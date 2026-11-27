@@ -1,12 +1,6 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
-import type { MarkdownOverrides } from "@uiid/markdown";
-import { useState } from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import type { MarkdownCodeBlockProps, MarkdownOverrides } from "@uiid/markdown";
+import { useEffect, useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 import { Message } from "./message";
@@ -25,8 +19,22 @@ vi.mock("markdown-to-jsx/react", async (importOriginal) => {
 
 const TS_CODE = "const x: number = 1;";
 
-/** A grammar gives every token span a theme color; plain code gives none. */
-const COLORED_TOKEN = "span[style*='--shiki-light']";
+/** One entry per mount of the stub, so a remount shows as a second entry. */
+const mounts: number[] = [];
+
+/** Stands in for a code component; `@uiid/ai` does not depend on one. */
+const StubCode = ({ code, language }: MarkdownCodeBlockProps) => {
+  useEffect(() => {
+    mounts.push(mounts.length);
+  }, []);
+  return (
+    <figure data-slot="stub-code" data-language={language}>
+      {code}
+    </figure>
+  );
+};
+
+const STUB_OVERRIDES: MarkdownOverrides = { codeBlock: StubCode };
 
 describe("Message", () => {
   it("renders a full-width Stack with the slot, the author and the default gap", () => {
@@ -224,150 +232,71 @@ describe("MessageResponse", () => {
     const fence = (language: string, code = TS_CODE) =>
       `Before\n\n\`\`\`${language}\n${code}\n\`\`\`\n\nAfter`;
     const getBlock = () =>
-      document.querySelector<HTMLElement>("[data-slot='code-block']");
-    const waitForHighlight = () =>
-      waitFor(() =>
-        expect(getBlock()!.querySelector("pre.shiki")).toBeInTheDocument(),
-      );
+      document.querySelector<HTMLElement>("[data-slot='stub-code']");
 
-    it("renders a fenced block as a CodeBlock between the prose", async () => {
+    it("renders a plain pre between the prose with no override", () => {
       const { container } = render(
         <MessageResponse>{fence("ts")}</MessageResponse>,
       );
 
-      const block = getBlock()!;
-      expect(block).toBeInTheDocument();
-      expect(block.parentElement).toBe(container.firstElementChild);
+      const pre = container.querySelector("pre")!;
+      expect(pre.parentElement).toBe(container.firstElementChild);
+      expect(pre.querySelector("code")).toHaveTextContent(TS_CODE);
       expect(container.firstElementChild).toHaveTextContent(
         /^Before.*const x: number = 1;.*After$/,
       );
-      await waitFor(() =>
-        expect(block.querySelector(COLORED_TOKEN)).toBeInTheDocument(),
-      );
     });
 
-    it("shows the copy button and nothing else, with no filename", () => {
-      render(
-        <MessageResponse>
-          {"```ts title=counter.ts\nconst a = 1;\n```"}
-        </MessageResponse>,
-      );
-
-      const block = getBlock()!;
-      expect(within(block).getAllByRole("button")).toHaveLength(1);
-      expect(
-        within(block).getByRole("button", { name: "Copy code" }),
-      ).toBeInTheDocument();
-      expect(block).not.toHaveTextContent("counter.ts");
-      expect(
-        block.querySelector(
-          "[data-slot='code-block-wrap-button'], [data-slot='code-block-fullscreen-button'], [data-slot='code-block-expand-toggle']",
-        ),
-      ).toBeNull();
-    });
-
-    it.each([
-      ["a missing", ""],
-      ["an unknown", "mermaid"],
-    ])("renders %s language as plain code", async (_, language) => {
-      render(<MessageResponse>{fence(language)}</MessageResponse>);
-
-      await waitForHighlight();
-      expect(getBlock()).toHaveTextContent(TS_CODE);
-      expect(getBlock()!.querySelector(COLORED_TOKEN)).toBeNull();
-      expect(
-        getBlock()!.querySelector("[data-slot='code-block-error']"),
-      ).toBeNull();
-      // No icon for the language, so the copy button floats with no bar.
-      expect(
-        getBlock()!.querySelector("[data-slot='code-block-header']"),
-      ).toHaveAttribute("data-floating");
-    });
-
-    it("replaces the code component with a caller's codeBlock override", () => {
-      const overrides: MarkdownOverrides = {
-        codeBlock: ({ code, language }) => (
-          <figure data-language={language}>{code}</figure>
-        ),
-      };
-      render(
-        <MessageResponse overrides={overrides}>{fence("ts")}</MessageResponse>,
-      );
-
-      expect(getBlock()).toBeNull();
-      expect(document.querySelector("figure")).toHaveAttribute(
-        "data-language",
-        "ts",
-      );
-      expect(document.querySelector("figure")).toHaveTextContent(TS_CODE);
-    });
-
-    it("renders the plain pre when a caller removes the codeBlock override", () => {
+    it("renders a fenced block through the caller's codeBlock with its code and language", () => {
       const { container } = render(
-        <MessageResponse overrides={{ codeBlock: undefined }}>
+        <MessageResponse overrides={STUB_OVERRIDES}>
           {fence("ts")}
         </MessageResponse>,
       );
 
-      expect(getBlock()).toBeNull();
-      expect(container.querySelector("pre > code")).toHaveTextContent(TS_CODE);
+      const block = getBlock()!;
+      expect(block.parentElement).toBe(container.firstElementChild);
+      expect(block).toHaveAttribute("data-language", "ts");
+      expect(block).toHaveTextContent(TS_CODE);
+      expect(container.querySelector("pre")).toBeNull();
     });
 
-    it("keeps the CodeBlock when a caller overrides only links", () => {
-      const overrides: MarkdownOverrides = {
-        a: (props) => <a data-custom="" {...props} />,
-      };
+    it("gives the caller's codeBlock no language for a bare fence", () => {
       render(
-        <MessageResponse overrides={overrides}>
-          {`[docs](https://uiid.dev)\n\n${fence("ts")}`}
+        <MessageResponse overrides={STUB_OVERRIDES}>
+          {fence("")}
         </MessageResponse>,
       );
 
-      expect(getBlock()).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: "docs" })).toHaveAttribute(
-        "data-custom",
-      );
+      expect(getBlock()).not.toHaveAttribute("data-language");
+      expect(getBlock()).toHaveTextContent(TS_CODE);
     });
 
-    it("keeps one CodeBlock instance while the fence streams in", () => {
+    it("keeps one instance of the caller's codeBlock while the fence streams in", () => {
+      mounts.length = 0;
       const source = fence("ts", "const a = 1;\nconst b = 2;");
       const { rerender } = render(
-        <MessageResponse streaming>{source.slice(0, 20)}</MessageResponse>,
+        <MessageResponse streaming overrides={STUB_OVERRIDES}>
+          {source.slice(0, 20)}
+        </MessageResponse>,
       );
       const first = getBlock();
       expect(first).toBeInTheDocument();
 
       for (let end = 21; end <= source.length; end++) {
         rerender(
-          <MessageResponse streaming>{source.slice(0, end)}</MessageResponse>,
+          <MessageResponse streaming overrides={STUB_OVERRIDES}>
+            {source.slice(0, end)}
+          </MessageResponse>,
         );
       }
-      rerender(<MessageResponse>{source}</MessageResponse>);
+      rerender(
+        <MessageResponse overrides={STUB_OVERRIDES}>{source}</MessageResponse>,
+      );
 
       expect(getBlock()).toBe(first);
       expect(first).toHaveTextContent("const b = 2;");
-    });
-
-    it("does not recompile when a parent re-renders a response with a caller's overrides", () => {
-      const overrides: MarkdownOverrides = { a: (props) => <a {...props} /> };
-      const Parent = () => {
-        const [count, setCount] = useState(0);
-        return (
-          <>
-            <button type="button" onClick={() => setCount(count + 1)}>
-              tick {count}
-            </button>
-            <MessageResponse overrides={overrides}>
-              {fence("ts")}
-            </MessageResponse>
-          </>
-        );
-      };
-      render(<Parent />);
-      const compiled = compiler.mock.calls.length;
-
-      fireEvent.click(screen.getByRole("button", { name: /tick/ }));
-      expect(compiler).toHaveBeenCalledTimes(compiled);
+      expect(mounts).toHaveLength(1);
     });
   });
 
@@ -414,15 +343,6 @@ describe("examples", () => {
     for (const name of ["Copy", "Retry", "Good response"]) {
       expect(screen.getByRole("button", { name })).toBeInTheDocument();
     }
-  });
-
-  it("renders a finished reply whose fences are code blocks", () => {
-    render(<Examples.WithCode />);
-
-    const blocks = document.querySelectorAll("[data-slot='code-block']");
-    expect(blocks).toHaveLength(2);
-    expect(blocks[0]).toHaveTextContent("const [count, setCount]");
-    expect(blocks[1]).toHaveTextContent("pnpm dev");
   });
 
   it("renders the rest without throwing", () => {

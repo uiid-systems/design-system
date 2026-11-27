@@ -54,31 +54,36 @@ A markdown reply. All [`Markdown`](../../../markdown/src/markdown/README.md) pro
 
 ## Code blocks
 
-A fenced block in a reply renders as a [`CodeBlock`](../../../code/src/code-block/README.md), highlighted and with a copy button, with no setup. Only the copy button renders: no filename, wrap or fullscreen. The fence's language picks the grammar, and a fence with no language or one the highlighter does not know renders as plain, uncolored code. A language with an icon, such as `ts`, shows the icon in a bar above the code; with none, the copy button floats over the code's top-right corner. While the reply streams, an open fence is a code block from its first line and keeps one instance as it grows.
+A fenced block in a reply renders as `Markdown`'s plain `<pre>`, styled by `Prose`. For highlighted, copyable code, pass a [`CodeBlock`](../../../code/src/code-block/README.md) through `overrides.codeBlock`. `@uiid/ai` does not depend on `@uiid/code`, so add it to your own app's dependencies.
 
-The highlighter loads the first time a block highlights, so a reply with no code downloads none of it.
-
-`overrides` is merged over this default, so passing `a` or `img` keeps the code block. Set `codeBlock` to render code your own way, or to `undefined` for the plain `<pre>` that `Markdown` renders on its own. Define the object once, outside render, so the blocks keep their instances:
+Define the component and the object once, outside render, so each block keeps its instance while the reply streams:
 
 ```tsx
+import { MessageResponse } from "@uiid/ai";
 import { CodeBlock } from "@uiid/code";
 import type { MarkdownCodeBlockProps, MarkdownOverrides } from "@uiid/markdown";
 
-// Line numbers and a wrap toggle on every block. CodeBlock reads a missing
-// language as TypeScript, so name plain text for a fence without one.
-const withLineNumbers: MarkdownOverrides = {
-  codeBlock: ({ code, language = "text" }: MarkdownCodeBlockProps) => (
-    <CodeBlock code={code} language={language} showLineNumbers wrappable />
-  ),
-};
+const ChatCodeBlock = ({ code, language }: MarkdownCodeBlockProps) => (
+  <CodeBlock
+    code={code}
+    language={language ?? "text"}
+    notations={false}
+    hideLanguageIcon
+  />
+);
 
-// No highlighting: Markdown's own plain block.
-const plain: MarkdownOverrides = { codeBlock: undefined };
+const overrides: MarkdownOverrides = { codeBlock: ChatCodeBlock };
 
-<MessageResponse overrides={withLineNumbers}>{message.text}</MessageResponse>;
+<MessageResponse overrides={overrides}>{message.text}</MessageResponse>;
 ```
 
-`Reasoning` renders code the same way and takes the same `overrides`.
+- `language ?? "text"`: a bare `CodeBlock` reads a missing language as TypeScript, so a fence with none would be colored as TypeScript. A language the highlighter does not know already renders plain.
+- `notations={false}`: the model's text is not yours, so a `// [!code --]` in it renders as written instead of marking a line removed that the copy button still copies.
+- `hideLanguageIcon`: no bar above the code; the copy button floats in its corner, the only button a `CodeBlock` shows by default.
+- The highlighter loads on the first code block, so a reply with no code downloads none of it.
+- While the reply streams, an open fence renders through `ChatCodeBlock` from its first line, and the same instance receives the text as it grows.
+
+`Reasoning` takes the same `overrides`.
 
 ## Actions
 
@@ -115,4 +120,4 @@ A toolbar with metadata on the other side is the same `Group` with `ax="space-be
 - The bubble is a CSS rule keyed on the root's `data-from`; `MessageContent` does not take `from` and there is no context between the parts.
 - A turn is capped at 95% of the column, so a bubble never touches the far edge. Any `maxw`, a pixel width or `"full"`, replaces the cap.
 - `MessageResponse` is `Markdown`, which is memoized on all of its props. Pass a stable `render` element or none, or the memo never hits.
-- No part holds state or uses a hook, so all three render on the server. A code block in a reply is a client component and highlights on the client.
+- No part holds state or uses a hook, so all three render on the server. A `CodeBlock` passed through `overrides` is a client component and highlights on the client.
