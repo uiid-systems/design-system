@@ -46,8 +46,10 @@ export default defineConfig({
     include: [
       "packages/**/*.test.{ts,tsx}",
       "packages/config/scripts/*.test.mjs",
-      // The docs app's pure helpers. The rest of the app has no unit tests.
+      // The docs app's pure helpers and its nav config. The rest of the app
+      // has no unit tests.
       "apps/docs/lib/**/*.test.ts",
+      "apps/docs/*.test.ts",
     ],
     // Real-browser tests run from vitest.browser.config.ts instead.
     exclude: [...configDefaults.exclude, "**/*.browser.test.tsx"],
