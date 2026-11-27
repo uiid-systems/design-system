@@ -84,8 +84,8 @@
 /*
  * The trigger's own chevron, pinned to the far edge by the content beside it
  * taking the free space. Sized and colored like a row's icon, so it tracks
- * the popup's hue. In a right-to-left menu the
- * submenu opens to the left, so the chevron points that way.
+ * the popup's hue. In a right-to-left menu the submenu opens to the left, so
+ * the chevron points that way.
  */
 .submenu-chevron {
   flex-shrink: 0;
