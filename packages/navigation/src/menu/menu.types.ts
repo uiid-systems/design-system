@@ -19,6 +19,8 @@ type MenuEntryContent = {
   description?: ListItemProps["description"];
   /** The entry's key. Must be unique among its siblings. */
   value: string;
+  /* Only a separator entry has a `type`. */
+  type?: never;
 };
 
 /* An entry that runs a callback, or opens a submenu when it has `items`. */
@@ -48,7 +50,23 @@ type MenuLinkEntry = MenuEntryContent & {
   disabled?: never;
 };
 
-export type MenuItemType = MenuActionEntry | MenuLinkEntry;
+/*
+ * A line between sets of entries, drawn as a `MenuSeparator`. It has no
+ * `value` and is keyed by its index. The other fields are typed `never`, so
+ * reading one off any entry, such as `item.label`, still compiles.
+ */
+type MenuSeparatorEntry = {
+  type: "separator";
+  label?: never;
+  value?: never;
+  icon?: never;
+  description?: never;
+  disabled?: never;
+  items?: never;
+  href?: never;
+};
+
+export type MenuItemType = MenuActionEntry | MenuLinkEntry | MenuSeparatorEntry;
 
 export type MenuRootProps = BaseMenu.Root.Props;
 export type MenuTriggerProps = WithTriggerChildren<
@@ -91,6 +109,7 @@ export type MenuItemProps = WithStringClassName<BaseMenu.Item.Props> &
   MenuRowContentProps;
 export type MenuLinkItemProps = WithStringClassName<BaseMenu.LinkItem.Props> &
   MenuRowContentProps;
+export type MenuSeparatorProps = WithStringClassName<BaseMenu.Separator.Props>;
 export type SubmenuRootProps = BaseMenu.SubmenuRoot.Props;
 export type SubmenuTriggerProps = WithLayoutProps<
   WithStringClassName<BaseMenu.SubmenuTrigger.Props>,
@@ -139,6 +158,11 @@ export type MenuProps = {
     MenuLinkItemProps,
     "href" | "label" | "icon" | "description" | "children"
   >;
+  /**
+   * Reaches every separator: each `{ type: "separator" }` entry, at any depth.
+   * A separator entry draws no content.
+   */
+  SeparatorProps?: Omit<MenuSeparatorProps, "children">;
   /** Reaches every submenu root. Each entry's `items` fill its submenu. */
   SubmenuRootProps?: Omit<SubmenuRootProps, "children">;
   /**

@@ -15,6 +15,7 @@ import {
   MenuPortal,
   MenuPositioner,
   MenuRoot,
+  MenuSeparator,
   MenuTrigger,
   SubmenuRoot,
   SubmenuTrigger,
@@ -303,6 +304,21 @@ describe("Menu parts", () => {
     const link = screen.getByRole("menuitem", { name: "Home" });
     expect(link).toHaveAttribute("data-router-link");
     expect(link).toHaveAttribute("href", "/home");
+  });
+
+  it("renders a MenuSeparator as a horizontal separator and keeps a caller's class", () => {
+    renderParts(
+      <>
+        <MenuItem label="Edit" />
+        <MenuSeparator className="custom" />
+        <MenuItem label="Delete" />
+      </>,
+    );
+
+    const separator = screen.getByRole("separator");
+    expect(separator).toHaveAttribute("data-slot", "menu-separator");
+    expect(separator).toHaveAttribute("aria-orientation", "horizontal");
+    expect(separator).toHaveClass("custom");
   });
 
   it("draws a SubmenuTrigger's icon, label and description", () => {
@@ -990,6 +1006,187 @@ describe("Menu descriptions and links", () => {
         items={MOCK_ITEMS}
         // @ts-expect-error -- each entry's `label` and `icon` are its content
         LinkItemProps={{ children: "Other" }}
+      />
+    );
+  });
+});
+
+describe("Menu separators", () => {
+  const SEPARATED: MenuItemType[] = [
+    { label: "Edit", value: "edit" },
+    { label: "Duplicate", value: "duplicate" },
+    { type: "separator" },
+    { label: "Delete", value: "delete" },
+  ];
+
+  it("renders a separator entry as a separator between the rows", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={SEPARATED} />);
+
+    await user.click(screen.getByText("Open"));
+
+    const separator = screen.getByRole("separator");
+    expect(separator).toHaveAttribute("data-slot", "menu-separator");
+    expect(separator).toHaveAttribute("aria-orientation", "horizontal");
+    expect(separator).toBeEmptyDOMElement();
+    // Between Duplicate and Delete, in the order of `items`.
+    expect(separator.previousElementSibling).toHaveTextContent("Duplicate");
+    expect(separator.nextElementSibling).toHaveTextContent("Delete");
+  });
+
+  it("skips the separator with the arrow keys", async () => {
+    const user = userEvent.setup();
+    render(<Menu trigger="Open" items={SEPARATED} />);
+
+    await user.click(screen.getByText("Open"));
+    await user.keyboard("{ArrowDown}{ArrowDown}");
+    expect(screen.getByRole("menuitem", { name: "Duplicate" })).toHaveAttribute(
+      "data-highlighted",
+    );
+
+    await user.keyboard("{ArrowDown}");
+    expect(screen.getByRole("menuitem", { name: "Delete" })).toHaveAttribute(
+      "data-highlighted",
+    );
+    expect(screen.getByRole("separator")).not.toHaveAttribute(
+      "data-highlighted",
+    );
+  });
+
+  it("renders a separator entry inside a submenu", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "Move to",
+            value: "move",
+            items: [
+              { label: "Inbox", value: "inbox" },
+              { type: "separator" },
+              { label: "Archive", value: "archive" },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    expect(screen.queryByRole("separator")).not.toBeInTheDocument();
+    await user.click(screen.getByText("Move to"));
+
+    await screen.findByRole("menuitem", { name: "Archive" });
+    expect(screen.getByRole("separator")).toHaveAttribute(
+      "data-slot",
+      "menu-separator",
+    );
+  });
+
+  it("draws two separators in one popup side by side, keyed apart", async () => {
+    const user = userEvent.setup();
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Edit", value: "edit" },
+          { type: "separator" },
+          { label: "Share", value: "share" },
+          { type: "separator" },
+          { label: "Delete", value: "delete" },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getAllByRole("separator")).toHaveLength(2);
+    expect(
+      error.mock.calls.some(([message]) =>
+        String(message).includes("same key"),
+      ),
+    ).toBe(false);
+    error.mockRestore();
+  });
+
+  it("reaches every separator, at any depth, with SeparatorProps", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Edit", value: "edit" },
+          { type: "separator" },
+          {
+            label: "Move to",
+            value: "move",
+            items: [
+              { label: "Inbox", value: "inbox" },
+              { type: "separator" },
+              { label: "Archive", value: "archive" },
+            ],
+          },
+        ]}
+        SeparatorProps={{ className: "from-slot" }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByText("Move to"));
+    await screen.findByRole("menuitem", { name: "Archive" });
+
+    const separators = screen.getAllByRole("separator");
+    expect(separators).toHaveLength(2);
+    for (const separator of separators) {
+      expect(separator).toHaveClass("from-slot");
+      expect(separator).toHaveAttribute("data-slot", "menu-separator");
+    }
+  });
+
+  it("keeps a separator empty when SeparatorProps passes children", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={SEPARATED}
+        SeparatorProps={
+          // Untyped callers can still pass them at runtime.
+          { children: "OR" } as unknown as MenuProps["SeparatorProps"]
+        }
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getByRole("separator")).toBeEmptyDOMElement();
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects a value or a label on a separator entry", () => {
+    const items: MenuItemType[] = [
+      // @ts-expect-error -- a separator is keyed by its index, not a value
+      { type: "separator", value: "line" },
+      // @ts-expect-error -- a separator draws no content
+      { type: "separator", label: "Line" },
+      // @ts-expect-error -- `separator` is the only entry kind with a type
+      { type: "item", label: "Edit", value: "edit" },
+    ];
+    void items;
+  });
+
+  it("still reads a field off every entry, as string | undefined", () => {
+    const labels: (string | undefined)[] = MOCK_ITEMS.map((item) => item.label);
+    void labels;
+  });
+
+  it("rejects a separator's children in SeparatorProps", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- a separator entry draws no content
+        SeparatorProps={{ children: "OR" }}
       />
     );
   });

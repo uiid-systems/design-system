@@ -7,6 +7,10 @@ import { userEvent } from "vitest/browser";
    The test reaches its source by path, so the comparison costs the package
    no dependency and ships nowhere: package builds leave tests out. */
 import { Select } from "../../../forms/src/select/select";
+import {
+  SelectItem,
+  SelectSeparator,
+} from "../../../forms/src/select/subcomponents";
 import { Menu } from "./menu";
 import type { MenuItemType } from "./menu.types";
 
@@ -213,6 +217,55 @@ describe("Menu beside Select", () => {
     await highlight(selectRow);
 
     expect(menuHighlight).toEqual(pick(selectRow, HIGHLIGHT));
+  });
+});
+
+/* The line's look: its fill is the color, its height the thickness, and its
+   margins the space it keeps from the rows around it. */
+const SEPARATOR = [
+  "background-color",
+  "height",
+  "margin-top",
+  "margin-bottom",
+  "border-top-width",
+  "border-bottom-width",
+];
+
+describe("Menu separator beside Select's", () => {
+  it("draws the same line", async () => {
+    render(
+      <Menu
+        trigger="Actions"
+        items={[
+          { label: "Edit", value: "edit" },
+          { type: "separator" },
+          { label: "Delete", value: "delete" },
+        ]}
+        backdrop={false}
+        RootProps={{ open: true, modal: false }}
+      />,
+    );
+    render(
+      <Select
+        aria-label="Action"
+        placeholder="Choose"
+        backdrop={false}
+        open
+        modal={false}
+      >
+        <SelectItem value="edit" label="Edit" />
+        <SelectSeparator />
+        <SelectItem value="delete" label="Delete" />
+      </Select>,
+    );
+
+    const menu = await find('[data-slot="menu-separator"]');
+    const select = await find('[data-slot="select-separator"]');
+
+    expect(menu.getAttribute("role")).toBe("separator");
+    expect(style(menu).height).toBe("1px");
+    expect(toRgb(style(menu).backgroundColor)).not.toEqual([255, 255, 255]);
+    expect(pick(menu, SEPARATOR)).toEqual(pick(select, SEPARATOR));
   });
 });
 

@@ -5,6 +5,7 @@ import {
   MenuPopup,
   MenuPortal,
   MenuPositioner,
+  MenuSeparator,
   SubmenuRoot,
   SubmenuTrigger,
 } from "./subcomponents";
@@ -12,7 +13,11 @@ import {
 /** The slot props that reach the rows of every popup, at every depth. */
 export type MenuItemSlots = Pick<
   MenuProps,
-  "ItemProps" | "SubmenuRootProps" | "SubmenuTriggerProps" | "LinkItemProps"
+  | "ItemProps"
+  | "SubmenuRootProps"
+  | "SubmenuTriggerProps"
+  | "LinkItemProps"
+  | "SeparatorProps"
 >;
 
 /*
@@ -31,16 +36,35 @@ export type MenuItemSlots = Pick<
  * router or hash link does not leave the modal menu open over the new view.
  * Set before the slot spread, so `LinkItemProps.closeOnClick` can opt out.
  *
+ * A separator entry, `{ type: "separator" }`, draws a `MenuSeparator` with
+ * `SeparatorProps`. It has no `value`, so it is keyed by its index, and its
+ * `children` are cleared like a row's.
+ *
  * Internal: not exported from the package.
  */
 export const renderMenuItems = (
   items: MenuItemType[],
   slots: MenuItemSlots,
 ): React.ReactNode => {
-  const { ItemProps, SubmenuRootProps, SubmenuTriggerProps, LinkItemProps } =
-    slots;
+  const {
+    ItemProps,
+    SubmenuRootProps,
+    SubmenuTriggerProps,
+    LinkItemProps,
+    SeparatorProps,
+  } = slots;
 
-  return items.map((item) => {
+  return items.map((item, index) => {
+    if (item.type === "separator") {
+      return (
+        <MenuSeparator
+          key={`separator-${index}`}
+          {...SeparatorProps}
+          children={undefined}
+        />
+      );
+    }
+
     if (item.items) {
       return (
         <SubmenuRoot key={item.value} {...SubmenuRootProps}>
