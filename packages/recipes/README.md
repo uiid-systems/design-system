@@ -8,7 +8,7 @@ The package is private and is not published or versioned with the `@uiid/*` comp
 
 This package is where recipe source is edited. The docs app runs a copy of the app shell in `apps/docs/components/{shell,sidebar,header,main,breadcrumbs}/` and `apps/docs/lib/nav.ts`, and that copy must stay byte for byte identical to `app-shell/files/`. Make a change here, then make the same change to the docs copy. Never edit the docs copy on its own.
 
-Until the sync and check commands land, the two copies are kept identical by hand. Confirm it with `git diff --no-index` between each docs directory and its counterpart under `app-shell/files/`; no output means they match.
+For now the two copies are kept identical by hand. Confirm it with `git diff --no-index --stat` from the repo root, once for each of the five component directories (`git diff --no-index --stat apps/docs/components/sidebar packages/recipes/app-shell/files/components/sidebar`, and so on) and once file to file for `lib/nav.ts` (`git diff --no-index --stat apps/docs/lib/nav.ts packages/recipes/app-shell/files/lib/nav.ts`). No output means they match. Do not diff the two `lib/` directories: `apps/docs/lib/` also holds the docs app's `nav.test.ts`, which is not part of the recipe.
 
 ## Layout
 
@@ -49,4 +49,4 @@ The files import each other through the `@/` alias, which a Next.js app defines 
 }
 ```
 
-The ranges are the ones the docs app uses. The `@uiid/*` ranges are `workspace:*` while the recipe's only consumers live in this repo.
+The ranges are the ones the docs app uses. `workspace:*` is the range for use inside this repo only: it resolves to the local workspace package, and nothing rewrites it, because `recipe.json` is not a `package.json`. Copied as is into a project outside this repo, it would not install. The `@uiid/*` range for a project outside this repo is not chosen yet.
