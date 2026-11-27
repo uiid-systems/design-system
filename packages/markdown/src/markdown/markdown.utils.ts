@@ -34,14 +34,33 @@ const pickOverrides = ({ a, img }: MarkdownOverrides) => ({
 
 type RenderRule = MarkdownToJSX.Options["renderRule"];
 
+/** A last line of only fence characters, after any indent or quote markers: maybe a closing fence still arriving. */
+const PARTIAL_FENCE = /(?:^|\n)[ \t>]*(`+|~+)$/;
+
+/**
+ * The code of a block, less a last line that is `fence`. markdown-to-jsx reads the backticks of a
+ * closing fence that has not fully arrived as code, so they would show as a line that vanishes a
+ * chunk later, and the block would shrink. Held back, they show only if a later chunk turns out
+ * to make them code.
+ */
+const withoutPartialFence = (text: string, fence: string) => {
+  const body = text.replace(/\n$/, "");
+  const lastLine = body.slice(body.lastIndexOf("\n") + 1);
+  return lastLine.trim() === fence
+    ? body.slice(0, body.length - lastLine.length)
+    : text;
+};
+
 /**
  * Renders each code block with `CodeBlock`, then hands every node to `renderRule`, whose `next()`
  * for a code block returns that element. The element keeps the block's key and type as the text
- * grows, so an open fence streaming in updates one instance instead of remounting it.
+ * grows, so an open fence streaming in updates one instance instead of remounting it. `fence`
+ * is the run of fence characters the streaming source ends with, if any.
  */
 const withCodeBlock =
   (
     CodeBlock: NonNullable<MarkdownOverrides["codeBlock"]>,
+    fence: string | undefined,
     renderRule?: RenderRule,
   ): RenderRule =>
   (next, node, renderChildren, state) => {
@@ -50,7 +69,7 @@ const withCodeBlock =
         ? () =>
             createElement(CodeBlock, {
               key: state.key,
-              code: node.text,
+              code: fence ? withoutPartialFence(node.text, fence) : node.text,
               language: node.lang,
             })
         : next;
@@ -68,8 +87,9 @@ export const compileMarkdown = (
   source: string,
   { streaming, overrides, renderRule }: CompileOptions,
 ): ReturnType<typeof compiler> => {
+  const fence = streaming ? source.match(PARTIAL_FENCE)?.[1] : undefined;
   const rule = overrides?.codeBlock
-    ? withCodeBlock(overrides.codeBlock, renderRule)
+    ? withCodeBlock(overrides.codeBlock, fence, renderRule)
     : renderRule;
   return compiler(source, {
     wrapper: null,

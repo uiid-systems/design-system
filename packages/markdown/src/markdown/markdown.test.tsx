@@ -582,6 +582,40 @@ describe("Markdown", () => {
       expect(container.querySelector("pre > code")).toBeNull();
     });
 
+    it("holds back a closing fence's backticks while they stream in", () => {
+      const codes: string[] = [];
+      const Spy: NonNullable<MarkdownOverrides["codeBlock"]> = (props) => {
+        codes.push(props.code);
+        return null;
+      };
+      const code = (text: string, streaming = true) => {
+        codes.length = 0;
+        render(
+          <Markdown streaming={streaming} overrides={{ codeBlock: Spy }}>
+            {text}
+          </Markdown>,
+        ).unmount();
+        return codes.at(-1)?.replace(/\n$/, "");
+      };
+
+      for (const tail of ["\n`", "\n``", "\n```"]) {
+        expect(code(`Intro\n\n\`\`\`ts\nconst a = 1;${tail}`)).toBe(
+          "const a = 1;",
+        );
+      }
+      // In a list item and a quote too, behind their indent and marker.
+      expect(code("- Step\n\n  ```ts\n  const a = 1;\n  ``")).toBe(
+        "const a = 1;",
+      );
+      expect(code("> ```ts\n> const a = 1;\n> `")).toBe("const a = 1;");
+      // A fence whose only line so far is the backticks shows no code yet.
+      expect(code("```ts\n``")).toBe("");
+      // A line that goes on past the backticks is code, as is one the stream
+      // has finished.
+      expect(code("```ts\nconst s = `\nhi\n`;")).toBe("const s = `\nhi\n`;");
+      expect(code("```md\n``", false)).toBe("``");
+    });
+
     describe("with reveal", () => {
       const wait = (ms: number) => {
         for (let t = 0; t < ms; t += 10) act(() => vi.advanceTimersByTime(10));
