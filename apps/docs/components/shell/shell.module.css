@@ -1,6 +1,6 @@
 /*
  * What the shell needs that a UIID prop doesn't cover: a viewport that never
- * scrolls, and the sidebar's slide.
+ * scrolls, the line height it hands down, and the sidebar's slide.
  */
 
 .shell-root {
@@ -10,9 +10,14 @@
   position: relative;
 }
 
-/* The viewport never scrolls; the sidebar and the main row do. */
+/*
+ * The viewport never scrolls; the sidebar and the main row do.
+ * The line height is the one the page inherits where a component sets none;
+ * the library's globals leave it to the browser.
+ */
 .shell-body {
   overflow: hidden;
+  line-height: 1.5;
 }
 
 /*

@@ -18,6 +18,7 @@ export const ShellBody = ({
       className={cx(styles["shell-body"], className)}
       h="screen"
       w="full"
+      m={0}
       {...props}
     >
       {children}
