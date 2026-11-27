@@ -327,16 +327,21 @@ describe("CodePreview frame width", () => {
         { width: 720 },
       );
       const frame = query(container, '[data-slot="code-preview"]');
+      const panel = query(frame, '[data-slot="code-preview-panel"]');
       const width = () => frame.getBoundingClientRect().width;
       const trigger = page.getByRole("button", { name: /^(show|hide) code$/i });
 
       const closed = width();
       await userEvent.click(trigger);
       await waitForHighlight(container);
-      await frames();
+      // Read each width once the panel has reached that state.
+      await expect.poll(() => panel.hasAttribute("hidden")).toBe(false);
+      await expect
+        .poll(() => panel.getBoundingClientRect().height)
+        .toBeGreaterThan(0);
       const open = width();
       await userEvent.click(trigger);
-      await frames();
+      await expect.poll(() => panel.hasAttribute("hidden")).toBe(true);
       const closedAgain = width();
 
       const detail = JSON.stringify({ closed, open, closedAgain });
@@ -357,7 +362,10 @@ describe("CodePreview frame width", () => {
     const frame = query(container, '[data-slot="code-preview"]');
     expect(frame.getBoundingClientRect().width).toBe(480);
     await userEvent.click(page.getByRole("button", { name: "Show code" }));
-    await frames();
+    const panel = query(frame, '[data-slot="code-preview-panel"]');
+    await expect
+      .poll(() => panel.getBoundingClientRect().height)
+      .toBeGreaterThan(0);
     expect(frame.getBoundingClientRect().width).toBe(480);
   });
 });
@@ -504,13 +512,14 @@ describe("CodePreview under a theme change", () => {
     const light = read();
 
     themed.dataset.theme = "dark";
-    await frames();
-    const dark = read();
-
-    for (const key of ["canvas", "bar", "panel", "code", "token", "reset"]) {
-      expect(dark[key as keyof typeof dark], key).not.toBe(
-        light[key as keyof typeof light],
-      );
+    // Wait on each colour rather than a fixed delay: Button transitions its
+    // background, so the reset button's colour moves over the transition, and
+    // a slow runner can read any zone before the new theme has applied.
+    const keys = ["canvas", "bar", "panel", "code", "token", "reset"] as const;
+    for (const key of keys) {
+      await expect
+        .poll(() => read()[key], { message: key })
+        .not.toBe(light[key]);
     }
     // CSS did all of it: not one node changed.
     expect(frame.innerHTML).toBe(markup);
@@ -728,15 +737,21 @@ describe.skipIf(server.browser !== "chromium")(
         expect(Math.max(...durations(panel))).toBe(0);
         expect(Math.max(...durations(icon))).toBe(0);
 
-        // Opened under reduce, the panel is at full height within two frames.
+        // Opened under reduce, the panel reaches full height. With the
+        // durations above at 0 there is no animation; the poll only waits for
+        // Base UI to measure the panel, not for a fixed number of frames.
         await userEvent.click(page.getByRole("button", { name: "Show code" }));
-        await frames();
         const content = query(panel, '[data-slot="code-block-content"]');
-        const height = panel.getBoundingClientRect().height;
-        expect(height).toBeGreaterThan(0);
-        expect(height).toBeGreaterThanOrEqual(
-          content.getBoundingClientRect().height,
-        );
+        await expect
+          .poll(() => panel.getBoundingClientRect().height)
+          .toBeGreaterThan(0);
+        await expect
+          .poll(
+            () =>
+              panel.getBoundingClientRect().height -
+              content.getBoundingClientRect().height,
+          )
+          .toBeGreaterThanOrEqual(0);
       } finally {
         await setReducedMotion("no-preference");
       }
