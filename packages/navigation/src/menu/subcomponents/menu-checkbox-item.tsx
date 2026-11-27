@@ -22,8 +22,10 @@ export const MenuCheckboxItem = ({
       {...props}
       className={cx(styles["checkbox-item"], className)}
     >
-      {/* `children` take over the whole row, the indicator included, so a
-          custom row places its own `MenuCheckboxItemIndicator`. */}
+      {/* `children` replace the label block inside `ListItem` and the
+          indicator after it, so a custom row places its own
+          `MenuCheckboxItemIndicator`. The check below uses the same falsy test
+          as `ListItem`'s fallback, so the two always agree. */}
       <ListItem
         render={<div />}
         w="full"
@@ -33,7 +35,7 @@ export const MenuCheckboxItem = ({
       >
         {children}
       </ListItem>
-      {children === undefined && <MenuCheckboxItemIndicator />}
+      {!children && <MenuCheckboxItemIndicator />}
     </BaseMenu.CheckboxItem>
   );
 };

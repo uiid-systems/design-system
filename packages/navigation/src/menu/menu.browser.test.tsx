@@ -411,6 +411,18 @@ describe("Menu checkbox items", () => {
     )!,
   });
 
+  /* Drawn: shown, displayed, opaque in itself and with a size. A disabled
+     row's opacity mutes it from the row, not from the indicator. */
+  const expectDrawn = (indicator: Element) => {
+    const computed = style(indicator);
+    const box = indicator.getBoundingClientRect();
+    expect(computed.visibility).toBe("visible");
+    expect(computed.display).not.toBe("none");
+    expect(Number(computed.opacity)).toBe(1);
+    expect(box.width).toBeGreaterThan(0);
+    expect(box.height).toBeGreaterThan(0);
+  };
+
   it("lines up a checked and an unchecked row's labels", async () => {
     await renderChoices();
     const checked = parts(await row("menu-checkbox-item", "Status"));
@@ -419,8 +431,11 @@ describe("Menu checkbox items", () => {
     const box = (element: Element) => element.getBoundingClientRect();
 
     expect(box(checked.label).left).toBeCloseTo(box(unchecked.label).left, 1);
-    // The unchecked row reserves the indicator's space, so the content
-    // beside it ends at the same edge.
+    // The indicator is drawn after the content, so the label's left edge
+    // matches whether or not an unchecked row reserves its space. The real
+    // guard is below: the unchecked row reserves the indicator's space, so
+    // its content ends at the same edge and its indicator has the same
+    // width. Keep these when tidying this test.
     expect(box(checked.content).right).toBeCloseTo(
       box(unchecked.content).right,
       1,
@@ -437,7 +452,9 @@ describe("Menu checkbox items", () => {
     const checked = parts(await row("menu-checkbox-item", "Status"));
     const unchecked = parts(await row("menu-checkbox-item", "Owner"));
 
-    expect(style(checked.indicator).visibility).toBe("visible");
+    // `visibility` alone reads "visible" for an element that is undisplayed,
+    // transparent or zero-sized, so each of those is ruled out too.
+    expectDrawn(checked.indicator);
     expect(style(unchecked.indicator).visibility).toBe("hidden");
   });
 
@@ -447,7 +464,7 @@ describe("Menu checkbox items", () => {
     const disabled = await row("menu-checkbox-item", "Name");
     const disabledItem = await row("menu-item", "Reset");
 
-    expect(style(parts(disabled).indicator).visibility).toBe("visible");
+    expectDrawn(parts(disabled).indicator);
     expect(Number(style(disabled).opacity)).toBeLessThan(
       Number(style(enabled).opacity),
     );

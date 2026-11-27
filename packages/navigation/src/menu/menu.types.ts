@@ -76,17 +76,24 @@ export type MenuCheckboxItemProps =
   WithStringClassName<BaseMenu.CheckboxItem.Props> &
     Omit<MenuRowContentProps, "children"> & {
       /**
-       * Draws the row in place of the `icon` / `label` / `description` block and
-       * the indicator. Place a `MenuCheckboxItemIndicator` among them to keep it.
+       * Replaces the `icon` / `label` / `description` block inside the row's
+       * `ListItem` wrapper, and drops the indicator after it. Place a
+       * `MenuCheckboxItemIndicator` among them to keep the check.
        */
       children?: React.ReactNode;
     };
-/*
- * Base UI's indicator. `keepMounted` defaults to `true` here, so an unchecked
- * row holds the indicator's space and labels in a mixed list stay aligned.
- */
-export type MenuCheckboxItemIndicatorProps =
-  WithStringClassName<BaseMenu.CheckboxItemIndicator.Props>;
+export type MenuCheckboxItemIndicatorProps = Omit<
+  WithStringClassName<BaseMenu.CheckboxItemIndicator.Props>,
+  "keepMounted"
+> & {
+  /**
+   * Whether to keep the indicator in the DOM while the item is unchecked.
+   * Kept, it is only hidden, so an unchecked row holds the indicator's space
+   * and labels in a mixed list stay aligned.
+   * @default true
+   */
+  keepMounted?: boolean;
+};
 export type SubmenuRootProps = BaseMenu.SubmenuRoot.Props;
 export type SubmenuTriggerProps = WithLayoutProps<
   WithStringClassName<BaseMenu.SubmenuTrigger.Props>,

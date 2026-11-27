@@ -1149,15 +1149,30 @@ describe("Menu checkbox items", () => {
     expect(onCheckedChange.mock.calls[1]?.[0]).toBe(false);
   });
 
-  it("toggles from the keyboard", async () => {
+  it.each([
+    ["Enter", "{Enter}"],
+    ["Space", " "],
+  ])("toggles from the keyboard with %s", async (_, key) => {
     const user = userEvent.setup();
-    renderChoices(<MenuCheckboxItem label="Status" />);
+    render(
+      <MenuRoot>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuCheckboxItem label="Status" />
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
 
-    const row = screen.getByRole("menuitemcheckbox", { name: "Status" });
+    await user.click(screen.getByText("Open"));
+    const row = await screen.findByRole("menuitemcheckbox", { name: "Status" });
     await user.keyboard("{ArrowDown}");
     expect(row).toHaveAttribute("data-highlighted");
 
-    await user.keyboard("{Enter}");
+    await user.keyboard(key);
 
     expect(row).toHaveAttribute("aria-checked", "true");
   });
@@ -1312,7 +1327,7 @@ describe("Menu checkbox items", () => {
 
     const row = screen.getByRole("menuitemcheckbox", { name: "Status" });
     expect(screen.getByTestId("custom-row")).toBeInTheDocument();
-    expect(row.querySelectorAll("[data-slot='list-item-text']")).toHaveLength(
+    expect(row.querySelectorAll("[data-slot='list-text-label']")).toHaveLength(
       0,
     );
     expect(
@@ -1321,6 +1336,27 @@ describe("Menu checkbox items", () => {
     expect(screen.getByTestId("custom-indicator")).toHaveAttribute(
       "data-checked",
     );
+  });
+
+  /* `ListItem` falls back to the label block for any falsy `children`, so the
+     row's own check must be drawn for the same values. */
+  it.each([
+    ["false", false],
+    ["null", null],
+    ["an empty string", ""],
+  ])("keeps the check when children are %s", (_, children) => {
+    renderChoices(
+      <MenuCheckboxItem label="Status" defaultChecked>
+        {children}
+      </MenuCheckboxItem>,
+    );
+
+    const row = screen.getByRole("menuitemcheckbox", { name: "Status" });
+    expect(
+      row.querySelector("[data-slot='list-text-label']"),
+    ).toHaveTextContent("Status");
+    expect(indicatorOf(row)).toHaveAttribute("data-checked");
+    expect(row.lastElementChild).toBe(indicatorOf(row));
   });
 
   it("forwards Base UI's keepMounted to the indicator", () => {
