@@ -285,10 +285,24 @@
     padding-inline: var(--forms-size-lg-padding-x);
   }
 
+  /*
+   * A row in a popup list: Select, Combobox, Autocomplete and Menu. Rows draw
+   * no outline, so the highlight is the tint alone, and it is the only sign of
+   * keyboard focus. The tint is about 1.35:1 against the popup, short of the
+   * 3:1 WCAG 1.4.11 asks of a state indicator. A ring on top of it was tried
+   * and the owner chose the tint alone on 2026-11-27. The highlight switches
+   * at once, with no fade, so it keeps up with the arrow keys. The keyboard
+   * can land on a disabled row, which keeps the tint, dimmed with the row.
+   *
+   * Forced colors drop the tint, so there the highlight is an outline in
+   * Highlight, inset by its width so the popup's overflow cannot clip it. They
+   * do not reset opacity, so a disabled row stops dimming there and marks
+   * itself with GrayText instead, which keeps its outline at full strength.
+   */
   .composes-option {
     padding: var(--list-item-padding-y) var(--list-item-padding-x);
     border-radius: var(--globals-border-radius);
-    transition: background-color var(--globals-transition-duration) ease-in-out;
+    outline: none;
     cursor: pointer;
 
     &:where([data-highlighted], :focus-visible) {
@@ -299,6 +313,18 @@
       opacity: var(--globals-disabled-opacity);
       cursor: default;
       pointer-events: none;
+    }
+
+    @media (forced-colors: active) {
+      &:where([data-highlighted], :focus-visible) {
+        outline: var(--globals-outline-style) var(--globals-outline-width) Highlight;
+        outline-offset: calc(-1 * var(--globals-outline-width));
+      }
+
+      &:where([data-disabled]) {
+        opacity: 1;
+        color: GrayText;
+      }
     }
   }
 

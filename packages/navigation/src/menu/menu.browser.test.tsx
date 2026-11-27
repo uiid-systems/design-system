@@ -42,7 +42,9 @@ const SELECT_ITEMS = [
   { label: "Duplicate", value: "duplicate", disabled: true },
 ];
 
-/* Both open at once, unmodal and undimmed, so neither blocks the other. */
+/* Both open at once, unmodal and undimmed, so neither blocks the other. A
+   test that hovers renders one at a time, so neither popup can cover a row
+   the pointer is aimed at. */
 const renderMenu = () =>
   render(
     <Menu
@@ -98,30 +100,29 @@ const pick = (element: Element, properties: string[]) => {
 };
 
 /* Resolves any computed color (oklch, color-mix, light-dark) to sRGB by
-   painting it over `backdrop`, so a translucent fill reads as it is seen. */
+   painting it over `backdrop`, so a translucent fill reads as it is seen.
+
+   A canvas keeps its last `fillStyle` when handed a color it cannot parse,
+   which would quietly measure the wrong color, so each one is checked against
+   a sentinel no computed style produces. */
+const SENTINEL = "#010203";
+
 const toRgb = (color: string, backdrop = "white") => {
   const canvas = document.createElement("canvas");
   canvas.width = canvas.height = 1;
   const context = canvas.getContext("2d", { willReadFrequently: true })!;
-  context.fillStyle = backdrop;
-  context.fillRect(0, 0, 1, 1);
-  context.fillStyle = color;
-  context.fillRect(0, 0, 1, 1);
+  const paint = (value: string) => {
+    context.fillStyle = SENTINEL;
+    context.fillStyle = value;
+    if (context.fillStyle === SENTINEL) {
+      throw new Error(`The canvas cannot parse the color "${value}"`);
+    }
+    context.fillRect(0, 0, 1, 1);
+  };
+  paint(backdrop);
+  paint(color);
   const [r, g, b] = context.getImageData(0, 0, 1, 1).data;
   return [r, g, b];
-};
-
-const luminance = (rgb: number[]) => {
-  const [r, g, b] = rgb.map((channel) => {
-    const value = channel / 255;
-    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
-  });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-};
-
-const contrast = (a: number[], b: number[]) => {
-  const [light, dark] = [luminance(a), luminance(b)].sort((x, y) => y - x);
-  return (light + 0.05) / (dark + 0.05);
 };
 
 const SURFACE = [
@@ -144,6 +145,25 @@ const ROW = [
   "padding-left",
   "border-radius",
 ];
+
+/* `color` catches a highlight that repaints the text, as Menu's old inverted
+   one did, and the outline keys one that adds a ring; menu.test.tsx checks
+   the list colors in the stylesheet text. */
+const HIGHLIGHT = [
+  "background-color",
+  "color",
+  "outline-style",
+  "outline-width",
+  "outline-color",
+  "outline-offset",
+];
+
+/* Hovers a row until it reports the highlight. `composes-option` has no
+   transition, so the row's computed style is final once it does. */
+const highlight = async (element: HTMLElement) => {
+  await userEvent.hover(element);
+  await expect.poll(() => element.hasAttribute("data-highlighted")).toBe(true);
+};
 
 describe("Menu beside Select", () => {
   it("draws the same popup surface", async () => {
@@ -179,24 +199,54 @@ describe("Menu beside Select", () => {
     );
     expect(style(disabled).opacity).toBe(style(selectDisabled).opacity);
   });
+
+  /* One popup at a time, so where the two would land cannot matter. */
+  it("highlights a row the way Select does", async () => {
+    const menu = renderMenu();
+    const menuRow = await row("menu-item", "Edit");
+    await highlight(menuRow);
+    const menuHighlight = pick(menuRow, HIGHLIGHT);
+    menu.unmount();
+
+    renderSelect();
+    const selectRow = await row("select-item", "Edit");
+    await highlight(selectRow);
+
+    expect(menuHighlight).toEqual(pick(selectRow, HIGHLIGHT));
+  });
 });
 
 describe("Menu row states", () => {
-  it("highlights a hovered row clearly against the popup", async () => {
+  it("tints a highlighted row apart from a resting one", async () => {
     renderMenu();
     const popup = await find('[data-slot="menu-popup"]');
     const edit = await row("menu-item", "Edit");
+    const surface = style(popup).backgroundColor;
+    const seen = (element: Element) =>
+      toRgb(style(element).backgroundColor, surface);
+    const resting = seen(edit);
 
-    await userEvent.hover(edit);
-    await expect.poll(() => edit.hasAttribute("data-highlighted")).toBe(true);
+    await highlight(edit);
 
-    const surface = toRgb(style(popup).backgroundColor);
-    const fill = toRgb(
-      style(edit).backgroundColor,
-      style(popup).backgroundColor,
-    );
-    expect(fill).not.toEqual(surface);
-    expect(contrast(fill, surface)).toBeGreaterThanOrEqual(3);
+    expect(seen(edit)).not.toEqual(resting);
+  });
+
+  it("highlights a disabled row the keyboard lands on like an enabled one", async () => {
+    renderMenu();
+    const edit = await row("menu-item", "Edit");
+    const duplicate = await row("menu-item", "Duplicate");
+
+    await highlight(edit);
+    const enabled = pick(edit, HIGHLIGHT);
+
+    await userEvent.keyboard("{ArrowDown}");
+    await expect
+      .poll(() => duplicate.hasAttribute("data-highlighted"))
+      .toBe(true);
+
+    expect(duplicate.hasAttribute("data-disabled")).toBe(true);
+    // The same tint as the enabled row, dimmed with the row.
+    expect(pick(duplicate, HIGHLIGHT)).toEqual(enabled);
   });
 
   it("adds no highlight when the pointer is over a disabled row", async () => {
@@ -212,7 +262,7 @@ describe("Menu row states", () => {
     expect(style(disabled).backgroundColor).toBe(resting);
   });
 
-  it("marks an open submenu's trigger apart from resting and highlighted rows", async () => {
+  it("keeps the tint on an open submenu's trigger", async () => {
     renderMenu();
     const popup = await find('[data-slot="menu-popup"]');
     const edit = await row("menu-item", "Edit");
@@ -222,11 +272,7 @@ describe("Menu row states", () => {
       toRgb(style(element).backgroundColor, surface);
     const resting = seen(edit);
 
-    await userEvent.hover(trigger);
-    await expect
-      .poll(() => trigger.hasAttribute("data-highlighted"))
-      .toBe(true);
-    const highlighted = seen(trigger);
+    await highlight(trigger);
 
     // Moving into the submenu leaves the trigger open but no longer highlighted.
     await userEvent.hover(await row("menu-item", "Inbox"));
@@ -238,9 +284,8 @@ describe("Menu row states", () => {
       )
       .toBe(true);
 
-    const open = seen(trigger);
-    expect(open).not.toEqual(resting);
-    expect(open).not.toEqual(highlighted);
+    // The tint marks the path into the submenu against a resting row.
+    expect(seen(trigger)).not.toEqual(resting);
   });
 
   it("draws the submenu chevron at the row's far edge", async () => {

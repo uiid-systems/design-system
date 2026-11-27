@@ -20,6 +20,7 @@ import {
 } from "./subcomponents";
 
 import styles from "./menu.module.css";
+import menuCss from "./menu.module.css?raw";
 
 /* Stand-ins for `Button` and `Text`: a component that renders a real <button>
    and one that renders a <span>. */
@@ -30,6 +31,23 @@ const TextLike = (props: React.ComponentProps<"span">) => <span {...props} />;
 
 const backdrops = () =>
   document.querySelectorAll('[data-slot="menu-backdrop"]');
+
+/* The highlight is `composes-option`'s, shared with Select. A Menu rule on
+   `[data-highlighted]` that paints a fill or a text color, including the list
+   colors the icon and description read, would split the two again. */
+describe("menu.module.css", () => {
+  it("leaves the highlight's fill and text color to composes-option", () => {
+    const rules = [
+      ...menuCss.matchAll(/\[data-highlighted\][^{]*\{[^}]*\}/g),
+    ].map(([rule]) => rule);
+
+    for (const rule of rules) {
+      expect(rule).not.toMatch(
+        /(^|[\s;{])(background|background-color|color|--list-[\w-]+-color)\s*:/,
+      );
+    }
+  });
+});
 
 describe("Menu backdrop", () => {
   it("renders no backdrop while closed", () => {
@@ -439,8 +457,8 @@ describe("Menu items", () => {
 
   /*
    * Pins Base UI's behaviour, not Menu's CSS: the keyboard can land on a
-   * disabled row, which is why `menu.module.css` keeps the highlight on it.
-   * Whether that row is visibly highlighted needs a browser test.
+   * disabled row, which is why `composes-option` keeps the highlight on it.
+   * That the row is visibly highlighted is checked in menu.browser.test.tsx.
    */
   it("lets the keyboard highlight a disabled item", async () => {
     const user = userEvent.setup();

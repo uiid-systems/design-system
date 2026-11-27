@@ -32,3 +32,31 @@ describe("compositions.css", () => {
     expect(base).toMatch(/opacity: 0;/);
   });
 });
+
+/**
+ * The paint of a highlighted row is measured in menu.browser.test.tsx. That
+ * file does not emulate forced colors, so the forced-colors arm is checked
+ * here, in the stylesheet text.
+ */
+describe("compositions.css .composes-option", () => {
+  const option =
+    /\.composes-option \{[\s\S]*?\n {2}\}\n/.exec(compositionsCss)?.[0] ?? "";
+  const [base, forced = ""] = option.split("@media (forced-colors: active)");
+
+  it("highlights with the tint alone, at once", () => {
+    expect(base).not.toMatch(/transition/);
+    expect(base.match(/outline[\w-]*:[^;]*;/g)).toEqual(["outline: none;"]);
+  });
+
+  it("outlines a highlighted row in Highlight under forced colors", () => {
+    expect(forced).toMatch(
+      /&:where\(\[data-highlighted\], :focus-visible\) \{[^}]*outline: var\(--globals-outline-style\) var\(--globals-outline-width\) Highlight;[^}]*outline-offset: calc\(-1 \* var\(--globals-outline-width\)\);/,
+    );
+  });
+
+  it("keeps a disabled row's outline at full strength under forced colors", () => {
+    expect(forced).toMatch(
+      /&:where\(\[data-disabled\]\) \{[^}]*opacity: 1;[^}]*color: GrayText;/,
+    );
+  });
+});
