@@ -87,6 +87,9 @@ export type MenuProps = {
    */
   backdrop?: boolean;
   RootProps?: MenuRootProps;
+  /** Reaches the root portal and every submenu's portal. Its content is the
+   * menu itself. */
+  PortalProps?: Omit<MenuPortalProps, "children">;
   /** Reaches the trigger. Its content is `trigger`. */
   TriggerProps?: Omit<MenuTriggerProps, "children">;
   BackdropProps?: MenuBackdropProps;
@@ -104,6 +107,12 @@ export type MenuProps = {
   >;
   /** Reaches every submenu root. Each entry's `items` fill its submenu. */
   SubmenuRootProps?: Omit<SubmenuRootProps, "children">;
+  /** Reaches every submenu's positioner, at every depth. It holds the
+   * submenu's popup. */
+  SubmenuPositionerProps?: Omit<MenuPositionerProps, "children">;
+  /** Reaches every submenu's popup, at every depth, and not the root popup.
+   * Its content comes from each entry's `items`. */
+  SubmenuPopupProps?: Omit<MenuPopupProps, "children">;
   /**
    * Reaches every submenu trigger. Each entry's `label` and `icon` are its
    * content, and a row's `description` is its own.

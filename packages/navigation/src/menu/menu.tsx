@@ -28,11 +28,14 @@ export const Menu = ({
   ItemProps,
   SubmenuRootProps,
   SubmenuTriggerProps,
+  PortalProps,
+  SubmenuPositionerProps,
+  SubmenuPopupProps,
 }: MenuProps) => {
   return (
     <MenuRoot {...RootProps}>
       <MenuTrigger {...TriggerProps}>{trigger}</MenuTrigger>
-      <MenuPortal>
+      <MenuPortal {...PortalProps}>
         {backdrop && <MenuBackdrop {...BackdropProps} />}
         <MenuPositioner {...PositionerProps} side={side} align={align}>
           <MenuPopup {...PopupProps}>
@@ -40,6 +43,9 @@ export const Menu = ({
               ItemProps,
               SubmenuRootProps,
               SubmenuTriggerProps,
+              PortalProps,
+              SubmenuPositionerProps,
+              SubmenuPopupProps,
             })}
           </MenuPopup>
         </MenuPositioner>

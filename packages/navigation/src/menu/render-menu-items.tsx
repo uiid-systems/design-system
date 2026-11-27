@@ -11,7 +11,12 @@ import {
 /** The slot props that reach the rows of every popup, at every depth. */
 export type MenuItemSlots = Pick<
   MenuProps,
-  "ItemProps" | "SubmenuRootProps" | "SubmenuTriggerProps"
+  | "ItemProps"
+  | "SubmenuRootProps"
+  | "SubmenuTriggerProps"
+  | "PortalProps"
+  | "SubmenuPositionerProps"
+  | "SubmenuPopupProps"
 >;
 
 /*
@@ -45,9 +50,11 @@ export const renderMenuItems = (
             children={undefined}
             disabled={item.disabled ?? SubmenuTriggerProps?.disabled}
           />
-          <MenuPortal>
-            <MenuPositioner>
-              <MenuPopup>{renderMenuItems(item.items, slots)}</MenuPopup>
+          <MenuPortal {...slots.PortalProps}>
+            <MenuPositioner {...slots.SubmenuPositionerProps}>
+              <MenuPopup {...slots.SubmenuPopupProps}>
+                {renderMenuItems(item.items, slots)}
+              </MenuPopup>
             </MenuPositioner>
           </MenuPortal>
         </SubmenuRoot>

@@ -706,6 +706,66 @@ describe("Menu items", () => {
       const email = await openThirdLevel(user);
       expect(email).toHaveAttribute("aria-disabled", "true");
     });
+
+    it("reaches every submenu positioner with SubmenuPositionerProps", async () => {
+      const user = userEvent.setup();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels()}
+          SubmenuPositionerProps={{ sideOffset: 12 }}
+        />,
+      );
+
+      await openThirdLevel(user);
+      const positioners = document.querySelectorAll<HTMLElement>(
+        '[data-slot="menu-positioner"]',
+      );
+      expect(positioners).toHaveLength(3);
+      const [root, second, third] = positioners;
+      // Base UI offsets the floating element by sideOffset from its anchor,
+      // and happy-dom's zero-sized layout leaves only that offset.
+      expect(root?.style.transform).toBe("translate(0px, 4px)");
+      expect(second?.style.transform).toBe("translate(12px, 0px)");
+      expect(third?.style.transform).toBe("translate(12px, 0px)");
+    });
+
+    it("merges SubmenuPopupProps onto every submenu popup and not the root's", async () => {
+      const user = userEvent.setup();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels()}
+          SubmenuPopupProps={{ className: "from-submenu-popup" }}
+        />,
+      );
+
+      await openThirdLevel(user);
+      const [root, second, third] = popups();
+      expect(root).not.toHaveClass("from-submenu-popup");
+      expect(second).toHaveClass("from-submenu-popup", styles["popup"]);
+      expect(third).toHaveClass("from-submenu-popup", styles["popup"]);
+    });
+
+    it("renders the menu and its submenus inside the PortalProps container", async () => {
+      const user = userEvent.setup();
+      const container = document.createElement("div");
+      document.body.appendChild(container);
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels()}
+          PortalProps={{ container }}
+        />,
+      );
+
+      await openThirdLevel(user);
+      expect(popups()).toHaveLength(3);
+      for (const popup of popups()) {
+        expect(container).toContainElement(popup as HTMLElement);
+      }
+      container.remove();
+    });
   });
 });
 
@@ -1044,6 +1104,33 @@ describe("Menu slot props", () => {
         items={MOCK_ITEMS}
         // @ts-expect-error -- a row's second line belongs to its entry
         SubmenuTriggerProps={{ description: "Other" }}
+      />
+    );
+  });
+
+  it("rejects children in the portal and submenu popup slots, which hold Menu's own parts", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- the portal holds Menu's positioners
+        PortalProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- the positioner holds the submenu's popup
+        SubmenuPositionerProps={{ children: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `items` fill its submenu's popup
+        SubmenuPopupProps={{ children: "Other" }}
       />
     );
   });
