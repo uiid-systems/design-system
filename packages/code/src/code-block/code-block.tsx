@@ -32,8 +32,10 @@ export const CodeBlock = ({
   code,
   language: languageProp,
   filename,
+  hideLanguageIcon = false,
   showLineNumbers,
   highlightLines,
+  notations,
   copyable = DEFAULT_COPYABLE,
   wrappable = DEFAULT_WRAPPABLE,
   fullscreenable = DEFAULT_FULLSCREENABLE,
@@ -97,6 +99,7 @@ export const CodeBlock = ({
     error,
   } = useHighlight(shownCode, language, {
     highlightLines,
+    notations,
     enabled: !prerenderedHtml,
   });
   const serverHtml = React.useMemo(
@@ -195,6 +198,9 @@ export const CodeBlock = ({
         <CodeBlockHeader
           {...slot(HeaderProps)}
           {...definedProps({ filename, language: languageProp })}
+          // The header draws an icon from `language`, so without one it has
+          // nothing to draw. The grammar still comes from `language` above.
+          {...(hideLanguageIcon && { language: undefined })}
           copyable={copyable}
           code={code}
           wrappable={wrappable}

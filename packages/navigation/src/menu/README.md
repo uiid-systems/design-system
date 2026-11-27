@@ -5,10 +5,10 @@
 Use Menu when you want to:
 
 - Put a set of actions behind one control — a row's overflow button, a toolbar's extra commands
-- Nest related actions a level deeper: an entry with `items` opens a submenu beside it
+- Nest related actions deeper: an entry with `items` opens a submenu beside it, and an entry in a submenu can have `items` of its own, to any depth
 - Place the popup with `side` and `align`
 
-Each entry takes a `label` and a `value` (its key), plus an optional `icon` drawn before the label, `disabled`, and `onClick`. `disabled` and `onClick` are Base UI's Item props; an entry's own `onClick` runs after `ItemProps.onClick`, which applies to every item, submenu items included. On an entry with `items`, `disabled` applies to the submenu's trigger and `onClick` is ignored.
+Each entry takes a `label` and a `value` (its key, so it must be unique among its siblings), plus an optional `icon` drawn before the label, `disabled`, and `onClick`. `disabled` and `onClick` are Base UI's Item props; an entry's own `onClick` runs after `ItemProps.onClick`, which applies to every item, submenu items at any depth included. On an entry with `items`, `disabled` applies to the submenu's trigger and `onClick` is ignored. `SubmenuRootProps` and `SubmenuTriggerProps` likewise reach every submenu at every depth at once, so an `open` passed there controls all of them together; for per-submenu state, compose the parts.
 
 ```tsx
 <Menu
@@ -25,7 +25,37 @@ Each entry takes a `label` and a `value` (its key), plus an optional `icon` draw
 />
 ```
 
-The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed. Base UI's Root is modal either way, so page scroll is locked and outside pointers are blocked.
+An entry's `description` is a second line stacked under its label, on a submenu's trigger too. It is text inside the row, so it joins the row's accessible name: `{ label: "Copy link", description: "Anyone with the link can view" }` is announced as "Copy link Anyone with the link can view".
+
+An entry with an `href` is a link: it renders through `MenuLinkItem`, Base UI's `LinkItem`, as a real `<a role="menuitem">`, so middle-click and open in a new tab work, at any depth. It looks and highlights like any other row. Its `onClick` still runs, after `LinkItemProps.onClick`, and the link still navigates. A link cannot also open a submenu, and Base UI's `LinkItem` takes no `disabled`, so an entry with `href` and `items`, or `href` and `disabled`, is a type error. `LinkItemProps` reaches every link item, at every depth; it takes no `href`, `label`, `icon`, `description` or `children`, which are each entry's own. A link entry closes the menu when clicked, as an action row does, so a router or hash link does not leave the modal menu open over the new view; pass `LinkItemProps={{ closeOnClick: false }}` to keep it open. A composed `MenuLinkItem` keeps Base UI's default of `closeOnClick={false}`. A `target="_blank"` passed through `LinkItemProps` gives no sign that a link opens a new window, so add that cue yourself, for example in the entry's `description`.
+
+```tsx
+<Menu
+  trigger="Account"
+  items={[
+    { label: "Settings", value: "settings", href: "/settings" },
+    { label: "Sign out", value: "sign-out", onClick: signOut },
+  ]}
+/>
+```
+
+`MenuLinkItem` takes Base UI's `render`, so a router's link component can draw the row: `<MenuLinkItem render={<Link to="/settings" />} label="Settings" />`.
+
+An entry `{ type: "separator" }` draws a line between sets of entries, at any depth. It renders through `MenuSeparator`, Base UI's menu `Separator` drawn by the layout `Separator`, as an element with `role="separator"` that the arrow keys skip and that takes no highlight. It is the only entry kind with a `type`, and it has no `value`, `label` or other content: it is keyed by its position. `SeparatorProps` reaches every separator, at every depth, and takes no `children`. Because a separator has no `label` or `value`, those fields read as `string | undefined` off a `MenuItemType`, and `onClick` is not on a separator at all, so `item.onClick` does not compile until the entry is narrowed; narrow with `item.type !== "separator"` before using `label` or `value` as a string or reading `onClick`. Compose `MenuSeparator` between parts for the same line in a composed menu.
+
+```tsx
+<Menu
+  trigger="Actions"
+  items={[
+    { label: "Edit", value: "edit" },
+    { label: "Duplicate", value: "duplicate" },
+    { type: "separator" },
+    { label: "Delete", value: "delete" },
+  ]}
+/>
+```
+
+The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed. Base UI's Root is modal by default, so page scroll is locked and outside pointers are blocked whether or not the page is dimmed. A non-modal menu, `RootProps={{ modal: false }}`, blocks nothing and draws no backdrop, whatever `backdrop` is set to.
 
 Menu wraps Base UI's [Menu](https://base-ui.com/react/components/menu) and takes its props unchanged — anything not listed above is forwarded through `RootProps`, `TriggerProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps`, and `SubmenuTriggerProps`, except what Menu sets itself: `PositionerProps` takes no `side` or `align`, and `TriggerProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps` and `SubmenuTriggerProps` take no `children`, since their content comes from `trigger` and `items`. For the same reason `ItemProps` and `SubmenuTriggerProps` take no `label`, `icon` or `description`. `MenuRoot`, `MenuTrigger`, `MenuPortal`, `MenuBackdrop`, `MenuPositioner`, `MenuPopup`, `MenuItem`, `MenuGroup`, `MenuGroupLabel`, `SubmenuRoot`, and `SubmenuTrigger` are exported for menus the simple component can't express.
 

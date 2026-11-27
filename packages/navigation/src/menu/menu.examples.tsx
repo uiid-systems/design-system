@@ -8,9 +8,12 @@ import { CopyIcon } from "@uiid/icons/copy";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { FolderInputIcon } from "@uiid/icons/folder-input";
 import { InboxIcon } from "@uiid/icons/inbox";
+import { LifeBuoyIcon } from "@uiid/icons/life-buoy";
 import { PencilIcon } from "@uiid/icons/pencil";
+import { SettingsIcon } from "@uiid/icons/settings";
 import { Share2Icon } from "@uiid/icons/share-2";
 import { Trash2Icon } from "@uiid/icons/trash-2";
+import { UserIcon } from "@uiid/icons/user";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { useState } from "react";
@@ -206,6 +209,94 @@ export const Descriptions = () => (
   </MenuRoot>
 );
 
+/* An entry's `description` is stacked under its label, submenu triggers too. */
+export const ItemDescriptions = () => (
+  <Menu
+    trigger={<Button>Share</Button>}
+    items={[
+      {
+        label: "Copy link",
+        value: "copy",
+        description: "Anyone with the link can view",
+        icon: CopyIcon,
+      },
+      {
+        label: "Invite people",
+        value: "invite",
+        description: "Send an email invitation",
+        icon: Share2Icon,
+        items: [
+          { label: "Can view", value: "view" },
+          { label: "Can edit", value: "edit" },
+        ],
+      },
+      {
+        label: "Archive",
+        value: "archive",
+        description: "Hide it from everyone but you",
+        icon: ArchiveIcon,
+        disabled: true,
+      },
+    ]}
+  />
+);
+
+/*
+ * An entry with an `href` is a real link, so middle-click and open in a new
+ * tab work, at any depth. It looks and highlights like any other row.
+ */
+export const Links = () => (
+  <Menu
+    trigger={<Button>Account</Button>}
+    items={[
+      { label: "Profile", value: "profile", href: "#profile", icon: UserIcon },
+      {
+        label: "Settings",
+        value: "settings",
+        href: "#settings",
+        description: "Notifications, privacy and billing",
+        icon: SettingsIcon,
+      },
+      {
+        label: "Help",
+        value: "help",
+        icon: LifeBuoyIcon,
+        items: [
+          { label: "Documentation", value: "docs", href: "#docs" },
+          { label: "Contact support", value: "support", href: "#support" },
+        ],
+      },
+      { label: "Sign out", value: "sign-out" },
+    ]}
+  />
+);
+
+/*
+ * A `{ type: "separator" }` entry draws a line between sets of entries, in a
+ * submenu too. The arrow keys skip it.
+ */
+export const Separators = () => (
+  <Menu
+    trigger={<Button>Actions</Button>}
+    items={[
+      { label: "Edit", value: "edit", icon: PencilIcon },
+      { label: "Duplicate", value: "duplicate", icon: CopyIcon },
+      {
+        label: "Move to",
+        value: "move",
+        icon: FolderInputIcon,
+        items: [
+          { label: "Inbox", value: "inbox", icon: InboxIcon },
+          { type: "separator" },
+          { label: "Archive", value: "archive", icon: ArchiveIcon },
+        ],
+      },
+      { type: "separator" },
+      { label: "Delete", value: "delete", icon: Trash2Icon },
+    ]}
+  />
+);
+
 /*
  * A disabled row is dimmed and takes no pointer. The keyboard still lands on
  * it, so focus never disappears, but choosing it does nothing.
@@ -286,4 +377,46 @@ export const Groups = () => (
       </MenuPositioner>
     </MenuPortal>
   </MenuRoot>
+);
+
+/* A submenu entry with its own `items` opens a further submenu, at any depth. */
+export const NestedSubmenus = () => (
+  <Menu
+    trigger={<Button>Actions</Button>}
+    items={[
+      { label: "Edit", value: "edit", icon: PencilIcon },
+      {
+        label: "Move to",
+        value: "move",
+        icon: FolderInputIcon,
+        items: [
+          { label: "Inbox", value: "inbox", icon: InboxIcon },
+          {
+            label: "Projects",
+            value: "projects",
+            icon: FolderInputIcon,
+            items: [
+              { label: "Design", value: "design" },
+              { label: "Engineering", value: "engineering" },
+              { label: "Marketing", value: "marketing" },
+            ],
+          },
+          { label: "Archive", value: "archive", icon: ArchiveIcon },
+        ],
+      },
+      { label: "Delete", value: "delete", icon: Trash2Icon },
+    ]}
+  />
+);
+
+/*
+ * `RootProps={{ modal: false }}` leaves the page scrollable and clickable while
+ * the menu is open, so no backdrop is drawn to dim it.
+ */
+export const NonModal = () => (
+  <Menu
+    trigger={<Button>Actions</Button>}
+    items={ITEMS}
+    RootProps={{ modal: false }}
+  />
 );
