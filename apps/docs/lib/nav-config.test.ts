@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { NAV } from "../nav";
-import { isNavGroup, listNavItems } from "./nav";
+import { buildNavTrail, isNavGroup, listNavItems } from "./nav";
 
 /** Rules the docs app's own nav config must keep. */
 describe("NAV", () => {
@@ -21,5 +21,26 @@ describe("NAV", () => {
       ...NAV.filter(isNavGroup).flatMap((group) => group.href ?? []),
     ];
     for (const href of hrefs) expect(href).toMatch(/^\//);
+  });
+
+  it("gives a component page a trail of Home and the page", () => {
+    const labels = buildNavTrail(NAV, "/layout/box").map(
+      (crumb) => crumb.label,
+    );
+    expect(labels).toEqual(["Home", "Box"]);
+  });
+
+  it("links every crumb to an href in the config", () => {
+    const hrefs = new Set([
+      ...listNavItems(NAV).map((item) => item.href),
+      ...NAV.filter(isNavGroup).flatMap((group) => group.href ?? []),
+    ]);
+    const pathnames = [...hrefs, "/layout", "/layout/box/extra", "/missing"];
+
+    for (const pathname of pathnames) {
+      for (const crumb of buildNavTrail(NAV, pathname)) {
+        expect(hrefs).toContain(crumb.href);
+      }
+    }
   });
 });
