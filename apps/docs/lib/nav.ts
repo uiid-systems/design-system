@@ -44,6 +44,29 @@ export function listNavItems(entries: NavEntry[]): NavItem[] {
   );
 }
 
+/** A run of consecutive top-level items, or one group. */
+export type NavSection = NavItem[] | NavGroup;
+
+/**
+ * The config as the sidebar lays it out, in order: each run of consecutive
+ * top-level items as one list, and each group on its own.
+ */
+export function toNavSections(entries: NavEntry[]): NavSection[] {
+  const sections: NavSection[] = [];
+
+  for (const entry of entries) {
+    if (isNavGroup(entry)) {
+      sections.push(entry);
+      continue;
+    }
+    const last = sections.at(-1);
+    if (Array.isArray(last)) last.push(entry);
+    else sections.push([entry]);
+  }
+
+  return sections;
+}
+
 /** The path part of an href or URL, without its query string, hash or one trailing slash. */
 function toPath(href: string): string {
   const end = href.search(/[?#]/);

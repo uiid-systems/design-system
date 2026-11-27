@@ -6,6 +6,7 @@ import {
   findActiveItem,
   listNavItems,
   type NavEntry,
+  toNavSections,
 } from "./nav";
 
 const home = { label: "Home", href: "/" };
@@ -153,6 +154,31 @@ describe("listNavItems", () => {
 
   it("returns an empty list for an empty config", () => {
     expect(listNavItems([])).toEqual([]);
+  });
+});
+
+describe("toNavSections", () => {
+  it("runs consecutive top-level items into one list, groups in place", () => {
+    expect(toNavSections(NAV)).toEqual([[home, changelog], layout, settings]);
+  });
+
+  it("starts a new list after each group", () => {
+    const about = { label: "About", href: "/about" };
+    expect(toNavSections([layout, home, settings, about, changelog])).toEqual([
+      layout,
+      [home],
+      settings,
+      [about, changelog],
+    ]);
+  });
+
+  it("keeps an empty group", () => {
+    const empty = { label: "Empty", items: [] };
+    expect(toNavSections([empty])).toEqual([empty]);
+  });
+
+  it("returns no sections for an empty config", () => {
+    expect(toNavSections([])).toEqual([]);
   });
 });
 
