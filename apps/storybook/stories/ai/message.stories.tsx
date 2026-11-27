@@ -351,16 +351,30 @@ const serialized = (html: string) => {
  * once highlighted the block never shows its plain fallback again, its text is
  * the code received so far, its height never drops, and it is the same block
  * element throughout, so the code component never remounts.
+ *
+ * The highlighter is warm before the stream starts, so passes land while the
+ * code is still arriving. It does not hold passes back until newer code has
+ * arrived; the CodeBlock streaming browser test covers that case.
  */
 export const StreamingWithCode: Story = {
   render: () => <StreamingCodeReply />,
   play: async ({ mount, canvasElement }) => {
+    // Load Shiki and the grammar first, and the one-shot markup to settle on,
+    // so no frame goes unchecked while either is computed.
+    const oneShot = serialized(
+      (await highlight(STREAM_CODE, "tsx", { notations: false })).replace(
+        ' tabindex="0"',
+        "",
+      ),
+    );
     const stream = createReplyStream(STREAM_CHUNKS);
     await mount(<StreamingCodeReply stream={stream} />);
 
     const failures: string[] = [];
     const seen = new Set<Element>();
     let highlighted = false;
+    /** How much of the reply had arrived when the block was first highlighted. */
+    let highlightedAt = -1;
     let plainAfterHighlight = 0;
     let lastHeight = 0;
 
@@ -375,6 +389,7 @@ export const StreamingWithCode: Story = {
 
       const now = isHighlighted(block);
       if (highlighted && !now) plainAfterHighlight++;
+      if (now && !highlighted) highlightedAt = stream.get().text.length;
       highlighted ||= now;
 
       // A chunk can end on newlines. CodeBlock leaves one out, since it ends
@@ -396,8 +411,7 @@ export const StreamingWithCode: Story = {
       lastHeight = height;
     };
 
-    for (let i = 0; stream.get().text.length < STREAM_ANSWER.length; i++) {
-      flushSync(() => stream.step());
+    for (let i = 0; flushSync(() => stream.step()); i++) {
       check(
         receivedCode(stream.get().text),
         `chunk ${i} ${JSON.stringify(stream.get().text.slice(-6))}`,
@@ -408,21 +422,20 @@ export const StreamingWithCode: Story = {
     check(STREAM_CODE, "finished");
 
     // Then frame by frame until the markup is a one-shot highlight of the
-    // whole code, as the recipe renders it.
-    const oneShot = serialized(
-      (await highlight(STREAM_CODE, "tsx", { notations: false })).replace(
-        ' tabindex="0"',
-        "",
-      ),
-    );
+    // whole code, as the recipe renders it. A warm highlighter needs a few
+    // frames; the budget keeps the whole play inside the runner's 15s test
+    // timeout, which a story cannot raise.
     const block = () => canvasElement.querySelector<HTMLElement>(BLOCK)!;
-    for (let i = 0; i < 600 && content(block()).innerHTML !== oneShot; i++) {
+    for (let i = 0; i < 120 && content(block()).innerHTML !== oneShot; i++) {
       await nextFrame();
       check(STREAM_CODE, `settle ${i}`);
     }
 
     await expect(failures).toEqual([]);
     await expect(highlighted).toBe(true);
+    // Highlighted while the code was still arriving, not only once it stopped.
+    await expect(highlightedAt).toBeGreaterThan(CODE_START);
+    await expect(highlightedAt).toBeLessThan(CODE_END);
     await expect(plainAfterHighlight).toBe(0);
     await expect(seen.size).toBe(1);
     await expect(content(block()).innerHTML).toBe(oneShot);
@@ -443,6 +456,14 @@ const NESTED_ANSWER = [
   "",
   "2. Read the report.",
   "",
+  "Or, in a tight list:",
+  "",
+  "- Run one file:",
+  "  ```bash",
+  `  ${LONG_LINE} src/index.test.ts`,
+  "  ```",
+  "- Read it.",
+  "",
   "> The config it reads looks like this:",
   ">",
   "> ```ts",
@@ -450,7 +471,7 @@ const NESTED_ANSWER = [
   "> ```",
 ].join("\n");
 
-/* Code inside a list item and a blockquote, in a 320px viewport: each block keeps its frame inside the item or the quote, and its long line scrolls inside the block. */
+/* Code inside a list item (loose and tight) and a blockquote, in a 320px viewport: each block keeps its frame inside the item or the quote, steps down from the text above it, and its long line scrolls inside the block. */
 export const CodeInListAndQuote: Story = {
   globals: { viewport: { value: "mobile1" } },
   render: () => (
@@ -464,15 +485,19 @@ export const CodeInListAndQuote: Story = {
   ),
   play: async ({ canvasElement }) => {
     const blocks = getBlocks(canvasElement);
-    await expect(blocks).toHaveLength(2);
+    await expect(blocks).toHaveLength(3);
     await waitFor(() => expect(blocks.every(isHighlighted)).toBe(true), {
       timeout: 10_000,
     });
 
     await expect(window.innerWidth).toBe(320);
-    const [inList, inQuote] = blocks;
+    const [inList, inTightList, inQuote] = blocks;
     await expect(inList.parentElement?.tagName).toBe("LI");
     await expect(inQuote.parentElement?.tagName).toBe("BLOCKQUOTE");
+    // Tight: the item's text is a bare text node, so the block is its first
+    // element.
+    await expect(inTightList.parentElement?.tagName).toBe("LI");
+    await expect(inTightList.previousElementSibling).toBe(null);
 
     for (const block of blocks) {
       const parent = block.parentElement!;
@@ -485,9 +510,17 @@ export const CodeInListAndQuote: Story = {
       await expect(box.left).toBeGreaterThanOrEqual(parentBox.left);
       await expect(box.right).toBeLessThanOrEqual(parentBox.right + 0.5);
       await expect(parent.scrollWidth).toBeLessThanOrEqual(parent.clientWidth);
-      // A step down from the text above it, not flush against it.
-      const above = block.previousElementSibling!.getBoundingClientRect();
-      await expect(box.top - above.bottom).toBeGreaterThan(0);
+      // A step down from the text above it, whether that text is a paragraph
+      // or a bare text node. The step is the block's own margin: a bare text
+      // node's glyphs end above its line box, so the space between them and
+      // the block is never zero and cannot show the step on its own.
+      await expect(parseFloat(style.marginBlockStart)).toBeGreaterThan(0);
+      const above = document.createRange();
+      above.setStart(parent, 0);
+      above.setEndBefore(block);
+      await expect(
+        box.top - above.getBoundingClientRect().bottom,
+      ).toBeGreaterThan(0);
       // The long line scrolls inside the block's content.
       const scroller = content(block);
       await expect(getComputedStyle(scroller).overflowX).toBe("auto");
