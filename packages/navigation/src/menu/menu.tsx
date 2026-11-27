@@ -34,7 +34,9 @@ export const Menu = ({
     <MenuRoot {...RootProps}>
       <MenuTrigger {...TriggerProps}>{trigger}</MenuTrigger>
       <MenuPortal>
-        {backdrop && <MenuBackdrop {...BackdropProps} />}
+        {backdrop && RootProps?.modal !== false && (
+          <MenuBackdrop {...BackdropProps} />
+        )}
         <MenuPositioner {...PositionerProps} side={side} align={align}>
           <MenuPopup {...PopupProps}>
             {renderMenuItems(items, {

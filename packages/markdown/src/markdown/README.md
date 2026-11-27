@@ -17,12 +17,12 @@ Read these before you swap it in for another renderer:
 - **Raw HTML always renders as text**, with no prop to turn that off. An occasional `<br>` or `<sub>` a model writes shows up literally. A line ending in two spaces still breaks, since that is markdown, not HTML.
 - **Markdown is CommonMark plus GFM.** Pipe tables, `~~strikethrough~~`, task lists, bare-URL autolinks and footnotes parse; anything beyond that, such as math, grid tables or custom containers, renders as text.
 - **Tables, strikethrough, task lists, footnotes and images are unstyled.** `Prose` has no rules for them yet, so they render with browser defaults.
-- **Only links and images can be overridden** (`overrides.a`, `overrides.img`). Headings, code and every other element are `Prose`'s.
+- **Only links, images and code blocks can be overridden** (`overrides.a`, `overrides.img`, `overrides.codeBlock`). Headings, inline code and every other element are `Prose`'s.
 - **Ids repeat.** Each heading gets an `id` from its text, and each footnote one from its label (`[^1]` becomes `id="1"`), so a transcript of many messages can hold duplicates.
 - **`streaming` must be off on finished text.** Left on, a stray backtick or `[` the model never closed hides everything after it.
 - **A code span appears whole** on its closing backtick, and a table appears once its first data row arrives, rather than character by character.
 - **`reveal` makes it a client component.** Plain `Markdown` has no hooks and renders in a server component.
-- **The memo needs stable props.** A new `overrides` object or `render` element each render means `Markdown` recompiles every time. Define the object and its components once, outside render: a new component each render remounts every link and image.
+- **The memo needs stable props.** A new `overrides` object or `render` element each render means `Markdown` recompiles every time. Define the object and its components once, outside render: a new component each render remounts every link, image and code block.
 
 ## Usage
 
@@ -36,12 +36,12 @@ import { Markdown } from "@uiid/markdown";
 
 All [`Prose`](../../../typography/src/prose/README.md) props, plus:
 
-| Prop        | Type                | Default | Description                                                                 |
-| ----------- | ------------------- | ------- | --------------------------------------------------------------------------- |
-| `children`  | `string`            | —       | Markdown source. It may be cut off anywhere while it streams                |
-| `streaming` | `boolean`           | `false` | Hold back unfinished syntax until its closing delimiter arrives (see below) |
-| `reveal`    | `boolean`           | `false` | While `streaming`, fade each word in as it arrives (see below)              |
-| `overrides` | `MarkdownOverrides` | —       | Your own components for links (`a`) and images (`img`) (see below)          |
+| Prop        | Type                | Default | Description                                                                                   |
+| ----------- | ------------------- | ------- | --------------------------------------------------------------------------------------------- |
+| `children`  | `string`            | —       | Markdown source. It may be cut off anywhere while it streams                                  |
+| `streaming` | `boolean`           | `false` | Hold back unfinished syntax until its closing delimiter arrives (see below)                   |
+| `reveal`    | `boolean`           | `false` | While `streaming`, fade each word in as it arrives (see below)                                |
+| `overrides` | `MarkdownOverrides` | —       | Your own components for links (`a`), images (`img`) and code blocks (`codeBlock`) (see below) |
 
 ## Streaming
 
@@ -95,6 +95,41 @@ const overrides: MarkdownOverrides = { a: ExternalLink };
 ```
 
 Overrides work with `streaming` and `reveal`: words inside a link fade in as they would anywhere else.
+
+## Code blocks
+
+A code block renders as a plain `<pre><code>` styled by `Prose`. To render it with a component of your own, such as a highlighted, copyable block, pass `overrides.codeBlock`. It replaces the whole block, `<pre>` included, and gets `MarkdownCodeBlockProps` rather than element props:
+
+| Prop       | Type     | Description                                                                                             |
+| ---------- | -------- | ------------------------------------------------------------------------------------------------------- |
+| `code`     | `string` | The block's text, as written. Raw HTML in it is never parsed                                            |
+| `language` | `string` | The first word of the fence's info string (`ts` for ` ```ts title=a.ts `), or absent when there is none |
+
+```tsx
+import { CodeBlock } from "@uiid/code";
+import {
+  Markdown,
+  type MarkdownCodeBlockProps,
+  type MarkdownOverrides,
+} from "@uiid/markdown";
+
+// Once, outside render, so the block keeps its instance as the text grows.
+const ModelCodeBlock = ({ code, language }: MarkdownCodeBlockProps) => (
+  <CodeBlock code={code} language={language ?? "text"} notations={false} />
+);
+
+const overrides: MarkdownOverrides = { codeBlock: ModelCodeBlock };
+
+<Markdown streaming={status === "streaming"} overrides={overrides}>
+  {message.text}
+</Markdown>;
+```
+
+- `@uiid/markdown` does not depend on `@uiid/code`. The wrapper sets `language ?? "text"` because a bare `CodeBlock` colors a fence with no language as TypeScript, and `notations={false}` because model text is untrusted: with notations on, a line ending in `// [!code --]` shows as removed while the copy button still copies it. Add `hideLanguageIcon` for no header bar above the code.
+- `language` is the fence as the model wrote it. It is not checked against any list, so only use it for lookup, such as picking a highlighter grammar, and fall back to plain text for a name you do not know.
+- While `streaming`, an open fence renders through the override from its first line, and the same instance receives the text as it grows: it does not remount per chunk, and it stays mounted when the closing fence lands and when `streaming` turns off. The backticks of a closing fence that is still arriving are held back, so they never show as a line of code that vanishes a chunk later.
+- `reveal` does not animate code: the block's text appears as it arrives, with or without the override, and the words after it reveal as they would otherwise.
+- Indented code blocks render through the override too, with no `language`. Inline code does not.
 
 ## Security
 

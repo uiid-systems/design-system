@@ -110,6 +110,47 @@ describe("Menu backdrop", () => {
       "menu-backdrop",
     );
   });
+
+  /* A non-modal menu blocks nothing, so it draws no backdrop to say it does. */
+  it("draws no backdrop when the root is not modal", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu trigger="Open" items={MOCK_ITEMS} RootProps={{ modal: false }} />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getByRole("menu")).toBeInTheDocument();
+    expect(backdrops()).toHaveLength(0);
+  });
+
+  it("draws no backdrop when not modal even with backdrop set", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        backdrop
+        RootProps={{ modal: false }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getByRole("menu")).toBeInTheDocument();
+    expect(backdrops()).toHaveLength(0);
+  });
+
+  it("dims the page when the root is explicitly modal", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu trigger="Open" items={MOCK_ITEMS} RootProps={{ modal: true }} />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(backdrops()).toHaveLength(1);
+  });
 });
 
 /*
