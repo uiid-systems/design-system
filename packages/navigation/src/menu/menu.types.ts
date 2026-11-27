@@ -14,6 +14,7 @@ export type MenuItemType = {
   /** Drawn before the label. */
   icon?: Icon;
   label: string;
+  /** The entry's key. Must be unique among its siblings. */
   value: string;
   /** Base UI's `disabled`: the item, or a submenu's trigger, ignores
    * interaction. */
@@ -21,6 +22,7 @@ export type MenuItemType = {
   /** Base UI's `onClick` for this item, called after `ItemProps.onClick`.
    * Ignored on an entry with `items`, whose trigger opens the submenu. */
   onClick?: MenuItemProps["onClick"];
+  /** Opens a submenu of these entries beside this one, at any depth. */
   items?: MenuItemType[];
 };
 

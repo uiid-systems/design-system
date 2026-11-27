@@ -566,6 +566,113 @@ describe("Menu items", () => {
       "true",
     );
   });
+
+  describe("at depth", () => {
+    const popups = () => document.querySelectorAll('[data-slot="menu-popup"]');
+
+    /* Opens "More", then its "Share" submenu, by keyboard: happy-dom reports a
+       submenu's rows as pointer-events: none while it enters. */
+    const openThirdLevel = async (user: ReturnType<typeof userEvent.setup>) => {
+      await user.click(screen.getByText("Open"));
+      await user.click(screen.getByText("More"));
+      const share = await screen.findByRole("menuitem", { name: "Share" });
+      share.focus();
+      await user.keyboard("{ArrowRight}");
+      return screen.findByRole("menuitem", { name: "Email" });
+    };
+
+    const threeLevels = (
+      onEmail?: () => void,
+      share?: Partial<MenuProps["items"][number]>,
+    ): MenuProps["items"] => [
+      { label: "Edit", value: "edit" },
+      {
+        label: "More",
+        value: "more",
+        items: [
+          { label: "Archive", value: "archive" },
+          {
+            label: "Share",
+            value: "share",
+            items: [
+              { label: "Email", value: "email", onClick: onEmail },
+              { label: "Copy link", value: "link" },
+            ],
+            ...share,
+          },
+        ],
+      },
+    ];
+
+    it("opens a submenu inside a submenu, and its leaf's onClick fires", async () => {
+      const user = userEvent.setup();
+      const onEmail = vi.fn();
+      render(<Menu trigger="Open" items={threeLevels(onEmail)} />);
+
+      const email = await openThirdLevel(user);
+      expect(popups()).toHaveLength(3);
+
+      email.focus();
+      await user.keyboard("{Enter}");
+      expect(onEmail).toHaveBeenCalledTimes(1);
+    });
+
+    it("calls ItemProps.onClick at the third level, before the item's own", async () => {
+      const user = userEvent.setup();
+      const calls: string[] = [];
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels(() => calls.push("item"))}
+          ItemProps={{ onClick: () => calls.push("slot") }}
+        />,
+      );
+
+      const email = await openThirdLevel(user);
+      email.focus();
+      await user.keyboard("{Enter}");
+      expect(calls).toEqual(["slot", "item"]);
+    });
+
+    it("reaches every level with the submenu slots", async () => {
+      const user = userEvent.setup();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels()}
+          ItemProps={{ className: "from-item-props" }}
+          SubmenuTriggerProps={{ className: "from-trigger-props" }}
+        />,
+      );
+
+      const email = await openThirdLevel(user);
+      expect(email).toHaveClass("from-item-props");
+      expect(screen.getByRole("menuitem", { name: "Share" })).toHaveClass(
+        "from-trigger-props",
+      );
+    });
+
+    it("lets a second-level entry's disabled win over SubmenuTriggerProps", async () => {
+      const user = userEvent.setup();
+      render(
+        <Menu
+          trigger="Open"
+          items={threeLevels(undefined, { disabled: true })}
+          SubmenuTriggerProps={{ disabled: false }}
+        />,
+      );
+
+      await user.click(screen.getByText("Open"));
+      await user.click(screen.getByText("More"));
+      const share = await screen.findByRole("menuitem", { name: "Share" });
+      expect(share).toHaveAttribute("aria-disabled", "true");
+
+      share.focus();
+      await user.keyboard("{ArrowRight}");
+      expect(screen.queryByRole("menuitem", { name: "Email" })).toBeNull();
+      expect(popups()).toHaveLength(2);
+    });
+  });
 });
 
 describe("Menu trigger", () => {
