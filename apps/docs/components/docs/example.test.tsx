@@ -74,7 +74,7 @@ describe("Example", () => {
     expect(panel?.querySelector(".shiki")).not.toBeNull();
   });
 
-  it("starts the example at the canvas's start edge", async () => {
+  it("leaves the canvas at CodePreview's default alignment", async () => {
     const { container } = await renderExample({
       title: "Default",
       of: "buttons/button",
@@ -82,10 +82,12 @@ describe("Example", () => {
       children: <p>live</p>,
     });
 
-    // The canvas is a column Stack, which writes its `ax` (the horizontal,
-    // cross axis) to Box's `ay`, so the start alignment shows as `data-ui-ay`.
+    // CodePreview centres the canvas in its CSS module; an `ax` or `ay`
+    // override would show as a `data-ui-ax` or `data-ui-ay` attribute.
     const canvas = slot(container, "code-preview-canvas");
-    expect(canvas?.getAttribute("data-ui-ay")).toBe("start");
+    expect(canvas).not.toBeNull();
+    expect(canvas!.hasAttribute("data-ui-ax")).toBe(false);
+    expect(canvas!.hasAttribute("data-ui-ay")).toBe(false);
   });
 
   it("renders the framed canvas alone when there is no source", async () => {
