@@ -7,8 +7,23 @@ import { userEvent } from "vitest/browser";
    The test reaches its source by path, so the comparison costs the package
    no dependency and ships nowhere: package builds leave tests out. */
 import { Select } from "../../../forms/src/select/select";
+import {
+  SelectGroup,
+  SelectGroupLabel,
+  SelectItem,
+} from "../../../forms/src/select/subcomponents";
 import { Menu } from "./menu";
 import type { MenuItemType } from "./menu.types";
+import {
+  MenuGroup,
+  MenuGroupLabel,
+  MenuItem,
+  MenuPopup,
+  MenuPortal,
+  MenuPositioner,
+  MenuRoot,
+  MenuTrigger,
+} from "./subcomponents";
 
 /* These run in a real browser, for what happy-dom cannot show: the computed
    style of every row state, from the token sheet, the Card the popup renders
@@ -308,5 +323,51 @@ describe("Menu row states", () => {
 
     expect(chevronBox.width).toBeGreaterThan(0);
     expect(rowBox.right - chevronBox.right).toBeCloseTo(paddingEnd, 0);
+  });
+});
+
+/* The text properties a group label's look is made of. `color` is compared
+   as computed: both popups are the same neutral Card, so the label's
+   inherited `--palette-on-tint` resolves to the same value in each. */
+const GROUP_LABEL = [
+  "color",
+  "font-size",
+  "font-weight",
+  "line-height",
+  "font-family",
+];
+
+describe("Menu group label beside Select's", () => {
+  it("paints the label the way Select does", async () => {
+    render(
+      <MenuRoot open modal={false}>
+        <MenuTrigger>Actions</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuGroup>
+                <MenuGroupLabel>Edit</MenuGroupLabel>
+                <MenuItem label="Cut" />
+              </MenuGroup>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+    render(
+      <Select aria-label="Action" backdrop={false} open modal={false}>
+        <SelectGroup>
+          <SelectGroupLabel>Edit</SelectGroupLabel>
+          <SelectItem value="cut" label="Cut" />
+        </SelectGroup>
+      </Select>,
+    );
+
+    const menuLabel = await find('[data-slot="menu-group-label"]');
+    const selectLabel = await find('[data-slot="select-group-label"]');
+
+    expect(pick(menuLabel, GROUP_LABEL)).toEqual(
+      pick(selectLabel, GROUP_LABEL),
+    );
   });
 });

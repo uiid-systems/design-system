@@ -61,6 +61,9 @@ type MenuRowContentProps = {
   children?: React.ReactNode;
 };
 
+export type MenuGroupProps = BaseMenu.Group.Props;
+export type MenuGroupLabelProps = BaseMenu.GroupLabel.Props;
+
 export type MenuItemProps = WithStringClassName<BaseMenu.Item.Props> &
   MenuRowContentProps;
 export type SubmenuRootProps = BaseMenu.SubmenuRoot.Props;

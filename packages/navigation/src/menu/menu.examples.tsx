@@ -19,6 +19,8 @@ import { Menu } from "./menu";
 import type { MenuItemType } from "./menu.types";
 import {
   MenuBackdrop,
+  MenuGroup,
+  MenuGroupLabel,
   MenuItem,
   MenuPopup,
   MenuPortal,
@@ -253,4 +255,35 @@ export const LongLabels = () => (
       },
     ]}
   />
+);
+
+/*
+ * `MenuGroup` sets rows apart under a `MenuGroupLabel`, which names the group
+ * for assistive tech. Groups are composed only: in `items`, an entry with its
+ * own `items` is a submenu, not a group.
+ */
+export const Groups = () => (
+  <MenuRoot>
+    <MenuTrigger>
+      <Button>Document</Button>
+    </MenuTrigger>
+    <MenuPortal>
+      <MenuBackdrop />
+      <MenuPositioner>
+        <MenuPopup>
+          <MenuGroup>
+            <MenuGroupLabel>Edit</MenuGroupLabel>
+            <MenuItem label="Rename" icon={PencilIcon} />
+            <MenuItem label="Duplicate" icon={CopyIcon} />
+          </MenuGroup>
+          <MenuGroup>
+            <MenuGroupLabel>Organize</MenuGroupLabel>
+            <MenuItem label="Move to inbox" icon={InboxIcon} />
+            <MenuItem label="Archive" icon={ArchiveIcon} />
+            <MenuItem label="Delete" icon={Trash2Icon} />
+          </MenuGroup>
+        </MenuPopup>
+      </MenuPositioner>
+    </MenuPortal>
+  </MenuRoot>
 );

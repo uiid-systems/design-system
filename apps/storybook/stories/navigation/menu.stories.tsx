@@ -94,6 +94,8 @@ export const Disabled: Story = { render: () => <Examples.Disabled /> };
 
 export const LongLabels: Story = { render: () => <Examples.LongLabels /> };
 
+export const Groups: Story = { render: () => <Examples.Groups /> };
+
 /* Open each in turn to compare: the popups and rows should read as one kind. */
 export const BesideSelect: Story = {
   render: () => (
