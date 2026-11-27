@@ -24,15 +24,27 @@ export const CodePreviewTrigger = ({
     data-slot="code-preview-trigger"
     {...props}
     // A function of the trigger's state, so the label follows the panel.
-    render={(triggerProps, state) => (
-      <CodeBlockExpandToggle
-        {...(triggerProps as Omit<React.ComponentProps<"button">, "color">)}
-        className={cx(styles["code-preview-trigger"], className)}
-        expanded={state.open}
-        expandLabel={showLabel}
-        collapseLabel={hideLabel}
-      />
-    )}
+    render={(triggerProps, state) => {
+      // Both labels share one cell, and the hidden one keeps its width, so
+      // where the footer is the frame's widest part, the frame keeps its
+      // width as the code opens and closes. The hidden one is out of sight
+      // and out of the button's name.
+      const labels = (
+        <span className={styles["code-preview-trigger-labels"]}>
+          <span aria-hidden={state.open || undefined}>{showLabel}</span>
+          <span aria-hidden={!state.open || undefined}>{hideLabel}</span>
+        </span>
+      );
+      return (
+        <CodeBlockExpandToggle
+          {...(triggerProps as Omit<React.ComponentProps<"button">, "color">)}
+          className={cx(styles["code-preview-trigger"], className)}
+          expanded={state.open}
+          expandLabel={labels}
+          collapseLabel={labels}
+        />
+      );
+    }}
   />
 );
 CodePreviewTrigger.displayName = "CodePreviewTrigger";

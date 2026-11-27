@@ -47,7 +47,7 @@ export const OpenByDefault = () => (
   </CodePreview>
 );
 
-/** With no `code` there is no bar and no panel: a framed canvas only. */
+/** With no `code` there is no code and no footer: a framed canvas only. */
 export const NoCode = () => (
   <CodePreview>
     <Actions />
@@ -131,7 +131,7 @@ const Broken = (): React.ReactNode => {
 
 /**
  * An example that throws shows a short message in the canvas. The frame, the
- * bar and the code still render, and reset tries the example again.
+ * code and the footer still render, and reset tries the example again.
  */
 export const Throws = () => (
   <CodePreview code={SAMPLE} language="tsx" resettable>

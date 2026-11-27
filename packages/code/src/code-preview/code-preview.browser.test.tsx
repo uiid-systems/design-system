@@ -309,6 +309,61 @@ const WIDE_LINE =
   'export const label = "a line of code wider than the example above it";';
 
 describe("CodePreview frame width", () => {
+  for (const hideLabel of [undefined, "Hide the example's source code"]) {
+    it(`stays the same when the footer is the widest part${hideLabel ? ", with a longer hideLabel" : ""}`, async () => {
+      // A tiny example and one-character code with no copy button, so only
+      // the footer's label can set the frame's width.
+      const container = mountSized(
+        <div style={{ display: "flex", alignItems: "flex-start" }}>
+          <CodePreview
+            code="x"
+            copyable={false}
+            hideLabel={hideLabel}
+            CanvasProps={{ p: 0 }}
+            PanelProps={{ instant: true }}
+          >
+            <span style={{ display: "block", width: 4, height: 4 }} />
+          </CodePreview>
+        </div>,
+        { width: 720 },
+      );
+      const frame = query(container, '[data-slot="code-preview"]');
+      const panel = query(frame, '[data-slot="code-preview-panel"]');
+      const trigger = query(frame, '[data-slot="code-preview-trigger"]');
+      const labels = query(trigger, "span");
+      const width = () => frame.getBoundingClientRect().width;
+
+      // The footer's labels set the width: the frame is no wider than they
+      // and the footer's own padding and border.
+      const style = getComputedStyle(trigger);
+      const chrome =
+        Number.parseFloat(style.paddingLeft) +
+        Number.parseFloat(style.paddingRight) +
+        Number.parseFloat(style.borderLeftWidth) +
+        Number.parseFloat(style.borderRightWidth) +
+        2 * Number.parseFloat(getComputedStyle(frame).borderLeftWidth);
+      const closed = width();
+      expect(closed).toBeCloseTo(
+        labels.getBoundingClientRect().width + chrome,
+        0,
+      );
+
+      await userEvent.click(trigger);
+      await expect.poll(() => panel.hasAttribute("hidden")).toBe(false);
+      await expect
+        .poll(() => panel.getBoundingClientRect().height)
+        .toBeGreaterThan(0);
+      const open = width();
+      await userEvent.click(trigger);
+      await expect.poll(() => panel.hasAttribute("hidden")).toBe(true);
+      const closedAgain = width();
+
+      const detail = JSON.stringify({ closed, open, closedAgain });
+      expect(Math.abs(open - closed), detail).toBeLessThan(0.5);
+      expect(Math.abs(closedAgain - closed), detail).toBeLessThan(0.5);
+    });
+  }
+
   const cases = [
     { name: "code narrower than the example", code: "const a = 1;" },
     { name: "code wider than the example", code: WIDE_LINE },

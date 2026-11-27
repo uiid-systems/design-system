@@ -18,7 +18,6 @@ import { CodePreview } from "./code-preview";
 import * as Examples from "./code-preview.examples";
 import type { CodePreviewProps } from "./code-preview.types";
 import {
-  CodePreviewBar,
   CodePreviewCanvas,
   CodePreviewPanel,
   CodePreviewResetButton,
@@ -106,7 +105,28 @@ describe("CodePreview", () => {
       render(<CodePreview code={CODE}>x</CodePreview>);
       expect(trigger().className).toMatch(/code-block-expand-toggle/);
       expect(trigger().querySelector("svg")).toBeNull();
-      expect(trigger()).toHaveTextContent(/^Show code$/);
+      expect(trigger()).toHaveAccessibleName("Show code");
+    });
+
+    it("keeps both labels in the trigger, the inactive one hidden from the name", async () => {
+      const user = userEvent.setup();
+      render(
+        <CodePreview code={CODE} hideLabel="Hide the source">
+          x
+        </CodePreview>,
+      );
+      const show = screen.getByText("Show code");
+      const hide = screen.getByText("Hide the source");
+      expect(trigger()).toContainElement(show);
+      expect(trigger()).toContainElement(hide);
+      expect(show).not.toHaveAttribute("aria-hidden");
+      expect(hide).toHaveAttribute("aria-hidden", "true");
+      await user.click(trigger());
+      expect(show).toHaveAttribute("aria-hidden", "true");
+      expect(hide).not.toHaveAttribute("aria-hidden");
+      expect(
+        screen.getByRole("button", { name: "Hide the source" }),
+      ).toHaveAttribute("aria-expanded", "true");
     });
 
     it("ties aria-expanded on the trigger to the panel", async () => {
@@ -196,7 +216,7 @@ describe("CodePreview", () => {
         container.querySelector('[data-slot="code-preview-canvas"]'),
       ).toHaveTextContent("Example");
       expect(
-        container.querySelector('[data-slot="code-preview-bar"]'),
+        container.querySelector('[data-slot="code-preview-trigger"]'),
       ).not.toBeInTheDocument();
       expect(
         container.querySelector('[data-slot="code-preview-panel"]'),
@@ -207,7 +227,10 @@ describe("CodePreview", () => {
     it("treats empty code as no code", () => {
       const { container } = render(<CodePreview code="">x</CodePreview>);
       expect(
-        container.querySelector('[data-slot="code-preview-bar"]'),
+        container.querySelector('[data-slot="code-preview-trigger"]'),
+      ).not.toBeInTheDocument();
+      expect(
+        container.querySelector('[data-slot="code-preview-panel"]'),
       ).not.toBeInTheDocument();
     });
 
@@ -919,10 +942,8 @@ describe("CodePreview", () => {
       const { container } = render(
         <CodePreviewRoot>
           <CodePreviewCanvas>Example</CodePreviewCanvas>
-          <CodePreviewBar>
-            <CodePreviewTrigger showLabel="Open" hideLabel="Close" />
-          </CodePreviewBar>
           <CodePreviewPanel>Panel content</CodePreviewPanel>
+          <CodePreviewTrigger showLabel="Open" hideLabel="Close" />
         </CodePreviewRoot>,
       );
       expect(
@@ -959,19 +980,18 @@ describe("CodePreview", () => {
       ).toHaveLength(2);
     });
 
-    it("keeps a caller's layout props on the canvas and bar", () => {
+    it("keeps a caller's layout props on the canvas", () => {
       const { container } = render(
         <CollapsibleRoot>
           <CodePreviewCanvas ax="start" p={1} />
-          <CodePreviewBar px={8} />
         </CollapsibleRoot>,
       );
-      expect(
-        container.querySelector('[data-slot="code-preview-canvas"]'),
-      ).toHaveAttribute("data-ui-p", "1");
-      expect(
-        container.querySelector('[data-slot="code-preview-bar"]'),
-      ).toHaveAttribute("data-ui-px", "8");
+      const canvas = container.querySelector(
+        '[data-slot="code-preview-canvas"]',
+      );
+      expect(canvas).toHaveAttribute("data-ui-p", "1");
+      // Stack writes its `ax` as align-items, under `data-ui-ay`.
+      expect(canvas).toHaveAttribute("data-ui-ay", "start");
     });
   });
 });

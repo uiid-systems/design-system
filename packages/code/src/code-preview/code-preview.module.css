@@ -35,11 +35,14 @@
    defaults live here, and each steps aside once the caller sets the prop it
    stands for, whatever the cascade order. Stack writes its `ax` as
    `data-ui-ay` (align-items) and its `ay` as `data-ui-ax` (justify-content). */
+/* Plain `center` first, so an engine that drops `safe` still centres. */
 :where(.code-preview-canvas):not([data-ui-ay]) {
+  align-items: center;
   align-items: safe center;
 }
 
 :where(.code-preview-canvas):not([data-ui-ax]) {
+  justify-content: center;
   justify-content: safe center;
 }
 
@@ -80,9 +83,19 @@
   }
 }
 
-/* No longer rendered by CodePreview; kept for the deprecated part. */
-.code-preview-bar {
-  background-color: var(--shade-surface);
+/* "Show code" and "Hide code" overlap in one cell, as wide as the wider, each
+   centred in it. The hidden one is out of sight and out of the name. */
+.code-preview-trigger-labels {
+  display: inline-grid;
+  justify-items: center;
+
+  & > * {
+    grid-area: 1 / 1;
+  }
+}
+
+:where(.code-preview-trigger-labels > *)[aria-hidden="true"] {
+  visibility: hidden;
 }
 
 /* The panel carries CodeBlock's frame class for its floating buttons, but the

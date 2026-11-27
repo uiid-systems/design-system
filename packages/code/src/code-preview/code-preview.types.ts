@@ -4,7 +4,7 @@ import type {
   CollapsibleRootProps,
   CollapsibleTriggerProps,
 } from "@uiid/interactive";
-import type { GroupProps, StackProps } from "@uiid/layout";
+import type { StackProps } from "@uiid/layout";
 import type { WithStringClassName } from "@uiid/utils";
 
 import type {
@@ -14,21 +14,13 @@ import type {
 import type { CodeLanguage } from "../highlighter/highlighter.types";
 
 /**
- * The frame around the canvas, the bar and the code: a `CollapsibleRoot` that
- * opens and closes the panel.
+ * The frame around the canvas, the code and the footer: a `CollapsibleRoot`
+ * that opens and closes the panel.
  */
 export type CodePreviewRootProps = WithStringClassName<CollapsibleRootProps>;
 
 /** The area that holds the live example. */
 export type CodePreviewCanvasProps = StackProps;
-
-/**
- * A row on the theme's surface.
- * @deprecated CodePreview no longer renders a bar: the trigger is the footer
- * and the copy button floats over the code. Kept until the owner decides
- * whether to remove it.
- */
-export type CodePreviewBarProps = GroupProps;
 
 export type CodePreviewTriggerProps = WithStringClassName<
   Omit<CollapsibleTriggerProps, "children" | "render">

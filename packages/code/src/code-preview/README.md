@@ -26,7 +26,7 @@ The footer is CodeBlock's expand toggle, the "Show more" strip a CodeBlock with 
 
 The frame sizes to fit its widest zone, the code included, and never grows past its parent. An example wider than the frame scrolls inside the canvas, and a long line scrolls inside the code, so neither widens the frame. Inside a parent that sizes to fit, such as a `Card`, the frame stops at the width the parent has.
 
-The canvas is at least 7.5rem tall, padding included, and grows with a taller example. The example is centred on both axes with `safe center`: one wider or taller than the canvas starts at the canvas's start edge instead, so scrolling reaches all of it. Layout props reach the canvas through `CanvasProps` and replace these defaults: `CanvasProps={{ ax: "start", p: 4, minh: 80 }}` aligns, pads and sets a minimum height in pixels.
+The canvas is at least 7.5rem tall, padding included, and grows with a taller example. The example is centred on both axes with `safe center`: one wider or taller than the canvas starts at the canvas's start edge instead, so scrolling reaches all of it. Layout props reach the canvas through `CanvasProps`: `ax` and `ay` replace the centring, and `p` replaces the padding. The minimum height is replaced by `minh` only, in pixels: an `h` smaller than 7.5rem on its own does not take the canvas below the minimum. `CanvasProps={{ ax: "start", p: 4, minh: 80 }}` aligns to the start, pads and lowers the minimum to 80px.
 
 ## Highlighting
 
@@ -84,7 +84,5 @@ const { html } = useHighlight(source, "tsx");
 ```
 
 `useHighlight` here highlights on mount. CodePreview waits for the first open instead.
-
-`CodePreviewBar` is deprecated: CodePreview no longer renders a bar, since the footer is the trigger and the copy button floats over the code.
 
 The canvas and the panel are sibling parts under one root, so a different arrangement of the same parts can be added later.
