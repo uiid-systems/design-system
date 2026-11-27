@@ -105,9 +105,11 @@ describe("ContextMenu parts", () => {
     const area = screen.getByTestId("area");
     area.focus();
     fireEvent.contextMenu(area);
-    expect(
-      await screen.findByRole("menu", { name: "Project actions" }),
-    ).toBeInTheDocument();
+    const menu = await screen.findByRole("menu", { name: "Project actions" });
+    // Focus leaves the card for the menu, so the return below is real.
+    await waitFor(() =>
+      expect(menu.contains(document.activeElement)).toBe(true),
+    );
 
     await user.keyboard("{Escape}");
     await waitFor(() =>

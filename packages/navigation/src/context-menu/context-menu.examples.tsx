@@ -6,6 +6,7 @@ import { CopyIcon } from "@uiid/icons/copy";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { PencilIcon } from "@uiid/icons/pencil";
 import { Trash2Icon } from "@uiid/icons/trash-2";
+import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 
 import { Menu } from "../menu/menu";
@@ -48,56 +49,59 @@ const REPORT_ACTIONS: MenuItemType[] = [
    the portal, popup, items and submenu are Menu's parts.
 
    The card takes `tabIndex={0}`, so a keyboard user can focus it and open the
-   menu with Shift+F10 or the Menu key. The popup is named by `aria-label`,
-   since a context menu has no trigger button to name it. The same actions sit
-   behind the card's own Menu button too. */
+   menu from the keyboard where the platform has a key for it. The popup is
+   named by `aria-label`, since a context menu has no trigger button to name
+   it. The same actions sit behind a Menu button beside the card, outside the
+   trigger and the root, so a right-click in that dropdown stays its own. */
 export const Composed = () => (
-  <ContextMenuRoot>
-    <ContextMenuTrigger>
-      <Card
-        tabIndex={0}
-        title="Quarterly report"
-        description="Right-click the card, or focus it and press Shift+F10."
-        action={
-          <Menu
-            align="end"
-            trigger={
-              <Button variant="ghost" shape="square" tooltip="Report actions">
-                <EllipsisVerticalIcon />
-              </Button>
-            }
-            items={REPORT_ACTIONS}
-          />
-        }
-      />
-    </ContextMenuTrigger>
-    <MenuPortal>
-      <MenuBackdrop />
-      <ContextMenuPositioner>
-        <MenuPopup aria-label="Report actions">
-          <MenuItem label="Rename" icon={PencilIcon} />
-          <MenuItem label="Duplicate" icon={CopyIcon} />
-          <SubmenuRoot>
-            <SubmenuTrigger label="Move to" />
-            <MenuPortal>
-              <MenuPositioner>
-                <MenuPopup>
-                  <MenuItem label="Inbox" />
-                  <MenuItem label="Archive" />
-                </MenuPopup>
-              </MenuPositioner>
-            </MenuPortal>
-          </SubmenuRoot>
-          <MenuSeparator />
-          <MenuItem label="Delete" icon={Trash2Icon} />
-        </MenuPopup>
-      </ContextMenuPositioner>
-    </MenuPortal>
-  </ContextMenuRoot>
+  <Group gap={2} ay="start">
+    <ContextMenuRoot>
+      <ContextMenuTrigger>
+        <Card
+          tabIndex={0}
+          title="Quarterly report"
+          description="Right-click, or use the actions button."
+        />
+      </ContextMenuTrigger>
+      <MenuPortal>
+        <MenuBackdrop />
+        <ContextMenuPositioner>
+          <MenuPopup aria-label="Report actions">
+            <MenuItem label="Rename" icon={PencilIcon} />
+            <MenuItem label="Duplicate" icon={CopyIcon} />
+            <SubmenuRoot>
+              <SubmenuTrigger label="Move to" />
+              <MenuPortal>
+                <MenuPositioner>
+                  <MenuPopup>
+                    <MenuItem label="Inbox" />
+                    <MenuItem label="Archive" />
+                  </MenuPopup>
+                </MenuPositioner>
+              </MenuPortal>
+            </SubmenuRoot>
+            <MenuSeparator />
+            <MenuItem label="Delete" icon={Trash2Icon} />
+          </MenuPopup>
+        </ContextMenuPositioner>
+      </MenuPortal>
+    </ContextMenuRoot>
+    <Menu
+      align="end"
+      trigger={
+        <Button variant="ghost" shape="square" tooltip="Report actions">
+          <EllipsisVerticalIcon />
+        </Button>
+      }
+      items={REPORT_ACTIONS}
+    />
+  </Group>
 );
 
 /* With `render`, the card is the trigger element itself rather than a child
-   of Base UI's `<div>`, so `tabIndex` goes on the rendered card. */
+   of Base UI's `<div>`, so `tabIndex` goes on the rendered card. This example
+   shows only `render`: in real use, pair the area with a visible control for
+   the same actions, as `Composed` does. */
 export const RenderedTrigger = () => (
   <ContextMenuRoot>
     <ContextMenuTrigger
@@ -105,7 +109,7 @@ export const RenderedTrigger = () => (
         <Card
           tabIndex={0}
           title="Shared folder"
-          description="Right-click me, or focus me and press Shift+F10."
+          description="Right-click me."
         />
       }
     />
