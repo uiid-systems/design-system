@@ -1,9 +1,3 @@
-import {
-  COMPONENTS_SITEMAP,
-  type SitemapGroup,
-  type SitemapItem,
-} from "@/sitemap";
-
 /** The sidebar's element id, for the toggle's `aria-controls`. */
 export const SIDEBAR_ID = "sidebar";
 /** Set to `"closed"` on `<html>` while the sidebar is closed. CSS reads it. */
@@ -20,13 +14,3 @@ export const SIDEBAR_GAP = 3;
 export const SIDEBAR_LIST_ITEM_SPACING = 1;
 /** How far a group's items sit in from its label, in spacing units. */
 export const SIDEBAR_GROUP_INDENT = 2;
-
-/** The sidebar's groups. The sitemap is one level deep: categories of pages. */
-export const SIDEBAR_GROUPS = COMPONENTS_SITEMAP.filter(
-  (entry): entry is SitemapGroup => "category" in entry,
-).map((group) => ({
-  id: group.category,
-  items: group.items.filter(
-    (entry): entry is SitemapItem => !("category" in entry),
-  ),
-}));

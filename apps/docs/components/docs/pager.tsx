@@ -6,54 +6,49 @@ import { ArrowRightIcon } from "@uiid/icons/arrow-right";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { COMPONENTS_SITEMAP } from "@/sitemap";
-import type { SitemapEntry, SitemapItem } from "@/sitemap";
+import { isNavGroup, listNavItems } from "@/lib/nav";
+import { NAV } from "@/nav";
 
-type PagerEntry = SitemapItem & { category?: string };
+/**
+ * The pages the pager steps through: every item in a group, in nav order.
+ * Top-level items such as Home and Changelog are not component docs, so they
+ * get no pager and are not anyone's previous or next page.
+ */
+const PAGES = listNavItems(NAV.filter(isNavGroup));
 
-const flatten = (entries: SitemapEntry[], category?: string): PagerEntry[] =>
-  entries.flatMap((entry) =>
-    "category" in entry
-      ? flatten(entry.items, entry.category)
-      : [{ ...entry, category }],
-  );
-
-/** Previous/next component links in sitemap order, shown on doc pages. */
+/** Previous/next component links in nav order, shown on doc pages. */
 export const Pager = () => {
   const pathname = usePathname();
-  const pages = flatten(COMPONENTS_SITEMAP);
-  const index = pages.findIndex((page) => page.value === pathname);
+  const index = PAGES.findIndex((page) => page.href === pathname);
   if (index === -1) return null;
 
-  const prev = pages[index - 1];
-  const next = pages[index + 1];
+  const prev = PAGES[index - 1];
+  const next = PAGES[index + 1];
 
   return (
     <Group data-slot="pager" gap={4} evenly w="full" pb={32} pt={8} bt={1}>
       {prev ? (
         <Card
-          render={<Link href={prev.value} />}
+          render={<Link href={prev.href} />}
           title={
             <Group render={<span />} gap={2} ay="center">
               <ArrowLeftIcon size={16} />
               {prev.label}
             </Group>
           }
-          // description={prev.category}
         />
       ) : (
         <Box aria-hidden />
       )}
       {next ? (
         <Card
-          render={<Link href={next.value} />}
+          render={<Link href={next.href} />}
           title={
             <Group render={<span />} gap={2} ax="end" ay="center" w="full">
               {next.label}
               <ArrowRightIcon size={16} />
             </Group>
           }
-          // description={next.category}
         />
       ) : (
         <Box aria-hidden />
