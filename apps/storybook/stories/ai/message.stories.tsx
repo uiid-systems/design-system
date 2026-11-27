@@ -40,6 +40,10 @@ export const Streaming: Story = {
   render: () => <Examples.Streaming />,
 };
 
+export const WithCode: Story = {
+  render: () => <Examples.WithCode />,
+};
+
 export const WithActions: Story = {
   render: () => <Examples.WithActions />,
 };
