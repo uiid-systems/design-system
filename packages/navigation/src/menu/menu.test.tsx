@@ -10,6 +10,8 @@ import { MOCK_ITEMS } from "./menu.mocks";
 import type { MenuItemType, MenuProps } from "./menu.types";
 import { renderMenuItems } from "./render-menu-items";
 import {
+  MenuGroup,
+  MenuGroupLabel,
   MenuItem,
   MenuLinkItem,
   MenuPopup,
@@ -1817,6 +1819,79 @@ describe("Menu slot precedence", () => {
       expect(icon).toHaveClass("lucide-pencil");
       expect(icon).not.toHaveClass("lucide-star");
     }
+  });
+});
+
+describe("Menu groups", () => {
+  const renderGroups = () =>
+    render(
+      <MenuRoot open>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuGroup>
+                <MenuGroupLabel>Edit</MenuGroupLabel>
+                <MenuItem label="Cut" />
+                <MenuItem label="Copy" />
+              </MenuGroup>
+              <MenuGroup>
+                <MenuGroupLabel>View</MenuGroupLabel>
+                <MenuItem label="Zoom in" />
+              </MenuGroup>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+  it("renders each MenuGroup as a group named by its MenuGroupLabel", () => {
+    renderGroups();
+
+    const edit = screen.getByRole("group", { name: "Edit" });
+    const view = screen.getByRole("group", { name: "View" });
+
+    expect(edit).toHaveAttribute("data-slot", "menu-group");
+    expect(edit).toContainElement(
+      screen.getByRole("menuitem", { name: "Copy" }),
+    );
+    expect(view).toContainElement(
+      screen.getByRole("menuitem", { name: "Zoom in" }),
+    );
+  });
+
+  it("marks the label with its own slot, outside the group's items", () => {
+    renderGroups();
+
+    const label = screen.getByText("Edit");
+    expect(label).toHaveAttribute("data-slot", "menu-group-label");
+    expect(label).not.toHaveAttribute("role", "menuitem");
+    expect(screen.getAllByRole("menuitem")).toHaveLength(3);
+  });
+
+  it("forwards Base UI's props to the group and its label", () => {
+    render(
+      <MenuRoot open>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuGroup data-testid="group" className="custom-group">
+                <MenuGroupLabel id="label-id" className="custom-label">
+                  Edit
+                </MenuGroupLabel>
+                <MenuItem label="Cut" />
+              </MenuGroup>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+    const group = screen.getByTestId("group");
+    expect(group).toHaveClass("custom-group");
+    expect(group).toHaveAttribute("aria-labelledby", "label-id");
+    expect(screen.getByText("Edit")).toHaveClass("custom-label");
   });
 });
 
