@@ -26,6 +26,8 @@ import {
   MenuPopup,
   MenuPortal,
   MenuPositioner,
+  MenuRadioGroup,
+  MenuRadioItem,
   MenuRoot,
   MenuTrigger,
   SubmenuRoot,
@@ -336,6 +338,121 @@ export const ViewToggles = () => {
         {COLUMNS.filter((column) => shown.includes(column)).map(
           (column) => `, ${column}`,
         )}
+      </Text>
+    </Stack>
+  );
+};
+
+const SORT_ORDERS = [
+  { value: "name", label: "Name", description: "A to Z" },
+  { value: "updated", label: "Last updated", description: "Newest first" },
+  { value: "size", label: "Size", description: "Largest first" },
+] as const;
+
+type SortOrder = (typeof SORT_ORDERS)[number]["value"];
+
+const sortLabel = (value: SortOrder) =>
+  SORT_ORDERS.find((order) => order.value === value)?.label;
+
+/*
+ * `MenuRadioGroup` holds a one-of-many choice, here the sort order. Choosing a
+ * row checks it and unchecks the rest; the menu stays open, as in Base UI,
+ * unless a row sets `closeOnClick`.
+ */
+export const SortPicker = () => {
+  const [sort, setSort] = useState<SortOrder>("updated");
+
+  return (
+    <Stack gap={3} ax="start">
+      <MenuRoot>
+        <MenuTrigger>
+          <Button variant="subtle">Sort by</Button>
+        </MenuTrigger>
+        <MenuPortal>
+          <MenuBackdrop />
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuRadioGroup
+                value={sort}
+                onValueChange={(value: SortOrder) => setSort(value)}
+              >
+                {SORT_ORDERS.map((order) => (
+                  <MenuRadioItem
+                    key={order.value}
+                    value={order.value}
+                    label={order.label}
+                    description={order.description}
+                  />
+                ))}
+              </MenuRadioGroup>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>
+      <Text size={-1} emphasis="muted" role="status">
+        Sorted by {sortLabel(sort)}
+      </Text>
+    </Stack>
+  );
+};
+
+/*
+ * Toggles and a one-of-many choice in one menu, each under its own
+ * `MenuGroupLabel`. The checkbox and radio rows share one layout, so their
+ * labels and checks line up.
+ */
+export const ViewOptions = () => {
+  const [shown, setShown] = useState<string[]>(["Status"]);
+  const [sort, setSort] = useState<SortOrder>("name");
+
+  return (
+    <Stack gap={3} ax="start">
+      <MenuRoot>
+        <MenuTrigger>
+          <Button variant="subtle">View</Button>
+        </MenuTrigger>
+        <MenuPortal>
+          <MenuBackdrop />
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuGroup>
+                <MenuGroupLabel>Show columns</MenuGroupLabel>
+                {COLUMNS.map((column) => (
+                  <MenuCheckboxItem
+                    key={column}
+                    label={column}
+                    checked={shown.includes(column)}
+                    onCheckedChange={(checked) =>
+                      setShown((current) =>
+                        checked
+                          ? [...current, column]
+                          : current.filter((entry) => entry !== column),
+                      )
+                    }
+                  />
+                ))}
+              </MenuGroup>
+              <MenuGroup>
+                <MenuGroupLabel>Sort by</MenuGroupLabel>
+                <MenuRadioGroup
+                  value={sort}
+                  onValueChange={(value: SortOrder) => setSort(value)}
+                >
+                  {SORT_ORDERS.map((order) => (
+                    <MenuRadioItem
+                      key={order.value}
+                      value={order.value}
+                      label={order.label}
+                    />
+                  ))}
+                </MenuRadioGroup>
+              </MenuGroup>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>
+      <Text size={-1} emphasis="muted" role="status">
+        Sorted by {sortLabel(sort)}
       </Text>
     </Stack>
   );

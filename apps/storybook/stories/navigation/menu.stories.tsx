@@ -98,6 +98,10 @@ export const Groups: Story = { render: () => <Examples.Groups /> };
 
 export const ViewToggles: Story = { render: () => <Examples.ViewToggles /> };
 
+export const SortPicker: Story = { render: () => <Examples.SortPicker /> };
+
+export const ViewOptions: Story = { render: () => <Examples.ViewOptions /> };
+
 /* Open each in turn to compare: the popups and rows should read as one kind. */
 export const BesideSelect: Story = {
   render: () => (
