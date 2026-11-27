@@ -1,5 +1,6 @@
-import { compiler, sanitizer } from "markdown-to-jsx/react";
+import { compiler, RuleType, sanitizer } from "markdown-to-jsx/react";
 import type { MarkdownToJSX } from "markdown-to-jsx/react";
+import { createElement } from "react";
 
 import type { MarkdownOverrides } from "./markdown.types";
 
@@ -21,11 +22,42 @@ const URL_IGNORED = /[\u0000- ]/g;
 const strictSanitizer = (value: string): string | null =>
   sanitizer(value.replace(URL_IGNORED, "")) === null ? null : sanitizer(value);
 
-/** Keeps only the `a` and `img` keys, so an object cast past the type cannot replace other elements. */
+/**
+ * Keeps only the `a` and `img` keys, the element overrides markdown-to-jsx applies, so an object
+ * cast past the type cannot replace other elements. `codeBlock` is a rule, not an element: it goes
+ * through `withCodeBlock` instead.
+ */
 const pickOverrides = ({ a, img }: MarkdownOverrides) => ({
   ...(a && { a }),
   ...(img && { img }),
 });
+
+type RenderRule = MarkdownToJSX.Options["renderRule"];
+
+/**
+ * Renders each code block with `CodeBlock`, then hands every node to `renderRule`, whose `next()`
+ * for a code block returns that element. The element keeps the block's key and type as the text
+ * grows, so an open fence streaming in updates one instance instead of remounting it.
+ */
+const withCodeBlock =
+  (
+    CodeBlock: NonNullable<MarkdownOverrides["codeBlock"]>,
+    renderRule?: RenderRule,
+  ): RenderRule =>
+  (next, node, renderChildren, state) => {
+    const render =
+      node.type === RuleType.codeBlock
+        ? () =>
+            createElement(CodeBlock, {
+              key: state.key,
+              code: node.text,
+              language: node.lang,
+            })
+        : next;
+    return renderRule
+      ? renderRule(render, node, renderChildren, state)
+      : render();
+  };
 
 /**
  * Compiles markdown to React nodes as a flat list of blocks, so `Prose` sees
@@ -35,16 +67,20 @@ const pickOverrides = ({ a, img }: MarkdownOverrides) => ({
 export const compileMarkdown = (
   source: string,
   { streaming, overrides, renderRule }: CompileOptions,
-): ReturnType<typeof compiler> =>
-  compiler(source, {
+): ReturnType<typeof compiler> => {
+  const rule = overrides?.codeBlock
+    ? withCodeBlock(overrides.codeBlock, renderRule)
+    : renderRule;
+  return compiler(source, {
     wrapper: null,
     forceBlock: true,
     disableParsingRawHTML: true,
     optimizeForStreaming: streaming,
     sanitizer: strictSanitizer,
     ...(overrides && { overrides: pickOverrides(overrides) }),
-    ...(renderRule && { renderRule }),
+    ...(rule && { renderRule: rule }),
   });
+};
 
 /** Length of text up to its last complete word, one the whitespace after it has reached. */
 export const completeLength = (text: string) => {
