@@ -19,6 +19,10 @@ recipes/
     files/        the recipe, laid out as it lands in a project
       components/{shell,sidebar,header,main,breadcrumbs}/
       lib/nav.ts
+    templates/    a new project's starter files, written once and then the project's own
+      nav.ts
+      app/{layout.tsx,globals.css,page.tsx}
+      app/guides/{page.tsx,getting-started/page.tsx,next-steps/page.tsx}
 ```
 
 ### `files/`
@@ -27,15 +31,24 @@ Every file under `files/` is part of the recipe, and nothing else is. Paths are 
 
 The files import each other through the `@/` alias, which a Next.js app defines and this package does not. They sit outside `src/` so `pnpm typecheck`, which globs `packages/*/src`, never compiles them here. The recipe is typechecked through the docs copy. Lint and format cover both copies.
 
+### `templates/`
+
+What a new project gets once and then owns: a starter `nav.ts`, an `app/layout.tsx` that wires the shell, an `app/globals.css` that imports only `@uiid/design-system/globals.css`, and a page for every href in the starter `nav.ts`. The starter is a home page and one group, Guides, with a page of its own and two pages in it, so the sidebar, a group and a three-crumb trail all show on first run. Unlike `files/`, templates are not kept in step with anything: the docs app does not use them, and a project edits its copies freely. `recipe.json` lists each template with its destination, relative to the project root; the starter assumes an app with no `src/` directory.
+
+The templates import the recipe through the `@/` alias, as `files/` does, so nothing in this repo typechecks them. Keep them plain, and read each UIID component's `.types.ts` before using it in a starter page.
+
+The starter layout loads Geist through `next/font/google`, as a new Next.js app does. Next downloads the font files when the app builds, so a build that cannot reach Google Fonts fails; visitors' browsers never contact Google.
+
 ## The manifest
 
-`recipe.json` describes a recipe. It does not list files: everything under `files/` is the recipe.
+`recipe.json` describes a recipe. It does not list the recipe's files, because everything under `files/` is the recipe. It does list the templates, each with its destination.
 
 | Field          | Meaning                                                                                                  |
 | -------------- | -------------------------------------------------------------------------------------------------------- |
 | `name`         | The recipe's id, matching its directory name                                                             |
 | `description`  | One line saying what the recipe gives a project                                                          |
 | `dependencies` | The npm packages the files import, with version ranges, beyond the `react` and `next` an app already has |
+| `templates`    | Each path under `templates/`, mapped to its destination relative to the project root                     |
 
 ```json
 {
@@ -45,6 +58,15 @@ The files import each other through the `@/` alias, which a Next.js app defines 
     "@uiid/design-system": "workspace:*",
     "@uiid/icons": "workspace:*",
     "jotai": "^3.0.2"
+  },
+  "templates": {
+    "nav.ts": "nav.ts",
+    "app/layout.tsx": "app/layout.tsx",
+    "app/globals.css": "app/globals.css",
+    "app/page.tsx": "app/page.tsx",
+    "app/guides/page.tsx": "app/guides/page.tsx",
+    "app/guides/getting-started/page.tsx": "app/guides/getting-started/page.tsx",
+    "app/guides/next-steps/page.tsx": "app/guides/next-steps/page.tsx"
   }
 }
 ```

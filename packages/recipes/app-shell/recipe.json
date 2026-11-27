@@ -5,5 +5,14 @@
     "@uiid/design-system": "workspace:*",
     "@uiid/icons": "workspace:*",
     "jotai": "^3.0.2"
+  },
+  "templates": {
+    "nav.ts": "nav.ts",
+    "app/layout.tsx": "app/layout.tsx",
+    "app/globals.css": "app/globals.css",
+    "app/page.tsx": "app/page.tsx",
+    "app/guides/page.tsx": "app/guides/page.tsx",
+    "app/guides/getting-started/page.tsx": "app/guides/getting-started/page.tsx",
+    "app/guides/next-steps/page.tsx": "app/guides/next-steps/page.tsx"
   }
 }
