@@ -25,7 +25,7 @@ Each entry takes a `label` and a `value` (its key, so it must be unique among it
 />
 ```
 
-The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed. Base UI's Root is modal either way, so page scroll is locked and outside pointers are blocked.
+The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed. Base UI's Root is modal by default, so page scroll is locked and outside pointers are blocked whether or not the page is dimmed. A non-modal menu, `RootProps={{ modal: false }}`, blocks nothing and draws no backdrop, whatever `backdrop` is set to.
 
 Menu wraps Base UI's [Menu](https://base-ui.com/react/components/menu) and takes its props unchanged — anything not listed above is forwarded through `RootProps`, `TriggerProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps`, and `SubmenuTriggerProps`, except what Menu sets itself: `PositionerProps` takes no `side` or `align`, and `TriggerProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps` and `SubmenuTriggerProps` take no `children`, since their content comes from `trigger` and `items`. For the same reason `ItemProps` and `SubmenuTriggerProps` take no `label`, `icon` or `description`. `MenuRoot`, `MenuTrigger`, `MenuPortal`, `MenuBackdrop`, `MenuPositioner`, `MenuPopup`, `MenuItem`, `SubmenuRoot`, and `SubmenuTrigger` are exported for menus the simple component can't express.
 

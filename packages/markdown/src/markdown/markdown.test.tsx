@@ -1,4 +1,5 @@
 import { act, render, screen } from "@testing-library/react";
+import { useEffect } from "react";
 import type { ComponentPropsWithoutRef } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -416,6 +417,318 @@ describe("Markdown", () => {
       expect(container.querySelector("[data-override]")).toBeNull();
       expect(container.querySelector("h1")).toHaveTextContent("Title");
       expect(container.querySelector("strong")).toHaveTextContent("bold");
+    });
+  });
+
+  describe("codeBlock override", () => {
+    const Code: NonNullable<MarkdownOverrides["codeBlock"]> = ({
+      code,
+      language,
+    }) => (
+      <div data-override="codeBlock" data-language={language ?? "none"}>
+        {code}
+      </div>
+    );
+    const codeOverrides: MarkdownOverrides = { codeBlock: Code };
+
+    it("renders a fenced block with the component, given its text and language", () => {
+      const seen: unknown[] = [];
+      const Spy: NonNullable<MarkdownOverrides["codeBlock"]> = (props) => {
+        seen.push(props);
+        return <Code {...props} />;
+      };
+      const { container } = render(
+        <Markdown overrides={{ codeBlock: Spy }}>
+          {"Intro\n\n```ts\nconst a = 1;\nconst b = 2;\n```\n\nOutro"}
+        </Markdown>,
+      );
+
+      expect(seen).toEqual([
+        { code: "const a = 1;\nconst b = 2;", language: "ts" },
+      ]);
+      expect(container.querySelector("pre")).toBeNull();
+      const tags = Array.from(container.firstElementChild!.children).map(
+        (el) => el.tagName,
+      );
+      expect(tags).toEqual(["P", "DIV", "P"]);
+    });
+
+    it("takes the language from the first word of the info string", () => {
+      const { container } = render(
+        <Markdown overrides={codeOverrides}>
+          {"```tsx title=app.tsx\n<App />\n```"}
+        </Markdown>,
+      );
+
+      expect(container.querySelector("[data-override]")).toHaveAttribute(
+        "data-language",
+        "tsx",
+      );
+    });
+
+    it("passes no language when the fence has no info string", () => {
+      const seen: unknown[] = [];
+      const Spy: NonNullable<MarkdownOverrides["codeBlock"]> = (props) => {
+        seen.push(props);
+        return null;
+      };
+      render(
+        <Markdown overrides={{ codeBlock: Spy }}>{"```\nplain\n```"}</Markdown>,
+      );
+
+      expect(seen).toEqual([{ code: "plain", language: undefined }]);
+    });
+
+    it("passes raw HTML inside a fence as text", () => {
+      const html = '<img src="x" onerror="alert(1)"><script>alert(1)</script>';
+      const seen: unknown[] = [];
+      const Spy: NonNullable<MarkdownOverrides["codeBlock"]> = (props) => {
+        seen.push(props.code);
+        return <Code {...props} />;
+      };
+      const { container } = render(
+        <Markdown overrides={{ codeBlock: Spy }}>
+          {`\`\`\`html\n${html}\n\`\`\``}
+        </Markdown>,
+      );
+
+      expect(seen).toEqual([html]);
+      expect(container.querySelector("img, script")).toBeNull();
+      expect(container.querySelector("[data-override]")).toHaveTextContent(
+        html,
+      );
+    });
+
+    it("leaves inline code to Prose", () => {
+      const { container } = render(
+        <Markdown overrides={codeOverrides}>{"Run `pnpm build` now"}</Markdown>,
+      );
+
+      expect(container.querySelector("[data-override]")).toBeNull();
+      expect(container.querySelector("p > code")).toHaveTextContent(
+        "pnpm build",
+      );
+    });
+
+    it("renders the same markup as before without it", () => {
+      const markup = (props?: MarkdownOverrides) =>
+        render(
+          <Markdown overrides={props}>
+            {"Intro\n\n```ts\nconst a = 1;\n```"}
+          </Markdown>,
+        ).container.innerHTML;
+
+      const plain = markup();
+      expect(plain).toContain(
+        '<pre><code class="language-ts lang-ts">const a = 1;</code></pre>',
+      );
+      expect(markup(overrides)).toBe(plain);
+    });
+
+    it("keeps one instance while an unfinished fence streams in, from its first line", () => {
+      let mounts = 0;
+      const codes: string[] = [];
+      const Counted: NonNullable<MarkdownOverrides["codeBlock"]> = ({
+        code,
+      }) => {
+        useEffect(() => {
+          mounts++;
+        }, []);
+        codes.push(code);
+        return <pre data-override="codeBlock">{code}</pre>;
+      };
+      const counted: MarkdownOverrides = { codeBlock: Counted };
+
+      const lines = Array.from(
+        { length: 40 },
+        (_, i) => `const value${i} = ${i};`,
+      );
+      const body = lines.join("\n");
+      const prefix = "Here is the code:\n\n```ts\n";
+      const head = `${prefix}${lines[0]}`;
+      // 400 chunks of the body, after the fence and its first line have arrived.
+      const rest = body.slice(lines[0].length);
+      const size = Math.ceil(rest.length / 400);
+      const chunks = Array.from({ length: 400 }, (_, i) =>
+        rest.slice(i * size, (i + 1) * size),
+      );
+
+      let text = head;
+      const { container, rerender } = render(
+        <Markdown streaming overrides={counted}>
+          {text}
+        </Markdown>,
+      );
+      expect(container.querySelector("[data-override]")).toHaveTextContent(
+        lines[0],
+      );
+
+      for (const chunk of chunks) {
+        text += chunk;
+        rerender(
+          <Markdown streaming overrides={counted}>
+            {text}
+          </Markdown>,
+        );
+      }
+      rerender(
+        <Markdown streaming={false} overrides={counted}>
+          {`${text}\n\`\`\`\n`}
+        </Markdown>,
+      );
+
+      expect(mounts).toBe(1);
+      expect(codes.at(-1)).toBe(body);
+      expect(container.querySelector("pre > code")).toBeNull();
+    });
+
+    it("holds back a closing fence's backticks while they stream in", () => {
+      const codes: string[] = [];
+      const Spy: NonNullable<MarkdownOverrides["codeBlock"]> = (props) => {
+        codes.push(props.code);
+        return null;
+      };
+      const code = (text: string, streaming = true) => {
+        codes.length = 0;
+        render(
+          <Markdown streaming={streaming} overrides={{ codeBlock: Spy }}>
+            {text}
+          </Markdown>,
+        ).unmount();
+        return codes.at(-1)?.replace(/\n$/, "");
+      };
+
+      for (const tail of ["\n`", "\n``", "\n```"]) {
+        expect(code(`Intro\n\n\`\`\`ts\nconst a = 1;${tail}`)).toBe(
+          "const a = 1;",
+        );
+      }
+      // In a list item and a quote too, behind their indent and marker.
+      expect(code("- Step\n\n  ```ts\n  const a = 1;\n  ``")).toBe(
+        "const a = 1;",
+      );
+      expect(code("> ```ts\n> const a = 1;\n> `")).toBe("const a = 1;");
+      // A tilde fence, and a run with a space or tab after it.
+      expect(code("~~~ts\nconst a = 1;\n~~")).toBe("const a = 1;");
+      expect(code("```ts\nconst a = 1;\n`` ")).toBe("const a = 1;");
+      expect(code("```ts\nconst a = 1;\n`\t")).toBe("const a = 1;");
+      // A fence whose only line so far is the backticks shows no code yet.
+      expect(code("```ts\n``")).toBe("");
+      // A line that goes on past the backticks is code, as is one the stream
+      // has finished.
+      expect(code("```ts\nconst s = `\nhi\n`;")).toBe("const s = `\nhi\n`;");
+      expect(code("```md\n``", false)).toBe("``");
+    });
+
+    it("leaves a closed block whole when the source ends on a run that matches its last line", () => {
+      const codes: string[] = [];
+      const Spy: NonNullable<MarkdownOverrides["codeBlock"]> = (props) => {
+        codes.push(props.code);
+        return null;
+      };
+      // A closed js block ending in a template literal's closing backtick,
+      // then prose whose last line so far is a lone backtick.
+      const closed = "const s = `\nhi\n`";
+      render(
+        <Markdown streaming overrides={{ codeBlock: Spy }}>
+          {`\`\`\`js\n${closed}\n\`\`\`\n\nThen\n\``}
+        </Markdown>,
+      );
+
+      expect(codes).toEqual([closed]);
+    });
+
+    describe("with reveal", () => {
+      const wait = (ms: number) => {
+        for (let t = 0; t < ms; t += 10) act(() => vi.advanceTimersByTime(10));
+      };
+
+      beforeEach(() => {
+        vi.useFakeTimers({
+          toFake: ["setTimeout", "clearTimeout", "performance"],
+        });
+      });
+
+      afterEach(() => {
+        vi.useRealTimers();
+      });
+
+      it("skips the block, so later words keep their offsets", () => {
+        const text = "Before\n\n```ts\nconst a = 1;\n```\n\nafter ";
+        const offsetOfAfter = (props?: MarkdownOverrides) => {
+          const { container, unmount } = render(
+            <Markdown streaming reveal overrides={props}>
+              {text}
+            </Markdown>,
+          );
+          wait(1000);
+          const after = Array.from(
+            container.querySelectorAll<HTMLElement>("[data-reveal-offset]"),
+          ).find((el) => el.textContent?.trim() === "after");
+          const code = container.querySelector(
+            props ? "[data-override]" : "pre",
+          );
+          const result = {
+            offset: after?.dataset.revealOffset,
+            codeSpans: code?.querySelectorAll("span").length,
+            code: code?.textContent,
+          };
+          unmount();
+          return result;
+        };
+
+        const plain = offsetOfAfter();
+        const custom = offsetOfAfter(codeOverrides);
+        expect(plain.offset).toBeDefined();
+        expect(custom).toEqual({ ...plain, code: "const a = 1;" });
+        expect(custom.codeSpans).toBe(0);
+      });
+
+      it("keeps one instance across a 400-chunk stream", () => {
+        let mounts = 0;
+        const Counted: NonNullable<MarkdownOverrides["codeBlock"]> = ({
+          code,
+        }) => {
+          useEffect(() => {
+            mounts++;
+          }, []);
+          return <pre data-override="codeBlock">{code}</pre>;
+        };
+        const counted: MarkdownOverrides = { codeBlock: Counted };
+
+        const body = Array.from(
+          { length: 40 },
+          (_, i) => `const value${i} = ${i};`,
+        ).join("\n");
+        const source = `Some words first.\n\n\`\`\`ts\n${body}\n\`\`\`\n\nAnd after.`;
+        const size = Math.ceil(source.length / 400);
+
+        const { container, rerender } = render(
+          <Markdown streaming reveal overrides={counted}>
+            {""}
+          </Markdown>,
+        );
+        for (let i = 1; i <= 400; i++) {
+          rerender(
+            <Markdown streaming reveal overrides={counted}>
+              {source.slice(0, i * size)}
+            </Markdown>,
+          );
+          wait(10);
+        }
+        rerender(
+          <Markdown streaming={false} reveal overrides={counted}>
+            {source}
+          </Markdown>,
+        );
+        wait(3000);
+
+        expect(mounts).toBe(1);
+        expect(container.querySelector("[data-override]")).toHaveTextContent(
+          body.split("\n").at(-1)!,
+        );
+        expect(container.querySelector("[data-reveal-offset]")).toBeNull();
+      });
     });
   });
 
