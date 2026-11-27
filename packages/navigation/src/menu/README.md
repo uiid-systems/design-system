@@ -25,6 +25,22 @@ Each entry takes a `label` and a `value` (its key, so it must be unique among it
 />
 ```
 
+An entry's `description` is a second line stacked under its label, on a submenu's trigger too. It is text inside the row, so it joins the row's accessible name: `{ label: "Copy link", description: "Anyone with the link can view" }` is announced as "Copy link Anyone with the link can view".
+
+An entry with an `href` is a link: it renders through `MenuLinkItem`, Base UI's `LinkItem`, as a real `<a role="menuitem">`, so middle-click and open in a new tab work, at any depth. It looks and highlights like any other row. Its `onClick` still runs, after `LinkItemProps.onClick`, and the link still navigates. A link cannot also open a submenu, and Base UI's `LinkItem` takes no `disabled`, so an entry with `href` and `items`, or `href` and `disabled`, is a type error. `LinkItemProps` reaches every link item, at every depth; it takes no `href`, `label`, `icon`, `description` or `children`, which are each entry's own. Base UI's `closeOnClick` defaults to `false` on a link item; pass it through `LinkItemProps` to close the menu as a link is followed.
+
+```tsx
+<Menu
+  trigger="Account"
+  items={[
+    { label: "Settings", value: "settings", href: "/settings" },
+    { label: "Sign out", value: "sign-out", onClick: signOut },
+  ]}
+/>
+```
+
+`MenuLinkItem` takes Base UI's `render`, so a router's link component can draw the row: `<MenuLinkItem render={<Link to="/settings" />} label="Settings" />`.
+
 The page dims behind the open menu; pass `backdrop={false}` to leave it undimmed. Base UI's Root is modal either way, so page scroll is locked and outside pointers are blocked.
 
 Menu wraps Base UI's [Menu](https://base-ui.com/react/components/menu) and takes its props unchanged — anything not listed above is forwarded through `RootProps`, `TriggerProps`, `BackdropProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps`, and `SubmenuTriggerProps`, except what Menu sets itself: `PositionerProps` takes no `side` or `align`, and `TriggerProps`, `PositionerProps`, `PopupProps`, `ItemProps`, `SubmenuRootProps` and `SubmenuTriggerProps` take no `children`, since their content comes from `trigger` and `items`. For the same reason `ItemProps` and `SubmenuTriggerProps` take no `label`, `icon` or `description`. `MenuRoot`, `MenuTrigger`, `MenuPortal`, `MenuBackdrop`, `MenuPositioner`, `MenuPopup`, `MenuItem`, `SubmenuRoot`, and `SubmenuTrigger` are exported for menus the simple component can't express.

@@ -7,9 +7,10 @@ import { describe, it, expect, vi } from "vitest";
 
 import { Menu } from "./menu";
 import { MOCK_ITEMS } from "./menu.mocks";
-import type { MenuProps } from "./menu.types";
+import type { MenuItemType, MenuProps } from "./menu.types";
 import {
   MenuItem,
+  MenuLinkItem,
   MenuPopup,
   MenuPortal,
   MenuPositioner,
@@ -263,6 +264,45 @@ describe("Menu parts", () => {
     expect(screen.getByTestId("custom-row")).toBeInTheDocument();
     expect(item.querySelector("[data-slot='list-item-icon']")).toBeNull();
     expect(item).not.toHaveTextContent("Edit");
+  });
+
+  it("renders a MenuLinkItem as a link row with its icon, label and description", () => {
+    renderParts(
+      <MenuLinkItem
+        href="/settings"
+        label="Settings"
+        description="Account and billing"
+        icon={PencilIcon}
+      />,
+    );
+
+    const link = screen.getByRole("menuitem");
+    expect(link.tagName).toBe("A");
+    expect(link).toHaveAttribute("href", "/settings");
+    expect(link).toHaveAttribute("data-slot", "menu-link-item");
+    expect(link).toHaveClass(styles["link-item"]!);
+    expect(
+      link.querySelector("[data-slot='list-item-icon']"),
+    ).toBeInTheDocument();
+    expect(
+      link.querySelector("[data-slot='list-text-description']"),
+    ).toHaveTextContent("Account and billing");
+  });
+
+  it("renders a MenuLinkItem through a router's link component", () => {
+    const RouterLink = ({
+      to,
+      ...props
+    }: React.ComponentProps<"a"> & { to: string }) => (
+      <a data-router-link="" href={to} {...props} />
+    );
+    renderParts(
+      <MenuLinkItem render={<RouterLink to="/home" />} label="Home" />,
+    );
+
+    const link = screen.getByRole("menuitem", { name: "Home" });
+    expect(link).toHaveAttribute("data-router-link");
+    expect(link).toHaveAttribute("href", "/home");
   });
 
   it("draws a SubmenuTrigger's icon, label and description", () => {
@@ -583,8 +623,8 @@ describe("Menu items", () => {
 
     const threeLevels = (
       onEmail?: () => void,
-      share?: Partial<MenuProps["items"][number]>,
-      email?: Partial<MenuProps["items"][number]>,
+      share?: Pick<MenuProps["items"][number], "disabled">,
+      email?: Pick<MenuProps["items"][number], "disabled">,
     ): MenuProps["items"] => [
       { label: "Edit", value: "edit" },
       {
@@ -706,6 +746,236 @@ describe("Menu items", () => {
       const email = await openThirdLevel(user);
       expect(email).toHaveAttribute("aria-disabled", "true");
     });
+  });
+});
+
+describe("Menu descriptions and links", () => {
+  it("draws an entry's description under its label", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "Copy link",
+            value: "copy",
+            description: "Anyone with the link can view",
+          },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    // The description is text inside the row, so it joins the row's name.
+    const row = screen.getByRole("menuitem", {
+      name: "Copy link Anyone with the link can view",
+    });
+    expect(
+      row.querySelector("[data-slot='list-text-description']"),
+    ).toHaveTextContent("Anyone with the link can view");
+  });
+
+  it("draws a submenu entry's description on its trigger", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "Share",
+            value: "share",
+            description: "Send a copy",
+            items: [{ label: "Email", value: "email" }],
+          },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(
+      document.querySelector(
+        "[data-slot='submenu-trigger'] [data-slot='list-text-description']",
+      ),
+    ).toHaveTextContent("Send a copy");
+  });
+
+  it("renders an href entry as a link menu item", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Edit", value: "edit" },
+          { label: "Settings", value: "settings", href: "/settings" },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    const link = screen.getByRole("menuitem", { name: "Settings" });
+    expect(link.tagName).toBe("A");
+    expect(link).toHaveAttribute("href", "/settings");
+    expect(screen.getByRole("menuitem", { name: "Edit" }).tagName).not.toBe(
+      "A",
+    );
+  });
+
+  it("renders an href entry inside a submenu as a link menu item", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "More",
+            value: "more",
+            items: [{ label: "Docs", value: "docs", href: "/docs" }],
+          },
+        ]}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByText("More"));
+
+    const link = await screen.findByRole("menuitem", { name: "Docs" });
+    expect(link.tagName).toBe("A");
+    expect(link).toHaveAttribute("href", "/docs");
+  });
+
+  it("calls LinkItemProps.onClick, then the link entry's own onClick", async () => {
+    const user = userEvent.setup();
+    const calls: string[] = [];
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          {
+            label: "Settings",
+            value: "settings",
+            // A fragment link keeps happy-dom from navigating away.
+            href: "#settings",
+            onClick: () => calls.push("entry"),
+          },
+        ]}
+        LinkItemProps={{ onClick: () => calls.push("slot") }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByRole("menuitem", { name: "Settings" }));
+
+    expect(calls).toEqual(["slot", "entry"]);
+  });
+
+  it("reaches every link item with LinkItemProps", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[
+          { label: "Docs", value: "docs", href: "/docs" },
+          {
+            label: "More",
+            value: "more",
+            items: [{ label: "Blog", value: "blog", href: "/blog" }],
+          },
+        ]}
+        LinkItemProps={{ target: "_blank", className: "from-slot" }}
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(screen.getByText("More"));
+
+    for (const name of ["Docs", "Blog"]) {
+      const link = await screen.findByRole("menuitem", { name });
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveClass("from-slot", styles["link-item"]!);
+    }
+  });
+
+  it("keeps each link entry's own href and content when a slot passes its own", async () => {
+    const user = userEvent.setup();
+    render(
+      <Menu
+        trigger="Open"
+        items={[{ label: "Docs", value: "docs", href: "/docs" }]}
+        LinkItemProps={
+          {
+            href: "/slot",
+            label: "Slot label",
+            description: "Slot description",
+            children: "Slot content",
+          } as unknown as MenuProps["LinkItemProps"]
+        }
+      />,
+    );
+
+    await user.click(screen.getByText("Open"));
+
+    expect(screen.getByRole("menuitem", { name: "Docs" })).toHaveAttribute(
+      "href",
+      "/docs",
+    );
+    expect(screen.queryByText("Slot label")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot description")).not.toBeInTheDocument();
+    expect(screen.queryByText("Slot content")).not.toBeInTheDocument();
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("rejects an entry with both href and items", () => {
+    const items: MenuItemType[] = [
+      // @ts-expect-error -- a link cannot also open a submenu
+      { label: "Docs", value: "docs", href: "/docs", items: [] },
+    ];
+    void items;
+  });
+
+  it("rejects the keys each link entry owns in LinkItemProps", () => {
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each link entry's `href` is its own
+        LinkItemProps={{ href: "/other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `label` is its content
+        LinkItemProps={{ label: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `icon` is its content
+        LinkItemProps={{ icon: StarIcon }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- a row's second line belongs to its entry
+        LinkItemProps={{ description: "Other" }}
+      />
+    );
+    void (
+      <Menu
+        trigger="Open"
+        items={MOCK_ITEMS}
+        // @ts-expect-error -- each entry's `label` and `icon` are its content
+        LinkItemProps={{ children: "Other" }}
+      />
+    );
   });
 });
 

@@ -5,6 +5,7 @@ export * from "./menu-backdrop";
 export * from "./menu-positioner";
 export * from "./menu-popup";
 export * from "./menu-item";
+export * from "./menu-link-item";
 
 export * from "./submenu-root";
 export * from "./submenu-trigger";
