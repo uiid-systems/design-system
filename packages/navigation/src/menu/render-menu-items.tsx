@@ -1,9 +1,11 @@
 import type { MenuItemType, MenuProps } from "./menu.types";
 import {
   MenuItem,
+  MenuLinkItem,
   MenuPopup,
   MenuPortal,
   MenuPositioner,
+  MenuSeparator,
   SubmenuRoot,
   SubmenuTrigger,
 } from "./subcomponents";
@@ -15,6 +17,8 @@ export type MenuItemSlots = Pick<
   | "ItemProps"
   | "SubmenuRootProps"
   | "SubmenuTriggerProps"
+  | "LinkItemProps"
+  | "SeparatorProps"
   | "PortalProps"
   | "SubmenuPositionerProps"
   | "SubmenuPopupProps"
@@ -22,14 +26,23 @@ export type MenuItemSlots = Pick<
 
 /*
  * Draws one popup's entries: the root popup's and, by calling itself, every
- * submenu's. An entry with `items` becomes a submenu, at any depth.
+ * submenu's. An entry with `items` becomes a submenu, and an entry with
+ * `href` a link, at any depth.
  *
- * Each entry's `label` and `icon` are its row's content. They are set after
- * the slot spread, and `description` and `children` are cleared, so an
+ * Each entry's `label`, `icon`, `description` and `href` are its row's own.
+ * They are set after the slot spread, and `children` is cleared, so an
  * untyped slot cannot replace them or give every row one shared line. An
  * entry's `disabled` wins over the slot's, and its `onClick` runs after
- * `ItemProps.onClick`. Rows are keyed by `value`, so it must be unique among
- * siblings.
+ * `ItemProps.onClick` or `LinkItemProps.onClick`. Rows are keyed by `value`,
+ * so it must be unique among siblings.
+ *
+ * A link entry closes the menu when clicked, as an action row does, so a
+ * router or hash link does not leave the modal menu open over the new view.
+ * Set before the slot spread, so `LinkItemProps.closeOnClick` can opt out.
+ *
+ * A separator entry, `{ type: "separator" }`, draws a `MenuSeparator` with
+ * `SeparatorProps`. It has no `value`, so it is keyed by its index, and its
+ * `children` are cleared like a row's.
  *
  * Internal: not exported from the package.
  */
@@ -37,9 +50,25 @@ export const renderMenuItems = (
   items: MenuItemType[],
   slots: MenuItemSlots,
 ): React.ReactNode => {
-  const { ItemProps, SubmenuRootProps, SubmenuTriggerProps } = slots;
+  const {
+    ItemProps,
+    SubmenuRootProps,
+    SubmenuTriggerProps,
+    LinkItemProps,
+    SeparatorProps,
+  } = slots;
 
-  return items.map((item) => {
+  return items.map((item, index) => {
+    if (item.type === "separator") {
+      return (
+        <MenuSeparator
+          key={`separator-${index}`}
+          {...SeparatorProps}
+          children={undefined}
+        />
+      );
+    }
+
     if (item.items) {
       return (
         <SubmenuRoot key={item.value} {...SubmenuRootProps}>
@@ -47,7 +76,7 @@ export const renderMenuItems = (
             {...SubmenuTriggerProps}
             label={item.label}
             icon={item.icon}
-            description={undefined}
+            description={item.description}
             children={undefined}
             disabled={item.disabled ?? SubmenuTriggerProps?.disabled}
           />
@@ -62,13 +91,32 @@ export const renderMenuItems = (
       );
     }
 
+    if (item.href !== undefined) {
+      return (
+        <MenuLinkItem
+          key={item.value}
+          closeOnClick
+          {...LinkItemProps}
+          href={item.href}
+          label={item.label}
+          icon={item.icon}
+          description={item.description}
+          children={undefined}
+          onClick={(event) => {
+            LinkItemProps?.onClick?.(event);
+            item.onClick?.(event);
+          }}
+        />
+      );
+    }
+
     return (
       <MenuItem
         key={item.value}
         {...ItemProps}
         label={item.label}
         icon={item.icon}
-        description={undefined}
+        description={item.description}
         children={undefined}
         disabled={item.disabled ?? ItemProps?.disabled}
         onClick={(event) => {
