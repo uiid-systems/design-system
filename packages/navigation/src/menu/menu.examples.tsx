@@ -98,6 +98,27 @@ export const Actions = () => {
   );
 };
 
+/*
+ * `open` and `onOpenChange` through `RootProps` control the open state. The
+ * trigger keeps a stable label; the state is shown beside it.
+ */
+export const Controlled = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Stack gap={3} ax="start">
+      <Menu
+        trigger={<Button>Actions</Button>}
+        items={ITEMS}
+        RootProps={{ open, onOpenChange: (next) => setOpen(next) }}
+      />
+      <Text size={-1} emphasis="muted" role="status">
+        The menu is {open ? "open" : "closed"}
+      </Text>
+    </Stack>
+  );
+};
+
 /* `side` and `align` place the popup against its trigger. */
 export const Placement = () => (
   <Group gap={3}>
