@@ -10,7 +10,8 @@ import {
   SubmenuTrigger,
 } from "./subcomponents";
 
-/** The slot props that reach the rows of every popup, at every depth. */
+/** The slot props that reach every popup's rows and every submenu's portal,
+ * positioner and popup, at every depth. */
 export type MenuItemSlots = Pick<
   MenuProps,
   | "ItemProps"
@@ -18,6 +19,9 @@ export type MenuItemSlots = Pick<
   | "SubmenuTriggerProps"
   | "LinkItemProps"
   | "SeparatorProps"
+  | "PortalProps"
+  | "SubmenuPositionerProps"
+  | "SubmenuPopupProps"
 >;
 
 /*
@@ -76,9 +80,11 @@ export const renderMenuItems = (
             children={undefined}
             disabled={item.disabled ?? SubmenuTriggerProps?.disabled}
           />
-          <MenuPortal>
-            <MenuPositioner>
-              <MenuPopup>{renderMenuItems(item.items, slots)}</MenuPopup>
+          <MenuPortal {...slots.PortalProps}>
+            <MenuPositioner {...slots.SubmenuPositionerProps}>
+              <MenuPopup {...slots.SubmenuPopupProps}>
+                {renderMenuItems(item.items, slots)}
+              </MenuPopup>
             </MenuPositioner>
           </MenuPortal>
         </SubmenuRoot>

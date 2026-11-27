@@ -30,11 +30,14 @@ export const Menu = ({
   SubmenuTriggerProps,
   LinkItemProps,
   SeparatorProps,
+  PortalProps,
+  SubmenuPositionerProps,
+  SubmenuPopupProps,
 }: MenuProps) => {
   return (
     <MenuRoot {...RootProps}>
       <MenuTrigger {...TriggerProps}>{trigger}</MenuTrigger>
-      <MenuPortal>
+      <MenuPortal {...PortalProps}>
         {backdrop && RootProps?.modal !== false && (
           <MenuBackdrop {...BackdropProps} />
         )}
@@ -46,6 +49,9 @@ export const Menu = ({
               SubmenuTriggerProps,
               LinkItemProps,
               SeparatorProps,
+              PortalProps,
+              SubmenuPositionerProps,
+              SubmenuPopupProps,
             })}
           </MenuPopup>
         </MenuPositioner>
