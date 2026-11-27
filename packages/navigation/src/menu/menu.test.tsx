@@ -17,6 +17,9 @@ import {
   MenuPopup,
   MenuPortal,
   MenuPositioner,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuRadioItemIndicator,
   MenuRoot,
   MenuTrigger,
   SubmenuRoot,
@@ -1437,6 +1440,387 @@ describe("Menu checkbox items", () => {
       (
         // @ts-expect-error -- a state function has no `cx` to call it with
         <MenuCheckboxItemIndicator className={() => "caller"} />
+      )
+    );
+  });
+});
+
+describe("Menu radio items", () => {
+  const renderChoices = (children: React.ReactNode) =>
+    render(
+      <MenuRoot open>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>{children}</MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+  const indicatorOf = (row: HTMLElement) =>
+    row.querySelector<HTMLElement>("[data-slot='menu-radio-item-indicator']");
+
+  const radio = (name: string) =>
+    screen.getByRole("menuitemradio", { name: new RegExp(name) });
+
+  it("renders a menuitemradio row with its label, description and icon", () => {
+    renderChoices(
+      <MenuRadioGroup>
+        <MenuRadioItem
+          value="name"
+          label="Name"
+          description="A to Z"
+          icon={StarIcon}
+        />
+      </MenuRadioGroup>,
+    );
+
+    const row = radio("Name");
+    expect(row).toHaveAttribute("data-slot", "menu-radio-item");
+    expect(row).toHaveClass(styles["radio-item"]);
+    expect(row.querySelector("[data-slot='list-item']")).toHaveTextContent(
+      "Name",
+    );
+    expect(
+      row.querySelector("[data-slot='list-text-description']"),
+    ).toHaveTextContent("A to Z");
+    expect(
+      row.querySelector("[data-slot='list-item-icon']"),
+    ).toBeInTheDocument();
+  });
+
+  it("renders the group as Base UI's radio group", () => {
+    renderChoices(
+      <MenuRadioGroup aria-label="Sort by">
+        <MenuRadioItem value="name" label="Name" />
+      </MenuRadioGroup>,
+    );
+
+    const group = screen.getByRole("group", { name: "Sort by" });
+    expect(group).toHaveAttribute("data-slot", "menu-radio-group");
+    expect(group).toContainElement(radio("Name"));
+  });
+
+  it("checks the chosen row, unchecks its siblings and reports the value", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    renderChoices(
+      <MenuRadioGroup defaultValue="name" onValueChange={onValueChange}>
+        <MenuRadioItem value="name" label="Name" />
+        <MenuRadioItem value="updated" label="Updated" />
+        <MenuRadioItem value="size" label="Size" />
+      </MenuRadioGroup>,
+    );
+
+    expect(radio("Name")).toHaveAttribute("aria-checked", "true");
+    expect(radio("Updated")).toHaveAttribute("aria-checked", "false");
+
+    await user.click(radio("Updated"));
+
+    expect(onValueChange).toHaveBeenCalledTimes(1);
+    expect(onValueChange.mock.calls[0]?.[0]).toBe("updated");
+    expect(radio("Name")).toHaveAttribute("aria-checked", "false");
+    expect(radio("Updated")).toHaveAttribute("aria-checked", "true");
+    expect(radio("Size")).toHaveAttribute("aria-checked", "false");
+  });
+
+  it.each([
+    ["Enter", "{Enter}"],
+    ["Space", " "],
+  ])("chooses from the keyboard with %s", async (_, key) => {
+    const user = userEvent.setup();
+    render(
+      <MenuRoot>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuRadioGroup defaultValue="name">
+                <MenuRadioItem value="name" label="Name" />
+                <MenuRadioItem value="updated" label="Updated" />
+              </MenuRadioGroup>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+    await user.click(screen.getByText("Open"));
+    const row = await screen.findByRole("menuitemradio", { name: "Updated" });
+    await user.keyboard("{ArrowDown}{ArrowDown}");
+    expect(row).toHaveAttribute("data-highlighted");
+
+    await user.keyboard(key);
+
+    expect(row).toHaveAttribute("aria-checked", "true");
+    expect(radio("Name")).toHaveAttribute("aria-checked", "false");
+  });
+
+  it("follows value when controlled", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    const renderControlled = (value: string) => (
+      <MenuRoot open>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuRadioGroup value={value} onValueChange={onValueChange}>
+                <MenuRadioItem value="name" label="Name" />
+                <MenuRadioItem value="updated" label="Updated" />
+              </MenuRadioGroup>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>
+    );
+    const { rerender } = render(renderControlled("name"));
+
+    await user.click(radio("Updated"));
+
+    // The caller has not taken the new value, so the choice stays put.
+    expect(onValueChange.mock.calls[0]?.[0]).toBe("updated");
+    expect(radio("Name")).toHaveAttribute("aria-checked", "true");
+    expect(radio("Updated")).toHaveAttribute("aria-checked", "false");
+
+    rerender(renderControlled("updated"));
+
+    expect(radio("Name")).toHaveAttribute("aria-checked", "false");
+    expect(radio("Updated")).toHaveAttribute("aria-checked", "true");
+  });
+
+  it("keeps the menu open after a choice by default, as Base UI does", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    render(
+      <MenuRoot onOpenChange={onOpenChange}>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuRadioGroup>
+                <MenuRadioItem value="name" label="Name" />
+              </MenuRadioGroup>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+    await user.click(screen.getByText("Open"));
+    const row = await screen.findByRole("menuitemradio", { name: "Name" });
+    await user.click(row);
+
+    expect(row).toHaveAttribute("aria-checked", "true");
+    expect(onOpenChange).not.toHaveBeenCalledWith(false, expect.anything());
+    expect(screen.getByText("Open")).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("closes the menu after a choice with closeOnClick", async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    render(
+      <MenuRoot onOpenChange={onOpenChange}>
+        <MenuTrigger>Open</MenuTrigger>
+        <MenuPortal>
+          <MenuPositioner>
+            <MenuPopup>
+              <MenuRadioGroup>
+                <MenuRadioItem value="name" label="Name" closeOnClick />
+              </MenuRadioGroup>
+            </MenuPopup>
+          </MenuPositioner>
+        </MenuPortal>
+      </MenuRoot>,
+    );
+
+    await user.click(screen.getByText("Open"));
+    await user.click(
+      await screen.findByRole("menuitemradio", { name: "Name" }),
+    );
+
+    expect(onOpenChange).toHaveBeenLastCalledWith(false, expect.anything());
+  });
+
+  it("draws the indicator after the row's content, checked or not", () => {
+    renderChoices(
+      <MenuRadioGroup defaultValue="name">
+        <MenuRadioItem value="name" label="Name" />
+        <MenuRadioItem value="updated" label="Updated" />
+      </MenuRadioGroup>,
+    );
+
+    const checked = radio("Name");
+    const unchecked = radio("Updated");
+
+    for (const row of [checked, unchecked]) {
+      const indicator = indicatorOf(row);
+      expect(indicator).toBeInTheDocument();
+      expect(indicator).toHaveClass(styles["choice-indicator"]);
+      expect(indicator).toHaveAttribute("aria-hidden", "true");
+      expect(row.lastElementChild).toBe(indicator);
+    }
+
+    // An unchecked row keeps its indicator mounted, so it holds the space.
+    expect(indicatorOf(checked)).toHaveAttribute("data-checked");
+    expect(indicatorOf(unchecked)).toHaveAttribute("data-unchecked");
+  });
+
+  it("keeps a checked, disabled row's indicator, dimmed with the row", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    renderChoices(
+      <MenuRadioGroup defaultValue="name" onValueChange={onValueChange}>
+        <MenuRadioItem value="name" label="Name" disabled />
+        <MenuRadioItem value="updated" label="Updated" disabled />
+      </MenuRadioGroup>,
+    );
+
+    const row = radio("Name");
+    const indicator = indicatorOf(row);
+
+    expect(row).toHaveAttribute("data-disabled");
+    expect(row).toHaveAttribute("aria-disabled", "true");
+    expect(indicator).toHaveAttribute("data-checked");
+    expect(indicator).toHaveAttribute("data-disabled");
+
+    await user.click(radio("Updated"));
+
+    expect(onValueChange).not.toHaveBeenCalled();
+    expect(row).toHaveAttribute("aria-checked", "true");
+  });
+
+  it("lets children take over the row, indicator included", () => {
+    renderChoices(
+      <MenuRadioGroup defaultValue="name">
+        <MenuRadioItem value="name" label="Name">
+          <span data-testid="custom-row">Name</span>
+          <MenuRadioItemIndicator data-testid="custom-indicator" />
+        </MenuRadioItem>
+      </MenuRadioGroup>,
+    );
+
+    const row = radio("Name");
+    expect(screen.getByTestId("custom-row")).toBeInTheDocument();
+    expect(row.querySelectorAll("[data-slot='list-text-label']")).toHaveLength(
+      0,
+    );
+    expect(
+      row.querySelectorAll("[data-slot='menu-radio-item-indicator']"),
+    ).toHaveLength(1);
+    expect(screen.getByTestId("custom-indicator")).toHaveAttribute(
+      "data-checked",
+    );
+  });
+
+  /* `ListItem` falls back to the label block for any falsy `children`, so the
+     row's own indicator must be drawn for the same values. */
+  it.each([
+    ["false", false],
+    ["null", null],
+    ["an empty string", ""],
+  ])("keeps the indicator when children are %s", (_, children) => {
+    renderChoices(
+      <MenuRadioGroup defaultValue="name">
+        <MenuRadioItem value="name" label="Name">
+          {children}
+        </MenuRadioItem>
+      </MenuRadioGroup>,
+    );
+
+    const row = radio("Name");
+    expect(
+      row.querySelector("[data-slot='list-text-label']"),
+    ).toHaveTextContent("Name");
+    expect(indicatorOf(row)).toHaveAttribute("data-checked");
+    expect(row.lastElementChild).toBe(indicatorOf(row));
+  });
+
+  it("forwards Base UI's keepMounted to the indicator", () => {
+    renderChoices(
+      <MenuRadioGroup>
+        <MenuRadioItem value="name" label="Name">
+          <span>Name</span>
+          <MenuRadioItemIndicator keepMounted={false} />
+        </MenuRadioItem>
+      </MenuRadioGroup>,
+    );
+
+    // Unchecked and not kept mounted, the indicator is gone.
+    expect(
+      document.querySelector("[data-slot='menu-radio-item-indicator']"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("merges a caller's className on the row and the indicator", () => {
+    renderChoices(
+      <MenuRadioGroup defaultValue="name">
+        <MenuRadioItem value="name" label="Name" className="caller">
+          <span>Name</span>
+          <MenuRadioItemIndicator className="caller-indicator" />
+        </MenuRadioItem>
+      </MenuRadioGroup>,
+    );
+
+    const row = radio("Name");
+    expect(row).toHaveClass("caller", styles["radio-item"]);
+    expect(indicatorOf(row)).toHaveClass(
+      "caller-indicator",
+      styles["choice-indicator"],
+    );
+  });
+
+  it("works inside a MenuGroup and a submenu", async () => {
+    const user = userEvent.setup();
+    renderChoices(
+      <>
+        <MenuGroup>
+          <MenuGroupLabel>Sort by</MenuGroupLabel>
+          <MenuRadioGroup defaultValue="name">
+            <MenuRadioItem value="name" label="Name" />
+          </MenuRadioGroup>
+        </MenuGroup>
+        <SubmenuRoot>
+          <SubmenuTrigger label="More" />
+          <MenuPortal>
+            <MenuPositioner>
+              <MenuPopup>
+                <MenuRadioGroup>
+                  <MenuRadioItem value="size" label="Size" />
+                </MenuRadioGroup>
+              </MenuPopup>
+            </MenuPositioner>
+          </MenuPortal>
+        </SubmenuRoot>
+      </>,
+    );
+
+    expect(screen.getByRole("group", { name: "Sort by" })).toContainElement(
+      radio("Name"),
+    );
+
+    await user.click(screen.getByText("More"));
+    const nested = await screen.findByRole("menuitemradio", { name: "Size" });
+    /* The keyboard, since an opening submenu briefly takes no pointer. */
+    nested.focus();
+    await user.keyboard("{Enter}");
+
+    expect(nested).toHaveAttribute("aria-checked", "true");
+  });
+
+  /* Type-level only: `pnpm typecheck` fails if a directive goes unused. */
+  it("takes a string className only", () => {
+    void (
+      (
+        // @ts-expect-error -- a state function has no `cx` to call it with
+        <MenuRadioItem value="name" label="Name" className={() => "caller"} />
+      )
+    );
+    void (
+      (
+        // @ts-expect-error -- a state function has no `cx` to call it with
+        <MenuRadioItemIndicator className={() => "caller"} />
       )
     );
   });
