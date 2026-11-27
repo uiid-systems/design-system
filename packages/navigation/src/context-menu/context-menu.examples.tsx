@@ -2,9 +2,14 @@
 
 import { Button } from "@uiid/buttons";
 import { Card } from "@uiid/cards";
+import { ArchiveIcon } from "@uiid/icons/archive";
 import { CopyIcon } from "@uiid/icons/copy";
+import { DownloadIcon } from "@uiid/icons/download";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
+import { ExternalLinkIcon } from "@uiid/icons/external-link";
+import { FolderInputIcon } from "@uiid/icons/folder-input";
 import { PencilIcon } from "@uiid/icons/pencil";
+import { Share2Icon } from "@uiid/icons/share-2";
 import { Trash2Icon } from "@uiid/icons/trash-2";
 import { Group } from "@uiid/layout";
 import { Text } from "@uiid/typography";
@@ -21,6 +26,7 @@ import {
   SubmenuRoot,
   SubmenuTrigger,
 } from "../menu/subcomponents";
+import { ContextMenu } from "./context-menu";
 import {
   ContextMenuPositioner,
   ContextMenuRoot,
@@ -43,6 +49,133 @@ const REPORT_ACTIONS: MenuItemType[] = [
   { type: "separator" },
   { label: "Delete", value: "delete", icon: Trash2Icon },
 ];
+
+/* The simple component: the same `items` array Menu takes, and the area that
+   opens it as children. The card takes `tabIndex={0}` so a keyboard can focus
+   it, and the popup is named through `PopupProps`, since a context menu has
+   no trigger button to name it. The same `items` sit behind a Menu button
+   beside the card, outside the ContextMenu, so the actions are not reachable
+   only by right-click. */
+export const OverCard = () => (
+  <Group gap={2} ay="start">
+    <ContextMenu
+      items={REPORT_ACTIONS}
+      PopupProps={{ "aria-label": "Report actions" }}
+    >
+      <Card
+        tabIndex={0}
+        title="Quarterly report"
+        description="Right-click, or use the actions button."
+      />
+    </ContextMenu>
+    <Menu
+      align="end"
+      trigger={
+        <Button variant="ghost" shape="square" tooltip="Report actions">
+          <EllipsisVerticalIcon />
+        </Button>
+      }
+      items={REPORT_ACTIONS}
+    />
+  </Group>
+);
+
+/* Submenus nest to any depth, and descriptions, links and separators render
+   exactly as they do in Menu, because the rows come from the same function. */
+const FILE_ACTIONS: MenuItemType[] = [
+  {
+    label: "Download",
+    value: "download",
+    icon: DownloadIcon,
+    description: "As a PDF",
+  },
+  {
+    label: "Share",
+    value: "share",
+    icon: Share2Icon,
+    items: [
+      { label: "Copy link", value: "copy-link", icon: CopyIcon },
+      {
+        label: "Invite",
+        value: "invite",
+        items: [
+          { label: "Design team", value: "design" },
+          { label: "Engineering", value: "engineering" },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Move to",
+    value: "move",
+    icon: FolderInputIcon,
+    items: [
+      { label: "Inbox", value: "inbox" },
+      { type: "separator" },
+      { label: "Archive", value: "archive", icon: ArchiveIcon },
+    ],
+  },
+  { type: "separator" },
+  {
+    label: "Open in the viewer",
+    value: "viewer",
+    icon: ExternalLinkIcon,
+    href: "#viewer",
+  },
+];
+
+export const WithSubmenus = () => (
+  <Group gap={2} ay="start">
+    <ContextMenu
+      items={FILE_ACTIONS}
+      PopupProps={{ "aria-label": "File actions" }}
+    >
+      <Card
+        tabIndex={0}
+        title="brand-guidelines.pdf"
+        description="Right-click for nested actions."
+      />
+    </ContextMenu>
+    <Menu
+      align="end"
+      trigger={
+        <Button variant="ghost" shape="square" tooltip="File actions">
+          <EllipsisVerticalIcon />
+        </Button>
+      }
+      items={FILE_ACTIONS}
+    />
+  </Group>
+);
+
+/* `backdrop={false}` leaves the page undimmed. The menu is still modal: a
+   context menu always is, so outside pointers stay blocked while it is
+   open. */
+export const WithoutBackdrop = () => (
+  <Group gap={2} ay="start">
+    <ContextMenu
+      items={REPORT_ACTIONS}
+      backdrop={false}
+      PopupProps={{ "aria-label": "Report actions" }}
+    >
+      <Card
+        tabIndex={0}
+        title="Quarterly report"
+        description="Right-click: the page stays undimmed."
+      />
+    </ContextMenu>
+    <Menu
+      align="end"
+      backdrop={false}
+      trigger={
+        <Button variant="ghost" shape="square" tooltip="Report actions">
+          <EllipsisVerticalIcon />
+        </Button>
+      }
+      items={REPORT_ACTIONS}
+    />
+  </Group>
+);
 
 /* Right-click, or long-press on touch, anywhere on the card. The popup opens
    at the pointer. Only the root, trigger and positioner are ContextMenu's own;
