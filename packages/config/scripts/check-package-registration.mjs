@@ -31,9 +31,11 @@ const GENERATED_EXPORTS = new Set([
 const CLEAN_STEP = "node ../config/scripts/clean-build-output.mjs && ";
 const SHARED_TSCONFIG = "../config/tsconfig.package.json";
 
-/* The shared build, test and typecheck config. It is never built or
-   published, so none of the registration steps apply to it. */
-const INTERNAL = new Set(["config"]);
+/* Packages that are not component packages, so none of the registration
+   steps apply to them. config is the shared build, test and typecheck config;
+   recipes holds recipe source that is copied into apps, never imported. Neither
+   is built or published. */
+const INTERNAL = new Set(["config", "recipes"]);
 
 const hasCssModule = (dir) =>
   readdirSync(dir, { withFileTypes: true }).some((entry) =>
