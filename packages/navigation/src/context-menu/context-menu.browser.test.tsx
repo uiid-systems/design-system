@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { page } from "vitest/browser";
 
 import { MenuItem, MenuPopup, MenuPortal } from "../menu/subcomponents";
+import { ContextMenu } from "./context-menu";
 import {
   ContextMenuPositioner,
   ContextMenuRoot,
@@ -123,6 +124,22 @@ describe("ContextMenuTrigger box", () => {
 
     expectSameBox(box("area"), expected);
   });
+
+  it("leaves the box of ContextMenu's children as it is without the menu", () => {
+    const expected = bare();
+
+    render(
+      <Row
+        area={
+          <ContextMenu items={[{ label: "Edit", value: "edit" }]}>
+            <Card title="Project" data-testid="area" />
+          </ContextMenu>
+        }
+      />,
+    );
+
+    expectSameBox(box("area"), expected);
+  });
 });
 
 /*
@@ -213,6 +230,37 @@ describe("ContextMenu placement", () => {
   it("opens the popup at the pointer", async () => {
     await page.viewport(1280, 800);
     renderMenu();
+
+    const area = document
+      .querySelector('[data-testid="area"]')!
+      .getBoundingClientRect();
+    const x = Math.round(area.left + 40);
+    const y = Math.round(area.top + 40);
+    rightClick(x, y);
+
+    const popup = await settled();
+    expect(Math.abs(popup.top - (y + SIDE_OFFSET))).toBeLessThanOrEqual(
+      OFFSET_TOLERANCE,
+    );
+    expect(Math.abs(popup.left - (x + ALIGN_OFFSET))).toBeLessThanOrEqual(
+      OFFSET_TOLERANCE,
+    );
+  });
+
+  /* The simple component places its popup through the same positioner. */
+  it("opens ContextMenu's popup at the pointer", async () => {
+    await page.viewport(1280, 800);
+    render(
+      <ContextMenu
+        items={[
+          { label: "Edit", value: "edit" },
+          { label: "Duplicate", value: "duplicate" },
+        ]}
+        PopupProps={{ "aria-label": "Project actions" }}
+      >
+        <Card title="Project" w="full" h={160} data-testid="area" />
+      </ContextMenu>,
+    );
 
     const area = document
       .querySelector('[data-testid="area"]')!
