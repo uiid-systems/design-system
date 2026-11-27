@@ -2,13 +2,12 @@
 
 import * as React from "react";
 
-import { CodeBlockContent, CodeBlockCopyButton } from "../code-block";
+import { CodeBlockContent, CodeBlockHeader } from "../code-block";
 import { DEFAULT_COPYABLE } from "../code.constants";
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import { RESET_RESERVE } from "./code-preview.constants";
 import type { CodePreviewProps } from "./code-preview.types";
 import {
-  CodePreviewBar,
   CodePreviewCanvas,
   CodePreviewPanel,
   CodePreviewResetButton,
@@ -39,7 +38,6 @@ export const CodePreview = ({
   hideLabel,
   className,
   CanvasProps,
-  BarProps,
   TriggerProps,
   PanelProps,
   ResetButtonProps,
@@ -121,22 +119,15 @@ export const CodePreview = ({
 
       {hasCode && (
         <>
-          <CodePreviewBar {...BarProps}>
-            <CodePreviewTrigger
-              {...TriggerProps}
-              showLabel={showLabel}
-              hideLabel={hideLabel}
-            />
-            {copyable && (
-              <CodeBlockCopyButton
-                {...CopyButtonProps}
-                code={code}
-                onCopy={onCopy}
-              />
-            )}
-          </CodePreviewBar>
-
           <CodePreviewPanel {...PanelProps}>
+            {/* A header with no filename floats its buttons over the code's
+                top-right corner, and the panel, a CodeBlock frame, keeps the
+                first line clear of them, as in a CodeBlock. */}
+            <CodeBlockHeader
+              code={code}
+              copyable={copyable}
+              CopyButtonProps={{ ...CopyButtonProps, onCopy }}
+            />
             <CodeBlockContent
               {...ContentProps}
               html={prerenderedHtml || html || undefined}
@@ -144,6 +135,13 @@ export const CodePreview = ({
               showLineNumbers={showLineNumbers}
             />
           </CodePreviewPanel>
+
+          {/* Below the code, as CodeBlock's expand toggle is. */}
+          <CodePreviewTrigger
+            {...TriggerProps}
+            showLabel={showLabel}
+            hideLabel={hideLabel}
+          />
         </>
       )}
     </CodePreviewRoot>

@@ -22,7 +22,12 @@ export type CodePreviewRootProps = WithStringClassName<CollapsibleRootProps>;
 /** The area that holds the live example. */
 export type CodePreviewCanvasProps = StackProps;
 
-/** The row that holds the trigger and the copy button. */
+/**
+ * A row on the theme's surface.
+ * @deprecated CodePreview no longer renders a bar: the trigger is the footer
+ * and the copy button floats over the code. Kept until the owner decides
+ * whether to remove it.
+ */
 export type CodePreviewBarProps = GroupProps;
 
 export type CodePreviewTriggerProps = WithStringClassName<
@@ -70,7 +75,9 @@ export type CodePreviewProps = Omit<
     /** Lines to highlight (1-indexed) */
     highlightLines?: number[];
     /**
-     * Render the copy button. It is left out while `code` is empty.
+     * Render the copy button, floating in the code's top-right corner, so it
+     * is reachable while the code is open. It is left out while `code` is
+     * empty.
      * @default true
      */
     copyable?: boolean;
@@ -96,15 +103,19 @@ export type CodePreviewProps = Omit<
     hideLabel?: React.ReactNode;
     /** Reaches the canvas. Its content is `children`. */
     CanvasProps?: Omit<CodePreviewCanvasProps, "children">;
-    /** Reaches the bar. Its content is the trigger and the copy button. */
-    BarProps?: Omit<CodePreviewBarProps, "children">;
-    /** Reaches the trigger. Its labels are set on CodePreview itself. */
+    /**
+     * Reaches the footer toggle that opens and closes the code. Its labels
+     * are set on CodePreview itself.
+     */
     TriggerProps?: Omit<CodePreviewTriggerProps, "showLabel" | "hideLabel">;
     /** Reaches the reset button. Pressing it resets; listen with `onReset`. */
     ResetButtonProps?: Omit<CodePreviewResetButtonProps, "onClick">;
     /** Reaches the panel. Its content is the code. */
     PanelProps?: Omit<CodePreviewPanelProps, "children">;
-    /** Reaches the copy button. `code` and `onCopy` are set on CodePreview itself. */
+    /**
+     * Reaches the copy button, which floats in the code's top-right corner.
+     * `code` and `onCopy` are set on CodePreview itself.
+     */
     CopyButtonProps?: Omit<CodeBlockCopyButtonProps, "code" | "onCopy">;
     /**
      * Reaches the highlighted code. The code, its highlighting and line

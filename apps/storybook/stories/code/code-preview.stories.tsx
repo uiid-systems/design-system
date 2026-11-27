@@ -44,8 +44,9 @@ const Actions = () => (
   </Group>
 );
 
-/* Closed by default: the example on top, "Show code" and copy beneath it. The
-   code is mounted while closed, so the frame is as wide open as closed. */
+/* Closed by default: the example on top, the "Show code" footer beneath it.
+   Open, the code sits between them with its copy button floating top right.
+   The code is mounted while closed, so the frame is as wide open as closed. */
 export const Default: Story = {
   render: () => <Examples.Default />,
 };
@@ -54,7 +55,7 @@ export const OpenByDefault: Story = {
   render: () => <Examples.OpenByDefault />,
 };
 
-/* No `code`: a framed canvas with no bar and no panel. */
+/* No `code`: a framed canvas with no code and no footer. */
 export const NoCode: Story = {
   render: () => <Examples.NoCode />,
 };
@@ -71,13 +72,14 @@ export const Resettable: Story = {
   render: () => <Examples.Resettable />,
 };
 
-/* Wider than the frame: the example scrolls inside the canvas, and the reset
-   button stays in its corner. */
+/* Wider than the frame: the example starts at the canvas's start edge and
+   scrolls, rather than overflowing both sides, and the reset button stays in
+   its corner. */
 export const WideChild: Story = {
   render: () => <Examples.WideChild />,
 };
 
-/* Taller than usual: the canvas grows with the example. */
+/* Taller than the canvas's 7.5rem minimum: the canvas grows with the example. */
 export const TallChild: Story = {
   render: () => <Examples.TallChild />,
 };
@@ -130,8 +132,9 @@ export const Controlled: Story = {
   render: () => <Examples.Controlled />,
 };
 
-/* The exported parts under CodePreviewRoot: the same frame and zones, with
-   the code colored by useHighlight. */
+/* The exported parts under CodePreviewRoot: the same frame, zones and footer,
+   a floating copy button from CodeBlockHeader, and the code colored by
+   useHighlight. */
 export const Composed: Story = {
   render: () => <Examples.Composed />,
 };

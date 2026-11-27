@@ -1,14 +1,19 @@
 "use client";
 
-import { Button } from "@uiid/buttons";
-import { ChevronRightIcon } from "@uiid/icons/chevron-right";
 import { CollapsibleTrigger } from "@uiid/interactive";
 import { cx } from "@uiid/utils";
 
+import { CodeBlockExpandToggle } from "../../code-block";
 import type { CodePreviewTriggerProps } from "../code-preview.types";
 
 import styles from "../code-preview.module.css";
 
+/**
+ * The footer that opens and closes the code. It is CodeBlock's expand toggle,
+ * so inside `CodePreviewRoot` it takes the same full-width, centred, text-only
+ * look as a CodeBlock's "Show more", and Collapsible gives it `aria-expanded`
+ * and `aria-controls` for the panel.
+ */
 export const CodePreviewTrigger = ({
   showLabel = "Show code",
   hideLabel = "Hide code",
@@ -20,24 +25,13 @@ export const CodePreviewTrigger = ({
     {...props}
     // A function of the trigger's state, so the label follows the panel.
     render={(triggerProps, state) => (
-      <Button
+      <CodeBlockExpandToggle
         {...(triggerProps as Omit<React.ComponentProps<"button">, "color">)}
-        type="button"
-        size="small"
-        variant="ghost"
         className={cx(styles["code-preview-trigger"], className)}
-      >
-        <ChevronRightIcon
-          aria-hidden
-          className={styles["code-preview-trigger-icon"]}
-        />
-        {/* Both labels share one cell, and the hidden one keeps its width, so
-            the trigger, and with it the frame, keeps its width on toggle. */}
-        <span className={styles["code-preview-trigger-labels"]}>
-          <span aria-hidden={state.open || undefined}>{showLabel}</span>
-          <span aria-hidden={!state.open || undefined}>{hideLabel}</span>
-        </span>
-      </Button>
+        expanded={state.open}
+        expandLabel={showLabel}
+        collapseLabel={hideLabel}
+      />
     )}
   />
 );

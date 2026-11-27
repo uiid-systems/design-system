@@ -5,6 +5,10 @@ import type { CodePreviewBarProps } from "../code-preview.types";
 
 import styles from "../code-preview.module.css";
 
+/**
+ * @deprecated CodePreview no longer renders a bar: `CodePreviewTrigger` is the
+ * footer and the copy button floats over the code in `CodePreviewPanel`.
+ */
 export const CodePreviewBar = ({
   className,
   children,
