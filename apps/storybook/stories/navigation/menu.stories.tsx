@@ -90,11 +90,22 @@ export const Composed: Story = { render: () => <Examples.Composed /> };
 
 export const Descriptions: Story = { render: () => <Examples.Descriptions /> };
 
+export const ItemDescriptions: Story = {
+  render: () => <Examples.ItemDescriptions />,
+};
+
+export const Links: Story = { render: () => <Examples.Links /> };
+
+export const Separators: Story = { render: () => <Examples.Separators /> };
+
 export const Disabled: Story = { render: () => <Examples.Disabled /> };
 
 export const LongLabels: Story = { render: () => <Examples.LongLabels /> };
 
 export const Groups: Story = { render: () => <Examples.Groups /> };
+export const NestedSubmenus: Story = {
+  render: () => <Examples.NestedSubmenus />,
+};
 
 export const ViewToggles: Story = { render: () => <Examples.ViewToggles /> };
 
@@ -126,3 +137,5 @@ export const BesideSelect: Story = {
     </Group>
   ),
 };
+
+export const NonModal: Story = { render: () => <Examples.NonModal /> };

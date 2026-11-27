@@ -12,6 +12,8 @@ export * from "./menu-checkbox-item-indicator";
 export * from "./menu-radio-group";
 export * from "./menu-radio-item";
 export * from "./menu-radio-item-indicator";
+export * from "./menu-link-item";
+export * from "./menu-separator";
 
 export * from "./submenu-root";
 export * from "./submenu-trigger";

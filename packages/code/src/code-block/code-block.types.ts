@@ -100,10 +100,26 @@ export type CodeBlockProps = Omit<React.ComponentProps<"div">, "onCopy"> & {
   language?: CodeLanguage;
   /** Filename to display in header */
   filename?: string;
+  /**
+   * Leave the language icon out of the header. `language` still picks the
+   * grammar. With no filename either, there is no header bar and the buttons
+   * float over the code, as they do for a language without an icon.
+   */
+  hideLanguageIcon?: boolean;
   /** Show line numbers */
   showLineNumbers?: boolean;
   /** Lines to highlight (1-indexed) */
   highlightLines?: number[];
+  /**
+   * Set to `false` to render notation comments such as `// [!code --]` as
+   * written, instead of turning them into diff and highlight lines. Turn it off
+   * for text you did not write, such as a model's reply, where such a comment
+   * would show a line as removed that the copy button still copies. With
+   * `html`, nothing is highlighted on the client and this has no effect: pass
+   * `{ notations: false }` to `highlight()` instead.
+   * @default true
+   */
+  notations?: boolean;
   /** Render the copy button in the header */
   copyable?: boolean;
   /** Render the line-wrap toggle in the header */

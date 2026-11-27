@@ -26,6 +26,7 @@ export const Reasoning = ({
   defaultOpen,
   onOpenChange,
   label: labelProp,
+  overrides,
   gap = 2,
   ax = "start",
   ...props
@@ -99,7 +100,9 @@ export const Reasoning = ({
         )}
       </CollapsibleTrigger>
       <CollapsiblePanel data-slot="reasoning-panel" w="full" instant={false}>
-        <Markdown streaming={streaming}>{children}</Markdown>
+        <Markdown streaming={streaming} overrides={overrides}>
+          {children}
+        </Markdown>
       </CollapsiblePanel>
     </CollapsibleRoot>
   );
