@@ -1,11 +1,10 @@
-/* One frame: CodeBlock's border and radius around the canvas, the bar and the
-   code. The code reads the block's surface variable, so the frame restates it
-   from the same tokens and the code paints as it does in a CodeBlock. */
+/* One frame. The root also carries CodeBlock's frame class, which gives it
+   CodeBlock's border, radius, clip and code surface, and lets the footer
+   toggle take the look it has in a CodeBlock. This class adds what a preview
+   needs on top. */
 .code-preview {
-  --code-block-surface: light-dark(var(--code-surface-light), var(--code-surface-dark));
-
   /* The example's zone: a step from the page toward the theme's surface, so it
-     reads apart from the code's surface below it and from the bar between. */
+     reads apart from the code's surface below it and from the footer. */
   --code-preview-canvas-surface: color-mix(in oklab, var(--shade-surface) 40%, var(--shade-background));
 
   /* One column that may shrink to nothing: the frame is as wide as its widest
@@ -15,19 +14,49 @@
      instead of widening the frame, as in CodeBlock. */
   display: inline-grid;
   grid-template-columns: minmax(0, 1fr);
-  position: relative;
-  border: var(--globals-border-width) solid var(--globals-border-color);
-  border-radius: var(--globals-border-radius);
-  max-width: 100%;
-  overflow: hidden;
 }
 
 /* An example wider than the frame scrolls inside the canvas rather than
    widening the frame. */
 .code-preview-canvas {
+  /* Never shorter than this, padding included, so a short example still sits
+     in a zone of its own. A taller one grows past it. */
+  --code-preview-canvas-min-height: 7.5rem;
+
+  box-sizing: border-box;
   min-width: 0;
   overflow: auto;
   background-color: var(--code-preview-canvas-surface);
+}
+
+/* Centred on both axes by default, but `safe`: an example that overflows
+   falls back to the start edge, where scrolling can reach all of it, instead
+   of spilling past both. The layout props have no safe keyword, so these
+   defaults live here, and each steps aside once the caller sets the prop it
+   stands for, whatever the cascade order. Stack writes its `ax` as
+   `data-ui-ay` (align-items) and its `ay` as `data-ui-ax` (justify-content). */
+/* Plain `center` first, so an engine that drops `safe` still centres. */
+:where(.code-preview-canvas):not([data-ui-ay]) {
+  align-items: center;
+  align-items: safe center;
+}
+
+:where(.code-preview-canvas):not([data-ui-ax]) {
+  justify-content: center;
+  justify-content: safe center;
+}
+
+/* The minimum includes the padding, so the room kept for the reset button
+   does not add to it: the canvas is as tall as whichever is larger. */
+:where(.code-preview-canvas):not([data-ui-minh]) {
+  min-block-size: var(--code-preview-canvas-min-height);
+}
+
+/* The one rule inside the frame: under the example, above the code or, while
+   the code is closed, above the footer. With no code there is no footer, and
+   the frame's own border closes the canvas. */
+.code-preview-canvas:has(~ .code-preview-trigger) {
+  border-block-end: var(--globals-border-width) solid var(--globals-border-color);
 }
 
 /* The reset button sits in the frame's top-right corner, which is the
@@ -54,23 +83,11 @@
   }
 }
 
-.code-preview-bar {
-  background-color: var(--shade-surface);
-}
-
-/* The chevron turns to point at the open code. */
-.code-preview-trigger-icon {
-  flex-shrink: 0;
-}
-
-:where(.code-preview-trigger)[data-panel-open] .code-preview-trigger-icon {
-  rotate: 90deg;
-}
-
-/* "Show code" and "Hide code" overlap in one cell, as wide as the wider. The
-   hidden one is left out of the button's name as well as out of sight. */
+/* "Show code" and "Hide code" overlap in one cell, as wide as the wider, each
+   centred in it. The hidden one is out of sight and out of the name. */
 .code-preview-trigger-labels {
   display: inline-grid;
+  justify-items: center;
 
   & > * {
     grid-area: 1 / 1;
@@ -81,10 +98,14 @@
   visibility: hidden;
 }
 
-/* The bar's divider sits above the code once it opens. */
-.code-preview-panel {
-  border-block-start: var(--globals-border-width) solid var(--globals-border-color);
-  background-color: var(--code-block-surface);
+/* The panel carries CodeBlock's frame class for its floating buttons, but the
+   preview's frame already draws the border and radius, so the panel draws
+   neither: no frame inside the frame. It clips both ways, so nothing in it
+   paints past its animating height. */
+.code-preview .code-preview-panel {
+  border: 0;
+  border-radius: 0;
+  overflow: clip;
 }
 
 /* The panel stays mounted while closed, and stays in the layout at no height,
@@ -92,17 +113,11 @@
    hides a closed panel with `display: none`, which would drop that width; the
    frame's class outweighs that rule. With `display` overridden, the `hidden`
    attribute no longer hides anything: `visibility: hidden` alone keeps the
-   code out of sight, the tab order and the accessibility tree. Do not swap it
-   for opacity or a clip, which would leave the code focusable and announced. */
+   code, its copy button included, out of sight, the tab order and the
+   accessibility tree. Do not swap it for opacity or a clip, which would leave
+   them focusable and announced. */
 .code-preview .code-preview-panel[hidden]:not([hidden="until-found"]) {
   display: flex;
   block-size: 0;
-  border-block-start-width: 0;
   visibility: hidden;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .code-preview-trigger-icon {
-    transition: rotate var(--globals-transition-duration) ease-out;
-  }
 }

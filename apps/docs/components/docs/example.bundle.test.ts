@@ -61,6 +61,8 @@ describe.skipIf(!built)("docs client bundle", () => {
       // open and no eager chunk would change, so check the panels themselves.
       // Each segment runs from a panel to the next example frame or README
       // code block, so another block's highlighting cannot stand in for it.
+      // The closing quote keeps the match exact: the panel's own copy header
+      // (`code-block-header`, `code-block-content`) does not end a segment.
       const panels = readPage(page)
         .split('data-slot="code-preview-panel"')
         .slice(1)

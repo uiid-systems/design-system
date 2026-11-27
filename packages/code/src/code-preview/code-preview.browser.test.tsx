@@ -101,10 +101,12 @@ describe("CodePreview reset button", () => {
         </CodePreview>
       </div>,
     );
-    const canvas = query(
-      container,
-      '[data-slot="code-preview-canvas"]',
-    ).getBoundingClientRect();
+    const canvasEl = query(container, '[data-slot="code-preview-canvas"]');
+    const canvas = canvasEl.getBoundingClientRect();
+    // The canvas's bottom border is the rule above the footer.
+    const rule = Number.parseFloat(
+      getComputedStyle(canvasEl).borderBottomWidth,
+    );
     const example = query(container, "[data-example]").getBoundingClientRect();
     const button = query(
       container,
@@ -114,7 +116,7 @@ describe("CodePreview reset button", () => {
     expect(gap(example, button).y).toBeGreaterThan(0);
     // The room is reserved above and below alike, so the example stays centred.
     expect(example.top - canvas.top).toBeCloseTo(
-      canvas.bottom - example.bottom,
+      canvas.bottom - rule - example.bottom,
       1,
     );
   });
@@ -235,7 +237,7 @@ const readLook = (root: ParentNode) => {
     radius: getComputedStyle(frame).borderTopLeftRadius,
     overflow: getComputedStyle(frame).overflow,
     canvas: style("code-preview-canvas").backgroundColor,
-    bar: style("code-preview-bar").backgroundColor,
+    footer: style("code-preview-trigger").backgroundColor,
     panel: style("code-preview-panel").backgroundColor,
     code: pre && getComputedStyle(pre).backgroundColor,
   };
@@ -255,8 +257,13 @@ describe("CodePreview composed from its parts", () => {
       await waitForHighlight(root);
     }
 
+    // Both footers at rest, so the pointer left on the last one clicked
+    // cannot colour it; Button fades its fill, so wait on the look.
+    await userEvent.unhover(
+      query(composed, '[data-slot="code-preview-trigger"]'),
+    );
+    await expect.poll(() => readLook(composed)).toEqual(readLook(assembled));
     const look = readLook(composed);
-    expect(look).toEqual(readLook(assembled));
     // The two zones differ, and the frame has a border.
     expect(look.canvas).not.toBe(look.code);
     expect(look.border).not.toMatch(/^0px/);
@@ -265,7 +272,7 @@ describe("CodePreview composed from its parts", () => {
 
 describe("CodePreview zones", () => {
   for (const theme of ["light", "dark"]) {
-    it(`paints the canvas apart from the code and the bar in the ${theme} theme`, async () => {
+    it(`paints the canvas apart from the code and the footer in the ${theme} theme`, async () => {
       const container = mountSized(
         <div data-theme={theme}>
           <CodePreview code="const a = 1;" defaultOpen>
@@ -277,7 +284,7 @@ describe("CodePreview zones", () => {
       expect(["rgba(0, 0, 0, 0)", "transparent"]).not.toContain(look.canvas);
       expect(look.canvas).not.toBe(look.panel);
       expect(look.canvas).not.toBe(look.code);
-      expect(look.canvas).not.toBe(look.bar);
+      expect(look.canvas).not.toBe(look.footer);
       // The code surface is CodeBlock's, as the frame's border and radius are.
       const block = mountSized(
         <div data-theme={theme}>
@@ -302,6 +309,61 @@ const WIDE_LINE =
   'export const label = "a line of code wider than the example above it";';
 
 describe("CodePreview frame width", () => {
+  for (const hideLabel of [undefined, "Hide the example's source code"]) {
+    it(`stays the same when the footer is the widest part${hideLabel ? ", with a longer hideLabel" : ""}`, async () => {
+      // A tiny example and one-character code with no copy button, so only
+      // the footer's label can set the frame's width.
+      const container = mountSized(
+        <div style={{ display: "flex", alignItems: "flex-start" }}>
+          <CodePreview
+            code="x"
+            copyable={false}
+            hideLabel={hideLabel}
+            CanvasProps={{ p: 0 }}
+            PanelProps={{ instant: true }}
+          >
+            <span style={{ display: "block", width: 4, height: 4 }} />
+          </CodePreview>
+        </div>,
+        { width: 720 },
+      );
+      const frame = query(container, '[data-slot="code-preview"]');
+      const panel = query(frame, '[data-slot="code-preview-panel"]');
+      const trigger = query(frame, '[data-slot="code-preview-trigger"]');
+      const labels = query(trigger, "span");
+      const width = () => frame.getBoundingClientRect().width;
+
+      // The footer's labels set the width: the frame is no wider than they
+      // and the footer's own padding and border.
+      const style = getComputedStyle(trigger);
+      const chrome =
+        Number.parseFloat(style.paddingLeft) +
+        Number.parseFloat(style.paddingRight) +
+        Number.parseFloat(style.borderLeftWidth) +
+        Number.parseFloat(style.borderRightWidth) +
+        2 * Number.parseFloat(getComputedStyle(frame).borderLeftWidth);
+      const closed = width();
+      expect(closed).toBeCloseTo(
+        labels.getBoundingClientRect().width + chrome,
+        0,
+      );
+
+      await userEvent.click(trigger);
+      await expect.poll(() => panel.hasAttribute("hidden")).toBe(false);
+      await expect
+        .poll(() => panel.getBoundingClientRect().height)
+        .toBeGreaterThan(0);
+      const open = width();
+      await userEvent.click(trigger);
+      await expect.poll(() => panel.hasAttribute("hidden")).toBe(true);
+      const closedAgain = width();
+
+      const detail = JSON.stringify({ closed, open, closedAgain });
+      expect(Math.abs(open - closed), detail).toBeLessThan(0.5);
+      expect(Math.abs(closedAgain - closed), detail).toBeLessThan(0.5);
+    });
+  }
+
   const cases = [
     { name: "code narrower than the example", code: "const a = 1;" },
     { name: "code wider than the example", code: WIDE_LINE },
@@ -515,7 +577,14 @@ describe("CodePreview under a theme change", () => {
     // Wait on each colour rather than a fixed delay: Button transitions its
     // background, so the reset button's colour moves over the transition, and
     // a slow runner can read any zone before the new theme has applied.
-    const keys = ["canvas", "bar", "panel", "code", "token", "reset"] as const;
+    const keys = [
+      "canvas",
+      "footer",
+      "panel",
+      "code",
+      "token",
+      "reset",
+    ] as const;
     for (const key of keys) {
       await expect
         .poll(() => read()[key], { message: key })
@@ -720,11 +789,9 @@ describe.skipIf(server.browser !== "chromium")(
         </CodePreview>,
       );
       const panel = query(container, '[data-slot="code-preview-panel"]');
-      const icon = query(container, '[data-slot="code-preview-trigger"] svg');
       try {
         await setReducedMotion("no-preference");
         expect(getComputedStyle(panel).transitionProperty).toContain("height");
-        expect(getComputedStyle(icon).transitionProperty).toContain("rotate");
 
         await setReducedMotion("reduce");
         expect(matchMedia("(prefers-reduced-motion: reduce)").matches).toBe(
@@ -735,7 +802,6 @@ describe.skipIf(server.browser !== "chromium")(
             .transitionDuration.split(",")
             .map((d) => Number.parseFloat(d));
         expect(Math.max(...durations(panel))).toBe(0);
-        expect(Math.max(...durations(icon))).toBe(0);
 
         // Opened under reduce, the panel reaches full height. With the
         // durations above at 0 there is no animation; the poll only waits for
@@ -758,3 +824,268 @@ describe.skipIf(server.browser !== "chromium")(
     });
   },
 );
+
+/** Open a preview from its own trigger and wait until the panel has height. */
+const openPreview = async (root: ParentNode) => {
+  const trigger = query(root, '[data-slot="code-preview-trigger"]');
+  const panel = query(root, '[data-slot="code-preview-panel"]');
+  await userEvent.click(trigger);
+  await expect.poll(() => trigger.getAttribute("aria-expanded")).toBe("true");
+  await expect
+    .poll(() => panel.getBoundingClientRect().height)
+    .toBeGreaterThan(0);
+  return panel;
+};
+
+/** The box of a line's text, without the padding its line box reserves. */
+const lineTextRect = (line: Element) => {
+  const range = document.createRange();
+  range.selectNodeContents(line);
+  return range.getBoundingClientRect();
+};
+
+describe("CodePreview copy button", () => {
+  it("floats in the panel's top-right corner, clear of the code", async () => {
+    const container = mountSized(
+      <CodePreview code={SOURCE} language="tsx" PanelProps={{ instant: true }}>
+        <Example />
+      </CodePreview>,
+      { width: 720 },
+    );
+    const panel = await openPreview(container);
+    await waitForHighlight(container);
+    const copy = query(panel, '[data-slot="code-block-copy-button"]');
+    const box = panel.getBoundingClientRect();
+    const rect = copy.getBoundingClientRect();
+    expect(box.right - rect.right).toBeGreaterThanOrEqual(0);
+    expect(box.right - rect.right).toBeLessThan(16);
+    expect(rect.top - box.top).toBeGreaterThanOrEqual(0);
+    expect(rect.top - box.top).toBeLessThan(16);
+    // The frame sizes to the code and the room each line keeps for the
+    // button, so no line's text runs under it.
+    for (const line of panel.querySelectorAll(".line")) {
+      const text = lineTextRect(line);
+      if (text.width === 0) continue;
+      expect(gap(text, rect).x + gap(text, rect).y).toBeGreaterThan(0);
+    }
+  });
+
+  it("cannot be focused while the panel is closed, and can once it opens", async () => {
+    const container = mountSized(
+      <CodePreview code={SOURCE} PanelProps={{ instant: true }}>
+        <Example />
+      </CodePreview>,
+    );
+    const copy = query(container, '[data-slot="code-block-copy-button"]');
+    const trigger = query(container, '[data-slot="code-preview-trigger"]');
+    copy.focus();
+    expect(copy).not.toHaveFocus();
+    // Tabbing from the trigger leaves the preview without reaching it.
+    trigger.focus();
+    await userEvent.tab();
+    expect(container.contains(document.activeElement)).toBe(false);
+    await expect
+      .element(page.getByRole("button", { name: "Copy code" }))
+      .not.toBeInTheDocument();
+
+    await openPreview(container);
+    copy.focus();
+    expect(copy).toHaveFocus();
+  });
+});
+
+describe("CodePreview footer toggle", () => {
+  it("is a full-width strip with its text centred and no icon", () => {
+    const container = mountSized(
+      <CodePreview code={SOURCE}>
+        <Example />
+      </CodePreview>,
+    );
+    const frame = query(container, '[data-slot="code-preview"]');
+    const trigger = query(frame, '[data-slot="code-preview-trigger"]');
+    expect(trigger.tagName).toBe("BUTTON");
+    expect(trigger.querySelector("svg")).toBeNull();
+    expect(trigger.getBoundingClientRect().width).toBe(frame.clientWidth);
+    const text = lineTextRect(trigger);
+    const box = trigger.getBoundingClientRect();
+    expect(
+      Math.abs(text.left + text.width / 2 - (box.left + box.width / 2)),
+    ).toBeLessThan(1);
+    // It sits last, at the frame's bottom edge.
+    expect(frame.lastElementChild).toBe(trigger);
+  });
+
+  it("matches CodeBlock's expand toggle on the styles that define its look", async () => {
+    const container = mountSized(
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <CodePreview code={SOURCE}>
+          <Example />
+        </CodePreview>
+        <CodeBlock code={SOURCE} rows={2} />
+      </div>,
+    );
+    const footer = query(container, '[data-slot="code-preview-trigger"]');
+    // CodeBlock shows its toggle once it has measured that the code overflows.
+    await expect
+      .poll(() =>
+        container.querySelector('[data-slot="code-block-expand-toggle"]'),
+      )
+      .not.toBeNull();
+    const toggle = query(container, '[data-slot="code-block-expand-toggle"]');
+    const read = (el: HTMLElement) => {
+      const style = getComputedStyle(el);
+      return {
+        background: style.backgroundColor,
+        color: style.color,
+        fontFamily: style.fontFamily,
+        fontSize: style.fontSize,
+        fontWeight: style.fontWeight,
+        lineHeight: style.lineHeight,
+        height: el.getBoundingClientRect().height,
+        paddingInline: `${style.paddingLeft} ${style.paddingRight}`,
+        borderWidth: style.borderTopWidth,
+        borderColor: style.borderTopColor,
+        radius: `${style.borderTopLeftRadius} ${style.borderTopRightRadius} ${style.borderBottomRightRadius} ${style.borderBottomLeftRadius}`,
+        justify: style.justifyContent,
+        alignText: style.textAlign,
+        scale: style.scale,
+      };
+    };
+    // Both at rest: an earlier test can leave the pointer over this spot.
+    await userEvent.unhover(footer);
+    await userEvent.unhover(toggle);
+    await expect.poll(() => read(footer)).toEqual(read(toggle));
+  });
+});
+
+describe("CodePreview canvas height", () => {
+  const canvasOf = (root: ParentNode) =>
+    query(root, '[data-slot="code-preview-canvas"]');
+  const rem = (n: number) =>
+    n * Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+  it("is at least 7.5rem tall with a short example, centred within it", () => {
+    const container = mountSized(
+      <CodePreview code="const a = 1;">
+        <div data-example style={{ width: 40, height: 20 }} />
+      </CodePreview>,
+    );
+    const canvas = canvasOf(container);
+    const rule = Number.parseFloat(getComputedStyle(canvas).borderBottomWidth);
+    const box = canvas.getBoundingClientRect();
+    const example = query(container, "[data-example]").getBoundingClientRect();
+    expect(box.height).toBeCloseTo(rem(7.5), 1);
+    expect(example.top - box.top).toBeCloseTo(
+      box.bottom - rule - example.bottom,
+      1,
+    );
+  });
+
+  it("does not add the reset button's room on top of the minimum", () => {
+    const container = mountSized(
+      <CodePreview code="const a = 1;" resettable>
+        <div data-example style={{ width: 40, height: 20 }} />
+      </CodePreview>,
+    );
+    const canvas = canvasOf(container);
+    const rule = Number.parseFloat(getComputedStyle(canvas).borderBottomWidth);
+    const box = canvas.getBoundingClientRect();
+    const example = query(container, "[data-example]").getBoundingClientRect();
+    // 48px of room above and below a 20px example fits inside the minimum.
+    expect(box.height).toBeCloseTo(rem(7.5), 1);
+    expect(example.top - box.top).toBeCloseTo(
+      box.bottom - rule - example.bottom,
+      1,
+    );
+    const button = query(
+      container,
+      '[data-slot="code-preview-reset-button"]',
+    ).getBoundingClientRect();
+    expect(gap(example, button).y).toBeGreaterThan(0);
+  });
+
+  it("grows past the minimum with a tall example", () => {
+    const container = mountSized(
+      <CodePreview code="const a = 1;">
+        <div data-example style={{ width: 40, height: 300 }} />
+      </CodePreview>,
+    );
+    const box = canvasOf(container).getBoundingClientRect();
+    expect(box.height).toBeGreaterThan(rem(7.5));
+    expect(box.height).toBeGreaterThanOrEqual(300);
+  });
+
+  it("takes a caller's minimum height through CanvasProps", () => {
+    const container = mountSized(
+      <CodePreview code="const a = 1;" CanvasProps={{ minh: 240 }}>
+        <div style={{ width: 40, height: 20 }} />
+      </CodePreview>,
+    );
+    // `minh` is in pixels.
+    expect(canvasOf(container).getBoundingClientRect().height).toBeCloseTo(
+      240,
+      1,
+    );
+  });
+});
+
+describe("CodePreview canvas alignment", () => {
+  it("lets a wide example be scrolled to both its start and end edges", async () => {
+    const container = mountSized(
+      <CodePreview code="const a = 1;">
+        <div data-example style={{ width: 1200, height: 40 }} />
+      </CodePreview>,
+      { width: 320 },
+    );
+    const canvas = query(container, '[data-slot="code-preview-canvas"]');
+    const example = query(container, "[data-example]");
+    expect(canvas.scrollWidth).toBeGreaterThan(canvas.clientWidth);
+
+    // At the start, the example's start edge is inside the canvas, not cut
+    // off past it as plain `center` would leave it.
+    canvas.scrollLeft = 0;
+    await expect.poll(() => canvas.scrollLeft).toBe(0);
+    expect(example.getBoundingClientRect().left).toBeGreaterThanOrEqual(
+      canvas.getBoundingClientRect().left,
+    );
+
+    // At the end, its end edge is inside too.
+    canvas.scrollLeft = canvas.scrollWidth;
+    await expect.poll(() => canvas.scrollLeft).toBeGreaterThan(0);
+    expect(example.getBoundingClientRect().right).toBeLessThanOrEqual(
+      canvas.getBoundingClientRect().right,
+    );
+  });
+
+  it("centres a narrow example on both axes", () => {
+    const container = mountSized(
+      <CodePreview code="const a = 1;">
+        <div data-example style={{ width: 40, height: 20 }} />
+      </CodePreview>,
+    );
+    const canvas = query(container, '[data-slot="code-preview-canvas"]');
+    const rule = Number.parseFloat(getComputedStyle(canvas).borderBottomWidth);
+    const box = canvas.getBoundingClientRect();
+    const example = query(container, "[data-example]").getBoundingClientRect();
+    expect(example.left - box.left).toBeCloseTo(box.right - example.right, 1);
+    expect(example.top - box.top).toBeCloseTo(
+      box.bottom - rule - example.bottom,
+      1,
+    );
+  });
+
+  it("takes a caller's alignment through CanvasProps", () => {
+    const container = mountSized(
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <CodePreview code="const a = 1;" CanvasProps={{ ax: "start" }}>
+          <div data-example style={{ width: 40, height: 20 }} />
+        </CodePreview>
+      </div>,
+    );
+    const canvas = query(container, '[data-slot="code-preview-canvas"]');
+    const box = canvas.getBoundingClientRect();
+    const example = query(container, "[data-example]").getBoundingClientRect();
+    // The default padding (24px) is all that sits before it.
+    expect(example.left - box.left).toBeCloseTo(24, 0);
+  });
+});

@@ -3,11 +3,10 @@ import { Group, Stack } from "@uiid/layout";
 import { Reveal, Text } from "@uiid/typography";
 import { useState } from "react";
 
-import { CodeBlockContent, CodeBlockCopyButton } from "../code-block";
+import { CodeBlockContent, CodeBlockHeader } from "../code-block";
 import { useHighlight } from "../highlighter/highlighter.hooks";
 import { CodePreview } from "./code-preview";
 import {
-  CodePreviewBar,
   CodePreviewCanvas,
   CodePreviewPanel,
   CodePreviewRoot,
@@ -48,7 +47,7 @@ export const OpenByDefault = () => (
   </CodePreview>
 );
 
-/** With no `code` there is no bar and no panel: a framed canvas only. */
+/** With no `code` there is no code and no footer: a framed canvas only. */
 export const NoCode = () => (
   <CodePreview>
     <Actions />
@@ -64,9 +63,9 @@ export const LongCode = () => (
 const STEPS = Array.from({ length: 12 }, (_, i) => `Step ${i + 1}`);
 
 /**
- * An example wider than the frame scrolls inside the canvas. The frame keeps
- * its width, and the reset button stays in its corner while the example
- * scrolls beneath it.
+ * An example wider than the frame scrolls inside the canvas, starting at its
+ * start edge. The frame keeps its width, and the reset button stays in its
+ * corner while the example scrolls beneath it.
  */
 export const WideChild = () => (
   <CodePreview code={SAMPLE} language="tsx" resettable>
@@ -132,7 +131,7 @@ const Broken = (): React.ReactNode => {
 
 /**
  * An example that throws shows a short message in the canvas. The frame, the
- * bar and the code still render, and reset tries the example again.
+ * code and the footer still render, and reset tries the example again.
  */
 export const Throws = () => (
   <CodePreview code={SAMPLE} language="tsx" resettable>
@@ -171,13 +170,12 @@ export const Composed = () => {
       <CodePreviewCanvas>
         <Actions />
       </CodePreviewCanvas>
-      <CodePreviewBar>
-        <CodePreviewTrigger />
-        <CodeBlockCopyButton code={SAMPLE} />
-      </CodePreviewBar>
       <CodePreviewPanel>
+        {/* No filename, so the copy button floats over the code. */}
+        <CodeBlockHeader code={SAMPLE} />
         <CodeBlockContent code={SAMPLE} html={html || undefined} />
       </CodePreviewPanel>
+      <CodePreviewTrigger />
     </CodePreviewRoot>
   );
 };

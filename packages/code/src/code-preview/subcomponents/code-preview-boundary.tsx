@@ -12,8 +12,8 @@ type CodePreviewBoundaryState = {
 };
 
 /**
- * Catches an example that throws while rendering, so the frame, the bar and
- * the code around it still render. Internal: CodePreview keys it with the
+ * Catches an example that throws while rendering, so the frame, the code and
+ * the footer around it still render. Internal: CodePreview keys it with the
  * reset count, so a reset remounts it with the error cleared and the example
  * gets a fresh try.
  *
