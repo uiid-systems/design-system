@@ -8,9 +8,12 @@ import { CopyIcon } from "@uiid/icons/copy";
 import { EllipsisVerticalIcon } from "@uiid/icons/ellipsis-vertical";
 import { FolderInputIcon } from "@uiid/icons/folder-input";
 import { InboxIcon } from "@uiid/icons/inbox";
+import { LifeBuoyIcon } from "@uiid/icons/life-buoy";
 import { PencilIcon } from "@uiid/icons/pencil";
+import { SettingsIcon } from "@uiid/icons/settings";
 import { Share2Icon } from "@uiid/icons/share-2";
 import { Trash2Icon } from "@uiid/icons/trash-2";
+import { UserIcon } from "@uiid/icons/user";
 import { Group, Stack } from "@uiid/layout";
 import { Text } from "@uiid/typography";
 import { useState } from "react";
@@ -202,6 +205,68 @@ export const Descriptions = () => (
       </MenuPositioner>
     </MenuPortal>
   </MenuRoot>
+);
+
+/* An entry's `description` is stacked under its label, submenu triggers too. */
+export const ItemDescriptions = () => (
+  <Menu
+    trigger={<Button>Share</Button>}
+    items={[
+      {
+        label: "Copy link",
+        value: "copy",
+        description: "Anyone with the link can view",
+        icon: CopyIcon,
+      },
+      {
+        label: "Invite people",
+        value: "invite",
+        description: "Send an email invitation",
+        icon: Share2Icon,
+        items: [
+          { label: "Can view", value: "view" },
+          { label: "Can edit", value: "edit" },
+        ],
+      },
+      {
+        label: "Archive",
+        value: "archive",
+        description: "Hide it from everyone but you",
+        icon: ArchiveIcon,
+        disabled: true,
+      },
+    ]}
+  />
+);
+
+/*
+ * An entry with an `href` is a real link, so middle-click and open in a new
+ * tab work, at any depth. It looks and highlights like any other row.
+ */
+export const Links = () => (
+  <Menu
+    trigger={<Button>Account</Button>}
+    items={[
+      { label: "Profile", value: "profile", href: "#profile", icon: UserIcon },
+      {
+        label: "Settings",
+        value: "settings",
+        href: "#settings",
+        description: "Notifications, privacy and billing",
+        icon: SettingsIcon,
+      },
+      {
+        label: "Help",
+        value: "help",
+        icon: LifeBuoyIcon,
+        items: [
+          { label: "Documentation", value: "docs", href: "#docs" },
+          { label: "Contact support", value: "support", href: "#support" },
+        ],
+      },
+      { label: "Sign out", value: "sign-out" },
+    ]}
+  />
 );
 
 /*

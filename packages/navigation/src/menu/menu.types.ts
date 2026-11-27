@@ -10,12 +10,19 @@ import type {
   WithTriggerChildren,
 } from "@uiid/utils";
 
-export type MenuItemType = {
+/* What every entry draws, whether it runs a callback or navigates. */
+type MenuEntryContent = {
   /** Drawn before the label. */
   icon?: Icon;
   label: string;
+  /** Secondary line, stacked under the label. */
+  description?: ListItemProps["description"];
   /** The entry's key. Must be unique among its siblings. */
   value: string;
+};
+
+/* An entry that runs a callback, or opens a submenu when it has `items`. */
+type MenuActionEntry = MenuEntryContent & {
   /** Base UI's `disabled`: the item, or a submenu's trigger, ignores
    * interaction. */
   disabled?: boolean;
@@ -24,7 +31,24 @@ export type MenuItemType = {
   onClick?: MenuItemProps["onClick"];
   /** Opens a submenu of these entries beside this one, at any depth. */
   items?: MenuItemType[];
+  href?: never;
 };
+
+/*
+ * An entry that navigates, drawn as a `MenuLinkItem`. A link cannot also open
+ * a submenu, and Base UI's `LinkItem` takes no `disabled`.
+ */
+type MenuLinkEntry = MenuEntryContent & {
+  /** Makes the entry a real link, drawn through `MenuLinkItem`. */
+  href: string;
+  /** Base UI's `onClick` for this link, called after `LinkItemProps.onClick`.
+   * The link still navigates. */
+  onClick?: MenuLinkItemProps["onClick"];
+  items?: never;
+  disabled?: never;
+};
+
+export type MenuItemType = MenuActionEntry | MenuLinkEntry;
 
 export type MenuRootProps = BaseMenu.Root.Props;
 export type MenuTriggerProps = WithTriggerChildren<
@@ -65,6 +89,8 @@ type MenuRowContentProps = {
 
 export type MenuItemProps = WithStringClassName<BaseMenu.Item.Props> &
   MenuRowContentProps;
+export type MenuLinkItemProps = WithStringClassName<BaseMenu.LinkItem.Props> &
+  MenuRowContentProps;
 export type SubmenuRootProps = BaseMenu.SubmenuRoot.Props;
 export type SubmenuTriggerProps = WithLayoutProps<
   WithStringClassName<BaseMenu.SubmenuTrigger.Props>,
@@ -103,6 +129,17 @@ export type MenuProps = {
   ItemProps?: Omit<
     MenuItemProps,
     "label" | "icon" | "description" | "children"
+  >;
+  /**
+   * Reaches every link item: each entry with an `href`, at any depth. Each
+   * entry's `href`, `label`, `icon` and `description` are its own. Link
+   * entries close the menu when clicked, as action rows do; pass
+   * `closeOnClick: false` to keep it open. A `target` set here opens every
+   * link in a new window, so add a visible cue for that yourself.
+   */
+  LinkItemProps?: Omit<
+    MenuLinkItemProps,
+    "href" | "label" | "icon" | "description" | "children"
   >;
   /** Reaches every submenu root. Each entry's `items` fill its submenu. */
   SubmenuRootProps?: Omit<SubmenuRootProps, "children">;
