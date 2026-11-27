@@ -41,15 +41,20 @@ describe("compositions.css", () => {
 describe("compositions.css .composes-option", () => {
   const option =
     /\.composes-option \{[\s\S]*?\n {2}\}\n/.exec(compositionsCss)?.[0] ?? "";
-  const [, forced = ""] = option.split("@media (forced-colors: active)");
+  const [base, forced = ""] = option.split("@media (forced-colors: active)");
 
-  it("paints the ring in Highlight under forced colors", () => {
+  it("highlights with the tint alone, at once", () => {
+    expect(base).not.toMatch(/transition/);
+    expect(base.match(/outline[\w-]*:[^;]*;/g)).toEqual(["outline: none;"]);
+  });
+
+  it("outlines a highlighted row in Highlight under forced colors", () => {
     expect(forced).toMatch(
-      /&:where\(\[data-highlighted\], :focus-visible\) \{[^}]*outline-color: Highlight;/,
+      /&:where\(\[data-highlighted\], :focus-visible\) \{[^}]*outline: var\(--globals-outline-style\) var\(--globals-outline-width\) Highlight;[^}]*outline-offset: calc\(-1 \* var\(--globals-outline-width\)\);/,
     );
   });
 
-  it("keeps a disabled row's ring at full strength under forced colors", () => {
+  it("keeps a disabled row's outline at full strength under forced colors", () => {
     expect(forced).toMatch(
       /&:where\(\[data-disabled\]\) \{[^}]*opacity: 1;[^}]*color: GrayText;/,
     );

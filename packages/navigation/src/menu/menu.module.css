@@ -48,8 +48,8 @@
 
 /* Padding, radius, the highlight and the disabled look all come from
    `composes-option`, the class Select's rows wear, so the two cannot drift.
-   The highlight is the tint with the focus ring on top, and the keyboard can
-   land on a disabled row, which keeps both, dimmed with the row. */
+   The highlight is the tint, and the keyboard can land on a disabled row,
+   which keeps it, dimmed with the row. */
 .item {
   composes: composes-option from global;
 }
@@ -66,9 +66,8 @@
 
   /*
    * A trigger whose submenu is open, once the pointer or focus has moved into
-   * the submenu. It keeps `composes-option`'s tint without the ring, so the
-   * path into the submenu stays marked against a resting row and apart from
-   * the highlighted one.
+   * the submenu. It keeps `composes-option`'s tint, so the path into the
+   * submenu stays marked against a resting row.
    */
   &[data-popup-open] {
     background-color: var(--palette-tint-hover, var(--shade-accent));

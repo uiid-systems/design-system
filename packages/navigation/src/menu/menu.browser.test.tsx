@@ -1,7 +1,6 @@
 import "@uiid/tokens/globals.css";
 import { render } from "@testing-library/react";
-import { PALETTE_HUES, type PaletteColor } from "@uiid/tokens";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 
 /* Select lives in @uiid/forms, which @uiid/navigation must not depend on.
@@ -25,12 +24,6 @@ beforeEach(() => {
   ).IS_REACT_ACT_ENVIRONMENT = false;
 });
 
-/* A test that picks a scheme sets it on the root, where the token sheet's
-   `[data-theme]` rule reads it; the popups portal under it. */
-afterEach(() => {
-  delete document.documentElement.dataset.theme;
-});
-
 const MENU_ITEMS: MenuItemType[] = [
   { label: "Edit", value: "edit" },
   { label: "Duplicate", value: "duplicate", disabled: true },
@@ -52,14 +45,13 @@ const SELECT_ITEMS = [
 /* Both open at once, unmodal and undimmed, so neither blocks the other. A
    test that hovers renders one at a time, so neither popup can cover a row
    the pointer is aimed at. */
-const renderMenu = (color?: PaletteColor) =>
+const renderMenu = () =>
   render(
     <Menu
       trigger="Actions"
       items={MENU_ITEMS}
       backdrop={false}
       RootProps={{ open: true, modal: false }}
-      PopupProps={color ? { color } : undefined}
     />,
   );
 
@@ -109,14 +101,13 @@ const pick = (element: Element, properties: string[]) => {
 
 /* Resolves any computed color (oklch, color-mix, light-dark) to sRGB by
    painting it over `backdrop`, so a translucent fill reads as it is seen.
-   `alpha` is an element's opacity, which dims everything it paints.
 
    A canvas keeps its last `fillStyle` when handed a color it cannot parse,
    which would quietly measure the wrong color, so each one is checked against
    a sentinel no computed style produces. */
 const SENTINEL = "#010203";
 
-const toRgb = (color: string, backdrop = "white", alpha = 1) => {
+const toRgb = (color: string, backdrop = "white") => {
   const canvas = document.createElement("canvas");
   canvas.width = canvas.height = 1;
   const context = canvas.getContext("2d", { willReadFrequently: true })!;
@@ -129,23 +120,9 @@ const toRgb = (color: string, backdrop = "white", alpha = 1) => {
     context.fillRect(0, 0, 1, 1);
   };
   paint(backdrop);
-  context.globalAlpha = alpha;
   paint(color);
   const [r, g, b] = context.getImageData(0, 0, 1, 1).data;
   return [r, g, b];
-};
-
-const luminance = (rgb: number[]) => {
-  const [r, g, b] = rgb.map((channel) => {
-    const value = channel / 255;
-    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
-  });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-};
-
-const contrast = (a: number[], b: number[]) => {
-  const [light, dark] = [luminance(a), luminance(b)].sort((x, y) => y - x);
-  return (light + 0.05) / (dark + 0.05);
 };
 
 const SURFACE = [
@@ -170,7 +147,8 @@ const ROW = [
 ];
 
 /* `color` catches a highlight that repaints the text, as Menu's old inverted
-   one did; menu.test.tsx checks the list colors in the stylesheet text. */
+   one did, and the outline keys one that adds a ring; menu.test.tsx checks
+   the list colors in the stylesheet text. */
 const HIGHLIGHT = [
   "background-color",
   "color",
@@ -180,58 +158,11 @@ const HIGHLIGHT = [
   "outline-offset",
 ];
 
-const SCHEMES = ["light", "dark"] as const;
-
-/* `composes-option` fades the fill in, so a row is read once its transition
-   has run. Reading a style first flushes it, so a pending transition starts.
-   A transition cut short by the next hover rejects; that is fine. */
-const settle = async (element: Element) => {
-  style(element).getPropertyValue("background-color");
-  await Promise.all(
-    element
-      .getAnimations()
-      .map((animation) => animation.finished.catch(() => {})),
-  );
-};
-
-/* Hovers a row until it reports the highlight, and lets its fill settle. */
+/* Hovers a row until it reports the highlight. `composes-option` has no
+   transition, so the row's computed style is final once it does. */
 const highlight = async (element: HTMLElement) => {
   await userEvent.hover(element);
   await expect.poll(() => element.hasAttribute("data-highlighted")).toBe(true);
-  await settle(element);
-};
-
-/* The contrast of a row's ring against the popup around it and against the
-   row's own fill inside it, as seen through the row's opacity. */
-const ringContrast = (element: Element, popup: Element) => {
-  const surface = style(popup).backgroundColor;
-  const computed = style(element);
-  const alpha = Number(computed.opacity);
-  const ring = toRgb(computed.outlineColor, surface, alpha);
-  const fill = toRgb(computed.backgroundColor, surface, alpha);
-  return {
-    surface: contrast(ring, toRgb(surface)),
-    fill: contrast(ring, fill),
-  };
-};
-
-const expectRing = (element: Element, popup: Element) => {
-  const computed = style(element);
-  expect(computed.outlineStyle).toBe("solid");
-  expect(parseFloat(computed.outlineWidth)).toBeGreaterThan(0);
-  // Inset by its own width, so the popup's overflow cannot clip it.
-  expect(parseFloat(computed.outlineOffset)).toBe(
-    -parseFloat(computed.outlineWidth),
-  );
-
-  expect(ringContrast(element, popup).surface).toBeGreaterThanOrEqual(3);
-};
-
-/* Confirms the popup resolved the scheme the test asked for, so a broken
-   switch cannot measure light twice. */
-const expectScheme = (popup: Element, scheme: (typeof SCHEMES)[number]) => {
-  const surface = luminance(toRgb(style(popup).backgroundColor));
-  expect(surface > 0.5 ? "light" : "dark").toBe(scheme);
 };
 
 describe("Menu beside Select", () => {
@@ -285,64 +216,23 @@ describe("Menu beside Select", () => {
   });
 });
 
-/* WCAG 1.4.11 asks 3:1 of a state indicator. The tint alone is too faint, so
-   the ring `composes-option` draws on top of it carries the highlight. */
-describe.each(SCHEMES)("the highlight indicator, %s", (scheme) => {
-  beforeEach(() => {
-    document.documentElement.dataset.theme = scheme;
-  });
-
-  it("rings a highlighted Select row at 3:1 or better", async () => {
-    renderSelect();
-    const popup = await find('[data-slot="select-popup"]');
-    const edit = await row("select-item", "Edit");
-
-    await highlight(edit);
-
-    expectScheme(popup, scheme);
-    expectRing(edit, popup);
-    expect(ringContrast(edit, popup).fill).toBeGreaterThanOrEqual(3);
-  });
-
-  it("rings a highlighted Menu row at 3:1 or better", async () => {
+describe("Menu row states", () => {
+  it("tints a highlighted row apart from a resting one", async () => {
     renderMenu();
     const popup = await find('[data-slot="menu-popup"]');
     const edit = await row("menu-item", "Edit");
+    const surface = style(popup).backgroundColor;
+    const seen = (element: Element) =>
+      toRgb(style(element).backgroundColor, surface);
+    const resting = seen(edit);
 
     await highlight(edit);
 
-    expectScheme(popup, scheme);
-    expectRing(edit, popup);
-    expect(ringContrast(edit, popup).fill).toBeGreaterThanOrEqual(3);
+    expect(seen(edit)).not.toEqual(resting);
   });
 
-  /* Each hue tints the popup and the row's fill. The disabled row, ring and
-     tint both dimmed, is the thin case against the surface. */
-  it("rings enabled and disabled Menu rows at 3:1 or better on every hue", async () => {
-    for (const hue of PALETTE_HUES) {
-      const menu = renderMenu(hue);
-      const popup = await find('[data-slot="menu-popup"]');
-      const edit = await row("menu-item", "Edit");
-      const duplicate = await row("menu-item", "Duplicate");
-
-      await highlight(edit);
-      expectRing(edit, popup);
-      expect(ringContrast(edit, popup).fill).toBeGreaterThanOrEqual(3);
-
-      await userEvent.keyboard("{ArrowDown}");
-      await expect
-        .poll(() => duplicate.hasAttribute("data-highlighted"))
-        .toBe(true);
-      await settle(duplicate);
-      expectRing(duplicate, popup);
-
-      menu.unmount();
-    }
-  });
-
-  it("keeps the ring on a disabled Menu row the keyboard lands on", async () => {
+  it("highlights a disabled row the keyboard lands on like an enabled one", async () => {
     renderMenu();
-    const popup = await find('[data-slot="menu-popup"]');
     const edit = await row("menu-item", "Edit");
     const duplicate = await row("menu-item", "Duplicate");
 
@@ -353,19 +243,12 @@ describe.each(SCHEMES)("the highlight indicator, %s", (scheme) => {
     await expect
       .poll(() => duplicate.hasAttribute("data-highlighted"))
       .toBe(true);
-    await settle(duplicate);
 
     expect(duplicate.hasAttribute("data-disabled")).toBe(true);
+    // The same tint as the enabled row, dimmed with the row.
     expect(pick(duplicate, HIGHLIGHT)).toEqual(enabled);
-    // Seen through the row's disabled opacity, the ring still clears 3:1
-    // against the popup and against the row's own dimmed tint.
-    expectScheme(popup, scheme);
-    expectRing(duplicate, popup);
-    expect(ringContrast(duplicate, popup).fill).toBeGreaterThanOrEqual(3);
   });
-});
 
-describe("Menu row states", () => {
   it("adds no highlight when the pointer is over a disabled row", async () => {
     renderMenu();
     const disabled = await row("menu-item", "Duplicate");
@@ -373,18 +256,13 @@ describe("Menu row states", () => {
 
     // The row takes no pointer events, so Playwright's hit check is skipped.
     await userEvent.hover(disabled, { force: true });
-    // Lets any fill transition finish, so the background check below cannot
-    // pass on a transition's start value.
-    await settle(disabled);
 
     expect(style(disabled).pointerEvents).toBe("none");
     expect(disabled.hasAttribute("data-highlighted")).toBe(false);
-    // The ring has no transition, so it shows a highlight at once.
-    expect(style(disabled).outlineStyle).toBe("none");
     expect(style(disabled).backgroundColor).toBe(resting);
   });
 
-  it("marks an open submenu's trigger apart from resting and highlighted rows", async () => {
+  it("keeps the tint on an open submenu's trigger", async () => {
     renderMenu();
     const popup = await find('[data-slot="menu-popup"]');
     const edit = await row("menu-item", "Edit");
@@ -395,7 +273,6 @@ describe("Menu row states", () => {
     const resting = seen(edit);
 
     await highlight(trigger);
-    expect(style(trigger).outlineStyle).toBe("solid");
 
     // Moving into the submenu leaves the trigger open but no longer highlighted.
     await userEvent.hover(await row("menu-item", "Inbox"));
@@ -406,12 +283,9 @@ describe("Menu row states", () => {
           !trigger.hasAttribute("data-highlighted"),
       )
       .toBe(true);
-    await settle(trigger);
 
-    // It keeps the tint, which marks it against a resting row, and drops the
-    // ring, which marks it apart from the highlighted one.
+    // The tint marks the path into the submenu against a resting row.
     expect(seen(trigger)).not.toEqual(resting);
-    expect(style(trigger).outlineStyle).toBe("none");
   });
 
   it("draws the submenu chevron at the row's far edge", async () => {
