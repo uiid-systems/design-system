@@ -1,5 +1,114 @@
 # Changelog
 
+## [0.10.0](https://github.com/uiid-systems/design-system/compare/v0.9.0...v0.10.0) (2026-11-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** a Menu with RootProps.modal false no longer dims the page.
+* **ui:** apply CodeBlock's header rule, slot types and frame to CodeEditor ([#734](https://github.com/uiid-systems/design-system/issues/734))
+* **ui:** render the Menu popup and rows on Card and ListItem ([#731](https://github.com/uiid-systems/design-system/issues/731))
+* **ui:** make the CodeBlock wrap and fullscreen buttons opt-in ([#714](https://github.com/uiid-systems/design-system/issues/714))
+* **ui:** omit owned keys from the forms, card, overlay, navigation and code slot props ([#724](https://github.com/uiid-systems/design-system/issues/724))
+* **ui:** omit the keys Menu, Avatar and Progress own from their slot props ([#721](https://github.com/uiid-systems/design-system/issues/721))
+* **ui:** fullwidth is gone from Button, ToggleButton and every forms control. Pass w="full" to fill, or w={null} to release a default fill.
+* **ui:** SizingProps w and h now include null; code reading them must handle it.
+* **ui:** Card FooterProps.hideSeparator, Resizable direction, Tabs TabsItemData.render, the TabProps type and useHighlighter are removed. Use separator, orientation, content, TabsItemData, and getHighlighter() or loadLanguage(). Resizable's root attribute is now data-orientation.
+* **ui:** Table no longer writes data-striped, data-bordered or data-hover.
+* **ui:** apply the export and slot rules to tables and ai ([#699](https://github.com/uiid-systems/design-system/issues/699))
+* **ui:** export only the forms components, parts, masks and their types ([#697](https://github.com/uiid-systems/design-system/issues/697))
+* **ui:** omit the keys the forms controls own from their slot props ([#696](https://github.com/uiid-systems/design-system/issues/696))
+* **ui:** give the forms controls one FieldSlotProps type ([#694](https://github.com/uiid-systems/design-system/issues/694))
+* **ui:** export the middle layer's parts and omit owned keys from its slot props ([#692](https://github.com/uiid-systems/design-system/issues/692))
+* **ui:** apply the export and slot rules to layout, typography, buttons, interactive and markdown ([#691](https://github.com/uiid-systems/design-system/issues/691))
+* **ui:** a function className on these parts is a type error; style state through data-*
+* **ui:** apply the export rule to utils, tokens and icons ([#687](https://github.com/uiid-systems/design-system/issues/687))
+* **ui:** MaskInput takes an imported mask (mask={phoneMask}), not a string key. The useMask hook, *Pattern objects and engine props are removed.
+* **ui:** stop re-exporting @uiid/utils from the design-system root ([#677](https://github.com/uiid-systems/design-system/issues/677))
+* **ui:** require @base-ui/react 1.9 ([#674](https://github.com/uiid-systems/design-system/issues/674))
+* **ui:** Timeline and its parts are no longer exported from @uiid/indicators.
+* **ui:** remove unused public API ([#645](https://github.com/uiid-systems/design-system/issues/645))
+
+### Features
+
+* **docs:** add the nav config types and helpers ([#772](https://github.com/uiid-systems/design-system/issues/772)) ([f8b2d92](https://github.com/uiid-systems/design-system/commit/f8b2d9208653d637b4843f4136eec11e03f9bf5e))
+* **docs:** build the docs breadcrumb trail from nav.ts ([#776](https://github.com/uiid-systems/design-system/issues/776)) ([b98e91c](https://github.com/uiid-systems/design-system/commit/b98e91c1fff9175eebafae282d63f9b24716e991))
+* **docs:** fill the docs sidebar and pager from nav.ts ([#774](https://github.com/uiid-systems/design-system/issues/774)) ([ca1acd0](https://github.com/uiid-systems/design-system/commit/ca1acd06aae8fd8566c20b8d3ae3f5e1a9c815dc))
+* **docs:** render docs examples through CodePreview ([#750](https://github.com/uiid-systems/design-system/issues/750)) ([ba66712](https://github.com/uiid-systems/design-system/commit/ba6671250616795fa158fc78b6c67e7e8a4fde02))
+* **ui:** add a codeBlock override to Markdown ([#755](https://github.com/uiid-systems/design-system/issues/755)) ([e5aa3ff](https://github.com/uiid-systems/design-system/commit/e5aa3ff305cdb9162286bdad8df372f60cc3dcc5))
+* **ui:** add a horizontal CollapsiblePanel and a collapsible docs sidebar ([#655](https://github.com/uiid-systems/design-system/issues/655)) ([dc452d2](https://github.com/uiid-systems/design-system/commit/dc452d28518ea54b6bab5f56420886c82e7da7e5))
+* **ui:** add a mask prop and InputMask type to Input ([#675](https://github.com/uiid-systems/design-system/issues/675)) ([97e3bf4](https://github.com/uiid-systems/design-system/commit/97e3bf4f0d97b2c57b45b67913fb74dc7a7d8b25))
+* **ui:** add a separator entry to Menu items, with a MenuSeparator part ([#767](https://github.com/uiid-systems/design-system/issues/767)) ([2d5b017](https://github.com/uiid-systems/design-system/commit/2d5b017648ac36ed6748e571f88badcb9bf9a373))
+* **ui:** add an opt-in reset button and an error boundary to CodePreview ([#745](https://github.com/uiid-systems/design-system/issues/745)) ([e7be002](https://github.com/uiid-systems/design-system/commit/e7be002cf004d6958946e377b6fd09511a84ead4))
+* **ui:** add an unstyled option to DialogPopup ([#723](https://github.com/uiid-systems/design-system/issues/723)) ([441d01f](https://github.com/uiid-systems/design-system/commit/441d01f3f53127178b610d1dc4882b96c6fab110))
+* **ui:** add CodeBlock notations and hideLanguageIcon for opt-in chat code blocks ([#759](https://github.com/uiid-systems/design-system/issues/759)) ([6295a24](https://github.com/uiid-systems/design-system/commit/6295a247da60eaacbd2267a13a9948889859ac2c))
+* **ui:** add CodePreview, a live example with its source collapsed beneath it ([#741](https://github.com/uiid-systems/design-system/issues/741)) ([1ef4ca3](https://github.com/uiid-systems/design-system/commit/1ef4ca33ddcd0ebb071d8c258476a23161b3da42))
+* **ui:** add ContextMenu root, trigger and positioner parts ([#781](https://github.com/uiid-systems/design-system/issues/781)) ([19fba03](https://github.com/uiid-systems/design-system/commit/19fba03ce03e5e301e54a19131fe321f6960b737))
+* **ui:** add controlled state and content and expand toggle slots to CodeBlock ([#727](https://github.com/uiid-systems/design-system/issues/727)) ([531bd7a](https://github.com/uiid-systems/design-system/commit/531bd7a432d6b559e03a81a3735f3876631b1e35))
+* **ui:** add currencyMask, percentMask and numberMask ([#678](https://github.com/uiid-systems/design-system/issues/678)) ([3b40665](https://github.com/uiid-systems/design-system/commit/3b40665aa15422747d2852b5258628ad87b006ef))
+* **ui:** add description and href to Menu items, with a MenuLinkItem part ([#761](https://github.com/uiid-systems/design-system/issues/761)) ([478a7f5](https://github.com/uiid-systems/design-system/commit/478a7f50403e7b0c21632cadce7f7a7b90418a46))
+* **ui:** add Menu slots for the portal and submenu popups ([#760](https://github.com/uiid-systems/design-system/issues/760)) ([0bd3ab7](https://github.com/uiid-systems/design-system/commit/0bd3ab71a14ec20520b4b6fa8d4934f1898f2459))
+* **ui:** add MenuCheckboxItem and its indicator ([#763](https://github.com/uiid-systems/design-system/issues/763)) ([6ed8176](https://github.com/uiid-systems/design-system/commit/6ed8176315f5f14a12bc9e8204a47a04369e9351))
+* **ui:** add MenuGroup and MenuGroupLabel parts ([#757](https://github.com/uiid-systems/design-system/issues/757)) ([83f26c7](https://github.com/uiid-systems/design-system/commit/83f26c75841fa3d8535fe3f736fdcaace0fa0457))
+* **ui:** add MenuRadioGroup and MenuRadioItem parts ([#765](https://github.com/uiid-systems/design-system/issues/765)) ([25874de](https://github.com/uiid-systems/design-system/commit/25874def54440b2c03f6914b0edcccd2ed26aae1))
+* **ui:** add patternMask and rebuild the 13 fixed patterns as masks ([#681](https://github.com/uiid-systems/design-system/issues/681)) ([6b326a5](https://github.com/uiid-systems/design-system/commit/6b326a58716bbf0e2b9c20b6450cfbb305a012cf))
+* **ui:** add the ContextMenu component that takes Menu's items ([#783](https://github.com/uiid-systems/design-system/issues/783)) ([d681cbf](https://github.com/uiid-systems/design-system/commit/d681cbf6fe57a66debe44f449219b8de88f50194))
+* **ui:** apply CodeBlock's header rule, slot types and frame to CodeEditor ([#734](https://github.com/uiid-systems/design-system/issues/734)) ([5c00029](https://github.com/uiid-systems/design-system/commit/5c00029f35b216fecad14272fc66f68fce7fc78e))
+* **ui:** apply the export and slot rules to layout, typography, buttons, interactive and markdown ([#691](https://github.com/uiid-systems/design-system/issues/691)) ([fae9d28](https://github.com/uiid-systems/design-system/commit/fae9d287dcc8ee6c2101f4fafbf5a4e7bfacdd3b))
+* **ui:** apply the export and slot rules to tables and ai ([#699](https://github.com/uiid-systems/design-system/issues/699)) ([aac3614](https://github.com/uiid-systems/design-system/commit/aac3614af8bfa6cea9caaeb0d21395244d94e28a))
+* **ui:** apply the export rule to utils, tokens and icons ([#687](https://github.com/uiid-systems/design-system/issues/687)) ([d1f6bd6](https://github.com/uiid-systems/design-system/commit/d1f6bd602d8658e974e2939db759f7c2604091e7))
+* **ui:** export only the forms components, parts, masks and their types ([#697](https://github.com/uiid-systems/design-system/issues/697)) ([36b6796](https://github.com/uiid-systems/design-system/commit/36b6796d768a206d77ed6d69cf086eb1abe42886))
+* **ui:** export the code block expand toggle as a Button part ([#718](https://github.com/uiid-systems/design-system/issues/718)) ([82c86f0](https://github.com/uiid-systems/design-system/commit/82c86f068ebf63a7c5030a3617d11dd054347f35))
+* **ui:** export the middle layer's parts and omit owned keys from its slot props ([#692](https://github.com/uiid-systems/design-system/issues/692)) ([25e0404](https://github.com/uiid-systems/design-system/commit/25e04049618c7d9cd6c4fef08cb054cb587357c6))
+* **ui:** finish CodePreview's look and keep its frame's width when the code opens ([#749](https://github.com/uiid-systems/design-system/issues/749)) ([1193af4](https://github.com/uiid-systems/design-system/commit/1193af46b247cddc551a807e6478e9931a46849d))
+* **ui:** give the CodeBlock frame the editor background and shrink code text to 12px ([#729](https://github.com/uiid-systems/design-system/issues/729)) ([7101d70](https://github.com/uiid-systems/design-system/commit/7101d705fcbdac72d2c30a96d3ed48f4e02d47ac))
+* **ui:** give the forms controls one FieldSlotProps type ([#694](https://github.com/uiid-systems/design-system/issues/694)) ([3311196](https://github.com/uiid-systems/design-system/commit/3311196600d2db317a56fe49c5e791d2dbb3478d))
+* **ui:** make MaskInput a thin wrapper over Input and retire its engine ([#682](https://github.com/uiid-systems/design-system/issues/682)) ([c37fa86](https://github.com/uiid-systems/design-system/commit/c37fa868f88c4807bdaa72d25980d72b62cad319))
+* **ui:** make the CodeBlock wrap and fullscreen buttons opt-in ([#714](https://github.com/uiid-systems/design-system/issues/714)) ([59a6d6a](https://github.com/uiid-systems/design-system/commit/59a6d6aa085ff5a5e7715d832d5a3911f3af75e8))
+* **ui:** omit the keys the forms controls own from their slot props ([#696](https://github.com/uiid-systems/design-system/issues/696)) ([aba9fa5](https://github.com/uiid-systems/design-system/commit/aba9fa55819abcfa29dacb45526c7e6ad47d21a6))
+* **ui:** render CodeBlock fullscreen through the UIID Dialog ([#726](https://github.com/uiid-systems/design-system/issues/726)) ([64d4814](https://github.com/uiid-systems/design-system/commit/64d481430af469bccc81c16017955ed02eac638c))
+* **ui:** render Menu submenus at any depth ([#758](https://github.com/uiid-systems/design-system/issues/758)) ([7e70acf](https://github.com/uiid-systems/design-system/commit/7e70acf47f0c1bfe0ec5c945cdb7cb6db0b6f7bb))
+* **ui:** render the CodeBlock header from its content and tighten the frame ([#722](https://github.com/uiid-systems/design-system/issues/722)) ([f4daff4](https://github.com/uiid-systems/design-system/commit/f4daff4b3e11005b7ff45f443f428aa9594c0729))
+* **ui:** render the Menu popup and rows on Card and ListItem ([#731](https://github.com/uiid-systems/design-system/issues/731)) ([cd868eb](https://github.com/uiid-systems/design-system/commit/cd868ebdcc1945d5266c9f4a76251e01d15a2b23))
+* **ui:** stop re-exporting @uiid/utils from the design-system root ([#677](https://github.com/uiid-systems/design-system/issues/677)) ([190ae91](https://github.com/uiid-systems/design-system/commit/190ae91b00418ff7265a4be372a36a4f7185e964))
+* **ui:** style every Menu row state from tokens ([#738](https://github.com/uiid-systems/design-system/issues/738)) ([9ec6d17](https://github.com/uiid-systems/design-system/commit/9ec6d179666e46d852c68d0e1d78fb5c89b5ad7b))
+
+
+### Bug Fixes
+
+* **storybook:** load token CSS once in Storybook dev ([#661](https://github.com/uiid-systems/design-system/issues/661)) ([73eda0a](https://github.com/uiid-systems/design-system/commit/73eda0a4f4fae20e483be3f4e5f6aff22a09ba93))
+* **ui:** color plain code with the code theme's default foreground ([#748](https://github.com/uiid-systems/design-system/issues/748)) ([56be953](https://github.com/uiid-systems/design-system/commit/56be953a6a998a1aa71a8037f963dbd522b2325e))
+* **ui:** draw Menu's backdrop only when the menu is modal ([#756](https://github.com/uiid-systems/design-system/issues/756)) ([d4b8ec6](https://github.com/uiid-systems/design-system/commit/d4b8ec675d0695fe905b70ca4057b604ec334093))
+* **ui:** give Button's tooltip the same border and shadow as Tooltip ([#773](https://github.com/uiid-systems/design-system/issues/773)) ([ba9094b](https://github.com/uiid-systems/design-system/commit/ba9094b326f75019b904b939a1230677adec491c))
+* **ui:** give Menu the shared row highlight and switch popup row highlights at once ([#754](https://github.com/uiid-systems/design-system/issues/754)) ([6629da0](https://github.com/uiid-systems/design-system/commit/6629da02b696fd032c697590478dd02d61a05382))
+* **ui:** harden CodeInline wrapping and markup extraction in prose ([#719](https://github.com/uiid-systems/design-system/issues/719)) ([a50bf1a](https://github.com/uiid-systems/design-system/commit/a50bf1a5f3903ffbdf726b0666e5f4c8d6f74f14))
+* **ui:** hold back a streaming code block's closing fence and space code nested in lists and quotes ([#766](https://github.com/uiid-systems/design-system/issues/766)) ([29ccc4b](https://github.com/uiid-systems/design-system/commit/29ccc4b3da1dcddd47bd47c2ae30948f5448bd92))
+* **ui:** keep a CodeBlock inside a Card or Collapsible to the width it has ([#742](https://github.com/uiid-systems/design-system/issues/742)) ([e10cb82](https://github.com/uiid-systems/design-system/commit/e10cb82fa5e2665fe4f9829393006428b54ab3f6))
+* **ui:** keep CodeEditor's highlight layer aligned and in step with its textarea ([#743](https://github.com/uiid-systems/design-system/issues/743)) ([1665084](https://github.com/uiid-systems/design-system/commit/166508403ca2c3cba8173e7298442a2f74275c8e))
+* **ui:** keep the CodeBlock fallback in place when highlighting lands ([#732](https://github.com/uiid-systems/design-system/issues/732)) ([5ed27e2](https://github.com/uiid-systems/design-system/commit/5ed27e2464d25619f3fdde2e79ba15823a0d0770))
+* **ui:** leave the full keyboard on number masks that accept negatives ([#689](https://github.com/uiid-systems/design-system/issues/689)) ([41c91e1](https://github.com/uiid-systems/design-system/commit/41c91e1b3f062b5362ba36e5a66fefa54455afae))
+* **ui:** make overflowing CodeBlock code keyboard scrollable and fix trailing newlines and failed highlights ([#737](https://github.com/uiid-systems/design-system/issues/737)) ([a210ced](https://github.com/uiid-systems/design-system/commit/a210cedbb419500ad86a14745e59ec64e9466768))
+* **ui:** require @base-ui/react 1.9 ([#674](https://github.com/uiid-systems/design-system/issues/674)) ([2f68ce3](https://github.com/uiid-systems/design-system/commit/2f68ce304d6fccaf5846f036b826428a40e014d5))
+* **ui:** return focus to the CodeBlock fullscreen toggle when nothing had focus at open ([#733](https://github.com/uiid-systems/design-system/issues/733)) ([bf58322](https://github.com/uiid-systems/design-system/commit/bf5832215d49a2af7c9cb11708f2a20de040b76d))
+* **ui:** run one highlight at a time in useHighlight and skip stale values ([#720](https://github.com/uiid-systems/design-system/issues/720)) ([8ed648a](https://github.com/uiid-systems/design-system/commit/8ed648a8a169d0f6fdac7178de2ca5f0f170806d))
+* **ui:** ship the root LICENSE in the @uiid/forms tarball ([#685](https://github.com/uiid-systems/design-system/issues/685)) ([ae9ce29](https://github.com/uiid-systems/design-system/commit/ae9ce29791cbb2d2324fabc7409ba048c9c9398a))
+* **ui:** show every character of a streaming CodeBlock as it arrives ([#740](https://github.com/uiid-systems/design-system/issues/740)) ([4146919](https://github.com/uiid-systems/design-system/commit/4146919804c15d840a667a3e8a5f0ef62c820ec5))
+* **ui:** stop treating title as the spinner's accessible name ([#660](https://github.com/uiid-systems/design-system/issues/660)) ([8f80a93](https://github.com/uiid-systems/design-system/commit/8f80a9364f901ecaaa4768da6f27f92fb8fddc0c))
+* **ui:** wrap CodeBlock lines with line numbers as one line and prove long lines stay contained ([#735](https://github.com/uiid-systems/design-system/issues/735)) ([a45184c](https://github.com/uiid-systems/design-system/commit/a45184c0447f7b3b155b6c8d443bfe3c04b23c03))
+
+
+### Code Refactoring
+
+* **ui:** move Table's row style flags into tableVariants ([#703](https://github.com/uiid-systems/design-system/issues/703)) ([74a147a](https://github.com/uiid-systems/design-system/commit/74a147a62d14fbcb7c40c2b94f5ac7f259a8cdab))
+* **ui:** omit owned keys from the forms, card, overlay, navigation and code slot props ([#724](https://github.com/uiid-systems/design-system/issues/724)) ([cd175bc](https://github.com/uiid-systems/design-system/commit/cd175bcda9a4736a9ecb4a596da2c57703ebf3ba))
+* **ui:** omit the keys Menu, Avatar and Progress own from their slot props ([#721](https://github.com/uiid-systems/design-system/issues/721)) ([5230762](https://github.com/uiid-systems/design-system/commit/5230762745292ea20f516cc785ff3b98613917e5))
+* **ui:** remove cxState and type Base UI part className as a string ([#688](https://github.com/uiid-systems/design-system/issues/688)) ([cbd6e16](https://github.com/uiid-systems/design-system/commit/cbd6e16672f6b2848920ac6860ad79683eaf7faa))
+* **ui:** remove the remaining deprecated APIs ([#704](https://github.com/uiid-systems/design-system/issues/704)) ([61bcfb0](https://github.com/uiid-systems/design-system/commit/61bcfb010401ba1120824aba5b7383a1ccc5e691))
+* **ui:** remove the Timeline component ([#662](https://github.com/uiid-systems/design-system/issues/662)) ([393a29a](https://github.com/uiid-systems/design-system/commit/393a29a9546ca9b052118abd9bf9a4a3f13ed3e5))
+* **ui:** remove unused public API ([#645](https://github.com/uiid-systems/design-system/issues/645)) ([7f722d7](https://github.com/uiid-systems/design-system/commit/7f722d77f26563b9625bd0d61493bb9d2e7a1e1b))
+* **ui:** replace fullwidth with w and delete the toggle ([#710](https://github.com/uiid-systems/design-system/issues/710)) ([0a941a4](https://github.com/uiid-systems/design-system/commit/0a941a4f037d3ddeb605910e8149c88c30a78f07))
+* **ui:** replace fullwidth with w="full" in the lower layers ([#705](https://github.com/uiid-systems/design-system/issues/705)) ([dba2156](https://github.com/uiid-systems/design-system/commit/dba21564c63703cd9eda89dcb697fcff767b9761))
+
 ## [0.9.0](https://github.com/uiid-systems/design-system/compare/v0.8.0...v0.9.0) (2026-11-19)
 
 

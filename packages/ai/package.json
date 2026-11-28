@@ -1,6 +1,6 @@
 {
   "name": "@uiid/ai",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "private": true,
   "description": "AI chat components — Conversation, Message, PromptInput, Reasoning, Suggestion, Tool",
   "license": "MIT",
