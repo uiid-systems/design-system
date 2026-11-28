@@ -131,11 +131,15 @@ function isProtected(path: string): boolean {
 /** A valid npm package name, scoped or not, that cannot be read as a flag. */
 const PACKAGE_NAME = /^(?:@[a-z0-9~][a-z0-9._~-]*\/)?[a-z0-9~][a-z0-9._~-]*$/;
 /**
- * A version range with no whitespace and no shell metacharacter. `*` is
- * allowed for `workspace:*`; no shell ever reads it. Ranges with `<`, `>`,
- * `|` or a space, such as `>=1 <2`, are refused.
+ * The only ranges add passes on: a plain semver version or range with no
+ * protocol (an optional `^` or `~`, one to three numbers joined by dots, an
+ * optional prerelease), or `workspace:` followed by `*`, `^` or `~`. Anything
+ * else, such as a dist-tag, a URL, `git+…`, `github:`, `file:`, `link:`, an
+ * `npm:` alias or a comparator range, could install other code under the
+ * dependency's name, so it is refused.
  */
-const RANGE = /^[A-Za-z0-9.^~*:+=/@_-]+$/;
+const RANGE =
+  /^(?:[\^~]?\d+(?:\.\d+){0,2}(?:-[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)*)?|workspace:[*^~])$/;
 
 /** An argument printed for a person to paste, quoted when it holds more than plain characters. */
 const shellWord = (arg: string) =>
@@ -226,7 +230,10 @@ function workspacePatterns(yaml: string): string[] {
  * `pnpm-workspace.yaml`. Patterns are matched segment by segment, with `*`
  * standing for one segment; `!` patterns exclude.
  */
-function workspaceRootOf(target: string, repoRoot: string): string | undefined {
+export function workspaceRootOf(
+  target: string,
+  repoRoot: string,
+): string | undefined {
   let repo: string;
   let yaml: string;
   try {
@@ -257,14 +264,38 @@ function workspaceRootOf(target: string, repoRoot: string): string | undefined {
   return included && !excluded ? repo : undefined;
 }
 
-/** A check that may throw from `recipes.ts`, turned into one sentence. */
-function checked<T>(check: () => T): T {
+/**
+ * An error as text that is safe to print: a file system error becomes its
+ * code and its path through `JSON.stringify`, never Node's message, which
+ * quotes the path raw. The errors `recipes.ts` throws already stringify
+ * every path, so their message is kept.
+ */
+function describe(error: unknown): string {
+  const { code, path } = (error ?? {}) as { code?: unknown; path?: unknown };
+  if (typeof code === "string") {
+    return typeof path === "string" ? `${code} at ${q(path)}` : code;
+  }
+  return error instanceof Error ? error.message : q(String(error));
+}
+
+/** A check on the app from `recipes.ts`, such as a symlink, turned into one sentence. */
+function checkedApp<T>(check: () => T): T {
   try {
     return check();
   } catch (error) {
-    if (error instanceof Refusal) throw error;
     throw new Refusal(
-      `${(error as Error).message}, so add wrote nothing: replace it with a real directory or file, then run add again.`,
+      `${describe(error)}, so add wrote nothing: replace it with a real directory or file, then run add again.`,
+    );
+  }
+}
+
+/** A check on the recipe's own files from `recipes.ts`, turned into one sentence. */
+function checkedRecipe<T>(check: () => T): T {
+  try {
+    return check();
+  } catch (error) {
+    throw new Refusal(
+      `${describe(error)}, so add wrote nothing: fix the recipe's files/ directory.`,
     );
   }
 }
@@ -304,7 +335,6 @@ function readManifest(recipeDir: string) {
       name.length > 214 ||
       !PACKAGE_NAME.test(name) ||
       typeof range !== "string" ||
-      range.startsWith("-") ||
       !RANGE.test(range)
     ) {
       throw new Refusal(
@@ -340,6 +370,13 @@ function planAdd(
 
   // The app.
   const at = q(root);
+  for (const name of ["package.json", "app", "tsconfig.json"]) {
+    if (lstatSync(join(root, name), NO_THROW)?.isSymbolicLink()) {
+      throw new Refusal(
+        `${q(name)} in ${at} is a symlink, which add does not follow: replace it with the real ${name === "app" ? "directory" : "file"}, then run add again.`,
+      );
+    }
+  }
   const packagePath = join(root, "package.json");
   if (!lstatSync(packagePath, NO_THROW)?.isFile()) {
     throw new Refusal(
@@ -399,16 +436,26 @@ function planAdd(
       `The tsconfig.json in ${at} has no "@/*" path whose first target is "./*": add "paths": { "@/*": ["./*"] } to its compilerOptions, then run add again.`,
     );
   }
+  // `paths` resolve from `baseUrl` when it is set, so it must be the root.
+  const baseUrl = isRecord(options) ? options.baseUrl : undefined;
+  if (
+    baseUrl !== undefined &&
+    (typeof baseUrl !== "string" || resolve(root, baseUrl) !== root)
+  ) {
+    throw new Refusal(
+      `The tsconfig.json in ${at} sets baseUrl to ${JSON.stringify(baseUrl)}, so "@/*" does not resolve from the app root: remove baseUrl or set it to ".", then run add again.`,
+    );
+  }
 
   // The recipe.
   const recipeDir = join(recipesRoot, recipe);
   const filesDir = join(recipeDir, "files");
   const templatesDir = join(recipeDir, "templates");
   const manifest = readManifest(recipeDir);
-  const sources = checked(() => listRecipeFiles(filesDir));
+  const sources = checkedRecipe(() => listRecipeFiles(filesDir));
 
-  const destinations = new Map<string, string>();
-  const claim = (dest: string) => {
+  const destinations = new Set<string>();
+  const claim = (dest: string, from: "files" | "templates") => {
     if (isProtected(dest)) {
       throw new Refusal(
         `The recipe would write ${q(dest)}, which add never writes: remove it from the recipe.`,
@@ -417,14 +464,23 @@ function planAdd(
     const key = dest.toLowerCase();
     if (destinations.has(key)) {
       throw new Refusal(
-        `The recipe's manifest maps more than one file to ${q(dest)}: ${RECIPE_FIX}`,
+        from === "files"
+          ? `The recipe's files/ holds more than one file named ${q(dest)} when case is ignored: rename or remove one in the recipe.`
+          : `The recipe's manifest maps more than one file to ${q(dest)}: ${RECIPE_FIX}`,
       );
     }
-    destinations.set(key, dest);
+    destinations.add(key);
   };
   for (const file of sources) {
-    checked(() => checkRelativePath(file));
-    claim(file);
+    checkedRecipe(() => checkRelativePath(file));
+    claim(file, "files");
+    // A file at the app root could be package-manager config, read by the
+    // install that runs next. Recipe files always live in a directory.
+    if (!file.includes("/")) {
+      throw new Refusal(
+        `The recipe would write ${q(file)} directly at the app root, which add never does: move it into a directory in the recipe's files/.`,
+      );
+    }
   }
   for (const [key, dest] of manifest.templates) {
     try {
@@ -444,7 +500,7 @@ function planAdd(
         `The recipe's manifest maps ${q(key)} to ${q(dest)}, which is not a plain relative path inside the app: ${RECIPE_FIX}`,
       );
     }
-    claim(dest);
+    claim(dest, "templates");
   }
   const navDest = manifest.templates.find(([key]) => key === "nav.ts")?.[1];
   if (navDest === undefined) {
@@ -462,14 +518,20 @@ function planAdd(
   const blocked = new Set<string>();
   const files: Plan["files"] = [];
   for (const file of sources) {
-    const target = checked(() => safeTarget(root, file));
+    // Below a file, lstat throws ENOTDIR, so the directories on the way are
+    // checked from the top first. A symlink is left to safeTarget to refuse.
     const segments = file.split("/");
     for (let k = 1; k < segments.length; k++) {
       const dir = segments.slice(0, k).join("/");
-      if (exists(join(root, dir)) && !isDirectory(join(root, dir))) {
-        blocked.add(dir);
+      const stat = lstatSync(join(root, dir), NO_THROW);
+      if (!stat || stat.isSymbolicLink()) break;
+      if (!stat.isDirectory()) {
+        throw new Refusal(
+          `${q(dir)} in ${at} is a file where the recipe needs a directory: move or rename it, then run add again.`,
+        );
       }
     }
+    const target = checkedApp(() => safeTarget(root, file));
     if (exists(target)) blocked.add(file);
     files.push([join(filesDir, file), target, file]);
   }
@@ -478,10 +540,15 @@ function planAdd(
       `These files already exist, so add wrote nothing: ${[...blocked].sort().map(q).join(", ")}; move or delete them, then run add again.`,
     );
   }
-  const navTarget = checked(() => safeTarget(root, "nav.ts", { leaf: false }));
+  const navTarget = checkedApp(() =>
+    safeTarget(root, "nav.ts", { leaf: false }),
+  );
   const nav: Plan["nav"] = exists(navTarget)
     ? undefined
-    : [join(templatesDir, "nav.ts"), checked(() => safeTarget(root, "nav.ts"))];
+    : [
+        join(templatesDir, "nav.ts"),
+        checkedApp(() => safeTarget(root, "nav.ts")),
+      ];
 
   // The install.
   if (manifest.deps.length === 0)
@@ -496,7 +563,7 @@ function planAdd(
         ? unpublished[0]
         : `${unpublished.slice(0, -1).join(", ")} and ${unpublished[unpublished.length - 1]}`;
     throw new Refusal(
-      `The recipe's manifest has no published range yet for ${names}, only a workspace: range that resolves inside the UIID repository alone, so add cannot install ${unpublished.length === 1 ? "it" : "them"} here.`,
+      `The recipe's manifest has no published range yet for ${names}, only a workspace: range that resolves inside the UIID repository alone, so add cannot install ${unpublished.length === 1 ? "it" : "them"} here: run add in an app inside the UIID repository's workspace until the recipe has a published range.`,
     );
   }
   // A workspace member has no lockfile of its own: it is the workspace's.
@@ -578,7 +645,7 @@ function parseArgs(argv: string[]): Parsed {
   }
   if (rest.length > 0) {
     throw new Refusal(
-      `Unexpected argument ${q(rest[0])}: add takes one recipe.`,
+      `Unexpected argument ${q(rest[0])}: add takes one recipe, so pass uiid-recipes add <recipe> and nothing more.`,
     );
   }
   return { help: false, recipe, cwd, dryRun };
@@ -617,7 +684,7 @@ export function runCli(argv: string[], io: CliIo): number {
     io.error(
       error instanceof Refusal
         ? error.message
-        : `add stopped before writing anything, because ${(error as Error).message}: fix that, then run add again.`,
+        : `add stopped before writing anything, because of ${describe(error)}: fix that, then run add again.`,
     );
     return 1;
   }
@@ -639,20 +706,28 @@ export function runCli(argv: string[], io: CliIo): number {
 
   // Exclusive creates: a file that appeared since the checks stops the copy
   // instead of being replaced.
-  const writes: [string, string, string][] = [...plan.files];
-  if (plan.nav) writes.push([...plan.nav, "nav.ts"]);
-  for (const [source, target, file] of writes) {
+  const writes: [string, string][] = plan.files.map(([source, , file]) => [
+    source,
+    file,
+  ]);
+  if (plan.nav) writes.push([plan.nav[0], "nav.ts"]);
+  for (const [source, file] of writes) {
     try {
-      copyFiles([[source, target]], { exclusive: true });
+      // Checked again right before the write, so a directory on the way that
+      // became a symlink since planning is refused, not followed.
+      copyFiles([[source, safeTarget(plan.root, file)]], { exclusive: true });
     } catch (error) {
       io.error(
-        `add stopped while writing ${show(file)} (${(error as Error).message}): the files listed as wrote are in place, so delete them or finish by hand.`,
+        `add stopped while writing ${show(file)} (${describe(error)}): the files listed as wrote are in place, so delete them or finish by hand.`,
       );
       return 1;
     }
     io.log(`  wrote    ${show(file)}`);
   }
   if (!plan.nav) io.log(`  kept     "nav.ts"`);
+
+  // Before the install, so a failed install still shows it.
+  io.log(`\n${LAYOUT_WIRING}\n`);
 
   if (plan.install && commandLine) {
     io.log(`  running  ${commandLine}`);
@@ -669,7 +744,6 @@ export function runCli(argv: string[], io: CliIo): number {
       return 1;
     }
   }
-  io.log(`\nuiid-recipes add: added the recipe to ${q(plan.root)}\n`);
-  io.log(LAYOUT_WIRING);
+  io.log(`uiid-recipes add: added the recipe to ${q(plan.root)}`);
   return 0;
 }
