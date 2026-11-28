@@ -725,6 +725,34 @@ describe("add refuses a recipe it cannot trust, writing nothing", () => {
     files: Record<string, string> = FILES,
   ) => refuse(makeApp(), { recipesRoot: makeRecipes(manifest, files) });
 
+  // Package-manager config a template could plant where the install that
+  // follows reads it. Only nav.ts may land at the app root.
+  it.each([
+    ".pnpmfile.cjs",
+    "pnpm-workspace.yaml",
+    "bunfig.toml",
+    ".yarnrc.yml",
+  ])("with a template destination of %j at the app root", (dest) => {
+    expect(
+      manifestRefusal({
+        ...MANIFEST,
+        templates: { ...MANIFEST.templates, "app/layout.tsx": dest },
+      }),
+    ).toBe(
+      `The recipe's manifest maps the template "app/layout.tsx" to ${JSON.stringify(dest)} at the app root, where only "nav.ts" may go: fix the recipe's recipe.json.`,
+    );
+  });
+
+  it("reads the recipe before the app, so a broken recipe is named first", () => {
+    const recipes = makeRecipes();
+    writeFileSync(join(recipes, "app-shell/recipe.json"), "{ nope");
+    const files: Record<string, string> = { ...APP };
+    delete files["package.json"];
+    expect(refuse(makeApp(files), { recipesRoot: recipes })).toBe(
+      `The recipe's manifest is not valid JSON: fix the recipe's recipe.json.`,
+    );
+  });
+
   it.each([
     ["package.json", "package.json"],
     ["a nested package.json", "components/x/package.json"],
@@ -1067,6 +1095,18 @@ describe("the bin", () => {
     expect(result.stdout).toBe("");
     expect(result.stderr).toMatch(
       /^There is no recipe named "no-such-recipe": choose one of [^\n]*\.\n$/,
+    );
+  });
+
+  // The bin uses the real runner, so no bin test may ever reach the
+  // scaffold: this one stops at the directory-name check, before the recipe
+  // is read and before anything runs.
+  it("routes create, exiting 1 with one line on stderr for a directory name it refuses", () => {
+    const result = runBin(["create", "Not A Name"]);
+    expect(result.status).toBe(1);
+    expect(result.stdout).toBe("");
+    expect(result.stderr).toMatch(
+      /^The directory name "Not A Name" is not one create-next-app accepts as a package name: [^\n]*\.\n$/,
     );
   });
 });

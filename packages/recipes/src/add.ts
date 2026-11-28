@@ -20,6 +20,7 @@ import {
   readFileSync,
   realpathSync,
   statSync,
+  unlinkSync,
 } from "node:fs";
 import { isAbsolute, join, posix, relative, resolve, sep } from "node:path";
 
@@ -446,6 +447,14 @@ export function readRecipe(
       );
     }
     claim(dest, "templates");
+    // As for files/: a file at the app root could be package-manager config,
+    // read by the install that runs next. The one template allowed there is
+    // the starter nav.ts.
+    if (!dest.includes("/") && dest !== "nav.ts") {
+      throw new Refusal(
+        `The recipe's manifest maps the template ${q(key)} to ${q(dest)} at the app root, where only "nav.ts" may go: ${RECIPE_FIX}`,
+      );
+    }
   }
   return {
     filesDir,
@@ -459,9 +468,10 @@ export function readRecipe(
 /**
  * The checks that make `root` an app the recipe fits: a Next.js App Router
  * app with TypeScript, the `@/*` alias and no `baseUrl` elsewhere. Throws a
- * `Refusal`; reads only.
+ * `Refusal`; reads only. Returns the parsed `package.json`, which a caller
+ * may check further without reading the file again.
  */
-export function checkApp(root: string, cmd: Command): void {
+export function checkApp(root: string, cmd: Command): unknown {
   const at = q(root);
   for (const name of ["package.json", "app", "tsconfig.json"]) {
     if (lstatSync(join(root, name), NO_THROW)?.isSymbolicLink()) {
@@ -550,6 +560,7 @@ export function checkApp(root: string, cmd: Command): void {
       `remove baseUrl or set it to ".", then run ${cmd} again`,
     );
   }
+  return pkg;
 }
 
 /**
@@ -691,10 +702,11 @@ export const commandLine = ({ command, args }: Install) =>
 /**
  * Writes each file into `root` and logs it. A new file is created
  * exclusively, so one that appeared since the checks stops the copy instead
- * of being replaced; a file in `replace` is overwritten, and must still be a
- * regular file. Each target is checked again right before its write, so a
- * directory on the way that became a symlink since planning is refused, not
- * followed. Returns the write that failed, or undefined.
+ * of being replaced. A file in `replace` must still be a regular file; it is
+ * unlinked and then created exclusively too, so the new file is a new inode.
+ * Each target is checked again right before its write, so a directory on the
+ * way that became a symlink since planning is refused, not followed. Returns
+ * the write that failed, or undefined.
  */
 export function writeFiles(
   root: string,
@@ -706,10 +718,15 @@ export function writeFiles(
     const replacing = replace.has(file);
     try {
       const target = safeTarget(root, file);
-      if (replacing && !lstatSync(target, NO_THROW)?.isFile()) {
-        throw new Error(`${q(target)} is no longer a regular file`);
+      if (replacing) {
+        if (!lstatSync(target, NO_THROW)?.isFile()) {
+          throw new Error(`${q(target)} is no longer a regular file`);
+        }
+        // A new file, not a write into the old one, which may be hard-linked
+        // elsewhere; created exclusively like every other write.
+        unlinkSync(target);
       }
-      copyFiles([[source, target]], { exclusive: !replacing });
+      copyFiles([[source, target]], { exclusive: true });
     } catch (error) {
       return { file, error };
     }

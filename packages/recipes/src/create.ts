@@ -13,13 +13,7 @@
  * `files/` and every template, each created exclusively, except the three
  * files in `REPLACED`, which must exist as regular files and are overwritten.
  */
-import {
-  lstatSync,
-  readdirSync,
-  readFileSync,
-  realpathSync,
-  statSync,
-} from "node:fs";
+import { lstatSync, readdirSync, realpathSync, statSync } from "node:fs";
 import { builtinModules } from "node:module";
 import { basename, dirname, join, resolve } from "node:path";
 
@@ -55,8 +49,8 @@ export const CREATE_NEXT_APP = "create-next-app@16";
 /**
  * create-next-app 16's options, from its own source at v16.4.6
  * (`packages/create-next-app/index.ts`) and the Next.js docs page for the
- * CLI. Every choice is explicit, because `--yes` fills an option that is not
- * passed from the preferences a person saved on an earlier run.
+ * CLI. Every option is passed explicitly, so no default or saved preference
+ * decides it.
  */
 export const SCAFFOLD_FLAGS = [
   // Never prompt; with a directory argument nothing else asks.
@@ -214,25 +208,37 @@ function planCreate(
   };
 }
 
-/** Refuses an app that depends on Tailwind or has a PostCSS config. */
-function checkNoTailwind(root: string): void {
-  const pkg: unknown = JSON.parse(
-    readFileSync(join(root, "package.json"), "utf8"),
-  );
+/**
+ * Refuses an app that depends on Tailwind or has a PostCSS config in any
+ * place Next.js reads one: `postcss.config.*`, `.postcssrc`, `.postcssrc.*`
+ * or a `postcss` key in `package.json`, whose parsed contents are `pkg`.
+ */
+function checkNoTailwind(root: string, pkg: unknown): void {
   const tailwind = ["dependencies", "devDependencies"]
     .flatMap((field) =>
       isRecord(pkg) && isRecord(pkg[field]) ? Object.keys(pkg[field]) : [],
     )
     .filter((dep) => dep === "tailwindcss" || dep.startsWith("@tailwindcss/"));
-  const postcss = readdirSync(root)
-    .filter((entry) => entry.startsWith("postcss.config."))
-    .sort();
+  const postcss = [
+    ...readdirSync(root)
+      .filter(
+        (entry) =>
+          entry.startsWith("postcss.config.") ||
+          entry === ".postcssrc" ||
+          entry.startsWith(".postcssrc."),
+      )
+      .sort()
+      .map(q),
+    ...(isRecord(pkg) && "postcss" in pkg
+      ? [`the "postcss" key in package.json`]
+      : []),
+  ];
   const problems = [
     ...(tailwind.length > 0
       ? [`it depends on Tailwind (${tailwind.map(q).join(", ")})`]
       : []),
     ...(postcss.length > 0
-      ? [`it has a PostCSS config (${postcss.map(q).join(", ")})`]
+      ? [`it has a PostCSS config (${postcss.join(", ")})`]
       : []),
   ];
   if (problems.length > 0) {
@@ -250,8 +256,7 @@ function checkScaffold(plan: Plan): {
   install: Install | undefined;
 } {
   const { root, recipe, workspace, writes } = plan;
-  checkApp(root, "create");
-  checkNoTailwind(root);
+  checkNoTailwind(root, checkApp(root, "create"));
   checkNewFiles(
     root,
     writes.filter(({ file }) => !REPLACED.has(file)),

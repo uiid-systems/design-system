@@ -38,7 +38,7 @@ The helpers' unit tests for `lib/nav.ts` live in `src/nav.test.ts`, not beside t
 
 `uiid-recipes` has two commands. `add <recipe>` copies a recipe into a Next.js app that already exists. `create <dir>` makes a new Next.js app and puts the app shell in it. Both do the same thing every time, with no prompts, and every failure exits 1 with one sentence on stderr saying what failed and what to do.
 
-The command is the package's `bin`, `src/cli.mjs`, which only hands the command line to `runCli` in `src/cli.ts`; the commands themselves are `src/add.ts` and `src/create.ts`. Node runs that TypeScript by stripping its types, so there is no build, but it needs Node 22.18 or later (or 23.6 or later), where type stripping is on by default. Node does not strip types under `node_modules`, so until the package is published from its own repo, run it from a checkout of this repo:
+The command is the package's `bin`, `src/cli.mjs`, which only hands the command line to `runCli` in `src/cli.ts`; the commands themselves are `src/add.ts` and `src/create.ts`. Node runs that TypeScript by stripping its types, so there is no build, but it needs Node 22.18 or later (or 23.6 or later), where type stripping is on by default. Both commands also need a POSIX environment such as macOS or Linux: nothing is started through a shell, so on Windows `npx` and the package managers cannot start. Node does not strip types under `node_modules`, so until the package is published from its own repo, run it from a checkout of this repo:
 
 ```sh
 node packages/recipes/src/cli.mjs add app-shell --cwd ../my-app
@@ -105,7 +105,7 @@ The lockfile is looked for at the app's root: `pnpm-lock.yaml`, `package-lock.js
 
 ### What it refuses in a recipe
 
-`add` treats `recipe.json` as data. It refuses, before writing, a recipe whose `files/` is empty, missing or holds a non-regular file; a manifest that is not JSON; a template key that is not a regular file inside `templates/`; a destination, from `files/` or a template, that is not a plain relative path (an empty, `.` or `..` segment, a backslash, a drive letter or NUL) or that would write `package.json`, a lockfile, `tsconfig.json`, `next.config.*`, `.npmrc`, any `.env*`, or anything under `.git/` or `node_modules/`, all matched ignoring case; any file directly under `files/`, since a file at the app root could be package-manager config such as `bunfig.toml` or `pnpm-workspace.yaml`, read by the install that follows; two destinations that are the same, ignoring case; no `nav.ts` template, or one mapped anywhere but `nav.ts`; and a dependency whose name is not a valid npm package name or whose range is not one of two shapes.
+`add` treats `recipe.json` as data. It refuses, before writing, a recipe whose `files/` is empty, missing or holds a non-regular file; a manifest that is not JSON; a template key that is not a regular file inside `templates/`; a destination, from `files/` or a template, that is not a plain relative path (an empty, `.` or `..` segment, a backslash, a drive letter or NUL) or that would write `package.json`, a lockfile, `tsconfig.json`, `next.config.*`, `.npmrc`, any `.env*`, or anything under `.git/` or `node_modules/`, all matched ignoring case; any file directly under `files/`, since a file at the app root could be package-manager config such as `bunfig.toml` or `pnpm-workspace.yaml`, read by the install that follows; a template destination at the app root other than `nav.ts`, for the same reason; two destinations that are the same, ignoring case; no `nav.ts` template, or one mapped anywhere but `nav.ts`; and a dependency whose name is not a valid npm package name or whose range is not one of two shapes.
 
 The two range shapes are a plain semver version or range with no protocol, which is an optional `^` or `~`, one to three numbers joined by dots and an optional prerelease (`1.2.3`, `^3.0.2`, `~1.2`, `^2.0.0-rc.1`), and `workspace:*`, `workspace:^` or `workspace:~`. Everything else is refused, because it could install other code under the dependency's name: dist-tags such as `latest`, URLs, `git+…`, `github:`, `file:`, `link:`, `npm:` aliases, comparator ranges such as `>=1 <2`, `1.x`, `*` and build metadata.
 
@@ -118,9 +118,9 @@ The two range shapes are a plain semver version or range with no protocol, which
 ### What it does
 
 1. Checks everything that can be checked before anything runs: the directory, its name, the recipe and its manifest, and the dependency ranges, as listed below. A refusal runs nothing and creates nothing.
-2. Scaffolds the app with `create-next-app@16`, pinned to the major of `next` the recipe is built on (the docs app's), with no shell: `npx --yes create-next-app@16 <name> --yes --ts --app --no-src-dir --no-tailwind --import-alias @/* --no-linter --no-react-compiler --no-cache-components --agents-md --no-agent-feedback --use-npm`, run in the directory's parent. Every option is given, because `--yes` would otherwise take an option that is not passed from preferences saved on an earlier run. npm is used because it ships with Node. For a member of this repo's workspace, `--skip-install` is added, because the workspace's package manager installs the app in step 5.
-3. Treats what the scaffold made as untrusted and checks it again with every check `add` makes on an app (`package.json` lists `next`, `app/` at the root, the `@/*` alias, `baseUrl`, one lockfile), then checks that the app has no `tailwindcss` or `@tailwindcss/*` in `dependencies` or `devDependencies` and no `postcss.config.*`, that no recipe file, `nav.ts` or starter page exists yet, and that `app/layout.tsx`, `app/globals.css` and `app/page.tsx` are regular files.
-4. Copies every file under `files/` and writes every template to its destination, as `add` copies, each created exclusively and each target checked for symlinks again right before it is written. Exactly three files are replaced rather than created, and only these, fixed in `src/create.ts`: `app/layout.tsx`, `app/globals.css` and `app/page.tsx`, with the starter layout, stylesheet and home page. Since the layout is the starter's, nothing is printed to wire by hand.
+2. Scaffolds the app with `create-next-app@16`, pinned to the major of `next` the recipe is built on (the docs app's), with no shell: `npx --yes create-next-app@16 <name> --yes --ts --app --no-src-dir --no-tailwind --import-alias '@/*' --no-linter --no-react-compiler --no-cache-components --agents-md --no-agent-feedback --use-npm`, run in the directory's parent. Every option is passed explicitly, so no default or saved preference decides it. npm is used because it ships with Node. For a member of this repo's workspace, `--skip-install` is added, because the workspace's package manager installs the app in step 5.
+3. Treats what the scaffold made as untrusted and checks it again with every check `add` makes on an app (`package.json` lists `next`, `app/` at the root, the `@/*` alias, `baseUrl`, one lockfile), then checks that the app has no `tailwindcss` or `@tailwindcss/*` in `dependencies` or `devDependencies` and no PostCSS config (`postcss.config.*`, `.postcssrc`, `.postcssrc.*` or a `postcss` key in `package.json`), that no recipe file, `nav.ts` or starter page exists yet, and that `app/layout.tsx`, `app/globals.css` and `app/page.tsx` are regular files.
+4. Copies every file under `files/` and writes every template to its destination, as `add` copies, each created exclusively and each target checked for symlinks again right before it is written. Exactly three files are replaced rather than created, and only these, fixed in `src/create.ts`: `app/layout.tsx`, `app/globals.css` and `app/page.tsx`, with the starter layout, stylesheet and home page. Each is checked again as a regular file, then deleted and created anew, so a hard link to it elsewhere keeps its old content. Since the layout is the starter's, nothing is printed to wire by hand.
 5. Installs the manifest's `dependencies`, as `add` does, with the app's package manager: npm, or the workspace's for a member.
 6. Prints the app's directory and the one command that starts it, such as `npm run dev`.
 
@@ -150,20 +150,20 @@ The parent of `<dir>` is resolved to its real path, so it may be reached through
 
 Each of these leaves the directory in place, as above.
 
-| Condition                                                                                            |
-| ---------------------------------------------------------------------------------------------------- |
-| create-next-app cannot start, or exits with a code other than 0                                      |
-| create-next-app exits 0, but `<dir>` is missing, is not a directory, or is empty                     |
-| Any check `add` makes on an app, from a symlinked `package.json` to the lockfile                     |
-| The app depends on `tailwindcss` or any `@tailwindcss/*` package, or has a `postcss.config.*`        |
-| A recipe file, `nav.ts` or a starter page already exists, or a file sits where one needs a directory |
-| `app/layout.tsx`, `app/globals.css` or `app/page.tsx` is missing, not a regular file, or a symlink   |
-| A write fails, including a file that appeared, or stopped being a regular file, after the checks     |
-| The install exits non-zero or cannot start                                                           |
+| Condition                                                                                                                                                     |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| create-next-app cannot start, or exits with a code other than 0                                                                                               |
+| create-next-app exits 0, but `<dir>` is missing, is not a directory, or is empty                                                                              |
+| Any check `add` makes on an app, from a symlinked `package.json` to the lockfile                                                                              |
+| The app depends on `tailwindcss` or any `@tailwindcss/*` package, or has a PostCSS config (`postcss.config.*`, `.postcssrc`, `.postcssrc.*`, a `postcss` key) |
+| A recipe file, `nav.ts` or a starter page already exists, or a file sits where one needs a directory                                                          |
+| `app/layout.tsx`, `app/globals.css` or `app/page.tsx` is missing, not a regular file, or a symlink                                                            |
+| A write fails, including a file that appeared, or stopped being a regular file, after the checks                                                              |
+| The install exits non-zero or cannot start                                                                                                                    |
 
 ## What a project owns afterwards
 
-Everything `add` or `create` writes is the project's own: the recipe's files, `nav.ts`, the starter pages, the layout and the stylesheet, and for `create` the whole app create-next-app made. The project edits any of them freely. Nothing keeps them in step with this package: there is no update, repair or remove command, running `add` again on a project that has the files is refused, and `recipes:check` covers only the docs app. A project that wants a newer recipe copies the changes by hand.
+Everything `add` or `create` writes is the project's own: the recipe's files, `nav.ts`, the starter pages, the layout and the stylesheet, and for `create` the whole app create-next-app made, which includes its own `AGENTS.md` and, outside a git repository, an initial git commit of the untouched scaffold, made before the recipe was added. The project edits any of them freely. Nothing keeps them in step with this package: there is no update, repair or remove command, running `add` again on a project that has the files is refused, and `recipes:check` covers only the docs app. A project that wants a newer recipe copies the changes by hand.
 
 ## Layout
 

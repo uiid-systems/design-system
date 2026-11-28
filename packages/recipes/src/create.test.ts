@@ -1,5 +1,6 @@
 // @vitest-environment node
 import {
+  linkSync,
   lstatSync,
   mkdirSync,
   readdirSync,
@@ -272,6 +273,19 @@ describe("create", () => {
     expect(calls[1]?.cwd).toBe(join(parent, ".x/web"));
   });
 
+  it("accepts create . in an empty directory, scaffolding it from its parent", () => {
+    const parent = tempDir();
+    mkdirSync(join(parent, "web"));
+    const { code, calls } = cli(["create", "."], { cwd: join(parent, "web") });
+    expect(code).toBe(0);
+    expect(calls[0]).toEqual({
+      command: "npx",
+      args: scaffoldArgs("web"),
+      cwd: parent,
+    });
+    expect(calls[1]?.cwd).toBe(join(parent, "web"));
+  });
+
   it("accepts an absolute directory and resolves a symlinked parent to its real path", () => {
     const real = tempDir();
     const link = join(tempDir(), "link");
@@ -399,15 +413,40 @@ describe("create refuses before running anything", () => {
     );
   });
 
-  it.each(["Web", "my app", "_web", ".web", "-web", "http", "node_modules"])(
-    "a directory named %j, which create-next-app would not accept",
-    (name) => {
-      const parent = tempDir();
-      expect(refuse(parent, ["create", `./${name}`])).toBe(
-        `The directory name ${q(name)} is not one create-next-app accepts as a package name: use lower-case letters, digits, ".", "_" and "-", starting with a letter or a digit, and not a Node.js module name such as "http".`,
-      );
-    },
-  );
+  it.each([
+    "Web",
+    "my app",
+    "_web",
+    ".web",
+    "-web",
+    "http",
+    "node_modules",
+    "favicon.ico",
+    "a".repeat(215),
+  ])("a directory named %j, which create-next-app would not accept", (name) => {
+    const parent = tempDir();
+    expect(refuse(parent, ["create", `./${name}`])).toBe(
+      `The directory name ${q(name)} is not one create-next-app accepts as a package name: use lower-case letters, digits, ".", "_" and "-", starting with a letter or a digit, and not a Node.js module name such as "http".`,
+    );
+  });
+
+  // Package-manager config a template could plant where the install that
+  // follows reads it. Only nav.ts may land at the app root.
+  it.each([
+    ".pnpmfile.cjs",
+    "pnpm-workspace.yaml",
+    "bunfig.toml",
+    ".yarnrc.yml",
+  ])("a template destination of %j at the app root", (dest) => {
+    const parent = tempDir();
+    const recipes = makeRecipes({
+      ...MANIFEST,
+      templates: { ...MANIFEST.templates, "app/guides/page.tsx": dest },
+    });
+    expect(refuse(parent, ["create", "web"], { recipesRoot: recipes })).toBe(
+      `The recipe's manifest maps the template "app/guides/page.tsx" to ${q(dest)} at the app root, where only "nav.ts" may go: fix the recipe's recipe.json.`,
+    );
+  });
 
   it("a recipe whose manifest is not JSON", () => {
     const parent = tempDir();
@@ -600,15 +639,27 @@ describe("create fails after the scaffold, leaving the directory in place", () =
       },
       `it depends on Tailwind ("tailwindcss", "@tailwindcss/postcss") and it has a PostCSS config ("postcss.config.js", "postcss.config.mjs")`,
     ],
+    [
+      "a .postcssrc",
+      scaffoldWith({ ".postcssrc": "{}\n" }),
+      `it has a PostCSS config (".postcssrc")`,
+    ],
+    [
+      "a .postcssrc.json",
+      scaffoldWith({ ".postcssrc.json": "{}\n" }),
+      `it has a PostCSS config (".postcssrc.json")`,
+    ],
+    [
+      "a postcss key in package.json",
+      withPackage({ dependencies: NEXT, postcss: { plugins: {} } }),
+      `it has a PostCSS config (the "postcss" key in package.json)`,
+    ],
   ])("when the app has %s", (_, scaffold, problem) => {
     const { err, calls, root } = failAfterScaffold({ scaffold });
     expect(err).toBe(failedCheck(root, problem));
     expect(calls).toHaveLength(1);
-    // Nothing of the recipe was written.
-    expect(() => lstatSync(join(root, "components"))).toThrow(/ENOENT/);
-    expect(readFileSync(join(root, "app/page.tsx"), "utf8")).toBe(
-      SCAFFOLD["app/page.tsx"],
-    );
+    // The app is exactly what the scaffold made: nothing written, nothing deleted.
+    expect(snapshot(root)).toEqual(withFiles({}, scaffold));
   });
 
   it.each([
@@ -686,7 +737,63 @@ describe("create fails after the scaffold, leaving the directory in place", () =
     const { err, calls, root } = failAfterScaffold({ scaffold });
     expect(err).toBe(failedCheck(root, problem(root)));
     expect(calls).toHaveLength(1);
-    expect(() => lstatSync(join(root, "components"))).toThrow(/ENOENT/);
+    // The app is exactly what the scaffold made: nothing written, nothing deleted.
+    expect(snapshot(root)).toEqual(withFiles({}, scaffold));
+  });
+
+  it("checks the way to a file it replaces again right before replacing it", () => {
+    // app/ becomes a link to a directory holding layout.tsx after nav.ts,
+    // the first template, is written.
+    const outside = tempDir();
+    write(outside, { "layout.tsx": "outside\n" });
+    const parent = tempDir();
+    const root = join(parent, "web");
+    const { err } = failAfterScaffold(
+      {
+        onLog: (line) => {
+          if (line === `  wrote    "nav.ts"`) {
+            rmSync(join(root, "app"), { recursive: true });
+            symlinkSync(outside, join(root, "app"));
+          }
+        },
+      },
+      parent,
+    );
+    expect(readFileSync(join(outside, "layout.tsx"), "utf8")).toBe("outside\n");
+    expect(readdirSync(outside)).toEqual(["layout.tsx"]);
+    expect(err).toBe(
+      leftInPlace(
+        root,
+        `Writing "app/layout.tsx" failed (Refusing to follow the symlink at ${q(join(root, "app"))})`,
+      ),
+    );
+  });
+
+  it("replaces a starter file that is hard-linked elsewhere with a new file, leaving the other link alone", () => {
+    const outside = tempDir();
+    write(outside, { "page.tsx": "outside\n" });
+    const parent = tempDir();
+    const root = join(parent, "web");
+    const run: Runner = (command, args, dir) => {
+      if (command !== "npx") return 0;
+      write(join(dir, args[2]), { ...SCAFFOLD });
+      rmSync(join(dir, args[2], "app/page.tsx"));
+      linkSync(join(outside, "page.tsx"), join(dir, args[2], "app/page.tsx"));
+      return 0;
+    };
+    const code = runCli(["create", "web"], {
+      cwd: parent,
+      recipesRoot: makeRecipes(),
+      repoRoot: tempDir(),
+      run,
+      log: () => {},
+      error: () => {},
+    });
+    expect(code).toBe(0);
+    expect(readFileSync(join(outside, "page.tsx"), "utf8")).toBe("outside\n");
+    expect(readFileSync(join(root, "app/page.tsx"), "utf8")).toBe(
+      TEMPLATES["app/page.tsx"],
+    );
   });
 
   it("when a file create replaces is a symlink, writing nothing through it", () => {
@@ -952,6 +1059,10 @@ describe("the create command line", () => {
     ],
     [
       ["create", "web", "--cwd", "x"],
+      `--cwd is an option of add only: run uiid-recipes create <dir>, naming the new app's directory.`,
+    ],
+    [
+      ["create", "web", "--cwd=x"],
       `--cwd is an option of add only: run uiid-recipes create <dir>, naming the new app's directory.`,
     ],
   ])("refuses %j with one sentence", (argv, sentence) => {
