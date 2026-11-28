@@ -7,11 +7,14 @@
  * Everything that can be checked before the scaffold is checked first, so a
  * refusal runs nothing and creates nothing. After the scaffold, its output is
  * treated as untrusted and checked again with `add`'s checks. A failure from
- * then on leaves the directory in place and says so; nothing is ever deleted.
+ * then on leaves the directory in place and says so. The only things `create`
+ * deletes are the three files in `REPLACED`, each right before it is created
+ * anew; a write that fails in between leaves that one file missing.
  *
  * What `create` may write is fixed here, not in the manifest: every file under
  * `files/` and every template, each created exclusively, except the three
- * files in `REPLACED`, which must exist as regular files and are overwritten.
+ * files in `REPLACED`, which must exist as regular files and are each deleted
+ * and created anew.
  */
 import { lstatSync, readdirSync, realpathSync, statSync } from "node:fs";
 import { builtinModules } from "node:module";
@@ -289,8 +292,12 @@ export function runCreate(dir: string, dryRun: boolean, io: CliIo): number {
   const verb = (file: string) => (REPLACED.has(file) ? "replace" : "write  ");
 
   if (dryRun) {
+    // An existing empty directory is accepted, so only say "not created"
+    // when there is none.
     io.log(
-      `uiid-recipes create --dry-run: nothing was run or written, and ${q(root)} was not created`,
+      lstatSync(root, NO_THROW)
+        ? `uiid-recipes create --dry-run: nothing was run or written in ${q(root)}`
+        : `uiid-recipes create --dry-run: nothing was run or written, and ${q(root)} was not created`,
     );
     io.log(`  would run     ${commandLine(scaffold)} in ${q(parent)}`);
     for (const { file } of plan.writes) {

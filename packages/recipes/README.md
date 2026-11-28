@@ -47,7 +47,7 @@ node packages/recipes/src/cli.mjs create ../my-app
 
 Today both examples are refused: the app-shell recipe is refused for any app outside this repo's workspace until its manifest has a published range for the `@uiid/*` packages (see [The manifest](#the-manifest)). Inside the workspace, such as an app under `apps/`, both run.
 
-Both commands run a package manager, which runs the project's own install scripts and config, so point `add` only at a project you trust.
+Both commands run a package manager, which runs the project's own install scripts and config, so run either command only in a project you trust.
 
 | Flag          | Meaning                                                                                                    |
 | ------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -128,7 +128,7 @@ The two range shapes are a plain semver version or range with no protocol, which
 
 ### When it fails partway
 
-Once the scaffold has started, `create` never deletes anything. A failure in any later step (the scaffold exits non-zero or cannot start, it exits 0 but makes no app, a check in step 3 fails, a write fails, or the install fails) exits 1 with one sentence that names the directory, says it is left in place, and says what to do: delete it and run `create` again, or, when only the install failed, run the printed install command in it by hand. Whatever was made up to that point stays as it was: the scaffold's files, and the files printed as `wrote` or `replaced`.
+Once the scaffold has started, the only things `create` deletes are the three files it replaces, each right before it is created anew. A failure in any later step (the scaffold exits non-zero or cannot start, it exits 0 but makes no app, a check in step 3 fails, a write fails, or the install fails) exits 1 with one sentence that names the directory, says it is left in place, and says what to do: delete it and run `create` again, or, when only the install failed, run the printed install command in it by hand. Whatever was made up to that point stays as it was: the scaffold's files, and the files printed as `wrote` or `replaced`. The one exception is a write that fails between deleting a replaced file and creating it anew, which leaves that one scaffolded file missing.
 
 ### What it refuses before running anything
 

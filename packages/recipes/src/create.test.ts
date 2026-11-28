@@ -318,6 +318,21 @@ describe("create", () => {
 });
 
 describe("create --dry-run", () => {
+  it("does not say an existing empty directory was not created", () => {
+    const parent = tempDir();
+    mkdirSync(join(parent, "web"));
+    const before = snapshot(parent);
+    const { code, out, calls } = cli(["create", "web", "--dry-run"], {
+      cwd: parent,
+    });
+    expect(code).toBe(0);
+    expect(calls).toEqual([]);
+    expect(snapshot(parent)).toEqual(before);
+    expect(out.split("\n")[0]).toBe(
+      `uiid-recipes create --dry-run: nothing was run or written in ${q(join(parent, "web"))}`,
+    );
+  });
+
   it("prints the scaffold, each file and the install, and runs and writes nothing", () => {
     const parent = tempDir();
     const before = snapshot(parent);
