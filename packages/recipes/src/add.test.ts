@@ -3,81 +3,40 @@ import { spawnSync } from "node:child_process";
 import {
   lstatSync,
   mkdirSync,
-  mkdtempSync,
   readdirSync,
   readFileSync,
-  readlinkSync,
   realpathSync,
   rmSync,
   symlinkSync,
   writeFileSync,
 } from "node:fs";
-import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
+import { join } from "node:path";
 
 import { afterAll, describe, expect, it } from "vitest";
 
 import {
   LAYOUT_WIRING,
   parseJsonc,
-  runCli,
   type Runner,
   spawnRunner,
   workspaceRootOf,
 } from "./add.ts";
+import { runCli } from "./cli.ts";
 import { APP_SHELL_FILES, RECIPES_ROOT, REPO_ROOT } from "./paths.ts";
 import { compareRecipe } from "./recipes.ts";
+import {
+  removeTempDirs,
+  snapshot,
+  tempDir,
+  withFiles,
+  write,
+} from "./test-utils.ts";
 
 // Every test builds its recipes, its app and, where it needs one, a fake
 // repository in new directories under the OS temp directory. One group reads
 // this package's own app shell recipe without writing to it. No test starts a
 // package manager: the runner is always a stub that records its calls.
-const dirs: string[] = [];
-const tempDir = () => {
-  const dir = realpathSync(mkdtempSync(join(tmpdir(), "uiid-add-")));
-  dirs.push(dir);
-  return dir;
-};
-const write = (root: string, files: Record<string, string>) => {
-  for (const [name, source] of Object.entries(files)) {
-    mkdirSync(dirname(join(root, name)), { recursive: true });
-    writeFileSync(join(root, name), source);
-  }
-};
-
-afterAll(() => {
-  // Every directory is tried, even when an earlier removal throws.
-  const failed: unknown[] = [];
-  for (const dir of dirs) {
-    try {
-      rmSync(dir, { recursive: true, force: true });
-    } catch (error) {
-      failed.push(error);
-    }
-  }
-  if (failed.length > 0) throw failed[0];
-});
-
-/** Every entry under `root`, dotfiles and symlinks included, with its contents. */
-const snapshot = (root: string) => {
-  const entries: Record<string, string> = {};
-  const walk = (rel: string) => {
-    for (const name of readdirSync(join(root, rel)).sort()) {
-      const path = rel ? `${rel}/${name}` : name;
-      const stat = lstatSync(join(root, path));
-      if (stat.isSymbolicLink()) {
-        entries[path] = `link:${readlinkSync(join(root, path))}`;
-      } else if (stat.isDirectory()) {
-        entries[path] = "dir";
-        walk(path);
-      } else {
-        entries[path] = readFileSync(join(root, path)).toString("base64");
-      }
-    }
-  };
-  walk("");
-  return entries;
-};
+afterAll(removeTempDirs);
 
 const FILES = {
   "components/shell/shell.tsx": "export const Shell = 1;\n",
@@ -210,18 +169,8 @@ const workspaceRefusal = (names: string) =>
   `The recipe's manifest has no published range yet for ${names}, only a workspace: range that resolves inside the UIID repository alone, so add cannot install ${names.includes(" and ") ? "them" : "it"} here: run add in an app inside the UIID repository's workspace until the recipe has a published range.`;
 
 /** The snapshot of an app after `add`: `before`, plus the recipe in FILES and the starter nav.ts. */
-const withRecipe = (before: Record<string, string>) => {
-  const after = { ...before };
-  for (const [name, source] of Object.entries(FILES)) {
-    const segments = name.split("/");
-    for (let k = 1; k < segments.length; k++) {
-      after[segments.slice(0, k).join("/")] = "dir";
-    }
-    after[name] = Buffer.from(source).toString("base64");
-  }
-  after["nav.ts"] = Buffer.from(NAV_TEMPLATE).toString("base64");
-  return Object.fromEntries(Object.entries(after).sort());
-};
+const withRecipe = (before: Record<string, string>) =>
+  withFiles(before, { ...FILES, "nav.ts": NAV_TEMPLATE });
 
 describe("add", () => {
   it("copies files/ verbatim, writes the starter nav.ts and installs the dependencies", () => {
@@ -776,6 +725,34 @@ describe("add refuses a recipe it cannot trust, writing nothing", () => {
     files: Record<string, string> = FILES,
   ) => refuse(makeApp(), { recipesRoot: makeRecipes(manifest, files) });
 
+  // Package-manager config a template could plant where the install that
+  // follows reads it. Only nav.ts may land at the app root.
+  it.each([
+    ".pnpmfile.cjs",
+    "pnpm-workspace.yaml",
+    "bunfig.toml",
+    ".yarnrc.yml",
+  ])("with a template destination of %j at the app root", (dest) => {
+    expect(
+      manifestRefusal({
+        ...MANIFEST,
+        templates: { ...MANIFEST.templates, "app/layout.tsx": dest },
+      }),
+    ).toBe(
+      `The recipe's manifest maps the template "app/layout.tsx" to ${JSON.stringify(dest)} at the app root, where only "nav.ts" may go: fix the recipe's recipe.json.`,
+    );
+  });
+
+  it("reads the recipe before the app, so a broken recipe is named first", () => {
+    const recipes = makeRecipes();
+    writeFileSync(join(recipes, "app-shell/recipe.json"), "{ nope");
+    const files: Record<string, string> = { ...APP };
+    delete files["package.json"];
+    expect(refuse(makeApp(files), { recipesRoot: recipes })).toBe(
+      `The recipe's manifest is not valid JSON: fix the recipe's recipe.json.`,
+    );
+  });
+
   it.each([
     ["package.json", "package.json"],
     ["a nested package.json", "components/x/package.json"],
@@ -1092,7 +1069,7 @@ describe("the bin", () => {
     expect(pkg.bin).toEqual({ "uiid-recipes": "./src/cli.mjs" });
     const source = readFileSync(join(RECIPES_ROOT, "src/cli.mjs"), "utf8");
     expect(source.startsWith("#!/usr/bin/env node\n")).toBe(true);
-    expect(source).toContain(`from "./add.ts"`);
+    expect(source).toContain(`from "./cli.ts"`);
     expect(source).toContain("runCli(process.argv.slice(2)");
   });
 
@@ -1118,6 +1095,18 @@ describe("the bin", () => {
     expect(result.stdout).toBe("");
     expect(result.stderr).toMatch(
       /^There is no recipe named "no-such-recipe": choose one of [^\n]*\.\n$/,
+    );
+  });
+
+  // The bin uses the real runner, so no bin test may ever reach the
+  // scaffold: this one stops at the directory-name check, before the recipe
+  // is read and before anything runs.
+  it("routes create, exiting 1 with one line on stderr for a directory name it refuses", () => {
+    const result = runBin(["create", "Not A Name"]);
+    expect(result.status).toBe(1);
+    expect(result.stdout).toBe("");
+    expect(result.stderr).toMatch(
+      /^The directory name "Not A Name" is not one create-next-app accepts as a package name: [^\n]*\.\n$/,
     );
   });
 });

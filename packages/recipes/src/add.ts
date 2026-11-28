@@ -1,6 +1,8 @@
 /**
  * `uiid-recipes add <recipe>`: copies a recipe into a Next.js app that already
- * exists. `cli.mjs` is the bin and only calls `runCli` here.
+ * exists. `cli.ts` parses the command line and calls `runAdd` here. The
+ * checks and the writes are exported, because `create` runs the same steps on
+ * the app it scaffolds.
  *
  * Plain Node with no dependencies, like `recipes.ts`: Node runs this
  * TypeScript directly by stripping its types.
@@ -18,6 +20,7 @@ import {
   readFileSync,
   realpathSync,
   statSync,
+  unlinkSync,
 } from "node:fs";
 import { isAbsolute, join, posix, relative, resolve, sep } from "node:path";
 
@@ -43,11 +46,29 @@ export type CliIo = {
   error: (line: string) => void;
 };
 
-/** A refusal: one sentence saying what failed and what to do. */
-class Refusal extends Error {}
+/** The command a sentence names: the shared checks speak for whichever runs them. */
+export type Command = "add" | "create";
+
+/**
+ * A refusal: one sentence saying what failed and what to do. `problem` is the
+ * failed condition alone, for a caller that says what to do itself.
+ */
+export class Refusal extends Error {
+  readonly problem: string;
+  constructor(message: string, problem = message.replace(/\.$/, "")) {
+    super(message);
+    this.problem = problem;
+  }
+}
+
+/** A refusal whose sentence is the problem, then what to do. */
+const refusal = (problem: string, fix: string) =>
+  new Refusal(`${problem}: ${fix}.`, problem);
 
 const NO_THROW = { throwIfNoEntry: false } as const;
-const q = (value: string) => JSON.stringify(value);
+export const q = (value: string) => JSON.stringify(value);
+/** A path relative to the app, printed as a JSON string. */
+export const show = (path: string) => q(posix.join(...path.split(sep)));
 
 /** The default runner: `spawnSync` with no shell, output passed through. */
 export const spawnRunner: Runner = (command, args, cwd) => {
@@ -88,17 +109,8 @@ export const LAYOUT_WIRING = `Wire the shell into the app by hand; add did not c
 
 The sidebar and the breadcrumbs read their pages from nav.ts at the app root.`;
 
-const USAGE = `Usage: uiid-recipes add <recipe> [--cwd <dir>] [--dry-run]
-
-Copies a recipe into the Next.js app in the current directory, or in --cwd <dir>.
-
-Options:
-  --cwd <dir>  The app's root directory. Defaults to the current directory.
-  --dry-run    Run every check and print what would be written and run, changing nothing.
-  -h, --help   Print this help.`;
-
 /** Lockfiles at an app's root, and the package manager each belongs to. */
-const LOCKFILES = new Map([
+export const LOCKFILES = new Map([
   ["pnpm-lock.yaml", "pnpm"],
   ["package-lock.json", "npm"],
   ["yarn.lock", "yarn"],
@@ -142,7 +154,7 @@ const RANGE =
   /^(?:[\^~]?\d+(?:\.\d+){0,2}(?:-[0-9A-Za-z]+(?:\.[0-9A-Za-z]+)*)?|workspace:[*^~])$/;
 
 /** An argument printed for a person to paste, quoted when it holds more than plain characters. */
-const shellWord = (arg: string) =>
+export const shellWord = (arg: string) =>
   /^[\w@/.:=+-]+$/.test(arg) ? arg : `'${arg}'`;
 
 /**
@@ -187,7 +199,7 @@ export function parseJsonc(text: string): unknown {
   return JSON.parse(out.join(""));
 }
 
-const isRecord = (value: unknown): value is Record<string, unknown> =>
+export const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
 const exists = (path: string) => lstatSync(path, NO_THROW) !== undefined;
@@ -270,7 +282,7 @@ export function workspaceRootOf(
  * quotes the path raw. The errors `recipes.ts` throws already stringify
  * every path, so their message is kept.
  */
-function describe(error: unknown): string {
+export function describe(error: unknown): string {
   const { code, path } = (error ?? {}) as { code?: unknown; path?: unknown };
   if (typeof code === "string") {
     return typeof path === "string" ? `${code} at ${q(path)}` : code;
@@ -279,40 +291,49 @@ function describe(error: unknown): string {
 }
 
 /** A check on the app from `recipes.ts`, such as a symlink, turned into one sentence. */
-function checkedApp<T>(check: () => T): T {
+function checkedApp<T>(cmd: Command, check: () => T): T {
   try {
     return check();
   } catch (error) {
     throw new Refusal(
-      `${describe(error)}, so add wrote nothing: replace it with a real directory or file, then run add again.`,
+      `${describe(error)}, so ${cmd} wrote nothing: replace it with a real directory or file, then run ${cmd} again.`,
+      describe(error),
     );
   }
 }
 
 /** A check on the recipe's own files from `recipes.ts`, turned into one sentence. */
-function checkedRecipe<T>(check: () => T): T {
+function checkedRecipe<T>(cmd: Command, check: () => T): T {
   try {
     return check();
   } catch (error) {
     throw new Refusal(
-      `${describe(error)}, so add wrote nothing: fix the recipe's files/ directory.`,
+      `${describe(error)}, so ${cmd} wrote nothing: fix the recipe's files/ directory.`,
     );
   }
 }
 
-type Plan = {
-  root: string;
-  /** `[source, target, path relative to the app]` for each recipe file. */
-  files: [string, string, string][];
-  /** The starter `nav.ts` to write, or undefined when the app has one. */
-  nav: [string, string] | undefined;
-  install: { command: string; args: string[] } | undefined;
+/** A recipe whose manifest and files passed every check. */
+export type Recipe = {
+  filesDir: string;
+  templatesDir: string;
+  /** Every file under `files/`, as a path relative to the app. */
+  sources: string[];
+  /** `[template, destination]` for each template, in manifest order. */
+  templates: [string, string][];
+  /** `[name, range]` for each dependency, in manifest order. */
+  deps: [string, string][];
 };
+
+/** One file to write: its source, and its path relative to the app. */
+export type Write = { source: string; file: string };
+
+export type Install = { command: string; args: string[] };
 
 const RECIPE_FIX = "fix the recipe's recipe.json.";
 
 /** Reads and checks the manifest's `dependencies` and `templates`. */
-function readManifest(recipeDir: string) {
+function readManifest(recipeDir: string, cmd: Command) {
   let manifest: unknown;
   try {
     manifest = JSON.parse(readFileSync(join(recipeDir, "recipe.json"), "utf8"));
@@ -338,7 +359,7 @@ function readManifest(recipeDir: string) {
       !RANGE.test(range)
     ) {
       throw new Refusal(
-        `The recipe's manifest gives the dependency ${q(name)} the range ${JSON.stringify(range)}, which add will not pass to a package manager: ${RECIPE_FIX}`,
+        `The recipe's manifest gives the dependency ${q(name)} the range ${JSON.stringify(range)}, which ${cmd} will not pass to a package manager: ${RECIPE_FIX}`,
       );
     }
     deps.push([name, range]);
@@ -355,12 +376,17 @@ function readManifest(recipeDir: string) {
   return { deps, templates: maps };
 }
 
-/** Every check `add` makes, in order. Throws a `Refusal`; writes nothing. */
-function planAdd(
+/**
+ * Every check on the recipe itself, which needs no app: the recipe exists,
+ * its manifest is data `cmd` can trust, and every destination, from `files/`
+ * or a template, is a plain relative path that is not protected, not at the
+ * app root for `files/`, and claimed once. Throws a `Refusal`.
+ */
+export function readRecipe(
   recipe: string,
-  root: string,
-  { recipesRoot, repoRoot }: Pick<CliIo, "recipesRoot" | "repoRoot">,
-): Plan {
+  recipesRoot: string,
+  cmd: Command,
+): Recipe {
   const recipes = listRecipes(recipesRoot);
   if (!recipes.includes(recipe)) {
     throw new Refusal(
@@ -368,97 +394,17 @@ function planAdd(
     );
   }
 
-  // The app.
-  const at = q(root);
-  for (const name of ["package.json", "app", "tsconfig.json"]) {
-    if (lstatSync(join(root, name), NO_THROW)?.isSymbolicLink()) {
-      throw new Refusal(
-        `${q(name)} in ${at} is a symlink, which add does not follow: replace it with the real ${name === "app" ? "directory" : "file"}, then run add again.`,
-      );
-    }
-  }
-  const packagePath = join(root, "package.json");
-  if (!lstatSync(packagePath, NO_THROW)?.isFile()) {
-    throw new Refusal(
-      `There is no package.json in ${at}: run add from the root of a Next.js app, or pass --cwd <dir>.`,
-    );
-  }
-  let pkg: unknown;
-  try {
-    pkg = JSON.parse(readFileSync(packagePath, "utf8"));
-  } catch {
-    throw new Refusal(
-      `The package.json in ${at} is not valid JSON: fix it, then run add again.`,
-    );
-  }
-  const lists = (field: string) =>
-    isRecord(pkg) && isRecord(pkg[field]) && "next" in pkg[field];
-  if (!lists("dependencies") && !lists("devDependencies")) {
-    throw new Refusal(
-      `The package.json in ${at} does not list next in dependencies or devDependencies: add the recipe to a Next.js app.`,
-    );
-  }
-  if (!isDirectory(join(root, "app"))) {
-    if (isDirectory(join(root, "src/app"))) {
-      throw new Refusal(
-        `${at} keeps its app in src/app, which add does not support: add the recipe to an app with app/ at its root.`,
-      );
-    }
-    if (isDirectory(join(root, "pages"))) {
-      throw new Refusal(
-        `${at} uses the Pages Router (pages/ with no app/), which add does not support: add the recipe to an App Router app.`,
-      );
-    }
-    throw new Refusal(
-      `${at} has no app/ directory at its root: add the recipe to a Next.js App Router app.`,
-    );
-  }
-  const tsconfigPath = join(root, "tsconfig.json");
-  if (!lstatSync(tsconfigPath, NO_THROW)?.isFile()) {
-    throw new Refusal(
-      `There is no tsconfig.json in ${at}: add the recipe to a TypeScript Next.js app.`,
-    );
-  }
-  let tsconfig: unknown;
-  try {
-    tsconfig = parseJsonc(readFileSync(tsconfigPath, "utf8"));
-  } catch {
-    throw new Refusal(
-      `The tsconfig.json in ${at} cannot be read as JSON with comments: fix it, then run add again.`,
-    );
-  }
-  // `extends` is not followed: the alias must be in this file.
-  const options = isRecord(tsconfig) ? tsconfig.compilerOptions : undefined;
-  const paths = isRecord(options) ? options.paths : undefined;
-  const alias = isRecord(paths) ? paths["@/*"] : undefined;
-  if (!Array.isArray(alias) || alias[0] !== "./*") {
-    throw new Refusal(
-      `The tsconfig.json in ${at} has no "@/*" path whose first target is "./*": add "paths": { "@/*": ["./*"] } to its compilerOptions, then run add again.`,
-    );
-  }
-  // `paths` resolve from `baseUrl` when it is set, so it must be the root.
-  const baseUrl = isRecord(options) ? options.baseUrl : undefined;
-  if (
-    baseUrl !== undefined &&
-    (typeof baseUrl !== "string" || resolve(root, baseUrl) !== root)
-  ) {
-    throw new Refusal(
-      `The tsconfig.json in ${at} sets baseUrl to ${JSON.stringify(baseUrl)}, so "@/*" does not resolve from the app root: remove baseUrl or set it to ".", then run add again.`,
-    );
-  }
-
-  // The recipe.
   const recipeDir = join(recipesRoot, recipe);
   const filesDir = join(recipeDir, "files");
   const templatesDir = join(recipeDir, "templates");
-  const manifest = readManifest(recipeDir);
-  const sources = checkedRecipe(() => listRecipeFiles(filesDir));
+  const manifest = readManifest(recipeDir, cmd);
+  const sources = checkedRecipe(cmd, () => listRecipeFiles(filesDir));
 
   const destinations = new Set<string>();
   const claim = (dest: string, from: "files" | "templates") => {
     if (isProtected(dest)) {
       throw new Refusal(
-        `The recipe would write ${q(dest)}, which add never writes: remove it from the recipe.`,
+        `The recipe would write ${q(dest)}, which ${cmd} never writes: remove it from the recipe.`,
       );
     }
     const key = dest.toLowerCase();
@@ -472,13 +418,13 @@ function planAdd(
     destinations.add(key);
   };
   for (const file of sources) {
-    checkedRecipe(() => checkRelativePath(file));
+    checkedRecipe(cmd, () => checkRelativePath(file));
     claim(file, "files");
     // A file at the app root could be package-manager config, read by the
     // install that runs next. Recipe files always live in a directory.
     if (!file.includes("/")) {
       throw new Refusal(
-        `The recipe would write ${q(file)} directly at the app root, which add never does: move it into a directory in the recipe's files/.`,
+        `The recipe would write ${q(file)} directly at the app root, which ${cmd} never does: move it into a directory in the recipe's files/.`,
       );
     }
   }
@@ -501,8 +447,323 @@ function planAdd(
       );
     }
     claim(dest, "templates");
+    // As for files/: a file at the app root could be package-manager config,
+    // read by the install that runs next. The one template allowed there is
+    // the starter nav.ts.
+    if (!dest.includes("/") && dest !== "nav.ts") {
+      throw new Refusal(
+        `The recipe's manifest maps the template ${q(key)} to ${q(dest)} at the app root, where only "nav.ts" may go: ${RECIPE_FIX}`,
+      );
+    }
   }
-  const navDest = manifest.templates.find(([key]) => key === "nav.ts")?.[1];
+  return {
+    filesDir,
+    templatesDir,
+    sources,
+    templates: manifest.templates,
+    deps: manifest.deps,
+  };
+}
+
+/**
+ * The checks that make `root` an app the recipe fits: a Next.js App Router
+ * app with TypeScript, the `@/*` alias and no `baseUrl` elsewhere. Throws a
+ * `Refusal`; reads only. Returns the parsed `package.json`, which a caller
+ * may check further without reading the file again.
+ */
+export function checkApp(root: string, cmd: Command): unknown {
+  const at = q(root);
+  for (const name of ["package.json", "app", "tsconfig.json"]) {
+    if (lstatSync(join(root, name), NO_THROW)?.isSymbolicLink()) {
+      throw refusal(
+        `${q(name)} in ${at} is a symlink, which ${cmd} does not follow`,
+        `replace it with the real ${name === "app" ? "directory" : "file"}, then run ${cmd} again`,
+      );
+    }
+  }
+  const packagePath = join(root, "package.json");
+  if (!lstatSync(packagePath, NO_THROW)?.isFile()) {
+    throw refusal(
+      `There is no package.json in ${at}`,
+      `run ${cmd} from the root of a Next.js app, or pass --cwd <dir>`,
+    );
+  }
+  let pkg: unknown;
+  try {
+    pkg = JSON.parse(readFileSync(packagePath, "utf8"));
+  } catch {
+    throw refusal(
+      `The package.json in ${at} is not valid JSON`,
+      `fix it, then run ${cmd} again`,
+    );
+  }
+  const lists = (field: string) =>
+    isRecord(pkg) && isRecord(pkg[field]) && "next" in pkg[field];
+  if (!lists("dependencies") && !lists("devDependencies")) {
+    throw refusal(
+      `The package.json in ${at} does not list next in dependencies or devDependencies`,
+      "add the recipe to a Next.js app",
+    );
+  }
+  if (!isDirectory(join(root, "app"))) {
+    if (isDirectory(join(root, "src/app"))) {
+      throw refusal(
+        `${at} keeps its app in src/app, which ${cmd} does not support`,
+        "add the recipe to an app with app/ at its root",
+      );
+    }
+    if (isDirectory(join(root, "pages"))) {
+      throw refusal(
+        `${at} uses the Pages Router (pages/ with no app/), which ${cmd} does not support`,
+        "add the recipe to an App Router app",
+      );
+    }
+    throw refusal(
+      `${at} has no app/ directory at its root`,
+      "add the recipe to a Next.js App Router app",
+    );
+  }
+  const tsconfigPath = join(root, "tsconfig.json");
+  if (!lstatSync(tsconfigPath, NO_THROW)?.isFile()) {
+    throw refusal(
+      `There is no tsconfig.json in ${at}`,
+      "add the recipe to a TypeScript Next.js app",
+    );
+  }
+  let tsconfig: unknown;
+  try {
+    tsconfig = parseJsonc(readFileSync(tsconfigPath, "utf8"));
+  } catch {
+    throw refusal(
+      `The tsconfig.json in ${at} cannot be read as JSON with comments`,
+      `fix it, then run ${cmd} again`,
+    );
+  }
+  // `extends` is not followed: the alias must be in this file.
+  const options = isRecord(tsconfig) ? tsconfig.compilerOptions : undefined;
+  const paths = isRecord(options) ? options.paths : undefined;
+  const alias = isRecord(paths) ? paths["@/*"] : undefined;
+  if (!Array.isArray(alias) || alias[0] !== "./*") {
+    throw refusal(
+      `The tsconfig.json in ${at} has no "@/*" path whose first target is "./*"`,
+      `add "paths": { "@/*": ["./*"] } to its compilerOptions, then run ${cmd} again`,
+    );
+  }
+  // `paths` resolve from `baseUrl` when it is set, so it must be the root.
+  const baseUrl = isRecord(options) ? options.baseUrl : undefined;
+  if (
+    baseUrl !== undefined &&
+    (typeof baseUrl !== "string" || resolve(root, baseUrl) !== root)
+  ) {
+    throw refusal(
+      `The tsconfig.json in ${at} sets baseUrl to ${JSON.stringify(baseUrl)}, so "@/*" does not resolve from the app root`,
+      `remove baseUrl or set it to ".", then run ${cmd} again`,
+    );
+  }
+  return pkg;
+}
+
+/**
+ * Checks the directories on the way to `file` in `root` from the top, since
+ * below a file `lstat` throws ENOTDIR. A symlink is left to `safeTarget`.
+ */
+function checkDirectoriesOnTheWay(root: string, file: string, cmd: Command) {
+  const segments = file.split("/");
+  for (let k = 1; k < segments.length; k++) {
+    const dir = segments.slice(0, k).join("/");
+    const stat = lstatSync(join(root, dir), NO_THROW);
+    if (!stat || stat.isSymbolicLink()) break;
+    if (!stat.isDirectory()) {
+      throw refusal(
+        `${q(dir)} in ${q(root)} is a file where the recipe needs a directory`,
+        `move or rename it, then run ${cmd} again`,
+      );
+    }
+  }
+}
+
+/**
+ * Checks that each of `writes` can be created in `root` as it is now: no
+ * symlink on the way, no file where a directory goes, and nothing at the
+ * destination. Lists every destination that exists. Throws a `Refusal`.
+ */
+export function checkNewFiles(
+  root: string,
+  writes: Write[],
+  cmd: Command,
+): void {
+  const blocked: string[] = [];
+  for (const { file } of writes) {
+    checkDirectoriesOnTheWay(root, file, cmd);
+    if (exists(checkedApp(cmd, () => safeTarget(root, file)))) {
+      blocked.push(file);
+    }
+  }
+  if (blocked.length > 0) {
+    const list = blocked.sort().map(q).join(", ");
+    throw new Refusal(
+      `These files already exist, so ${cmd} wrote nothing: ${list}; move or delete them, then run ${cmd} again.`,
+      `These files already exist: ${list}`,
+    );
+  }
+}
+
+/**
+ * Checks that `file` in `root` is a regular file that may be replaced, with
+ * no symlink at it or on the way to it. Throws a `Refusal`.
+ */
+export function checkReplaceable(
+  root: string,
+  file: string,
+  cmd: Command,
+): void {
+  checkDirectoriesOnTheWay(root, file, cmd);
+  const target = checkedApp(cmd, () => safeTarget(root, file));
+  if (!lstatSync(target, NO_THROW)?.isFile()) {
+    throw refusal(
+      `There is no regular file at ${q(file)} in ${q(root)} to replace`,
+      `run ${cmd} again`,
+    );
+  }
+}
+
+/**
+ * The workspace root when `root` is a member of this repository's workspace.
+ * Refuses a `workspace:` range anywhere else, since it would not install.
+ */
+export function workspaceFor(
+  root: string,
+  deps: [string, string][],
+  repoRoot: string,
+  cmd: Command,
+): string | undefined {
+  const workspace = workspaceRootOf(root, repoRoot);
+  const unpublished = deps
+    .filter(([, range]) => range.startsWith("workspace:"))
+    .map(([name]) => q(name));
+  if (unpublished.length > 0 && !workspace) {
+    const names =
+      unpublished.length === 1
+        ? unpublished[0]
+        : `${unpublished.slice(0, -1).join(", ")} and ${unpublished[unpublished.length - 1]}`;
+    const them = unpublished.length === 1 ? "it" : "them";
+    throw new Refusal(
+      cmd === "add"
+        ? `The recipe's manifest has no published range yet for ${names}, only a workspace: range that resolves inside the UIID repository alone, so add cannot install ${them} here: run add in an app inside the UIID repository's workspace until the recipe has a published range.`
+        : `The recipe's manifest has no published range yet for ${names}, only a workspace: range that resolves inside the UIID repository alone, so create cannot install ${them} in ${q(root)}: name a directory inside the UIID repository's workspace until the recipe has a published range.`,
+    );
+  }
+  return workspace;
+}
+
+/** The one package manager whose lockfile sits at `lockDir`'s root. Throws a `Refusal`. */
+export function packageManagerAt(lockDir: string, cmd: Command): string {
+  const managers = [
+    ...new Set(
+      [...LOCKFILES]
+        .filter(([name]) => lstatSync(join(lockDir, name), NO_THROW)?.isFile())
+        .map(([, manager]) => manager),
+    ),
+  ];
+  if (managers.length === 0) {
+    throw refusal(
+      `${q(lockDir)} has no lockfile at its root (pnpm-lock.yaml, package-lock.json, yarn.lock, bun.lock or bun.lockb)`,
+      `install the app's dependencies once with its package manager, then run ${cmd} again`,
+    );
+  }
+  if (managers.length > 1) {
+    throw refusal(
+      `${q(lockDir)} has lockfiles for more than one package manager (${managers.join(", ")})`,
+      `delete the ones the app does not use, then run ${cmd} again`,
+    );
+  }
+  return managers[0];
+}
+
+/** The install of `deps` with `manager`, or undefined when there is nothing to install. */
+export function installOf(
+  manager: string,
+  deps: [string, string][],
+): Install | undefined {
+  if (deps.length === 0) return undefined;
+  return {
+    command: manager,
+    args: [
+      INSTALL_VERB[manager],
+      ...deps.map(([name, range]) => `${name}@${range}`),
+    ],
+  };
+}
+
+/** A command as a person would paste it. */
+export const commandLine = ({ command, args }: Install) =>
+  [command, ...args].map(shellWord).join(" ");
+
+/**
+ * Writes each file into `root` and logs it. A new file is created
+ * exclusively, so one that appeared since the checks stops the copy instead
+ * of being replaced. A file in `replace` must still be a regular file; it is
+ * unlinked and then created exclusively too, so the new file is a new inode.
+ * Each target is checked again right before its write, so a directory on the
+ * way that became a symlink since planning is refused, not followed. Returns
+ * the write that failed, or undefined.
+ */
+export function writeFiles(
+  root: string,
+  writes: Write[],
+  log: (line: string) => void,
+  replace: ReadonlySet<string> = new Set(),
+): { file: string; error: unknown } | undefined {
+  for (const { source, file } of writes) {
+    const replacing = replace.has(file);
+    try {
+      const target = safeTarget(root, file);
+      if (replacing) {
+        if (!lstatSync(target, NO_THROW)?.isFile()) {
+          throw new Error(`${q(target)} is no longer a regular file`);
+        }
+        // A new file, not a write into the old one, which may be hard-linked
+        // elsewhere; created exclusively like every other write.
+        unlinkSync(target);
+      }
+      copyFiles([[source, target]], { exclusive: true });
+    } catch (error) {
+      return { file, error };
+    }
+    log(`  ${replacing ? "replaced" : "wrote   "} ${show(file)}`);
+  }
+  return undefined;
+}
+
+/** Runs an install, counting a runner that throws as a failure. */
+export function runInstall(install: Install, root: string, io: CliIo): boolean {
+  io.log(`  running  ${commandLine(install)}`);
+  try {
+    return io.run(install.command, install.args, root) === 0;
+  } catch {
+    return false;
+  }
+}
+
+type Plan = {
+  root: string;
+  files: Write[];
+  /** The starter `nav.ts` to write, or undefined when the app has one. */
+  nav: Write | undefined;
+  install: Install | undefined;
+};
+
+/** Every check `add` makes, in order. Throws a `Refusal`; writes nothing. */
+function planAdd(
+  recipeName: string,
+  root: string,
+  { recipesRoot, repoRoot }: Pick<CliIo, "recipesRoot" | "repoRoot">,
+): Plan {
+  // Unknown recipes are refused before the app is read.
+  const recipe = readRecipe(recipeName, recipesRoot, "add");
+  checkApp(root, "add");
+
+  const navDest = recipe.templates.find(([key]) => key === "nav.ts")?.[1];
   if (navDest === undefined) {
     throw new Refusal(
       `The recipe's manifest has no "nav.ts" template: ${RECIPE_FIX}`,
@@ -515,140 +776,26 @@ function planAdd(
   }
 
   // Every destination, against the app as it is now.
-  const blocked = new Set<string>();
-  const files: Plan["files"] = [];
-  for (const file of sources) {
-    // Below a file, lstat throws ENOTDIR, so the directories on the way are
-    // checked from the top first. A symlink is left to safeTarget to refuse.
-    const segments = file.split("/");
-    for (let k = 1; k < segments.length; k++) {
-      const dir = segments.slice(0, k).join("/");
-      const stat = lstatSync(join(root, dir), NO_THROW);
-      if (!stat || stat.isSymbolicLink()) break;
-      if (!stat.isDirectory()) {
-        throw new Refusal(
-          `${q(dir)} in ${at} is a file where the recipe needs a directory: move or rename it, then run add again.`,
-        );
-      }
-    }
-    const target = checkedApp(() => safeTarget(root, file));
-    if (exists(target)) blocked.add(file);
-    files.push([join(filesDir, file), target, file]);
-  }
-  if (blocked.size > 0) {
-    throw new Refusal(
-      `These files already exist, so add wrote nothing: ${[...blocked].sort().map(q).join(", ")}; move or delete them, then run add again.`,
-    );
-  }
-  const navTarget = checkedApp(() =>
+  const files = recipe.sources.map((file) => ({
+    source: join(recipe.filesDir, file),
+    file,
+  }));
+  checkNewFiles(root, files, "add");
+  const navTarget = checkedApp("add", () =>
     safeTarget(root, "nav.ts", { leaf: false }),
   );
-  const nav: Plan["nav"] = exists(navTarget)
-    ? undefined
-    : [
-        join(templatesDir, "nav.ts"),
-        checkedApp(() => safeTarget(root, "nav.ts")),
-      ];
+  let nav: Write | undefined;
+  if (!exists(navTarget)) {
+    checkedApp("add", () => safeTarget(root, "nav.ts"));
+    nav = { source: join(recipe.templatesDir, "nav.ts"), file: "nav.ts" };
+  }
 
   // The install.
-  if (manifest.deps.length === 0)
-    return { root, files, nav, install: undefined };
-  const workspace = workspaceRootOf(root, repoRoot);
-  const unpublished = manifest.deps
-    .filter(([, range]) => range.startsWith("workspace:"))
-    .map(([name]) => q(name));
-  if (unpublished.length > 0 && !workspace) {
-    const names =
-      unpublished.length === 1
-        ? unpublished[0]
-        : `${unpublished.slice(0, -1).join(", ")} and ${unpublished[unpublished.length - 1]}`;
-    throw new Refusal(
-      `The recipe's manifest has no published range yet for ${names}, only a workspace: range that resolves inside the UIID repository alone, so add cannot install ${unpublished.length === 1 ? "it" : "them"} here: run add in an app inside the UIID repository's workspace until the recipe has a published range.`,
-    );
-  }
+  if (recipe.deps.length === 0) return { root, files, nav, install: undefined };
   // A workspace member has no lockfile of its own: it is the workspace's.
-  const lockDir = workspace ?? root;
-  const managers = [
-    ...new Set(
-      [...LOCKFILES]
-        .filter(([name]) => lstatSync(join(lockDir, name), NO_THROW)?.isFile())
-        .map(([, manager]) => manager),
-    ),
-  ];
-  if (managers.length === 0) {
-    throw new Refusal(
-      `${q(lockDir)} has no lockfile at its root (pnpm-lock.yaml, package-lock.json, yarn.lock, bun.lock or bun.lockb): install the app's dependencies once with its package manager, then run add again.`,
-    );
-  }
-  if (managers.length > 1) {
-    throw new Refusal(
-      `${q(lockDir)} has lockfiles for more than one package manager (${managers.join(", ")}): delete the ones the app does not use, then run add again.`,
-    );
-  }
-  const command = managers[0];
-  return {
-    root,
-    files,
-    nav,
-    install: {
-      command,
-      args: [
-        INSTALL_VERB[command],
-        ...manifest.deps.map(([name, range]) => `${name}@${range}`),
-      ],
-    },
-  };
-}
-
-type Parsed =
-  | { help: true }
-  | { help: false; recipe: string; cwd: string | undefined; dryRun: boolean };
-
-function parseArgs(argv: string[]): Parsed {
-  if (argv.includes("--help") || argv.includes("-h")) return { help: true };
-  const positional: string[] = [];
-  let cwd: string | undefined;
-  let dryRun = false;
-  for (let i = 0; i < argv.length; i++) {
-    const arg = argv[i];
-    if (arg === "--dry-run") dryRun = true;
-    else if (arg === "--cwd") {
-      const value = argv[++i];
-      if (value === undefined || value === "") {
-        throw new Refusal(`--cwd needs a directory: pass --cwd <dir>.`);
-      }
-      cwd = value;
-    } else if (arg.startsWith("--cwd=")) {
-      cwd = arg.slice("--cwd=".length);
-      if (!cwd) throw new Refusal(`--cwd needs a directory: pass --cwd <dir>.`);
-    } else if (arg.startsWith("-")) {
-      throw new Refusal(
-        `Unknown option ${q(arg)}: run uiid-recipes --help to see the options.`,
-      );
-    } else positional.push(arg);
-  }
-  const [command, recipe, ...rest] = positional;
-  if (command === undefined) {
-    throw new Refusal(
-      `Name a command: run uiid-recipes --help to see the commands.`,
-    );
-  }
-  if (command !== "add") {
-    throw new Refusal(
-      `Unknown command ${q(command)}: run uiid-recipes --help to see the commands.`,
-    );
-  }
-  if (recipe === undefined) {
-    throw new Refusal(
-      `Name the recipe to add: run uiid-recipes add <recipe>, such as uiid-recipes add app-shell.`,
-    );
-  }
-  if (rest.length > 0) {
-    throw new Refusal(
-      `Unexpected argument ${q(rest[0])}: add takes one recipe, so pass uiid-recipes add <recipe> and nothing more.`,
-    );
-  }
-  return { help: false, recipe, cwd, dryRun };
+  const workspace = workspaceFor(root, recipe.deps, repoRoot, "add");
+  const manager = packageManagerAt(workspace ?? root, "add");
+  return { root, files, nav, install: installOf(manager, recipe.deps) };
 }
 
 /** The app's real root, from `--cwd` or the current directory. */
@@ -668,18 +815,16 @@ function resolveRoot(cwd: string, flag: string | undefined): string {
   return realpathSync(dir);
 }
 
-/** The whole command: parses `argv`, runs `add`, and returns the exit code. */
-export function runCli(argv: string[], io: CliIo): number {
+/** `add`: plans, writes, installs, and returns the exit code. */
+export function runAdd(
+  recipe: string,
+  cwd: string | undefined,
+  dryRun: boolean,
+  io: CliIo,
+): number {
   let plan: Plan;
-  let dryRun: boolean;
   try {
-    const parsed = parseArgs(argv);
-    if (parsed.help) {
-      io.log(USAGE);
-      return 0;
-    }
-    dryRun = parsed.dryRun;
-    plan = planAdd(parsed.recipe, resolveRoot(io.cwd, parsed.cwd), io);
+    plan = planAdd(recipe, resolveRoot(io.cwd, cwd), io);
   } catch (error) {
     io.error(
       error instanceof Refusal
@@ -689,60 +834,34 @@ export function runCli(argv: string[], io: CliIo): number {
     return 1;
   }
 
-  const show = (path: string) => q(posix.join(...path.split(sep)));
-  const commandLine = plan.install
-    ? [plan.install.command, ...plan.install.args].map(shellWord).join(" ")
-    : undefined;
-
   if (dryRun) {
     io.log(
       `uiid-recipes add --dry-run: nothing was written in ${q(plan.root)}`,
     );
-    for (const [, , file] of plan.files) io.log(`  would write ${show(file)}`);
+    for (const { file } of plan.files) io.log(`  would write ${show(file)}`);
     io.log(plan.nav ? `  would write "nav.ts"` : `  would keep  "nav.ts"`);
-    if (commandLine) io.log(`  would run   ${commandLine}`);
+    if (plan.install) io.log(`  would run   ${commandLine(plan.install)}`);
     return 0;
   }
 
-  // Exclusive creates: a file that appeared since the checks stops the copy
-  // instead of being replaced.
-  const writes: [string, string][] = plan.files.map(([source, , file]) => [
-    source,
-    file,
-  ]);
-  if (plan.nav) writes.push([plan.nav[0], "nav.ts"]);
-  for (const [source, file] of writes) {
-    try {
-      // Checked again right before the write, so a directory on the way that
-      // became a symlink since planning is refused, not followed.
-      copyFiles([[source, safeTarget(plan.root, file)]], { exclusive: true });
-    } catch (error) {
-      io.error(
-        `add stopped while writing ${show(file)} (${describe(error)}): the files listed as wrote are in place, so delete them or finish by hand.`,
-      );
-      return 1;
-    }
-    io.log(`  wrote    ${show(file)}`);
+  const writes = plan.nav ? [...plan.files, plan.nav] : plan.files;
+  const failed = writeFiles(plan.root, writes, io.log);
+  if (failed) {
+    io.error(
+      `add stopped while writing ${show(failed.file)} (${describe(failed.error)}): the files listed as wrote are in place, so delete them or finish by hand.`,
+    );
+    return 1;
   }
   if (!plan.nav) io.log(`  kept     "nav.ts"`);
 
   // Before the install, so a failed install still shows it.
   io.log(`\n${LAYOUT_WIRING}\n`);
 
-  if (plan.install && commandLine) {
-    io.log(`  running  ${commandLine}`);
-    let status: number;
-    try {
-      status = io.run(plan.install.command, plan.install.args, plan.root);
-    } catch {
-      status = 1;
-    }
-    if (status !== 0) {
-      io.error(
-        `The recipe's files are in place, but the install failed: run ${commandLine} in ${q(plan.root)} by hand.`,
-      );
-      return 1;
-    }
+  if (plan.install && !runInstall(plan.install, plan.root, io)) {
+    io.error(
+      `The recipe's files are in place, but the install failed: run ${commandLine(plan.install)} in ${q(plan.root)} by hand.`,
+    );
+    return 1;
   }
   io.log(`uiid-recipes add: added the recipe to ${q(plan.root)}`);
   return 0;
