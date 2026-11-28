@@ -86,6 +86,26 @@ export function resolveInside(root: string, path: string): string {
 }
 
 /**
+ * Throws unless `path` is a plain relative POSIX path: not empty, not
+ * absolute, with no empty, `.` or `..` segment, and no backslash, drive
+ * letter or NUL. Use it on any path read from data before resolving it.
+ */
+export function checkRelativePath(path: string): void {
+  if (
+    path === "" ||
+    path.startsWith("/") ||
+    path.includes("\\") ||
+    path.includes("\0") ||
+    /^[A-Za-z]:/.test(path) ||
+    path.split("/").some((s) => s === "" || s === "." || s === "..")
+  ) {
+    throw new Error(
+      `${JSON.stringify(path)} is not a plain relative path with no empty, "." or ".." segment`,
+    );
+  }
+}
+
+/**
  * Throws when `path` exists and is a symlink. The path is resolved first, so
  * a trailing slash cannot make `lstat` follow the link.
  */
@@ -104,7 +124,11 @@ function refuseSymlink(path: string) {
  * written or deleted through a link that points elsewhere. With `leaf: false`
  * the target itself may be a link, for a caller that only inspects it.
  */
-function safeTarget(root: string, path: string, { leaf = true } = {}): string {
+export function safeTarget(
+  root: string,
+  path: string,
+  { leaf = true } = {},
+): string {
   const target = resolveInside(root, path);
   let current = resolve(root);
   refuseSymlink(current);
@@ -141,7 +165,7 @@ function walkFiles(dir: string): string[] {
  * The recipe's files. Refuses a symlinked `files/`, any file that is not a
  * regular file, and a recipe with no files, which is missing or misplaced.
  */
-function listRecipeFiles(filesDir: string): string[] {
+export function listRecipeFiles(filesDir: string): string[] {
   refuseSymlink(filesDir);
   const files = walkFiles(filesDir);
   if (files.length === 0) {
@@ -269,7 +293,7 @@ export function syncRecipe(filesDir: string, destDir: string): SyncResult {
   }
   const written = [...diff.changed, ...diff.missing].sort();
   const removals = diff.extra.map((file) => safeTarget(destDir, file));
-  const writes = written.map((file) => [
+  const writes = written.map((file): [string, string] => [
     join(filesDir, file),
     safeTarget(destDir, file),
   ]);
@@ -277,12 +301,27 @@ export function syncRecipe(filesDir: string, destDir: string): SyncResult {
   // Removals first: after a case-only rename on a case-insensitive file
   // system, the old name and the new one are the same file.
   for (const target of removals) unlinkSync(target);
-  for (const [source, target] of writes) {
-    mkdirSync(dirname(target), { recursive: true });
-    writeFileSync(target, readFileSync(source));
-  }
+  copyFiles(writes);
 
   return { written, removed: diff.extra };
+}
+
+/**
+ * Copies each `[source, target]` pair byte for byte, creating the target's
+ * directories. The targets must already have been checked with `safeTarget`.
+ * With `exclusive`, each target is created with the `wx` flag, so a file that
+ * appeared since the check is never replaced: the copy throws instead.
+ */
+export function copyFiles(
+  pairs: [source: string, target: string][],
+  { exclusive = false } = {},
+): void {
+  for (const [source, target] of pairs) {
+    mkdirSync(dirname(target), { recursive: true });
+    writeFileSync(target, readFileSync(source), {
+      flag: exclusive ? "wx" : "w",
+    });
+  }
 }
 
 /** `from "x"`, and a side-effect `import "x"`. */

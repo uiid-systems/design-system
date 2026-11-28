@@ -17,7 +17,9 @@ import { afterAll, describe, expect, it } from "vitest";
 import { APP_SHELL_FILES } from "./paths.ts";
 import {
   checkRecipe,
+  checkRelativePath,
   compareRecipe,
+  copyFiles,
   extraDirectoryOf,
   findDisallowedImports,
   importSpecifiers,
@@ -444,6 +446,53 @@ describe("resolveInside", () => {
     "",
   ])("refuses %j, which is not a relative path inside the root", (path) => {
     expect(() => resolveInside("/root", path)).toThrow(/outside/);
+  });
+});
+
+describe("checkRelativePath", () => {
+  it.each(["nav.ts", "components/a/a.ts", "app/x.module.css"])(
+    "accepts %j",
+    (path) => {
+      expect(() => checkRelativePath(path)).not.toThrow();
+    },
+  );
+
+  it.each([
+    "",
+    "/abs.ts",
+    "a//b.ts",
+    "a/",
+    "./a.ts",
+    "a/./b.ts",
+    "../a.ts",
+    "a/../b.ts",
+    "a\\b.ts",
+    "C:/a.ts",
+    "c:a.ts",
+    "a\0b.ts",
+  ])("refuses %j", (path) => {
+    expect(() => checkRelativePath(path)).toThrow(/is not a plain relative/);
+  });
+});
+
+describe("copyFiles", () => {
+  it("creates each target and its directories", () => {
+    const from = tempDir();
+    const to = tempDir();
+    write(from, { "a.ts": "a\n" });
+    copyFiles([[join(from, "a.ts"), join(to, "x/y/a.ts")]]);
+    expect(readFileSync(join(to, "x/y/a.ts"), "utf8")).toBe("a\n");
+  });
+
+  it("refuses to replace an existing file when exclusive", () => {
+    const from = tempDir();
+    const to = tempDir();
+    write(from, { "a.ts": "new\n" });
+    write(to, { "a.ts": "old\n" });
+    expect(() =>
+      copyFiles([[join(from, "a.ts"), join(to, "a.ts")]], { exclusive: true }),
+    ).toThrow(/EEXIST/);
+    expect(readFileSync(join(to, "a.ts"), "utf8")).toBe("old\n");
   });
 });
 
