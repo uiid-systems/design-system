@@ -9,6 +9,9 @@ const here = dirname(fileURLToPath(import.meta.url));
 
 export const REPO_ROOT = resolve(here, "../../..");
 
+/** This package's root, which holds one directory per recipe. */
+export const RECIPES_ROOT = resolve(here, "..");
+
 /** The app shell recipe, the one source of its files. */
 export const APP_SHELL_FILES = resolve(here, "../app-shell/files");
 

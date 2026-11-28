@@ -4,5 +4,8 @@
   "version": "0.0.0",
   "description": "Source and manifests for the UIID recipes, such as the app shell. Internal, not published yet.",
   "license": "MIT",
-  "type": "module"
+  "type": "module",
+  "bin": {
+    "uiid-recipes": "./src/cli.mjs"
+  }
 }

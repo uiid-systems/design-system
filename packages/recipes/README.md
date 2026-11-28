@@ -34,10 +34,79 @@ Sync writes and deletes only recipe paths in the docs app: files inside the docs
 
 The helpers' unit tests for `lib/nav.ts` live in `src/nav.test.ts`, not beside the file, since no test ships with the recipe. Both commands' logic is tested in `src/recipes.test.ts` against temporary directories.
 
+## Add a recipe to an app
+
+`uiid-recipes add <recipe>` copies a recipe into a Next.js app that already exists, the same way every time. It is the package's `bin`, `src/cli.mjs`, which only hands the command line to `runCli` in `src/add.ts`. Node runs that TypeScript by stripping its types, so there is no build, but it needs Node 22.18 or later (or 23.6 or later), where type stripping is on by default. Node does not strip types under `node_modules`, so until the package is published from its own repo, run it from a checkout of this repo:
+
+```sh
+node packages/recipes/src/cli.mjs add app-shell --cwd ../my-app
+```
+
+Today that example is refused: the app-shell recipe is refused for any app outside this repo's workspace until its manifest has a published range for the `@uiid/*` packages (see [The manifest](#the-manifest)). Inside the workspace, such as a new app under `apps/`, it runs.
+
+`add` runs the target project's package manager in that project, which runs the project's own install scripts and config, so point it only at a project you trust.
+
+| Flag          | Meaning                                                                                                |
+| ------------- | ------------------------------------------------------------------------------------------------------ |
+| `--cwd <dir>` | The app's root directory, relative to the current directory. Defaults to the current directory         |
+| `--dry-run`   | Runs every check, then prints each file it would write and the install command it would run, and stops |
+| `-h, --help`  | Prints usage and exits 0                                                                               |
+
+There are no prompts. Every failure exits 1 with one sentence on stderr saying what failed and what to do.
+
+### What it does
+
+1. Checks everything listed below. Any refusal happens before the first write, so a refused app is left byte for byte as it was.
+2. Copies every file under `files/` to the same path in the app, verbatim. Names starting with `.` are skipped, as in sync. Each target is checked for symlinks again right before it is written, and each file is created exclusively, so a file that appeared after the checks stops the copy instead of being replaced.
+3. Writes the starter `templates/nav.ts` to `nav.ts` when the app has no `nav.ts`, and keeps the app's own when it has one. It writes no other template.
+4. Prints the wiring to add to `app/layout.tsx` and `app/globals.css` by hand, before the install, so it is shown even when the install fails. It never edits `app/layout.tsx`, `app/globals.css` or any page. The wiring is a constant in `src/add.ts`, and tests fail when its imports, its elements or its stylesheet differ from `templates/app/layout.tsx` and `templates/app/globals.css`.
+5. Installs the manifest's `dependencies` with the app's package manager, last: `pnpm add`, `npm install`, `yarn add` or `bun add`, with one `name@range` argument per dependency, run with an argument list and no shell, in the app's root.
+
+When the install fails, the recipe's files and `nav.ts` stay in place, the wiring has been printed, nothing else in the app has changed, and `add` exits 1 naming the exact command to run by hand in the app. The package manager may have left its own partial changes to `package.json`, the lockfile or `node_modules`. Running `add` again is refused, because the files exist. When a write fails partway, the files printed as `wrote` are in place and the rest are not; no install runs.
+
+Afterwards everything `add` wrote is the app's own. There is no update, repair or remove command, and `recipes:check` covers only the docs app.
+
+### What it refuses
+
+The app must look like a new Next.js App Router app with TypeScript and the `@/*` alias. Apps with a `src/` directory, the Pages Router or another alias are refused, not supported.
+
+| Condition                                                                                        | Says                                                                                                      |
+| ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| `package.json`, `app` or `tsconfig.json` at the root is a symlink                                | Names it; replace it with the real file or directory                                                      |
+| No `package.json` at the root                                                                    | Run add from the root of a Next.js app, or pass `--cwd <dir>`                                             |
+| `package.json` is not JSON                                                                       | Fix it                                                                                                    |
+| `next` is in neither `dependencies` nor `devDependencies`                                        | Add the recipe to a Next.js app                                                                           |
+| No `app/` directory, with `src/app/` instead                                                     | `src/app` is not supported                                                                                |
+| No `app/` directory, with `pages/` instead                                                       | The Pages Router is not supported                                                                         |
+| No `app/` directory                                                                              | Add the recipe to an App Router app                                                                       |
+| No `tsconfig.json`                                                                               | Add the recipe to a TypeScript app                                                                        |
+| `tsconfig.json` cannot be read as JSON with comments and trailing commas                         | Fix it                                                                                                    |
+| No `compilerOptions.paths["@/*"]` whose first entry is `"./*"`, in `tsconfig.json` itself        | Add `"paths": { "@/*": ["./*"] }`. `extends` is not followed, so an alias set only in a base config fails |
+| `compilerOptions.baseUrl` is set to anything but the app root                                    | Remove `baseUrl` or set it to `"."`                                                                       |
+| A directory on the way to a recipe destination is a file                                         | Names it; move or rename it                                                                               |
+| Any recipe destination exists                                                                    | Lists every one; move or delete them                                                                      |
+| A symlink at any existing directory on the way to a destination, or at a destination itself      | Names it                                                                                                  |
+| A dependency range starts with `workspace:` and the app is not a member of this repo's workspace | Names the dependencies: the manifest has no published range for them yet, so run add in a workspace app   |
+| No lockfile, or lockfiles for more than one package manager                                      | Lists the lockfiles it looks for, or names the managers                                                   |
+| An unknown command or option, no command, no recipe, an extra argument, or `--cwd` with no value | Says what to pass                                                                                         |
+| An unknown recipe                                                                                | Lists the recipes                                                                                         |
+| `--cwd` does not exist or is not a directory                                                     | Pass an existing app directory                                                                            |
+
+The `--cwd` directory is resolved to its real path first, so the app may be reached through a link; below that, nothing is.
+
+The lockfile is looked for at the app's root: `pnpm-lock.yaml`, `package-lock.json`, `yarn.lock`, `bun.lock` or `bun.lockb` (the two bun files count as one manager). An app that is a member of this repo's workspace, by `pnpm-workspace.yaml`, uses the workspace root's lockfile instead, since a member has none of its own. Only a member gets `workspace:` ranges, passed through as written; no range is ever rewritten.
+
+### What it refuses in a recipe
+
+`add` treats `recipe.json` as data. It refuses, before writing, a recipe whose `files/` is empty, missing or holds a non-regular file; a manifest that is not JSON; a template key that is not a regular file inside `templates/`; a destination, from `files/` or a template, that is not a plain relative path (an empty, `.` or `..` segment, a backslash, a drive letter or NUL) or that would write `package.json`, a lockfile, `tsconfig.json`, `next.config.*`, `.npmrc`, any `.env*`, or anything under `.git/` or `node_modules/`, all matched ignoring case; any file directly under `files/`, since a file at the app root could be package-manager config such as `bunfig.toml` or `pnpm-workspace.yaml`, read by the install that follows; two destinations that are the same, ignoring case; no `nav.ts` template, or one mapped anywhere but `nav.ts`; and a dependency whose name is not a valid npm package name or whose range is not one of two shapes.
+
+The two range shapes are a plain semver version or range with no protocol, which is an optional `^` or `~`, one to three numbers joined by dots and an optional prerelease (`1.2.3`, `^3.0.2`, `~1.2`, `^2.0.0-rc.1`), and `workspace:*`, `workspace:^` or `workspace:~`. Everything else is refused, because it could install other code under the dependency's name: dist-tags such as `latest`, URLs, `git+…`, `github:`, `file:`, `link:`, `npm:` aliases, comparator ranges such as `>=1 <2`, `1.x`, `*` and build metadata.
+
 ## Layout
 
 ```
 recipes/
+  src/            the commands, their shared logic in recipes.ts, and tests
   app-shell/
     recipe.json   the manifest
     files/        the recipe, laid out as it lands in a project
@@ -95,4 +164,4 @@ The starter layout loads Geist through `next/font/google`, as a new Next.js app 
 }
 ```
 
-The ranges are the ones the docs app uses. `workspace:*` is the range for use inside this repo only: it resolves to the local workspace package, and nothing rewrites it, because `recipe.json` is not a `package.json`. Copied as is into a project outside this repo, it would not install. The `@uiid/*` range for a project outside this repo is not chosen yet.
+The ranges are the ones the docs app uses. `workspace:*` is the range for use inside this repo only: it resolves to the local workspace package, and nothing rewrites it, because `recipe.json` is not a `package.json`. Copied as is into a project outside this repo, it would not install, so `add` refuses the app shell for any app outside this repo's workspace until the manifest has a published range. The `@uiid/*` range for a project outside this repo is not chosen yet.
